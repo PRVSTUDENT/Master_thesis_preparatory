@@ -10,3 +10,4 @@ __pycache__/
 .DS_Store
 Thumbs.db
 .vscode/
+one_cycle_run/ffmpeg-2023-09-04-git-f8503b4c33-full_build/
