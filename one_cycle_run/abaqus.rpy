@@ -1194,3 +1194,103 @@ a = mdb.models['Model-1'].rootAssembly
 session.viewports['Viewport: 1'].setValues(displayedObject=a)
 mdb.jobs['mono_ep_test'].writeInput(consistencyChecking=OFF)
 #: The job input file has been written to "mono_ep_test.inp".
+xyp = session.xyPlots['XYPlot-1']
+session.viewports['Viewport: 1'].setValues(displayedObject=xyp)
+o1 = session.openOdb(
+    name='D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/mono_ep_test_fix.odb')
+session.viewports['Viewport: 1'].setValues(displayedObject=o1)
+#: Model: D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/mono_ep_test_fix.odb
+#: Number of Assemblies:         1
+#: Number of Assembly instances: 0
+#: Number of Part instances:     1
+#: Number of Meshes:             1
+#: Number of Element Sets:       5
+#: Number of Node Sets:          7
+#: Number of Steps:              1
+del session.xyDataObjects['RF1 N: 1 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 2 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 3 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 4 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 5 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 6 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 7 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 8 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 9 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 10 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 11 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 12 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 13 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 14 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 15 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 16 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 17 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 18 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 19 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 20 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 21 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 22 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 23 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 24 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF1 N: 25 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 1 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 2 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 3 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 4 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 5 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 6 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 7 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 8 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 9 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 10 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 11 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 12 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 13 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 14 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 15 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 16 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 17 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 18 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 19 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 20 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 21 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 22 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 23 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 24 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RFMAG N: 25 NSET SET_LEFT_NODES-1']
+del session.xyDataObjects['RF_total']
+del session.xyDataObjects['U1 N: 501 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 502 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 503 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 504 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 505 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 506 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 507 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 508 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 509 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 510 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 511 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 512 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 513 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 514 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 515 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 516 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 517 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 518 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 519 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 520 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 521 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 522 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 523 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 524 NSET SET_RIGHT_NODES-1']
+del session.xyDataObjects['U1 N: 525 NSET SET_RIGHT_NODES-1']
+odb = session.odbs['D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/mono_ep_test_fix.odb']
+xy1 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Spatial displacement: U1 at Node 13 in NSET SET_RIGHT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c1 = session.Curve(xyData=xy1)
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+chart.setValues(curvesToPlot=(c1, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+session.viewports['Viewport: 1'].setValues(displayedObject=xyp)

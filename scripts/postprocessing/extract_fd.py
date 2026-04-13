@@ -7,7 +7,8 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-odb_path = r'D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run\mono_ep_test_fix.odb'
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
+odb_path = os.path.join(repo_root, 'one_cycle_run', 'mono_ep_test_fix.odb')
 step_name = 'Step-1'
 
 # From the corrected input:
@@ -37,8 +38,8 @@ for n in left_nodes_for_rf:
             rf_total[i][1] += v
 
 # Write combined force-displacement data.
-out_csv = os.path.join(os.path.dirname(odb_path), 'force_displacement.csv')
-out_png = os.path.join(os.path.dirname(odb_path), 'force_displacement.png')
+out_csv = os.path.join(repo_root, 'analysis', 'force_displacement.csv')
+out_png = os.path.join(repo_root, 'analysis', 'force_displacement.png')
 
 with open(out_csv, 'w', newline='') as f:
     writer = csv.writer(f)
