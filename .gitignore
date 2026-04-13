@@ -1,0 +1,97 @@
+# =============================================================================
+# Abaqus temporary and generated files
+# =============================================================================
+
+# Abaqus output database (large binary — store separately or on HPC)
+*.odb
+*.odb_f
+
+# Abaqus scratch and lock files
+*.lck
+abaqus.rpy
+abaqus.rpy.*
+
+# Abaqus log and message files
+*.log
+*.dat
+*.msg
+*.sta
+*.prt
+*.sim
+*.stt
+*.mdl
+*.res
+*.pac
+*.sel
+*.ipm
+*.abq
+
+# Abaqus restart files
+*.res
+*.stt
+*.mdl
+
+# Abaqus field/history output requests (auto-generated)
+*.fil
+
+# Abaqus subroutine compilation artifacts
+*.o
+*.so
+*.dll
+*.exp
+*.lib
+AAA_Package_*
+
+# =============================================================================
+# Python
+# =============================================================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# =============================================================================
+# Operating system and editor clutter
+# =============================================================================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# VS Code
+.vscode/
+
+# JetBrains / PyCharm
+.idea/
+
+# =============================================================================
+# Large generated output — keep lightweight CSVs / PNGs in results/ instead
+# =============================================================================
+
+# HDF5 / NetCDF heavy data
+*.h5
+*.hdf5
+*.nc
+
+# Large archives
+*.zip
+*.tar.gz
+*.tar.bz2
+
+# Compiled Fortran subroutines
+*.f90.o
+fortranDLL/

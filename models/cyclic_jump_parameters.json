@@ -1,0 +1,22 @@
+{
+  "_comment": "Parameter file for cyclic_jump_v1 — edit before running scripts/build_model.py",
+  "material": {
+    "E":     210000,
+    "nu":    0.3,
+    "sig_y": 250
+  },
+  "geometry": {
+    "width":  10.0,
+    "height": 50.0,
+    "depth":   5.0
+  },
+  "loading": {
+    "amplitude":    150.0,
+    "R_ratio":       -1.0,
+    "n_cycles_ref":   5,
+    "jump_size":    500
+  },
+  "mesh": {
+    "global_seed": 1.0
+  }
+}
