@@ -1,0 +1,35 @@
+VP-2: implicit (fixed-point) cycle-space jump for R + trial-cycle acceptance
+
+Last-cycle (training): dEpbar_last=9.495631e-04, dR_last=9.495631e-01
+Proposed/accepted DeltaN attempt list below.
+
+Attempt DeltaN=52
+  R_jump=3.816729e+01
+  dEpbar_last=9.495631e-04  dEpbar_trial=6.278117e-04  err=3.388415e-01
+  dR_last=9.495631e-01      dR_trial=6.278117e-01
+  Fixed-point iterations: it  Rk  dR_at_Rk  Rnext
+    1  5.520685e+01  5.001985e-01  3.183989e+01
+    2  3.183989e+01  6.812320e-01  4.125363e+01
+    3  4.125363e+01  6.029771e-01  3.718438e+01
+    4  3.718438e+01  6.358872e-01  3.889570e+01
+    5  3.889570e+01  6.218793e-01  3.816729e+01
+
+Attempt DeltaN=26
+  R_jump=2.504171e+01
+  dEpbar_last=9.495631e-04  dEpbar_trial=7.425112e-04  err=2.180496e-01
+  dR_last=9.495631e-01      dR_trial=7.425112e-01
+  Fixed-point iterations: it  Rk  dR_at_Rk  Rnext
+    1  3.051821e+01  6.928257e-01  2.384304e+01
+    2  2.384304e+01  7.537455e-01  2.542695e+01
+    3  2.542695e+01  7.389282e-01  2.504171e+01
+
+Attempt DeltaN=13
+  R_jump=1.658130e+01
+  dEpbar_last=9.495631e-04  dEpbar_trial=8.246386e-04  err=1.315599e-01
+  dR_last=9.495631e-01      dR_trial=8.246386e-01
+  Fixed-point iterations: it  Rk  dR_at_Rk  Rnext
+    1  1.817389e+01  8.086692e-01  1.634227e+01
+    2  1.634227e+01  8.270562e-01  1.658130e+01
+
+ACCEPTED=True
+Final DeltaN=13

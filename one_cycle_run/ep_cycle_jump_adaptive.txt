@@ -1,0 +1,18 @@
+EP cycle-jump (1D iso hardening): quadratic + trial accept/reject + caps
+E=7.000000e+04, sig_y0=2.500000e+02, H=1.000000e+03
+eps_a=1.000000e-02, nTrainCycles=4
+Initial proposal DeltaN_try=1000, tol_rate=0.200
+Caps: dR_cap_total=2.000000e+02, deps_p_cap_total=5.000000e-03
+
+Last-cycle rates (from training):
+depsp_1=-2.965787e-04, dR_1=2.076051e+01
+depsp_2=1.744214e-05, dR_2=-1.220950e+00
+
+Attempts (DeltaN, epsp_jump, R_jump, depsp_trial, dR_trial, err_epsp, err_R):
+9  -6.779059e-03  2.245342e+02  3.785727e-03  1.593258e+01  1.376466e+01  2.325534e-01
+4  -5.863036e-03  1.604125e+02  1.979483e-03  1.773883e+01  7.674393e+00  1.455495e-01
+2  -5.374531e-03  1.262172e+02  1.016235e-03  1.870208e+01  4.426526e+00  9.915139e-02
+1  -5.104116e-03  1.072881e+02  4.830209e-04  1.923529e+01  2.628643e+00  7.346736e-02
+
+ACCEPTED = False
+Final DeltaN = 1

@@ -1,0 +1,9 @@
+Miner + Basquin block update (linear elastic)
+stress_range = 1.352911e+03
+sigma_a = 6.764555e+02
+sigma_a_eq = 6.764555e+02
+sigma_f_prime = 1.000000e+04
+b = -0.100000
+Nf = 2.492170e+11
+DeltaN = 1000
+dD = 4.012567e-09

@@ -1,0 +1,8 @@
+﻿ANSYS root: C:\Program Files\ANSYS Inc
+
+Start menu root: C:\ProgramData\Microsoft\Windows\Start Menu\Programs
+  C:\ProgramData\Microsoft\Windows\Start Menu\Programs\ANSYS, Inc. License Manager\ANSYS License Management Center.lnk
+  C:\ProgramData\Microsoft\Windows\Start Menu\Programs\ANSYS, Inc. License Manager\ANSYS, Inc. Licensing Guide.lnk
+
+Start menu root: C:\Users\pruth\AppData\Roaming\Microsoft\Windows\Start Menu\Programs
+  (no matching shortcuts found)

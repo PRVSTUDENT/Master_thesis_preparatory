@@ -1,0 +1,33 @@
+ODB: D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run\vp_10cycles8.odb
+Step: Step-1
+
+History regions and keys:
+
+[Assembly ASSEMBLY]
+  ALLAE
+  ALLCCDW
+  ALLCCE
+  ALLCCEN
+  ALLCCET
+  ALLCCSD
+  ALLCCSDN
+  ALLCCSDT
+  ALLCD
+  ALLDMD
+  ALLDTI
+  ALLEE
+  ALLFD
+  ALLIE
+  ALLJD
+  ALLKE
+  ALLKL
+  ALLPD
+  ALLQB
+  ALLSD
+  ALLSE
+  ALLVD
+  ALLWK
+  ETOTAL
+
+ALLPD_found = True
+ALLPD_region = Assembly ASSEMBLY

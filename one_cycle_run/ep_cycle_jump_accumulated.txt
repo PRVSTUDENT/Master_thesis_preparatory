@@ -1,0 +1,17 @@
+EP cycle-jump using accumulated plastic strain (monotone)
+E=7.000000e+04, sig_y0=2.500000e+02, H=1.000000e+03
+eps_a=1.000000e-02, nTrainCycles=4
+DeltaN_try=200, tol_rate=0.200
+Caps: dEpbar_cap_total=1.000000e-02, dR_cap_total=2.000000e+02
+
+Training per-cycle dEpbar:
+N=1  dEpbar=2.112187e-02
+N=2  dEpbar=2.327421e-02
+N=3  dEpbar=2.198146e-02
+N=4  dEpbar=2.076051e-02
+
+Attempts: DeltaN  dEpbar_last  dEpbar_pred  dEpbar_trial  err  R_pred
+1  2.076051e-02  1.957546e-02  1.895948e-02  8.675262e-02  1.072881e+02
+
+ACCEPTED = True
+Final DeltaN = 1

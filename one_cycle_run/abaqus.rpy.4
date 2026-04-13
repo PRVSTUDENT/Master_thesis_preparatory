@@ -1,0 +1,146 @@
+# -*- coding: mbcs -*-
+#
+# Abaqus/CAE Release 2024 replay file
+# Internal Version: 2023_09_21-14.55.25 RELr426 190762
+# Run by pruth on Sun Mar  1 06:17:55 2026
+#
+
+# from driverUtils import executeOnCaeGraphicsStartup
+# executeOnCaeGraphicsStartup()
+#: Executing "onCaeGraphicsStartup()" in the site directory ...
+from abaqus import *
+from abaqusConstants import *
+session.Viewport(name='Viewport: 1', origin=(0.0, 0.0), width=222.166656494141, 
+    height=132.017364501953)
+session.viewports['Viewport: 1'].makeCurrent()
+session.viewports['Viewport: 1'].maximize()
+from caeModules import *
+from driverUtils import executeOnCaeStartup
+executeOnCaeStartup()
+session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
+    referenceRepresentation=ON)
+openMdb(
+    pathName='D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/one_cycle.cae')
+#: The model database "D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run\one_cycle.cae" has been opened.
+session.viewports['Viewport: 1'].setValues(displayedObject=None)
+p = mdb.models['Model-1'].parts['Part-1']
+session.viewports['Viewport: 1'].setValues(displayedObject=p)
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step_vp1_cycle_averaged_jump_1D.py', 
+    __main__.__dict__)
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step_vp2_implicit_cycle_jump_1D.py', 
+    __main__.__dict__)
+execfile('D:/TUBAF/Master_Thesis/Abaqus_trial/step_vp3_controller_autogrow.py', 
+    __main__.__dict__)
+mdb.Model(name='Model-VP', objectToCopy=mdb.models['Model-1'])
+#: The model "Model-VP" has been created.
+p = mdb.models['Model-VP'].parts['Part-1']
+session.viewports['Viewport: 1'].setValues(displayedObject=p)
+session.viewports['Viewport: 1'].partDisplay.setValues(sectionAssignments=ON, 
+    engineeringFeatures=ON)
+session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
+    referenceRepresentation=OFF)
+mdb.models['Model-VP'].Material(name='Material-VP')
+mdb.models['Model-VP'].materials['Material-VP'].Plastic(scaleStress=None, 
+    table=((250.0, 0.0), (300.0, 0.02)))
+mdb.models['Model-VP'].materials['Material-VP'].Viscosity(table=((0.01, ), ))
+mdb.models['Model-VP'].HomogeneousSolidSection(name='Section-2', 
+    material='Material-VP', thickness=1.0)
+a = mdb.models['Model-VP'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(
+    adaptiveMeshConstraints=ON, optimizationTasks=OFF, 
+    geometricRestrictions=OFF, stopConditions=OFF)
+mdb.models['Model-VP'].steps['Step-1'].setValues(timePeriod=10.0, 
+    initialInc=10.0, minInc=0.0001, maxInc=10.0)
+p1 = mdb.models['Model-VP'].parts['Part-1']
+session.viewports['Viewport: 1'].setValues(displayedObject=p1)
+mdb.models['Model-VP'].sections['Section-2'].setValues(material='Material-VP', 
+    thickness=None)
+a = mdb.models['Model-VP'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(step='Step-1')
+mdb.models['Model-VP'].fieldOutputRequests['F-Output-1'].setValues(
+    variables=PRESELECT)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(
+    adaptiveMeshConstraints=OFF)
+mdb.Job(name='vp_10cycles', model='Model-VP', description='vp_10cycles', 
+    type=ANALYSIS, atTime=None, waitMinutes=0, waitHours=0, queue=None, 
+    memory=90, memoryUnits=PERCENTAGE, getMemoryFromAnalysis=True, 
+    explicitPrecision=SINGLE, nodalOutputPrecision=SINGLE, echoPrint=OFF, 
+    modelPrint=OFF, contactPrint=OFF, historyPrint=OFF, userSubroutine='', 
+    scratch='', resultsFormat=ODB, numThreadsPerMpiProcess=1, 
+    multiprocessingMode=DEFAULT, numCpus=1, numGPUs=0)
+mdb.jobs['vp_10cycles'].submit(consistencyChecking=OFF)
+#: The job input file "vp_10cycles.inp" has been submitted for analysis.
+#: Error in job vp_10cycles: THE *VISCOSITY OPTION IS NOT AVAILABLE FOR Abaqus/Standard
+#: Error in job vp_10cycles: *PLASTIC REQUIRES THE USE OF *ELASTIC OR *HYPERELASTIC
+#: Error in job vp_10cycles: THE *VISCOSITY OPTION MUST BE USED IN COMBINATION WITH THE *EOS OPTION
+#: Job vp_10cycles: Analysis Input File Processor aborted due to errors.
+#: Error in job vp_10cycles: Analysis Input File Processor exited with an error - Please see the  vp_10cycles.dat file for possible error messages if the file exists.
+#: Job vp_10cycles aborted due to errors.
+p1 = mdb.models['Model-VP'].parts['Part-1']
+session.viewports['Viewport: 1'].setValues(displayedObject=p1)
+mdb.models['Model-VP'].materials['Material-VP'].plastic.setValues(
+    scaleStress=None)
+mdb.models['Model-VP'].materials['Material-VP'].viscosity.setValues(table=((
+    0.0, ), ))
+mdb.models['Model-VP'].materials['Material-VP'].plastic.setValues(rate=ON, 
+    scaleStress=None, table=((250.0, 0.0, 0.001), (300.0, 0.02, 0.001)))
+mdb.models['Model-VP'].materials['Material-VP'].Elastic(table=((70000.0, 0.33), 
+    ))
+a = mdb.models['Model-VP'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+mdb.jobs['vp_10cycles'].submit(consistencyChecking=OFF)
+#: The job input file "vp_10cycles.inp" has been submitted for analysis.
+#: Error in job vp_10cycles: THE STATIC YIELD STRESS MUST BE DEFINED FIRST
+#: Error in job vp_10cycles: THE *VISCOSITY OPTION IS NOT AVAILABLE FOR Abaqus/Standard
+#: Error in job vp_10cycles: THE VISCOSITY MUST BE GREATER THAN ZERO
+#: Error in job vp_10cycles: THE *VISCOSITY OPTION MUST BE USED IN COMBINATION WITH THE *EOS OPTION
+#: Job vp_10cycles: Analysis Input File Processor aborted due to errors.
+#: Error in job vp_10cycles: Analysis Input File Processor exited with an error - Please see the  vp_10cycles.dat file for possible error messages if the file exists.
+#: Job vp_10cycles aborted due to errors.
+p1 = mdb.models['Model-VP'].parts['Part-1']
+session.viewports['Viewport: 1'].setValues(displayedObject=p1)
+del mdb.models['Model-VP'].materials['Material-VP']
+mdb.models['Model-VP'].Material(name='Material-VP')
+mdb.models['Model-VP'].materials['Material-VP'].Elastic(table=((70000.0, 0.33), 
+    ))
+mdb.models['Model-VP'].materials['Material-VP'].Plastic(rate=ON, 
+    scaleStress=None, table=((250.0, 0.0, 0.0), (300.0, 0.02, 0.0), (260.0, 
+    0.0, 0.001), (312.0, 0.02, 0.001), (300.0, 0.0, 1.0), (360.0, 0.02, 1.0)))
+a = mdb.models['Model-VP'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+mdb.Job(name='vp_10cycles2', model='Model-VP', description='vp_10cycles2', 
+    type=ANALYSIS, atTime=None, waitMinutes=0, waitHours=0, queue=None, 
+    memory=90, memoryUnits=PERCENTAGE, getMemoryFromAnalysis=True, 
+    explicitPrecision=SINGLE, nodalOutputPrecision=SINGLE, echoPrint=OFF, 
+    modelPrint=OFF, contactPrint=OFF, historyPrint=OFF, userSubroutine='', 
+    scratch='', resultsFormat=ODB, numThreadsPerMpiProcess=1, 
+    multiprocessingMode=DEFAULT, numCpus=1, numGPUs=0)
+mdb.jobs['vp_10cycles2'].submit(consistencyChecking=OFF)
+#: The job input file "vp_10cycles2.inp" has been submitted for analysis.
+#: Job vp_10cycles2: Analysis Input File Processor completed successfully.
+#: Job vp_10cycles2: Abaqus/Standard completed successfully.
+#: Job vp_10cycles2 completed successfully. 
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/vp_odb_extract_peeq_per_cycle.py', 
+    __main__.__dict__)
+#* OdbError: Cannot open file 
+#* D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/vp_10cycles.odb. *** 
+#* ERROR: No such file: 
+#* D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/vp_10cycles.odb.
+#* File "D:/TUBAF/Master_Thesis/Abaqus_trial/vp_odb_extract_peeq_per_cycle.py", 
+#* line 20, in <module>
+#*     odb = openOdb(path=odbPath, readOnly=True)
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/vp_odb_extract_peeq_per_cycle.py', 
+    __main__.__dict__)
+#* OdbError: Cannot open file 
+#* D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/vp_10cycles2.odb. *** 
+#* ERROR: No such file: 
+#* D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/vp_10cycles2.odb.
+#* File "D:/TUBAF/Master_Thesis/Abaqus_trial/vp_odb_extract_peeq_per_cycle.py", 
+#* line 20, in <module>
+#*     odb = openOdb(path=odbPath, readOnly=True)

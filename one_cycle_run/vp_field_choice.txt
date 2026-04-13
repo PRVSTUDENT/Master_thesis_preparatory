@@ -1,0 +1,4 @@
+ODB: D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run\vp_10cycles3.odb
+Step: Step-1
+Chosen mode: PEEQMAX
+First found at frame index: 0, time=0.0

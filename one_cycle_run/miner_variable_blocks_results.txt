@@ -1,0 +1,12 @@
+Variable-amplitude Miner + Basquin (linear elastic)
+cwd = D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run
+sigma_f_prime = 1.000000e+04
+b = -0.100000
+use_goodman = False
+
+Blocks: (stress_range, cycles, Nf, dD)
+1.352911e+03  1000  2.492170e+11  4.012567e-09
+1.000000e+03  2000  5.120000e+12  3.906250e-10
+8.000000e+02  5000  4.768372e+13  1.048576e-10
+
+Total damage D = 4.508050e-09

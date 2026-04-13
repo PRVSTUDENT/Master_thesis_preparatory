@@ -1,0 +1,36 @@
+Analysis initiated from SIMULIA established products
+Abaqus JOB one-cycle
+Abaqus 2024
+Socket error: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 5 tokens from Flexnet server localhost.
+<9994 out of 9999 licenses remain available>.
+Begin Analysis Input File Processor
+2026-02-25 7:24:59 AM
+Run pre.exe
+
+ ***WARNING: Interactive messaging has been requested for this analysis run, 
+             but initialization of the messaging system has failed.  Therefore 
+             no messages will be sent to Abaqus/CAE for this phase of the 
+             analysis.
+Warning: Failed initial connection to umbrella
+2026-02-25 7:25:11 AM
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+2026-02-25 7:25:11 AM
+Run standard.exe
+Warning: Failed initial connection to umbrella
+
+ ***WARNING: Interactive messaging has been requested for this analysis run, 
+             but initialization of the messaging system has failed.  Therefore 
+             no messages will be sent to Abaqus/CAE for this phase of the 
+             analysis.
+2026-02-25 7:25:24 AM
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+2026-02-25 7:25:25 AM
+Run SMASimUtility.exe
+2026-02-25 7:25:25 AM
+End SIM Wrap-up
+Abaqus JOB one-cycle COMPLETED
+Socket error: [WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions

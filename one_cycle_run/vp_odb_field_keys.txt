@@ -1,0 +1,22 @@
+ODB: D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run\vp_10cycles3.odb
+Step: Step-1
+FieldOutputs found across frames:
+  AC YIELD1
+  AC YIELD2
+  AC YIELD3
+  AC YIELD4
+  AC YIELDT
+  E
+  EE
+  ER
+  IE
+  PEEQMAX
+  PEEQT
+  PEQC1
+  PEQC2
+  PEQC3
+  PEQC4
+  RF
+  S
+  THE
+  U

@@ -1,0 +1,30 @@
+# -*- coding: mbcs -*-
+#
+# Abaqus/Viewer Release 2024 replay file
+# Internal Version: 2023_09_21-14.55.25 RELr426 190762
+# Run by pruth on Tue Mar  3 05:36:49 2026
+#
+
+# from driverUtils import executeOnCaeGraphicsStartup
+# executeOnCaeGraphicsStartup()
+#: Executing "onCaeGraphicsStartup()" in the site directory ...
+from abaqus import *
+from abaqusConstants import *
+session.Viewport(name='Viewport: 1', origin=(0.0, 0.0), width=222.166656494141, 
+    height=132.017364501953)
+session.viewports['Viewport: 1'].makeCurrent()
+session.viewports['Viewport: 1'].maximize()
+from viewerModules import *
+from driverUtils import executeOnCaeStartup
+executeOnCaeStartup()
+o2 = session.openOdb(name='vp_10cycles5.odb')
+#: Model: D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/vp_10cycles5.odb
+#: Number of Assemblies:         1
+#: Number of Assembly instances: 0
+#: Number of Part instances:     1
+#: Number of Meshes:             1
+#: Number of Element Sets:       4
+#: Number of Node Sets:          4
+#: Number of Steps:              1
+session.viewports['Viewport: 1'].setValues(displayedObject=o2)
+session.viewports['Viewport: 1'].makeCurrent()

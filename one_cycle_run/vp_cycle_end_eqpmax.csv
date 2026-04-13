@@ -1,0 +1,12 @@
+cycle_id,target_time,frame_time_used,max_EQP,abs_time_error,mode
+0,0.0,0.0,0.0,0.0,PEEQT
+1,1.0,0.0,0.0,1.0,PEEQT
+2,2.0,0.0,0.0,2.0,PEEQT
+3,3.0,0.0,0.0,3.0,PEEQT
+4,4.0,0.0,0.0,4.0,PEEQT
+5,5.0,0.0,0.0,5.0,PEEQT
+6,6.0,10.0,0.0,4.0,PEEQT
+7,7.0,10.0,0.0,3.0,PEEQT
+8,8.0,10.0,0.0,2.0,PEEQT
+9,9.0,10.0,0.0,1.0,PEEQT
+10,10.0,10.0,0.0,0.0,PEEQT

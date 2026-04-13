@@ -1,0 +1,33 @@
+VP-1: Viscoplastic cycle-jump via cycle-averaged update + trial-cycle acceptance
+Model: 1D Perzyna overstress + isotropic hardening
+
+Material:
+  E = 7.000000e+04 MPa
+  sig_y0 = 2.500000e+02 MPa
+  H = 1.000000e+03 MPa
+  sig_ref = 2.500000e+02 MPa, n = 5.000000, eta = 5.000000e+03
+
+Loading:
+  T = 1.000000e+00, eps_a = 1.000000e-02, steps_per_cycle = 800, dt = 1.250000e-03
+
+Training cycles (dEpbar, dR, sig_min, sig_max):
+  N=1  dEpbar=9.858999e-04  dR=9.858999e-01  sig_min=-7.089098e+02  sig_max=6.847941e+02
+  N=2  dEpbar=9.845911e-04  dR=9.845911e-01  sig_min=-7.034232e+02  sig_max=6.932634e+02
+  N=3  dEpbar=9.790151e-04  dR=9.790151e-01  sig_min=-7.011312e+02  sig_max=6.968133e+02
+  N=4  dEpbar=9.703129e-04  dR=9.703129e-01  sig_min=-7.001734e+02  sig_max=6.983193e+02
+  N=5  dEpbar=9.601895e-04  dR=9.601895e-01  sig_min=-6.997731e+02  sig_max=6.989680e+02
+  N=6  dEpbar=9.495631e-04  dR=9.495631e-01  sig_min=-6.996083e+02  sig_max=6.992539e+02
+
+Last-cycle averages used:
+  dEpbar_last = 9.495631e-04
+  dR_last     = 9.495631e-01
+
+Jump control:
+  DeltaN_try=500, tol_rate=0.200
+  caps: dEpbar_cap_total=1.000000e-02, dR_cap_total=2.000000e+02
+
+Attempts: DeltaN  dEpbar_last  dEpbar_trial  err  dR_last  dR_trial  R_jump
+  10  9.495631e-04  8.374038e-04  1.181167e-01  9.495631e-01  8.374038e-01  1.532520e+01
+
+ACCEPTED = True
+Final DeltaN = 10

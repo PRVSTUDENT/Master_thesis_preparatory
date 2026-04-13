@@ -1,0 +1,16 @@
+Elastic-plastic cycle-jump demo (1D isotropic hardening)
+E = 7.000000e+04 MPa, sig_y0 = 2.500000e+02 MPa, H = 1.000000e+03 MPa
+eps_a = 1.000000e-02, nTrainCycles = 3, DeltaN = 1000
+
+Cycle end states (sig, eps_p, R):
+N=1  sig=2.711219e+02  eps_p=-3.873170e-03  R=2.112187e+01
+N=2  sig=2.943961e+02  eps_p=-4.205658e-03  R=4.439609e+01
+N=3  sig=3.163775e+02  eps_p=-4.519679e-03  R=6.637754e+01
+
+Estimated per-cycle increments (from last two cycles):
+deps_p_per_cycle = -3.140208e-04
+dR_per_cycle     = 2.198146e+01
+
+Jumped state after DeltaN cycles (1st-order):
+eps_p_jump = -3.185405e-01
+R_jump     = 2.204784e+04

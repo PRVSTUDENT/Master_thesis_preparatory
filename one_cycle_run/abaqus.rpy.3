@@ -1,0 +1,302 @@
+# -*- coding: mbcs -*-
+#
+# Abaqus/CAE Release 2024 replay file
+# Internal Version: 2023_09_21-14.55.25 RELr426 190762
+# Run by pruth on Wed Feb 25 06:19:22 2026
+#
+
+# from driverUtils import executeOnCaeGraphicsStartup
+# executeOnCaeGraphicsStartup()
+#: Executing "onCaeGraphicsStartup()" in the site directory ...
+from abaqus import *
+from abaqusConstants import *
+session.Viewport(name='Viewport: 1', origin=(0.0, 0.0), width=222.166656494141, 
+    height=132.017364501953)
+session.viewports['Viewport: 1'].makeCurrent()
+session.viewports['Viewport: 1'].maximize()
+from caeModules import *
+from driverUtils import executeOnCaeStartup
+executeOnCaeStartup()
+session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
+    referenceRepresentation=ON)
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/extract_stress_range_one_cycle.py', 
+    __main__.__dict__)
+#* OdbError: Cannot open file C:/temp/one_cycle.odb. *** ERROR: No such file: 
+#* C:/temp/one_cycle.odb.
+#* File 
+#* "D:/TUBAF/Master_Thesis/Abaqus_trial/extract_stress_range_one_cycle.py", 
+#* line 21, in <module>
+#*     odb = openOdb(path=odbPath, readOnly=True)
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/extract_stress_range_one_cycle.py', 
+    __main__.__dict__)
+#* NameError: name '__file__' is not defined
+#* File 
+#* "D:/TUBAF/Master_Thesis/Abaqus_trial/extract_stress_range_one_cycle.py", 
+#* line 22, in <module>
+#*     scriptDir = os.path.dirname(os.path.abspath(__file__))
+import os
+os.chdir(r"D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run")
+session.viewports['Viewport: 1'].view.setValues(width=2.43171, height=1.11702, 
+    viewOffsetX=0.0422874, viewOffsetY=-0.00380928)
+a = mdb.models['Model-1'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(
+    adaptiveMeshConstraints=ON, optimizationTasks=OFF, 
+    geometricRestrictions=OFF, stopConditions=OFF)
+mdb.models['Model-1'].StaticStep(name='Step-1', previous='Initial', 
+    description='Static, General')
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(step='Step-1')
+mdb.models['Model-1'].PeriodicAmplitude(name='Amp-1', timeSpan=STEP, 
+    frequency=6.283185307, start=0.0, a_0=0.0, data=((0.0, 0.0), (0.25, 1.0), (
+    0.5, 0.0), (1.0, -1.0)))
+session.viewports['Viewport: 1'].setValues(displayedObject=None)
+s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__', 
+    sheetSize=200.0)
+g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
+s.setPrimaryObject(option=STANDALONE)
+s.rectangle(point1=(0.0, 0.0), point2=(10.0, 2.0))
+session.viewports['Viewport: 1'].view.setValues(nearPlane=186.569, 
+    farPlane=190.555, width=14.5147, height=6.6674, cameraPosition=(3.8071, 
+    1.10204, 188.562), cameraTarget=(3.8071, 1.10204, 0))
+p = mdb.models['Model-1'].Part(name='Part-1', dimensionality=THREE_D, 
+    type=DEFORMABLE_BODY)
+p = mdb.models['Model-1'].parts['Part-1']
+p.BaseSolidExtrude(sketch=s, depth=2.0)
+s.unsetPrimaryObject()
+p = mdb.models['Model-1'].parts['Part-1']
+session.viewports['Viewport: 1'].setValues(displayedObject=p)
+del mdb.models['Model-1'].sketches['__profile__']
+session.viewports['Viewport: 1'].partDisplay.setValues(sectionAssignments=ON, 
+    engineeringFeatures=ON)
+session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
+    referenceRepresentation=OFF)
+mdb.models['Model-1'].Material(name='Material-1')
+mdb.models['Model-1'].materials['Material-1'].Elastic(table=((70000.0, 0.33), 
+    ))
+mdb.models['Model-1'].HomogeneousSolidSection(name='Section-1', 
+    material='Material-1', thickness=None)
+p = mdb.models['Model-1'].parts['Part-1']
+c = p.cells
+cells = c.getSequenceFromMask(mask=('[#1 ]', ), )
+region = p.Set(cells=cells, name='Set-1')
+p = mdb.models['Model-1'].parts['Part-1']
+p.SectionAssignment(region=region, sectionName='Section-1', offset=0.0, 
+    offsetType=MIDDLE_SURFACE, offsetField='', 
+    thicknessAssignment=FROM_SECTION)
+a = mdb.models['Model-1'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=ON, bcs=ON, 
+    predefinedFields=ON, connectors=ON, adaptiveMeshConstraints=OFF)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=3.46568, 
+    farPlane=5.53432, width=3.23168, height=1.60769, viewOffsetX=-0.0353257, 
+    viewOffsetY=-0.00381102)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(step='Initial')
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(step='Step-1')
+session.viewports['Viewport: 1'].view.setValues(nearPlane=3.39196, 
+    farPlane=5.60804, width=4.58484, height=2.28086, viewOffsetX=0.350401, 
+    viewOffsetY=0.0213249)
+session.viewports['Viewport: 1'].partDisplay.setValues(sectionAssignments=OFF, 
+    engineeringFeatures=OFF)
+session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
+    referenceRepresentation=ON)
+p1 = mdb.models['Model-1'].parts['Part-1']
+session.viewports['Viewport: 1'].setValues(displayedObject=p1)
+a = mdb.models['Model-1'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+p = mdb.models['Model-1'].parts['Part-1']
+session.viewports['Viewport: 1'].setValues(displayedObject=p)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=17.2569, 
+    farPlane=28.4089, width=10.4364, height=5.19187, cameraPosition=(18.5269, 
+    13.8784, 14.1425), cameraTarget=(5.34428, 0.695779, 0.959946))
+session.viewports['Viewport: 1'].view.setValues(nearPlane=17.3262, 
+    farPlane=28.3397, width=10.4783, height=5.21274, cameraPosition=(18.3198, 
+    13.8784, 14.3496), cameraTarget=(5.13721, 0.695779, 1.16702))
+a = mdb.models['Model-1'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=OFF, bcs=OFF, 
+    predefinedFields=OFF, connectors=OFF)
+a = mdb.models['Model-1'].rootAssembly
+a.DatumCsysByDefault(CARTESIAN)
+p = mdb.models['Model-1'].parts['Part-1']
+a.Instance(name='Part-1-1', part=p, dependent=ON)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=ON, bcs=ON, 
+    predefinedFields=ON, connectors=ON)
+#: Warning: Cannot continue yet--complete the step or cancel the procedure.
+session.viewports['Viewport: 1'].view.setValues(nearPlane=16.7035, 
+    farPlane=27.9455, width=10.1016, height=5.02535, cameraPosition=(-8.00183, 
+    13.4814, 14.1755), cameraUpVector=(0.25062, 0.519005, -0.817205), 
+    cameraTarget=(5.43995, 0.695779, 0.864271))
+a = mdb.models['Model-1'].rootAssembly
+f1 = a.instances['Part-1-1'].faces
+faces1 = f1.getSequenceFromMask(mask=('[#1 ]', ), )
+region = a.Set(faces=faces1, name='Set-1')
+mdb.models['Model-1'].DisplacementBC(name='BC-left', createStepName='Step-1', 
+    region=region, u1=0.0, u2=0.0, u3=0.0, ur1=UNSET, ur2=UNSET, ur3=UNSET, 
+    amplitude=UNSET, fixed=OFF, distributionType=UNIFORM, fieldName='', 
+    localCsys=None)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=16.693, 
+    farPlane=28.3545, width=10.0953, height=5.02219, cameraPosition=(20.6273, 
+    7.08442, 16.0363), cameraUpVector=(-0.33074, 0.808062, -0.487491), 
+    cameraTarget=(4.78787, 0.841481, 0.821888))
+a = mdb.models['Model-1'].rootAssembly
+f1 = a.instances['Part-1-1'].faces
+faces1 = f1.getSequenceFromMask(mask=('[#4 ]', ), )
+region = a.Set(faces=faces1, name='Set-2')
+mdb.models['Model-1'].DisplacementBC(name='BC-right', createStepName='Step-1', 
+    region=region, u1=0.1, u2=UNSET, u3=UNSET, ur1=UNSET, ur2=UNSET, ur3=UNSET, 
+    amplitude='Amp-1', fixed=OFF, distributionType=UNIFORM, fieldName='', 
+    localCsys=None)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=ON, loads=OFF, 
+    bcs=OFF, predefinedFields=OFF, connectors=OFF)
+session.viewports['Viewport: 1'].assemblyDisplay.meshOptions.setValues(
+    meshTechnique=ON)
+p1 = mdb.models['Model-1'].parts['Part-1']
+session.viewports['Viewport: 1'].setValues(displayedObject=p1)
+session.viewports['Viewport: 1'].partDisplay.setValues(mesh=ON)
+session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
+    meshTechnique=ON)
+session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
+    referenceRepresentation=OFF)
+p = mdb.models['Model-1'].parts['Part-1']
+p.seedPart(size=0.5, deviationFactor=0.1, minSizeFactor=0.1)
+elemType1 = mesh.ElemType(elemCode=C3D8R, elemLibrary=STANDARD, 
+    kinematicSplit=AVERAGE_STRAIN, secondOrderAccuracy=OFF, 
+    hourglassControl=DEFAULT, distortionControl=DEFAULT)
+elemType2 = mesh.ElemType(elemCode=C3D6, elemLibrary=STANDARD)
+elemType3 = mesh.ElemType(elemCode=C3D4, elemLibrary=STANDARD)
+p = mdb.models['Model-1'].parts['Part-1']
+c = p.cells
+cells = c.getSequenceFromMask(mask=('[#1 ]', ), )
+pickedRegions =(cells, )
+p.setElementType(regions=pickedRegions, elemTypes=(elemType1, elemType2, 
+    elemType3))
+p = mdb.models['Model-1'].parts['Part-1']
+p.generateMesh()
+session.viewports['Viewport: 1'].setValues(displayedObject=None)
+a1 = mdb.models['Model-1'].rootAssembly
+a1.regenerate()
+a = mdb.models['Model-1'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=OFF)
+session.viewports['Viewport: 1'].assemblyDisplay.meshOptions.setValues(
+    meshTechnique=OFF)
+mdb.Job(name='one-cycle', model='Model-1', description='one-cycle', 
+    type=ANALYSIS, atTime=None, waitMinutes=0, waitHours=0, queue=None, 
+    memory=90, memoryUnits=PERCENTAGE, getMemoryFromAnalysis=True, 
+    explicitPrecision=SINGLE, nodalOutputPrecision=SINGLE, echoPrint=OFF, 
+    modelPrint=OFF, contactPrint=OFF, historyPrint=OFF, userSubroutine='', 
+    scratch='', resultsFormat=ODB, numThreadsPerMpiProcess=1, 
+    multiprocessingMode=DEFAULT, numCpus=1, numGPUs=0)
+mdb.jobs['one-cycle'].submit(consistencyChecking=OFF)
+#: The job input file "one-cycle.inp" has been submitted for analysis.
+mdb.saveAs(
+    pathName='D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/one_cycle')
+#: The model database has been saved to "D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run\one_cycle.cae".
+execfile('D:/TUBAF/Master_Thesis/Abaqus_trial/step1_extract_stress_range.py', 
+    __main__.__dict__)
+#: Model: D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/one-cycle.odb
+#: Number of Assemblies:         1
+#: Number of Assembly instances: 0
+#: Number of Part instances:     1
+#: Number of Meshes:             1
+#: Number of Element Sets:       4
+#: Number of Node Sets:          4
+#: Number of Steps:              1
+#: Available Assembly element sets:
+#:   -  ALL ELEMENTS
+#:   - SET-1
+#:   - SET-2
+#* ValueError: Element set not found in Assembly: EALL
+#* File "D:/TUBAF/Master_Thesis/Abaqus_trial/step1_extract_stress_range.py", 
+#* line 31, in <module>
+#*     raise ValueError("Element set not found in Assembly: %s" % elemSetName)
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step1_extract_stress_range_NOSET.py', 
+    __main__.__dict__)
+#: Model: D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/one-cycle.odb
+#: Number of Assemblies:         1
+#: Number of Assembly instances: 0
+#: Number of Part instances:     1
+#: Number of Meshes:             1
+#: Number of Element Sets:       4
+#: Number of Node Sets:          4
+#: Number of Steps:              1
+#: ODB opened: D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run\one-cycle.odb
+#: Instances in ODB:
+#:   - PART-1-1
+#: 
+#: RESULTS
+#: Component: S11
+#: GLOBAL MIN =  0.000000e+00 at t = 0.0
+#: GLOBAL MAX =  1.352911e+03 at t = 1.0
+#: RANGE (max-min) =  1.352911e+03
+#* TypeError: a bytes-like object is required, not 'str'
+#* File 
+#* "D:/TUBAF/Master_Thesis/Abaqus_trial/step1_extract_stress_range_NOSET.py", 
+#* line 86, in <module>
+#*     w.writerow(["time", "min", "max"])
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step1_extract_stress_range_NOSET.py', 
+    __main__.__dict__)
+#: Model: D:/TUBAF/Master_Thesis/Abaqus_trial/one_cycle_run/one-cycle.odb
+#: Number of Assemblies:         1
+#: Number of Assembly instances: 0
+#: Number of Part instances:     1
+#: Number of Meshes:             1
+#: Number of Element Sets:       4
+#: Number of Node Sets:          4
+#: Number of Steps:              1
+#: ODB opened: D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run\one-cycle.odb
+#: Instances in ODB:
+#:   - PART-1-1
+#: 
+#: RESULTS
+#: Component: S11
+#: GLOBAL MIN =  0.000000e+00 at t = 0.0
+#: GLOBAL MAX =  1.352911e+03 at t = 1.0
+#: RANGE (max-min) =  1.352911e+03
+#: Wrote: D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run\one_cycle_S11_minmax_NOSET.csv
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step2_linear_elastic_miner_block.py', 
+    __main__.__dict__)
+#: === Linear-elastic cycle jump (Miner + Basquin) ===
+#* Failed to encode Unicode object to locale
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step2_linear_elastic_miner_block.py', 
+    __main__.__dict__)
+#* Failed to encode Unicode object to locale
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step2_linear_elastic_miner_block.py', 
+    __main__.__dict__)
+#* Failed to encode Unicode object to locale
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step2_linear_elastic_miner_block.py', 
+    __main__.__dict__)
+#* Failed to encode Unicode object to locale
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step2_linear_elastic_miner_block.py', 
+    __main__.__dict__)
+#* Failed to encode Unicode object to locale
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step2_linear_elastic_miner_block.py', 
+    __main__.__dict__)
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step2_linear_elastic_miner_block.py', 
+    __main__.__dict__)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=16.1854, 
+    farPlane=28.862, width=14.6287, height=5.86273, viewOffsetX=0.762676, 
+    viewOffsetY=0.411122)
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step3_linear_elastic_variable_blocks_noprint.py', 
+    __main__.__dict__)
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step_ep1_1D_ep_cycle_jump_demo.py', 
+    __main__.__dict__)
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step_ep2_adaptive_cycle_jump_ep_1D.py', 
+    __main__.__dict__)
+execfile(
+    'D:/TUBAF/Master_Thesis/Abaqus_trial/step_ep3_cycle_jump_accumulated_ep_1D.py', 
+    __main__.__dict__)

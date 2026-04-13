@@ -1,0 +1,10 @@
+ODB sanity report
+odbPath = D:\TUBAF\Master_Thesis\Abaqus_trial\one_cycle_run\vp_10cycles8.odb
+stepName = Step-1
+nodeSetName = SET-2
+
+max_abs_U1_on_SET2 = 2.000000e-01
+max_abs_sum_RF1_on_SET2 = 1.208632e+03
+max_mises_stress = 3.120524e+02
+plastic_mode_used = PEEQ
+max_plastic_value = 2.091143e-02
