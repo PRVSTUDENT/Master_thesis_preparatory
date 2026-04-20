@@ -899,7 +899,7 @@
 *Elastic
 210000., 0.3
 *Plastic, hardening=COMBINED, data type=PARAMETERS, number backstresses=1
-250., 10000., 50.
+250., 3000., 20.
 ** ----------------------------------------------------------------
 ** 
 ** STEP: Step-1
