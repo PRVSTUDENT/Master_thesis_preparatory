@@ -272,3 +272,45 @@ For **real** EP/VP cycle‑jump in Abaqus:
   - `step_ep1_1D_ep_cycle_jump_demo.py` → `ep_cycle_jump_demo.txt`
   - `step_ep2_adaptive_cycle_jump_ep_1D.py` → `ep_cycle_jump_adaptive.txt`
   - `step_ep3_cycle_jump_accumulated_ep_1D.py` → `ep_cycle_jump_accumulated.txt`
+
+  ---
+
+  ## 10) Benchmark note for the 2-cycle hysteresis comparison
+
+  The 2-cycle hysteresis comparison shows a clear progression from the linear kinematic model to the combined hardening model. The linear kinematic case produces a stable, nearly repeating symmetric loop in the second cycle, which is consistent with the expected benchmark response and indicates no ratcheting. The first combined-hardening trial produces a much wider and stronger loop, with substantially higher reaction-force levels, showing that the chosen combined-hardening parameters were too aggressive for a like-for-like comparison.
+
+  After tuning the combined-hardening parameters, the hysteresis loop moves closer to the linear kinematic reference while still remaining distinctly stronger and more rounded. This tuned response is more suitable for benchmark comparison because it preserves the qualitative effect of combined hardening without excessively overpredicting the force level. Therefore, the tuned combined-hardening case is the most appropriate version to carry forward for further discussion, plotting, and thesis interpretation.
+
+## Built ratcheting-style combined-hardening deck
+
+### Objective
+- prepare the next Phase 3 benchmark by creating a ratcheting-style loading case from the asymmetric combined-hardening deck
+
+### Files created or modified
+- combined_ratcheting_2cycle.inp
+
+### Commands run
+```powershell
+Set-Location 'D:\TUBAF\Master_Thesis\Abaqus_trial'
+Copy-Item 'combined_asym_2cycle.inp' 'combined_ratcheting_2cycle.inp' -Force
+Get-Content 'combined_ratcheting_2cycle.inp' | Select-String -Pattern '^\*Amplitude','^\*Step','^\*Boundary'
+```
+
+### Key results
+
+| Quantity                      |                          Value |
+| ----------------------------- | -----------------------------: |
+| Base deck copied from         |       combined_asym_2cycle.inp |
+| New deck                      | combined_ratcheting_2cycle.inp |
+| Planned amplitude max         |                           1.00 |
+| Planned amplitude minimum     |                          -0.20 |
+| Planned amplitude final value |                           0.40 |
+
+### Interpretation
+
+* the ratcheting-style case is being built from the asymmetric benchmark because it already has a non-zero mean load history
+* the new target loading increases the positive mean further and should help reveal progressive shift / residual strain behavior more clearly than the previous asymmetric case
+
+### Next step
+
+* edit the amplitude block in combined_ratcheting_2cycle.inp and run an Abaqus datacheck
