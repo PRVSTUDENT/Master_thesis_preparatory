@@ -314,3 +314,310 @@ Get-Content 'combined_ratcheting_2cycle.inp' | Select-String -Pattern '^\*Amplit
 ### Next step
 
 * edit the amplitude block in combined_ratcheting_2cycle.inp and run an Abaqus datacheck
+
+## Created Phase 3 ratcheting milestone git checkpoint
+
+### Objective
+- freeze the ratcheting benchmark artifacts in git before moving on to the next phase of cyclic model comparison
+
+### Files created or modified
+- combined_ratcheting_10cycle.inp
+- combined_ratcheting_10cycle_hys.csv
+- combined_ratcheting_10cycle_hys.png
+- combined_ratcheting_10cycle_peeq.csv
+- combined_ratcheting_10cycle_peeq.png
+- combined_ratcheting_2cycle_hys.csv
+- combined_ratcheting_2cycle_hys.png
+- combined_ratcheting_2cycle_peeq.csv
+- combined_ratcheting_2cycle_peeq.png
+- compare_ratcheting_2_vs_10cycle_hys.png
+- compare_ratcheting_2_vs_10cycle_peeq.png
+- compare_ratcheting_first2cycles_peeq_visible.png
+- extract_hys_combined_ratcheting_10cycle.py
+- extract_hys_combined_ratcheting_2cycle.py
+- extract_peeq_combined_ratcheting_10cycle.py
+- extract_peeq_combined_ratcheting_2cycle.py
+- plot_compare_ratcheting_2_vs_10cycle_hys.py
+- plot_compare_ratcheting_2_vs_10cycle_peeq.py
+- plot_compare_ratcheting_first2cycles_peeq_visible.py
+- ratcheting_summary_2_vs_10cycle.csv
+
+### Commands run
+```powershell
+Set-Location 'D:\TUBAF\Master_Thesis\Abaqus_trial'
+git commit -m "Add Phase 3 ratcheting benchmark results and comparisons"
+git push origin main
+```
+
+### Key results
+
+| Quantity            |               Value |
+| ------------------- | ------------------: |
+| 2-cycle final PEEQ  | 0.30957910418510437 |
+| 10-cycle final PEEQ |  1.4623500108718872 |
+| 2-cycle final U1    | 0.20000000298023224 |
+| 10-cycle final U1   | 0.20000000298023224 |
+
+### Interpretation
+
+* the ratcheting benchmark milestone is now frozen with inputs, scripts, summary tables, and comparison plots
+* this creates a clean stopping point before Phase 4 model-comparison work
+
+### Next step
+
+* move to Phase 4 by preparing the multilinear kinematic hardening benchmark
+
+## Phase 3 ratcheting milestone committed and pushed
+
+### Objective
+- freeze the completed Phase 3 built-in cyclic plasticity benchmark before starting Phase 4 model comparison
+
+### Files created or modified
+- docs/cycle_jump_worklog.md
+- combined_ratcheting_10cycle.inp
+- combined_ratcheting_10cycle_hys.csv
+- combined_ratcheting_10cycle_hys.png
+- combined_ratcheting_10cycle_peeq.csv
+- combined_ratcheting_10cycle_peeq.png
+- combined_ratcheting_2cycle_hys.csv
+- combined_ratcheting_2cycle_hys.png
+- combined_ratcheting_2cycle_peeq.csv
+- combined_ratcheting_2cycle_peeq.png
+- compare_ratcheting_2_vs_10cycle_hys.png
+- compare_ratcheting_2_vs_10cycle_peeq.png
+- compare_ratcheting_first2cycles_peeq_visible.png
+- extract_hys_combined_ratcheting_10cycle.py
+- extract_hys_combined_ratcheting_2cycle.py
+- extract_peeq_combined_ratcheting_10cycle.py
+- extract_peeq_combined_ratcheting_2cycle.py
+- plot_compare_ratcheting_2_vs_10cycle_hys.py
+- plot_compare_ratcheting_2_vs_10cycle_peeq.py
+- plot_compare_ratcheting_first2cycles_peeq_visible.py
+- ratcheting_summary_2_vs_10cycle.csv
+
+### Commands run
+```powershell
+Set-Location 'D:\TUBAF\Master_Thesis\Abaqus_trial'
+git commit -m "Add Phase 3 ratcheting benchmark results and comparisons"
+git push origin main
+```
+
+### Key results
+
+| Quantity            |               Value |
+| ------------------- | ------------------: |
+| Commit SHA          |             8f9e6ad |
+| 2-cycle final PEEQ  | 0.30957910418510437 |
+| 10-cycle final PEEQ |  1.4623500108718872 |
+| 2-cycle final U1    | 0.20000000298023224 |
+| 10-cycle final U1   | 0.20000000298023224 |
+
+### Interpretation
+
+* Phase 3 is now frozen with clean benchmark artifacts and documentation
+* the project can now move to Phase 4 comparison work, starting with multilinear kinematic hardening
+
+### Next step
+
+* create ml_kin_2cycle.inp from lin_kin_2cycle.inp and inspect the material/step block
+
+## Prepared multilinear kinematic 2-cycle benchmark deck
+
+### Objective
+- start Phase 4 model comparison by converting the copied linear-kinematic 2-cycle deck into a multilinear kinematic hardening benchmark
+
+### Files created or modified
+- ml_kin_2cycle.inp
+- docs/cycle_jump_worklog.md
+
+### Commands run
+```powershell
+Set-Location 'D:\TUBAF\Master_Thesis\Abaqus_trial'
+Copy-Item 'lin_kin_2cycle.inp' 'ml_kin_2cycle.inp' -Force
+Get-Content 'ml_kin_2cycle.inp' | Select-String -Pattern '^\*Material','^\*Elastic','^\*Plastic','^\*Step','^\*Static','^\*Boundary','^\*Amplitude'
+```
+
+### Key results
+
+| Quantity                  |                                     Value |
+| ------------------------- | ----------------------------------------: |
+| Source deck               |                        lin_kin_2cycle.inp |
+| New deck                  |                         ml_kin_2cycle.inp |
+| Plasticity keyword target | *Plastic, hardening=MULTILINEAR KINEMATIC |
+| Plastic data rows         |                                         3 |
+
+### Interpretation
+
+* the multilinear benchmark is being built from the same validated cyclic setup as the linear kinematic case
+* only the hardening law is being changed, which keeps the comparison controlled
+
+### Next step
+
+* verify the edited multilinear plasticity block and run an Abaqus datacheck
+
+## Edited multilinear kinematic 2-cycle plasticity block
+
+### Objective
+- convert the copied linear-kinematic 2-cycle deck into a multilinear kinematic hardening benchmark for Phase 4 comparison
+
+### Files created or modified
+- ml_kin_2cycle.inp
+- docs/cycle_jump_worklog.md
+
+### Commands run
+```powershell
+Set-Location 'D:\TUBAF\Master_Thesis\Abaqus_trial'
+Get-Content 'ml_kin_2cycle.inp' | Select-String -Pattern '^\*Plastic','^250\., 0\.$','^300\., 0\.02$','^350\., 0\.10$'
+```
+
+### Key results
+
+| Quantity           |                                     Value |
+| ------------------ | ----------------------------------------: |
+| Plasticity keyword | *Plastic, hardening=MULTILINEAR KINEMATIC |
+| Plastic row 1      |                                  250., 0. |
+| Plastic row 2      |                                300., 0.02 |
+| Plastic row 3      |                                350., 0.10 |
+
+### Interpretation
+
+* the multilinear benchmark keeps the same validated cyclic setup as the linear-kinematic case
+* only the hardening law is changed, so the model comparison remains controlled
+
+### Next step
+
+* run an Abaqus datacheck on ml_kin_2cycle.inp
+
+## Completed first Phase 4 cyclic model comparison with multilinear kinematic hardening
+
+### Objective
+- run the multilinear kinematic 2-cycle benchmark and compare it against the existing linear kinematic and tuned combined-hardening cases
+
+### Files created or modified
+- ml_kin_2cycle.inp
+- ml_kin_2cycle_hys.csv
+- ml_kin_2cycle_hys.png
+- extract_hys_ml_kin_2cycle.py
+- compare_lin_ml_combined_2cycle.png
+- plot_compare_lin_ml_combined_2cycle.py
+- phase4_model_compare_summary.csv
+- phase4_model_compare_notes.csv
+- docs/cycle_jump_worklog.md
+
+### Commands run
+```powershell
+# datacheck
+# full Abaqus run
+# hysteresis extraction
+# 3-model comparison plotting
+# summary CSV generation
+```
+
+### Key results
+
+| Quantity                 |              Value |
+| ------------------------ | -----------------: |
+| Linear max force         | 1204.1760864257812 |
+| Multilinear max force    | 1275.6618919372559 |
+| Combined tuned max force | 1450.5829467773438 |
+| Linear final U1          |                0.0 |
+| Multilinear final U1     |                0.0 |
+| Combined tuned final U1  |                0.0 |
+
+### Interpretation
+
+* the multilinear kinematic case falls between the linear kinematic and tuned combined-hardening responses
+* this makes it a valid Phase 4 comparison benchmark
+* the comparison remains controlled because geometry, BCs, and cyclic loading were unchanged
+
+### Next step
+
+* finalize the Phase 4 comparison summary files for reporting
+
+## Prepared Phase 4 first-comparison milestone for git checkpoint
+
+### Objective
+- collect only the meaningful Phase 4 multilinear-vs-linear-vs-combined comparison artifacts for a clean git commit
+
+### Files created or modified
+- ml_kin_2cycle.inp
+- ml_kin_2cycle_hys.csv
+- ml_kin_2cycle_hys.png
+- compare_lin_ml_combined_2cycle.png
+- extract_hys_ml_kin_2cycle.py
+- plot_compare_lin_ml_combined_2cycle.py
+- phase4_model_compare_summary.csv
+- phase4_model_compare_notes.csv
+- docs/cycle_jump_worklog.md
+
+### Commands run
+```powershell
+Set-Location 'D:\TUBAF\Master_Thesis\Abaqus_trial'
+git status --short
+git add ...
+```
+
+### Key results
+
+| Quantity                 |              Value |
+| ------------------------ | -----------------: |
+| Linear max force         | 1204.1760864257812 |
+| Multilinear max force    | 1275.6618919372559 |
+| Combined tuned max force | 1450.5829467773438 |
+| Linear final U1          |                0.0 |
+| Multilinear final U1     |                0.0 |
+| Combined tuned final U1  |                0.0 |
+
+### Interpretation
+
+* only benchmark-significant Phase 4 artifacts are being checkpointed
+* Abaqus scratch/runtime files are intentionally excluded
+* this commit will freeze the first Phase 4 model-comparison result before any further study
+
+### Next step
+
+* commit and push the staged Phase 4 first-comparison milestone
+
+## Created Phase 4 first-comparison git checkpoint
+
+### Objective
+- freeze the first Phase 4 multilinear-vs-linear-vs-combined comparison result in git before moving to the next study step
+
+### Files created or modified
+- ml_kin_2cycle.inp
+- ml_kin_2cycle_hys.csv
+- ml_kin_2cycle_hys.png
+- compare_lin_ml_combined_2cycle.png
+- extract_hys_ml_kin_2cycle.py
+- plot_compare_lin_ml_combined_2cycle.py
+- phase4_model_compare_summary.csv
+- phase4_model_compare_notes.csv
+- docs/cycle_jump_worklog.md
+
+### Commands run
+```powershell
+Set-Location 'D:\TUBAF\Master_Thesis\Abaqus_trial'
+git commit -m "Add Phase 4 first multilinear model comparison results"
+git push origin main
+```
+
+### Key results
+
+| Quantity                 |              Value |
+| ------------------------ | -----------------: |
+| Linear max force         | 1204.1760864257812 |
+| Multilinear max force    | 1275.6618919372559 |
+| Combined tuned max force | 1450.5829467773438 |
+| Linear final U1          |                0.0 |
+| Multilinear final U1     |                0.0 |
+| Combined tuned final U1  |                0.0 |
+
+### Interpretation
+
+* the first Phase 4 comparison is now frozen with only the benchmark-relevant artifacts
+* multilinear kinematic sits between linear kinematic and tuned combined hardening in force level
+* this creates a clean checkpoint before any further model-comparison work
+
+### Next step
+
+* prepare the final report-style comparison table of what each cyclic model captures, misses, and when to use it

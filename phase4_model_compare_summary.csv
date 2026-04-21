@@ -1,0 +1,4 @@
+case,max_force,min_force,final_u1,relative_position
+linear_kinematic_2cycle,1204.1760864257812,-1203.1267318725586,0.0,lowest force level
+multilinear_kinematic_2cycle,1275.6618919372559,-1275.701889038086,0.0,intermediate force level
+combined_tuned_2cycle,1450.5829467773438,-1463.4035758972168,0.0,highest force level

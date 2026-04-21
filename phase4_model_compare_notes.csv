@@ -1,0 +1,4 @@
+model,main_behavior,current_observation
+linear_kinematic,constant kinematic hardening,symmetric stable loop with lowest force level
+multilinear_kinematic,piecewise plastic hardening,stronger loop than linear kinematic but weaker than combined hardening
+combined_tuned,nonlinear isotropic-kinematic hardening,widest and strongest loop among the three compared cases
