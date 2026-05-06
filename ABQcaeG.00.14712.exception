@@ -1,0 +1,79 @@
+<Description>
+   ABAQUS/ABQcaeG rank 0 received the INTERRUPT signal
+
+</Description>
+
+<Context>
+   ABQcaeG
+</Context>
+
+<Callstack>
+  1)  ucrtbase.dll                Cbuild                                  
+  2)  KERNELBASE.dll              CtrlRoutine                             
+  3)  KERNEL32.DLL                BaseThreadInitThunk                     
+  4)  ntdll.dll                   RtlUserThreadStart                      
+</Callstack>
+
+<Memory>
+   <Current>            0 GB </Current>
+   <Resident>           0 GB </Resident>
+   <Physical>          23 GB </Physical>
+   <Limit>              0 GB </Limit>
+   <Accessible>        23 GB </Accessible>
+   <Available>          7 GB </Available>
+   <Allocator>            DL </Allocator>
+</Memory>
+
+<Swap>
+       <Size>          40 GB </Size>
+       <Used>          19 GB </Used>
+       <Free>          20 GB </Free>
+</Swap>
+
+<Directories>
+  <current> D:\TUBAF\Master_Thesis\Abaqus_trial </current> <free>    268 GB </free>   <used>    233 GB </used> 
+     <temp> C:\Users\pruth\AppData\Local\Temp </temp>    <free>     17 GB </free>
+</Directories>
+
+<Installation>
+</Installation>
+
+<Description>
+   ABAQUS/ABQcaeG rank 0 received the ABORT signal
+
+</Description>
+
+<Context>
+   ABQcaeG
+</Context>
+
+<Callstack>
+  1)  ucrtbase.dll                abort                                   
+  2)  ucrtbase.dll                terminate                               
+  3)  VCRUNTIME140_1.dll        unknown                                 
+</Callstack>
+
+<Memory>
+   <Current>            0 GB </Current>
+   <Resident>           0 GB </Resident>
+   <Physical>          23 GB </Physical>
+   <Limit>              0 GB </Limit>
+   <Accessible>        23 GB </Accessible>
+   <Available>          7 GB </Available>
+   <Allocator>            DL </Allocator>
+</Memory>
+
+<Swap>
+       <Size>          40 GB </Size>
+       <Used>          19 GB </Used>
+       <Free>          20 GB </Free>
+</Swap>
+
+<Directories>
+  <current> D:\TUBAF\Master_Thesis\Abaqus_trial </current> <free>    268 GB </free>   <used>    233 GB </used> 
+     <temp> C:\Users\pruth\AppData\Local\Temp </temp>    <free>     17 GB </free>
+</Directories>
+
+<Installation>
+</Installation>
+

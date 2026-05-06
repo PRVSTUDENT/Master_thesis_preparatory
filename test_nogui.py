@@ -1,0 +1,1 @@
+print("ABAQUS_NOGUI_OK")

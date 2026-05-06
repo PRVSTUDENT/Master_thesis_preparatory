@@ -1,0 +1,3486 @@
+﻿\documentclass[11pt,a4paper]{article}
+
+% =========================================================
+% PACKAGES
+% =========================================================
+\usepackage[margin=0.8in]{geometry}
+\usepackage{amsmath, amssymb, bm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{array}
+\IfFileExists{pdflscape.sty}{\usepackage{pdflscape}}{\usepackage{lscape}}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+% =========================================================
+% TITLE
+% =========================================================
+\title{\textbf{Summary Notes on Cycle-Jump Techniques}}
+\author{Pruthvi}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+\newpage
+
+% =========================================================
+\section{Cojocaru and Karlsson (2006): A Simple Numerical Method of Cycle Jumps for Cyclically Loaded Structures}
+
+\subsection{Full Reference}
+
+Cojocaru, D. and Karlsson, A. M. (2006).
+\textit{A simple numerical method of cycle jumps for cyclically loaded structures}.
+International Journal of Fatigue, 28, 1677--1689.
+
+\subsection{Main Problem Addressed}
+
+The paper proposes a cycle-jump method for accelerating finite element simulations of cyclically loaded structures whose state evolves slowly from cycle to cycle.
+
+A direct cycle-by-cycle finite element simulation is expensive because each loading cycle may contain many increments and nonlinear iterations. Therefore, simulating all cycles up to failure or long-term evolution may be computationally infeasible.
+
+The main idea is:
+
+\begin{quote}
+Compute a few complete finite element cycles, identify the long-term trend of the evolving variables, extrapolate the state over many skipped cycles, and restart the finite element simulation from the extrapolated state.
+\end{quote}
+
+\subsection{Basic Cycle-Jump Idea}
+
+The total response of a cyclically loaded structure has two parts:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Local cyclic response}: the fast oscillation inside each load cycle.
+    \item \textbf{Global evolution}: the slow change of the state from one cycle to the next.
+\end{itemize}
+
+The cycle-jump method skips the repeated local cycles and follows the global evolution.
+
+For a state variable $y(t,M)$, where $t$ is time and $M$ is a material point, the method estimates the slow evolution using characteristic values taken at the same point within consecutive cycles.
+
+Examples of possible state variables are:
+
+\begin{itemize}[leftmargin=*]
+    \item displacement components,
+    \item stress components,
+    \item strain components,
+    \item equivalent plastic strain,
+    \item other state-dependent variables.
+\end{itemize}
+
+\subsection{General Algorithm}
+
+The method can be summarized as follows:
+
+\begin{enumerate}[leftmargin=*]
+    \item Run a small number of full finite element cycles.
+    \item Extract characteristic values of selected state variables at the same relative location in each cycle.
+    \item Approximate the global evolution slope of each variable.
+    \item Use a control function to determine an admissible jump length.
+    \item Extrapolate the variables using the computed jump length.
+    \item Impose the extrapolated state as the initial state for the next finite element analysis.
+    \item Repeat the procedure.
+\end{enumerate}
+
+\subsection{Characteristic Values}
+
+Assume that three consecutive characteristic values of a variable $y$ are available:
+
+\[
+P_1(t_1,y_1), \qquad P_2(t_2,y_2), \qquad P_3(t_3,y_3).
+\]
+
+Here, $t_1$ is the latest cycle point, while $t_2$ and $t_3$ are from previous cycles.
+
+The cycle length is
+
+\[
+\Delta t_{\mathrm{cycle}} = t_1 - t_2 = t_2 - t_3.
+\]
+
+The change in the variable over the last two cycles is
+
+\[
+\Delta y(t_1) = y_1 - y_2,
+\]
+
+\[
+\Delta y(t_2) = y_2 - y_3.
+\]
+
+The corresponding discrete slopes are
+
+\[
+s_{12}(t_1) =
+\frac{\Delta y(t_1)}{\Delta t_{\mathrm{cycle}}},
+\]
+
+\[
+s_{23}(t_2) =
+\frac{\Delta y(t_2)}{\Delta t_{\mathrm{cycle}}}.
+\]
+
+\subsection{Meaning of the Slopes}
+
+The slope $s_{12}(t_1)$ represents the most recent cycle-to-cycle evolution rate of the variable $y$.
+
+The slope $s_{23}(t_2)$ represents the previous cycle-to-cycle evolution rate.
+
+If
+
+\[
+s_{12}(t_1) \approx s_{23}(t_2),
+\]
+
+then the global evolution is nearly linear and a larger cycle jump is acceptable.
+
+If
+
+\[
+s_{12}(t_1) \not\approx s_{23}(t_2),
+\]
+
+then the global evolution is nonlinear and the jump length must be reduced.
+
+\subsection{Control Function for Jump Length}
+
+The predicted slope after a jump is denoted as
+
+\[
+s_p\left(t_1+\Delta t^M_{y,\mathrm{jump}}\right).
+\]
+
+The control condition is
+
+\[
+\frac{
+\left|
+s_p\left(t_1+\Delta t^M_{y,\mathrm{jump}}\right)
+-
+s_{12}(t_1)
+\right|
+}{
+\left|s_{12}(t_1)\right|
+}
+\leq q_y.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $q_y$ is the user-defined relative error tolerance for variable $y$,
+    \item $\Delta t^M_{y,\mathrm{jump}}$ is the locally allowed jump length for variable $y$ at material point $M$,
+    \item $s_p$ is the predicted slope after the jump.
+\end{itemize}
+
+\subsection{Predicted Slope}
+
+The predicted slope after the jump is obtained by linear extrapolation of the slope:
+
+\[
+s_p\left(t_1+\Delta t^M_{y,\mathrm{jump}}\right)
+=
+s_{12}(t_1)
++
+\frac{
+s_{12}(t_1)-s_{23}(t_2)
+}{
+\Delta t_{\mathrm{cycle}}
+}
+\Delta t^M_{y,\mathrm{jump}}.
+\]
+
+This equation predicts how much the evolution rate itself will change after a proposed jump.
+
+\subsection{Allowed Local Jump Length}
+
+Substituting the predicted slope into the control condition gives the allowed local jump length:
+
+\[
+\Delta t^M_{y,\mathrm{jump}}
+=
+q_y \Delta t_{\mathrm{cycle}}
+\frac{
+\left|s_{12}(t_1)\right|
+}{
+\left|s_{12}(t_1)-s_{23}(t_2)\right|
+}.
+\]
+
+This is one of the most important equations in the paper.
+
+\subsubsection*{Interpretation}
+
+If the slopes are almost equal,
+
+\[
+\left|s_{12}(t_1)-s_{23}(t_2)\right| \rightarrow 0,
+\]
+
+then the denominator becomes small and the allowed jump becomes large.
+
+This means the response is nearly linear and a larger cycle jump is safe.
+
+If the slopes differ strongly, then
+
+\[
+\left|s_{12}(t_1)-s_{23}(t_2)\right|
+\]
+
+becomes large, and the allowed jump becomes small.
+
+This means the response is nonlinear and the method automatically reduces the cycle jump length.
+
+\subsection{Global Jump Length}
+
+The local jump length is computed for every selected variable and every relevant material point or node.
+
+The global jump length is chosen as the minimum of all local admissible jump lengths:
+
+\[
+\Delta t_{\mathrm{jump}}
+=
+\Delta t_{\mathrm{cycle}}
+\left\lfloor
+\frac{
+\min\left\{\Delta t^M_{y,\mathrm{jump}}\right\}
+}{
+\Delta t_{\mathrm{cycle}}
+}
+\right\rfloor.
+\]
+
+Here, $\lfloor \cdot \rfloor$ is the floor function.
+
+\subsubsection*{Meaning}
+
+The method uses the most restrictive variable or point to decide the global jump length.
+
+This is conservative but important, because one rapidly evolving point can make a large jump inaccurate.
+
+\subsection{Heun Extrapolation Formula}
+
+After the global jump length is selected, the variable $y$ is extrapolated using a Heun-type integration formula:
+
+\[
+y(t_1+\Delta t_{\mathrm{jump}})
+=
+y(t_1)
++
+\frac{1}{2}
+\left[
+s_{12}(t_1)
++
+s_p(t_1+\Delta t_{\mathrm{jump}})
+\right]
+\Delta t_{\mathrm{jump}}.
+\]
+
+Substituting the expression for $s_p$ gives
+
+\[
+y(t_1+\Delta t_{\mathrm{jump}})
+=
+y(t_1)
++
+s_{12}(t_1)\Delta t_{\mathrm{jump}}
++
+\frac{
+\left[
+s_{12}(t_1)-s_{23}(t_2)
+\right]
+(\Delta t_{\mathrm{jump}})^2
+}{
+2\Delta t_{\mathrm{cycle}}
+}.
+\]
+
+\subsubsection*{Interpretation}
+
+The first term,
+
+\[
+y(t_1),
+\]
+
+is the current value.
+
+The second term,
+
+\[
+s_{12}(t_1)\Delta t_{\mathrm{jump}},
+\]
+
+is the linear extrapolation using the latest slope.
+
+The third term,
+
+\[
+\frac{
+\left[
+s_{12}(t_1)-s_{23}(t_2)
+\right]
+(\Delta t_{\mathrm{jump}})^2
+}{
+2\Delta t_{\mathrm{cycle}}
+},
+\]
+
+corrects the extrapolation using the change in slope between the last two cycles.
+
+Therefore, the method is more accurate than a simple forward Euler extrapolation.
+
+\subsection{Adaptive Number of Full FE Cycles Between Jumps}
+
+After each jump, the method does not immediately jump again. It computes some full finite element cycles before the next jump.
+
+The number of full FE cycles after jump $j$ is denoted by $N_{\mathrm{FEA},j}$.
+
+The empirical update rule is
+
+\[
+N_{\mathrm{FEA},j}
+=
+N_{\mathrm{FEA},j-1}
++
+\Delta_+,
+\qquad
+\text{if }
+\frac{\Delta t_{\mathrm{jump},j}}{\Delta t_{\mathrm{cycle}}}
+\leq 1,
+\]
+
+\[
+N_{\mathrm{FEA},j}
+=
+N_{\mathrm{FEA},j-1}
+-
+\Delta_-,
+\]
+
+if
+
+\[
+\frac{\Delta t_{\mathrm{jump},j}}{\Delta t_{\mathrm{cycle}}}
+\geq
+N_{\mathrm{FEA},j-1}
+\]
+
+and
+
+\[
+N_{\mathrm{FEA},j-1}-\Delta_- \geq N_{\min}.
+\]
+
+Otherwise,
+
+\[
+N_{\mathrm{FEA},j}
+=
+N_{\mathrm{FEA},j-1}.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\Delta_+$ increases the number of full FE cycles when jumps become too short,
+    \item $\Delta_-$ decreases the number of full FE cycles when jumps are sufficiently long,
+    \item $N_{\min}$ is the minimum number of full FE cycles allowed between jumps.
+\end{itemize}
+
+\subsection{Why the Control Function Is Necessary}
+
+The paper shows that finite element convergence after a cycle jump does not guarantee that the solution is physically correct.
+
+A large uncontrolled jump may converge numerically but still produce wrong stress and plastic strain fields.
+
+Therefore, the control function is essential because it controls:
+
+\begin{itemize}[leftmargin=*]
+    \item the slope change,
+    \item the jump length,
+    \item the balance between accuracy and computational efficiency.
+\end{itemize}
+
+\subsection{Variables Used in the Control Set}
+
+In the examples of the paper, the control set mainly includes displacement components:
+
+\[
+u_1, \qquad u_2.
+\]
+
+However, the method is general. The control set may include:
+
+\[
+\mathcal{C}
+=
+\{u_i,\ \sigma_{ij},\ \varepsilon_{ij},\ \varepsilon^p_{\mathrm{eq}}, \ldots\}.
+\]
+
+The global jump length is then controlled by the most restrictive variable in $\mathcal{C}$.
+
+\subsection{Equivalent Plastic Strain Used for Validation}
+
+The equivalent plastic strain is used as one of the important quantities to assess the accuracy of the cycle-jump result.
+
+For classical plasticity, the equivalent plastic strain is defined as
+
+\[
+\varepsilon^p_{\mathrm{eq}}
+=
+\int d\varepsilon^p_{\mathrm{eq}}
+=
+\int
+\left(
+\frac{2}{3}
+d\varepsilon^p_{ij}
+d\varepsilon^p_{ij}
+\right)^{1/2}.
+\]
+
+This quantity accumulates with plastic deformation and is useful for checking whether the cycle-jump solution captures progressive inelastic evolution.
+
+\subsection{Computational Efficiency Measure}
+
+The computational efficiency is measured using
+
+\[
+R =
+\frac{L_{\mathrm{jumps}}}{L_{\mathrm{tot}}},
+\]
+
+where:
+
+\begin{itemize}[leftmargin=*]
+    \item $L_{\mathrm{jumps}}$ is the total time or number of cycles covered by jumps,
+    \item $L_{\mathrm{tot}}$ is the total time or number of cycles considered in the analysis.
+\end{itemize}
+
+A larger value of $R$ means that more of the simulation was covered by cycle jumps and fewer cycles were computed directly.
+
+\subsection{Error Measures}
+
+The relative error of a state variable is defined as
+
+\[
+\delta E
+=
+\left|
+\frac{
+y_{\mathrm{ref}} - y_{\mathrm{jump}}
+}{
+y_{\mathrm{ref}}
+}
+\right|
+\times 100 \%.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $y_{\mathrm{ref}}$ is the reference cycle-by-cycle solution,
+    \item $y_{\mathrm{jump}}$ is the cycle-jump solution.
+\end{itemize}
+
+The average relative error over all integration points is
+
+\[
+\overline{\delta E}
+=
+\frac{1}{N}
+\sum_{k=1}^{N}
+\delta E_k.
+\]
+
+The standard deviation of the relative error is
+
+\[
+s
+=
+\sqrt{
+\frac{1}{N}
+\sum_{k=1}^{N}
+\left(
+\delta E_k - \overline{\delta E}
+\right)^2
+}.
+\]
+
+\subsection{Cycle-Jump Procedure in Compact Form}
+
+\begin{enumerate}[leftmargin=*]
+    \item Select a control set of variables $\mathcal{C}$.
+    \item Run a few full FE cycles.
+    \item For each control variable $y$ and material point $M$, extract
+    \[
+    y_1,\quad y_2,\quad y_3.
+    \]
+    \item Compute the slopes
+    \[
+    s_{12}(t_1)
+    =
+    \frac{y_1-y_2}{\Delta t_{\mathrm{cycle}}},
+    \qquad
+    s_{23}(t_2)
+    =
+    \frac{y_2-y_3}{\Delta t_{\mathrm{cycle}}}.
+    \]
+    \item Compute the locally allowed jump length
+    \[
+    \Delta t^M_{y,\mathrm{jump}}
+    =
+    q_y \Delta t_{\mathrm{cycle}}
+    \frac{
+    |s_{12}(t_1)|
+    }{
+    |s_{12}(t_1)-s_{23}(t_2)|
+    }.
+    \]
+    \item Compute the global jump length
+    \[
+    \Delta t_{\mathrm{jump}}
+    =
+    \Delta t_{\mathrm{cycle}}
+    \left\lfloor
+    \frac{
+    \min\left\{\Delta t^M_{y,\mathrm{jump}}\right\}
+    }{
+    \Delta t_{\mathrm{cycle}}
+    }
+    \right\rfloor.
+    \]
+    \item Extrapolate the variable:
+    \[
+    y(t_1+\Delta t_{\mathrm{jump}})
+    =
+    y(t_1)
+    +
+    s_{12}(t_1)\Delta t_{\mathrm{jump}}
+    +
+    \frac{
+    [s_{12}(t_1)-s_{23}(t_2)]
+    (\Delta t_{\mathrm{jump}})^2
+    }{
+    2\Delta t_{\mathrm{cycle}}
+    }.
+    \]
+    \item Impose the extrapolated state in the FE model.
+    \item Run full FE cycles again.
+    \item Repeat until the target number of cycles is reached.
+\end{enumerate}
+
+\subsection{Implementation Idea in Abaqus}
+
+The paper uses Abaqus with external scripting and user subroutines.
+
+The implementation logic is:
+
+\begin{itemize}[leftmargin=*]
+    \item Abaqus/CAE and Python scripting are used to generate and manage the model.
+    \item Abaqus solves the complete cycles.
+    \item Results are extracted from the output database.
+    \item Extrapolated states are written to external files.
+    \item User subroutines impose the extrapolated state.
+\end{itemize}
+
+The important subroutines mentioned are:
+
+\begin{itemize}[leftmargin=*]
+    \item \texttt{SDVINI}: initialization of state variables,
+    \item \texttt{DISP}: prescribed extrapolated displacements,
+    \item \texttt{UEXPAN}: imposed stress-free growth strain,
+    \item \texttt{UMAT}: material behavior and insertion of extrapolated stress/strain information.
+\end{itemize}
+
+\subsection{Key Technical Takeaways}
+
+\begin{itemize}[leftmargin=*]
+    \item The method extrapolates the global evolution of structural variables, not the detailed intra-cycle oscillations.
+    \item The control function is the central contribution of the paper.
+    \item The jump length is automatically shortened when the response becomes nonlinear.
+    \item A converged finite element solution after a jump is not necessarily correct.
+    \item Accuracy must be checked using state-variable comparison with a reference or controlled error measure.
+    \item The method is most suitable for quasi-linear global evolution but can still handle nonlinear regions by reducing or suppressing jumps.
+\end{itemize}
+
+\subsection{Limitations}
+
+\begin{itemize}[leftmargin=*]
+    \item The method depends on user-defined tolerance values $q_y$.
+    \item If $q_y$ is too large, the method may take jumps that are too long and lose accuracy.
+    \item If $q_y$ is too small, the method becomes accurate but less efficient.
+    \item The approach requires careful selection of control variables.
+    \item The method does not automatically guarantee correctness only from finite element convergence.
+\end{itemize}
+
+\subsection{Relevance for Thesis Work}
+
+This paper is important because it gives one of the clearest early finite-element cycle-jump algorithms.
+
+For future UMAT or Abaqus cycle-jump implementation, the most useful ideas are:
+
+\begin{itemize}[leftmargin=*]
+    \item extract cycle-to-cycle evolution of selected variables,
+    \item define a control set,
+    \item compute local allowed jump lengths,
+    \item take the global minimum jump length,
+    \item extrapolate using a Heun-type formula,
+    \item reinsert the extrapolated state into Abaqus,
+    \item continue the finite element simulation after the jump.
+\end{itemize}
+
+\subsection{One-Sentence Summary}
+
+Cojocaru and Karlsson's method accelerates cyclic finite element simulations by computing a few real cycles, estimating the global evolution slope of selected state variables, using a control function to choose a safe jump length, and extrapolating the state with a Heun-type formula before continuing the finite element analysis.
+
+% =========================================================
+\section{Nesnas and Saanouni (2000): Cycle-Jumping Scheme for Coupled Damage--Viscoplastic Models}
+
+\subsection{Full Reference}
+
+Nesnas, K. and Saanouni, K. (2000).
+\textit{A cycle jumping scheme for numerical integration of coupled damage and viscoplastic models for cyclic loading paths}.
+Revue Europ\'eenne des \'El\'ements Finis, 9(8), 865--891.
+
+\subsection{Main Problem Addressed}
+
+This paper develops a cycle-jumping scheme for the numerical integration of coupled damage and viscoplastic constitutive models under cyclic loading.
+
+The problem is that a fully coupled damage--viscoplastic simulation requires the constitutive equations to be integrated through many loading cycles. This is computationally expensive because:
+
+\begin{itemize}[leftmargin=*]
+    \item the constitutive equations are nonlinear and stiff,
+    \item damage evolves progressively over cycles,
+    \item viscoplasticity and damage are coupled,
+    \item direct cycle-by-cycle integration may require thousands of cycles.
+\end{itemize}
+
+The proposed solution is a \textbf{two time-scale integration scheme}:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Small time scale}: implicit integration inside each loading cycle.
+    \item \textbf{Large time scale}: explicit cycle-jump integration over many cycles.
+\end{itemize}
+
+\subsection{Main Idea of the Cycle-Jump Method}
+
+The fatigue life is divided into three stages:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Hardening stage}: stress increases from cycle to cycle.
+    \item \textbf{Stabilized stage}: stress redistribution is slow.
+    \item \textbf{Softening stage}: damage grows rapidly and stress decreases until failure.
+\end{enumerate}
+
+The stabilized stage is usually the longest part of the fatigue life. Therefore, the method skips some intermediate cycles during this stage.
+
+The central idea is:
+
+\begin{quote}
+Integrate accurately inside a few real cycles, estimate how selected variables evolve from cycle to cycle, jump over several cycles, and extrapolate the material state at the new cycle number.
+\end{quote}
+
+\subsection{State Variable as a Function of Cycle Number}
+
+Let $T$ be the period of one loading cycle. A particular instant $\tau$ inside each cycle is selected, where
+
+\[
+0 \leq \tau \leq T.
+\]
+
+The vector of state variables is then written as a function of cycle number $N$:
+
+\[
+\bm{y}(N)
+=
+\bm{y}\big((N-1)T+\tau\big).
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\bm{y}$ is the vector of state variables,
+    \item $N$ is the cycle number,
+    \item $T$ is the cycle period,
+    \item $\tau$ is the selected point inside the cycle.
+\end{itemize}
+
+The problem becomes the determination of a sequence of values
+
+\[
+\bm{y}(0 \leq N \leq N_R),
+\]
+
+where $N_R$ is the number of cycles to failure.
+
+\subsection{Second-Order Taylor Expansion in Cycle Space}
+
+The state variable after a cycle jump $\Delta N$ is approximated using a Taylor expansion in cycle space:
+
+\[
+\bm{y}_{N+\Delta N}
+=
+\bm{y}_{N}
++
+\dot{\bm{y}}_{N}\Delta N
++
+\ddot{\bm{y}}_{N}
+\frac{\Delta N^2}{2}.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\dot{\bm{y}}_N$ is the first pseudo-derivative with respect to cycle number,
+    \item $\ddot{\bm{y}}_N$ is the second pseudo-derivative with respect to cycle number,
+    \item $\Delta N$ is the number of cycles skipped.
+\end{itemize}
+
+This is not a time derivative inside one loading cycle. It is a derivative with respect to the cycle number.
+
+\subsection{First Pseudo-Derivative}
+
+The first pseudo-derivative is approximated as
+
+\[
+\dot{\bm{y}}_N
+=
+\frac{\partial \bm{y}}{\partial N}
+\approx
+\frac{\bm{y}_{N+1}-\bm{y}_{N}}{1}.
+\]
+
+So, in simple form,
+
+\[
+\dot{\bm{y}}_N
+\approx
+\bm{y}_{N+1}-\bm{y}_{N}.
+\]
+
+This represents the cycle-to-cycle change of the state variable vector.
+
+\subsection{First-Order Jump Criterion}
+
+The first possibility is to keep only the first-order Taylor term. The jump size is chosen so that the first-order extrapolated change remains small compared with the current variable value:
+
+\[
+\left|\dot{\bm{y}}_N\right|\Delta N
+\leq
+\eta_1
+\left|\bm{y}_N\right|.
+\]
+
+Solving for the jump size gives
+
+\[
+\Delta N
+=
+\eta_1
+\left|
+\frac{\bm{y}_N}{\dot{\bm{y}}_N}
+\right|.
+\]
+
+Here, $\eta_1$ is an accuracy parameter.
+
+\subsubsection*{Meaning}
+
+If the state variable changes slowly from cycle to cycle, then $\left|\dot{\bm{y}}_N\right|$ is small and $\Delta N$ becomes large.
+
+If the state variable changes rapidly, then $\left|\dot{\bm{y}}_N\right|$ is large and $\Delta N$ becomes small.
+
+\subsection{Second-Order Jump Criterion}
+
+The second possibility is to use a second-order Taylor development. The second-order term is controlled relative to the first-order term:
+
+\[
+\left|
+\ddot{\bm{y}}_N
+\right|
+\frac{\Delta N^2}{2}
+\leq
+\eta_2
+\left|
+\dot{\bm{y}}_N
+\right|
+\Delta N.
+\]
+
+Solving for $\Delta N$ gives
+
+\[
+\Delta N
+=
+2\eta_2
+\left|
+\frac{\dot{\bm{y}}_N}{\ddot{\bm{y}}_N}
+\right|.
+\]
+
+Here, $\eta_2$ is another accuracy parameter.
+
+\subsubsection*{Meaning}
+
+This condition controls the curvature of the state-variable evolution.
+
+If the state evolution is almost linear, $\ddot{\bm{y}}_N$ is small and a large jump is allowed.
+
+If the state evolution is strongly nonlinear, $\ddot{\bm{y}}_N$ is large and the jump size is reduced.
+
+\subsection{Global Cycle-Jump Size}
+
+The local jump size is evaluated for the chosen variables at each integration point.
+
+The global cycle-jump increment is then selected as the minimum value:
+
+\[
+\Delta N
+=
+\min_i
+\left(
+\Delta N_i
+\right).
+\]
+
+This means the most critical integration point controls the global jump size.
+
+\subsection{Why Not Use All State Variables?}
+
+The classical cycle-jump technique uses all state variables to estimate $\Delta N$.
+
+However, Nesnas and Saanouni point out that this can be difficult because different state variables:
+
+\begin{itemize}[leftmargin=*]
+    \item evolve at different rates,
+    \item may have very different magnitudes,
+    \item may show different degrees of nonlinearity,
+    \item may give artificially small or unsuitable jump sizes.
+\end{itemize}
+
+Therefore, the paper proposes using only a small number of representative variables that measure the global evolution of the material state.
+
+\subsection{Main Variables Used for Jump Control}
+
+The paper identifies two important variables for controlling the cycle jump:
+
+\[
+\Delta L
+\qquad \text{and} \qquad
+D.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\Delta L$ is an important scalar parameter from the asymptotic integration algorithm,
+    \item $D$ is the damage variable.
+\end{itemize}
+
+The parameter $\Delta L$ is sensitive to the nonlinear viscoplastic evolution, especially during hardening and stabilized stages.
+
+The damage variable $D$ is especially important during the softening stage, where damage grows rapidly near failure.
+
+\subsection{Cycle-Jump Size Based on $\Delta L$ and $D$}
+
+The paper proposes computing two candidate jump sizes:
+
+\[
+\Delta N_{\Delta L}
+=
+\eta
+\frac{\Delta L}{\dot{\Delta L}},
+\]
+
+\[
+\Delta N_D
+=
+\eta
+\frac{D}{\dot{D}}.
+\]
+
+The final jump size is
+
+\[
+\Delta N
+=
+\min
+\left(
+\Delta N_{\Delta L},
+\Delta N_D
+\right).
+\]
+
+\subsubsection*{Interpretation}
+
+The variable $\Delta L$ controls the jump during viscoplastic hardening and stabilization.
+
+The variable $D$ controls the jump during the damage-dominated softening stage.
+
+Taking the minimum makes the algorithm conservative.
+
+\subsection{Overall Cycle-Jump Algorithm}
+
+The cycle-jump algorithm works as follows:
+
+\begin{enumerate}[leftmargin=*]
+    \item After each cycle jump, integrate the constitutive equations over a small number of real cycles.
+    \item Store the values of the selected jump-control variables.
+    \item Compute the first and second pseudo-derivatives in cycle space.
+    \item Estimate the cycle-jump increment $\Delta N$.
+    \item Extrapolate the state variables over $\Delta N$ cycles.
+    \item Continue the full integration for several cycles after the jump.
+    \item Repeat until failure.
+\end{enumerate}
+
+In the paper, a typical value used for the number of real cycles before jumping is five cycles.
+
+\subsection{Two Versions of the Cycle-Jump Technique}
+
+The paper introduces two versions of the cycle-jump technique.
+
+\subsubsection{CJTV1: Cycle-Jump Technique Version 1}
+
+In the first version, all state variables are extrapolated directly using the Taylor expansion:
+
+\[
+\bm{y}_{N+\Delta N}
+=
+\bm{y}_{N}
++
+\dot{\bm{y}}_{N}\Delta N
++
+\ddot{\bm{y}}_{N}
+\frac{\Delta N^2}{2}.
+\]
+
+This version is straightforward but requires storing and extrapolating all state variables.
+
+\subsubsection{CJTV2: Cycle-Jump Technique Version 2}
+
+In the second version, only the selected scalar parameters are extrapolated:
+
+\[
+\Delta L,
+\qquad
+\Delta p,
+\qquad
+D.
+\]
+
+Then, the remaining state variables are reconstructed using the asymptotic integral forms of the constitutive equations.
+
+This reduces the number of variables that must be stored and extrapolated.
+
+\subsection{Small Time-Scale Integration}
+
+Inside each loading cycle, the paper uses an implicit asymptotic integration algorithm.
+
+The coupled damage--viscoplastic model includes:
+
+\begin{itemize}[leftmargin=*]
+    \item Cauchy stress $\sigma_{ij}$,
+    \item kinematic hardening variables $\alpha^k_{ij}$,
+    \item isotropic hardening variable $r$,
+    \item damage variable $D$.
+\end{itemize}
+
+The recursive update of stress has the form
+
+\[
+\begin{aligned}
+\sigma_{ij}(t+\Delta t)
+&=
+X_{ij}(t+\Delta t)
++
+\frac{\nu E}{(1+\nu)(1-2\nu)}\varepsilon_{kk}(t)\delta_{ij} \\
+&\quad
++
+\exp(-\Delta L)
+\left[
+\sigma_{ij}(t)-X_{ij}(t)
+-
+\frac{\nu E}{(1+\nu)(1-2\nu)}\varepsilon_{kk}(t)\delta_{ij}
+\right]
++
+\cdots
+\end{aligned}
+\]
+
+where $\Delta L$ appears as a central scalar parameter in the integration algorithm.
+
+\subsection{Kinematic Hardening Update}
+
+The kinematic hardening variable is updated as
+
+\[
+\alpha^k_{ij}(t+\Delta t)
+=
+\exp(-\Delta G^k)\alpha^k_{ij}(t)
++
+\Delta \varepsilon^p_{ij}
+\left[
+\frac{1-\exp(-\Delta G^k)}{\Delta G^k}
+\right].
+\]
+
+The scalar parameter $\Delta G^k$ is
+
+\[
+\Delta G^k
+=
+a_k \sqrt{1-D}\Delta p.
+\]
+
+\subsection{Isotropic Hardening Update}
+
+The isotropic hardening variable is updated as
+
+\[
+r(t+\Delta t)
+=
+\exp(-\Delta Q)r(t)
++
+\Delta p
+\left[
+\frac{1-\exp(-\Delta Q)}{\Delta Q}
+\right].
+\]
+
+The scalar parameter $\Delta Q$ is
+
+\[
+\Delta Q
+=
+b\sqrt{1-D}\Delta p.
+\]
+
+\subsection{Damage Update}
+
+The damage variable can be updated using a first-order approximation:
+
+\[
+D(t+\Delta t)
+=
+D(t)
++
+\Delta D
+=
+D(t)
++
+\dot{D}(t+\Delta t)\Delta t.
+\]
+
+A second-order approximation can also be used:
+
+\[
+D(t+\Delta t)
+=
+D(t)
++
+\Delta D
+=
+D(t)
++
+\frac{1}{2}
+\left[
+\dot{D}(t)+\dot{D}(t+\Delta t)
+\right]\Delta t.
+\]
+
+The paper shows that the order of damage extrapolation is important, especially near the final damage-dominated stage.
+
+\subsection{Implicit Unknowns in the Small Time-Scale Algorithm}
+
+Although the complete constitutive model contains many variables, the asymptotic algorithm reduces the implicit numerical problem to two main scalar unknowns:
+
+\[
+\Delta L
+\qquad \text{and} \qquad
+\Delta D.
+\]
+
+These are solved using a Newton--Raphson procedure.
+
+The nonlinear system is written as
+
+\[
+g_1(\Delta L,\Delta D)=0,
+\]
+
+\[
+g_2(\Delta L,\Delta D)=0.
+\]
+
+In compact vector form,
+
+\[
+g_i(x_j)=0,
+\]
+
+where
+
+\[
+x_1=\Delta L,
+\qquad
+x_2=\Delta D.
+\]
+
+The Newton linearization is
+
+\[
+\frac{\partial g_i}{\partial x_j}
+\delta x_j
+=
+-g_i(x_j).
+\]
+
+The iterative update is
+
+\[
+x_j^{k+1}
+=
+x_j^k
++
+\delta x_j^k.
+\]
+
+The convergence criteria are
+
+\[
+\frac{\|\delta x_j^k\|_2}{\|x_j^k\|_2}
+\leq
+\varepsilon_1,
+\]
+
+\[
+\frac{\|g_j^k\|_2}{\|g_j^1\|_2}
+\leq
+\varepsilon_2.
+\]
+
+\subsection{Extrapolation in CJTV2}
+
+In CJTV2, after extrapolating
+
+\[
+\Delta L,
+\qquad
+\Delta p,
+\qquad
+D,
+\]
+
+the remaining state variables are reconstructed.
+
+For example, the stress after the cycle jump is reconstructed using an asymptotic expression of the form
+
+\[
+\begin{aligned}
+\sigma^{N+\Delta N}_{ij}(t+\Delta t)
+&=
+\frac{2}{3} C\alpha^{N+\Delta N}_{ij}(t+\Delta t)
++
+\frac{\nu E}{(1+\nu)(1-2\nu)}\varepsilon_{kk}(t+\Delta t)\delta_{ij} \\
+&\quad
++
+\exp(-\Delta L^{N+\Delta N})
+\left[
+\sigma_{ij}(t)
+-
+\frac{2}{3}C\alpha_{ij}(t)
+-
+\frac{\nu E}{(1+\nu)(1-2\nu)}\varepsilon_{kk}(t)\delta_{ij}
+\right]
++
+\cdots
+\end{aligned}
+\]
+
+This is why CJTV2 stores fewer variables but still reconstructs the complete material state.
+
+\subsection{Numerical Parameters Used in the Cycle-Jump Method}
+
+The paper introduces several practical parameters:
+
+\begin{itemize}[leftmargin=*]
+    \item $\tau$: selected instant inside the cycle,
+    \item \texttt{JUMPMIN}: minimum number of cycles computed before the next jump,
+    \item $\eta$: accuracy parameter for the jump size,
+    \item \texttt{JUMPMAX}: maximum allowed number of jumped cycles.
+\end{itemize}
+
+These parameters control the balance between accuracy and speed.
+
+\subsection{Important Numerical Observations}
+
+The paper reports the following key observations:
+
+\begin{itemize}[leftmargin=*]
+    \item Large jumps are possible in low-curvature stabilized regions.
+    \item Smaller jumps are automatically selected near failure.
+    \item Damage requires careful extrapolation because it evolves nonlinearly near the end of life.
+    \item Second-order extrapolation of damage gives better fatigue-life prediction than first-order extrapolation.
+    \item CJTV2 is efficient because it extrapolates only selected scalar parameters and reconstructs the remaining variables.
+\end{itemize}
+
+\subsection{Accuracy and Efficiency}
+
+For proportional loading at Gauss point level, the full calculation gave a reference fatigue life of approximately
+
+\[
+N_R = 384 \ \text{cycles}.
+\]
+
+Using cycle jumping, the method predicted similar fatigue lives while computing far fewer cycles.
+
+For example, with $\eta=0.1$:
+
+\[
+N_R \approx 392 \ \text{cycles}
+\]
+
+for CJTV1, and
+
+\[
+N_R \approx 391 \ \text{cycles}
+\]
+
+for CJTV2.
+
+Thus, both schemes saved about 80\% of the actually computed cycles with a small error in fatigue life.
+
+For a long non-proportional loading example, CJTV2 reduced the computational effort by more than 90\% while maintaining good agreement with the full calculation.
+
+\subsection{Structural-Level Implementation}
+
+At structural level, the cycle jump step is calculated at every Gauss integration point.
+
+The global cycle-jump size is
+
+\[
+\Delta N
+=
+\min_{\text{all Gauss points}}
+\left(
+\Delta N_i
+\right).
+\]
+
+This ensures that the most critical material point controls the global jump.
+
+The method was tested on:
+
+\begin{itemize}[leftmargin=*]
+    \item a simplified three-bar structure,
+    \item a plate with a central circular hole.
+\end{itemize}
+
+In both cases, the method reproduced the full cycle-by-cycle solution with significantly reduced computation time.
+
+\subsection{Key Technical Takeaways}
+
+\begin{itemize}[leftmargin=*]
+    \item This paper uses a two time-scale strategy.
+    \item The small time scale is handled by an implicit asymptotic integration algorithm.
+    \item The large time scale is handled by an explicit cycle-jump algorithm.
+    \item The cycle-jump variable is not necessarily the full state vector.
+    \item The scalar variables $\Delta L$ and $D$ are enough to estimate the jump size effectively.
+    \item The global jump size is the minimum jump size over all integration points.
+    \item Damage evolution strongly controls the final softening stage.
+    \item Second-order extrapolation is important for nonlinear damage evolution.
+\end{itemize}
+
+\subsection{Limitations}
+
+\begin{itemize}[leftmargin=*]
+    \item The method still depends on user-defined parameters such as $\eta$, \texttt{JUMPMIN}, and \texttt{JUMPMAX}.
+    \item The accuracy depends on the selected jump-control variables.
+    \item Strongly nonlinear damage evolution near failure requires smaller jumps.
+    \item The presented damage model does not include unilateral damage effects, where microcracks may open or close depending on the loading direction.
+\end{itemize}
+
+\subsection{Relevance for Thesis Work}
+
+This paper is important because it treats cycle jumping at the constitutive integration level.
+
+Compared with structural cycle-jump methods that extrapolate displacements, stresses, or strains directly, this method focuses on internal material-state evolution.
+
+For future UMAT or constitutive implementation work, the important lessons are:
+
+\begin{itemize}[leftmargin=*]
+    \item separate the intra-cycle integration from the cycle-space extrapolation,
+    \item use robust implicit integration inside the cycle,
+    \item use explicit extrapolation only over cycles,
+    \item choose a small set of physically meaningful jump-control variables,
+    \item reduce the global jump size near damage localization or failure,
+    \item reconstruct the full state after the jump instead of storing every state variable.
+\end{itemize}
+
+\subsection{One-Sentence Summary}
+
+Nesnas and Saanouni's method accelerates coupled damage--viscoplastic cyclic simulations by using implicit asymptotic integration inside each cycle and explicit cycle-space extrapolation between cycles, with the jump length controlled mainly by the scalar variables $\Delta L$ and damage $D$.
+
+% =========================================================
+\section{Li et al. (2025): Adaptive Cycle-Jump Method for Elasto-Plastic Phase-Field Fatigue Crack Propagation}
+
+\subsection{Full Reference}
+
+Li, J., Hu, Y., Ao, N., Miao, H., Zhang, X., Kang, G., and Kan, Q. (2025).
+\textit{An adaptive cycle jump method for elasto-plastic phase field modeling addressing fatigue crack propagation}.
+Computer Methods in Applied Mechanics and Engineering, 442, 118074.
+
+\subsection{Main Problem Addressed}
+
+This paper develops an adaptive cycle-jump method for accelerating phase-field simulations of fatigue crack propagation in elasto-plastic materials.
+
+Phase-field fatigue simulations are computationally expensive because:
+
+\begin{itemize}[leftmargin=*]
+    \item the crack is represented by a diffused phase-field variable, requiring a fine mesh near the crack path,
+    \item fatigue crack propagation normally needs cycle-by-cycle computation,
+    \item elasto-plastic crack-tip behavior introduces additional nonlinear constitutive cost,
+    \item the crack propagation life is usually not known in advance.
+\end{itemize}
+
+The proposed method accelerates the simulation by explicitly extrapolating selected variables over skipped cycles and adaptively choosing the cycle-jump size based on phase-field evolution.
+
+\subsection{Main Idea of the Method}
+
+The key idea is:
+
+\begin{quote}
+Compute three complete cycles, use their results to estimate the evolution trend of important phase-field and plasticity variables, jump over $\Delta N$ cycles, and update the variables at cycle $N+\Delta N$.
+\end{quote}
+
+Unlike purely elastic phase-field fatigue methods, this method also accounts for plastic strain accumulation at the crack tip.
+
+\subsection{Phase-Field Description of Crack}
+
+The body is described by two primary fields:
+
+\[
+\bm{u}
+\qquad \text{and} \qquad
+\phi.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\bm{u}$ is the displacement field,
+    \item $\phi$ is the phase-field crack variable,
+    \item $\phi = 0$ represents intact material,
+    \item $\phi = 1$ represents fully cracked material.
+\end{itemize}
+
+The degradation function is
+
+\[
+g(\phi)
+=
+(1-\phi)^2+\kappa,
+\]
+
+where $\kappa$ is a small numerical parameter introduced to avoid singularity when the material is fully damaged.
+
+\subsection{Total Potential Energy}
+
+For an elasto-plastic body, the total potential energy is written as
+
+\[
+\begin{aligned}
+\Psi
+&=
+\int_{\Omega}
+\left[
+g(\phi)\psi^e(\bm{\varepsilon}^e)
++
+g(\phi)\psi^p(\bm{\varepsilon}^p)
+\right] dV \\
+&\quad
++
+\int_{\Omega}
+\frac{G_c}{2l}
+\left(
+\phi^2+l^2|\nabla \phi|^2
+\right)dV
+-
+\int_{\Omega}
+\bm{b}\cdot \bm{u}\,dV
+-
+\int_{\partial\Omega}
+\bm{t}\cdot \bm{u}\,dS.
+\end{aligned}
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\psi^e$ is the elastic strain energy density,
+    \item $\psi^p$ is the plastic strain energy density,
+    \item $G_c$ is the critical energy release rate,
+    \item $l$ is the phase-field length scale,
+    \item $\bm{b}$ is the body force,
+    \item $\bm{t}$ is the boundary traction.
+\end{itemize}
+
+\subsection{Elastic Energy Split}
+
+The tensile and compressive parts of the elastic strain energy density are written as
+
+\[
+\psi_e^{\pm}
+=
+\frac{1}{2}
+\lambda
+\langle \mathrm{tr}(\bm{\varepsilon}^e)\rangle_{\pm}^2
++
+\mu
+\mathrm{tr}
+\left[
+(\bm{\varepsilon}_e^{\pm})^2
+\right].
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\lambda$ and $\mu$ are Lam\'e constants,
+    \item $\langle x\rangle_{\pm} = \frac{x\pm |x|}{2}$ is the Macaulay bracket.
+\end{itemize}
+
+The energy split is used so that crack growth is mainly driven by tensile deformation, not compression.
+
+\subsection{Plastic Strain Energy Density}
+
+The plastic strain energy density is calculated incrementally as
+
+\[
+\psi^p
+=
+\int_0^T
+\bm{\sigma}:\dot{\bm{\varepsilon}}^p\,dt.
+\]
+
+This represents the accumulated plastic work density.
+
+\subsection{Fatigue Degradation Function}
+
+Fatigue is introduced by reducing the effective fracture toughness through a fatigue degradation function:
+
+\[
+f(\alpha)
+=
+\begin{cases}
+1, & \alpha \leq \alpha_T, \\
+\left(
+\frac{2\alpha_T}{\alpha+\alpha_T}
+\right)^2,
+& \alpha > \alpha_T.
+\end{cases}
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\alpha$ is the accumulated fatigue history variable,
+    \item $\alpha_T$ is the fatigue threshold.
+\end{itemize}
+
+The fatigue threshold is
+
+\[
+\alpha_T
+=
+\frac{G_c}{12l}.
+\]
+
+\subsection{Fatigue History Variable}
+
+The fatigue driving quantity is
+
+\[
+\bar{\alpha}
+=
+g(\phi)
+\left(
+\psi_e^+ + \psi^p
+\right).
+\]
+
+The accumulated fatigue history is
+
+\[
+\alpha
+=
+\int_0^T
+H(\dot{\bar{\alpha}})
+|\dot{\bar{\alpha}}|dt.
+\]
+
+Here, $H(\cdot)$ is the Heaviside function.
+
+This means fatigue history accumulates only when the fatigue driving quantity increases.
+
+\subsection{Final Energy Functional with Fatigue}
+
+After adding fatigue degradation and elastic energy split, the total energy becomes
+
+\[
+\begin{aligned}
+\Psi
+&=
+\int_{\Omega}
+\left[
+g(\phi)(\psi_e^+ + \psi^p)
++
+\psi_e^-
+\right]dV \\
+&\quad
++
+\int_{\Omega}
+f(\alpha)
+\frac{G_c}{2l}
+\left(
+\phi^2+l^2|\nabla \phi|^2
+\right)dV
+-
+\int_{\Omega}
+\bm{b}\cdot \bm{u}\,dV
+-
+\int_{\partial\Omega}
+\bm{t}\cdot \bm{u}\,dS.
+\end{aligned}
+\]
+
+\subsection{History Field for Crack Irreversibility}
+
+To enforce crack irreversibility, a history field is introduced:
+
+\[
+P
+=
+\max_{\tau\in[0,t]}
+\left\{
+\psi_e^+ + \eta \psi^p
+\right\}.
+\]
+
+Here, $\eta$ controls the contribution of plastic work to the crack-driving history field.
+
+The paper studies cases such as
+
+\[
+\eta = 0.1
+\qquad \text{and} \qquad
+\eta = 1.
+\]
+
+\subsection{Governing Equations}
+
+The governing equations are
+
+\[
+\begin{cases}
+\nabla\cdot \bm{\sigma} + \bm{b} = 0, \\
+g'(\phi)P
++
+\dfrac{f(\alpha)G_c}{l}\phi
+-
+G_c l \nabla\cdot
+\left[
+f(\alpha)\nabla\phi
+\right]
+=0.
+\end{cases}
+\]
+
+The paper uses a hybrid phase-field form:
+
+\[
+\begin{cases}
+\nabla\cdot \bm{\sigma} + \bm{b} = 0, \\
+g'(\phi)P
++
+\dfrac{f(\alpha)G_c}{l}\phi
+-
+G_c l \nabla\cdot
+\left[
+f(\alpha)\nabla\phi
+\right]
+=0, \\
+\phi = 0
+\quad \text{if}
+\quad
+\psi_e^+ < \psi_e^-.
+\end{cases}
+\]
+
+The hybrid form keeps the displacement equation computationally simpler while still avoiding compression-driven crack growth.
+
+\subsection{Plastic Constitutive Models}
+
+The paper verifies the method using three plasticity models:
+
+\begin{enumerate}[leftmargin=*]
+    \item linear isotropic hardening,
+    \item power-law hardening,
+    \item Armstrong--Frederick cyclic plasticity.
+\end{enumerate}
+
+All models are based on the von Mises yield criterion.
+
+\subsection{Yield Function}
+
+The yield function is
+
+\[
+F_y
+=
+\sigma_{\mathrm{eq}} - Q.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\sigma_{\mathrm{eq}}$ is the equivalent von Mises stress,
+    \item $Q$ is the current yield stress.
+\end{itemize}
+
+\subsection{Equivalent Stress for Isotropic Hardening}
+
+For linear and power-law isotropic hardening models,
+
+\[
+\sigma_{\mathrm{eq}}
+=
+\sqrt{
+\frac{3}{2}
+\bm{s}:\bm{s}
+},
+\]
+
+where $\bm{s}$ is the deviatoric stress tensor.
+
+\subsection{Plastic Flow Rule}
+
+The plastic strain rate is
+
+\[
+\dot{\bm{\varepsilon}}^p
+=
+\sqrt{\frac{3}{2}}
+\dot{\varepsilon}_{\mathrm{eq}}^p
+\frac{\bm{s}}{\sqrt{\bm{s}:\bm{s}}}.
+\]
+
+The equivalent plastic strain rate is
+
+\[
+\dot{\varepsilon}_{\mathrm{eq}}^p
+=
+\sqrt{
+\frac{2}{3}
+\dot{\bm{\varepsilon}}^p:\dot{\bm{\varepsilon}}^p
+}.
+\]
+
+\subsection{Yield Stress for Linear and Power-Law Hardening}
+
+The current yield stress is
+
+\[
+Q
+=
+\begin{cases}
+\sigma_y + h\varepsilon_{\mathrm{eq}}^p,
+& \text{linear isotropic hardening}, \\
+\sigma_y
+\left(
+1+\dfrac{E}{\sigma_y}\varepsilon_{\mathrm{eq}}^p
+\right)^n,
+& \text{power-law hardening}.
+\end{cases}
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\sigma_y$ is the initial yield stress,
+    \item $h$ is the linear hardening modulus,
+    \item $E$ is Young's modulus,
+    \item $n$ is the strain hardening exponent.
+\end{itemize}
+
+\subsection{Armstrong--Frederick Model}
+
+For the Armstrong--Frederick model, the isotropic hardening rule is
+
+\[
+Q
+=
+\sigma_y
++
+(Q_{\mathrm{sat}}-\sigma_y)
+\left[
+1-\exp(-b\varepsilon_{\mathrm{eq}}^p)
+\right].
+\]
+
+The equivalent stress is
+
+\[
+\sigma_{\mathrm{eq}}
+=
+\sqrt{
+\frac{3}{2}
+(\bm{s}-\bm{\theta}):(\bm{s}-\bm{\theta})
+}.
+\]
+
+The plastic strain rate becomes
+
+\[
+\dot{\bm{\varepsilon}}^p
+=
+\sqrt{\frac{3}{2}}
+\dot{\varepsilon}_{\mathrm{eq}}^p
+\frac{\bm{s}-\bm{\theta}}
+{\sqrt{(\bm{s}-\bm{\theta}):(\bm{s}-\bm{\theta})}}.
+\]
+
+The backstress evolution is
+
+\[
+\dot{\bm{\theta}}
+=
+\frac{2}{3}C\dot{\bm{\varepsilon}}^p
+-
+\gamma \bm{\theta}\dot{\varepsilon}_{\mathrm{eq}}^p.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\bm{\theta}$ is the backstress tensor,
+    \item $C$ is the kinematic hardening modulus,
+    \item $\gamma$ is the dynamic recovery parameter.
+\end{itemize}
+
+\subsection{Finite Element Discretization}
+
+The displacement and phase fields are approximated as
+
+\[
+\bm{u}
+=
+\sum_{i=1}^{m}
+N_i^u \bm{u}_i,
+\qquad
+\phi
+=
+\sum_{i=1}^{m}
+N_i^\phi \phi_i.
+\]
+
+The strain and phase-field gradient are
+
+\[
+\bm{\varepsilon}
+=
+\sum_{i=1}^{m}
+\bm{B}_i^u\bm{u}_i,
+\qquad
+\nabla \phi
+=
+\sum_{i=1}^{m}
+\bm{B}_i^\phi \phi_i.
+\]
+
+\subsection{Residual Equations}
+
+The displacement residual is
+
+\[
+\begin{aligned}
+\bm{R}_i^u
+&=
+\int_{\Omega}
+(\bm{B}_i^u)^T\bm{\sigma}\,dV
+-
+\int_{\Omega}
+(N_i^u)^T\bm{b}\,dV \\
+&\quad
+-
+\int_{\partial\Omega}
+(N_i^u)^T\bm{t}\,dS.
+\end{aligned}
+\]
+
+The phase-field residual is
+
+\[
+\begin{aligned}
+R_i^\phi
+=
+\int_{\Omega}
+\left\{
+\left[
+\frac{f(\alpha)G_c}{l}\phi
++
+g'(\phi)P
+\right]
+N_i^\phi
++
+f(\alpha)G_c l
+(\bm{B}_i^\phi)^T\nabla\phi
+\right\}dV.
+\end{aligned}
+\]
+
+\subsection{Stiffness Matrices}
+
+The displacement stiffness matrix is
+
+\[
+\begin{aligned}
+\bm{K}_{ij}^{u}
+&=
+\frac{\partial \bm{R}_i^u}{\partial \bm{u}_j}
+=
+\int_{\Omega}
+g(\phi)
+(\bm{B}_i^u)^T
+\bm{D}
+\bm{B}_j^u
+\,dV.
+\end{aligned}
+\]
+
+The phase-field stiffness matrix is
+
+\[
+\begin{aligned}
+K_{ij}^{\phi}
+&=
+\frac{\partial R_i^\phi}{\partial \phi_j}
+=
+\int_{\Omega}
+\Bigl\{
+\left[
+\frac{f(\alpha)G_c}{l}
++
+g''(\phi)P
+\right]
+N_i^\phi N_j^\phi \\
+&\quad
++
+f(\alpha)G_c l
+(\bm{B}_i^\phi)^T
+\bm{B}_j^\phi
+\Bigr\}dV.
+\end{aligned}
+\]
+
+Here, $\bm{D}$ is the consistent tangent stiffness matrix of the intact elasto-plastic material.
+
+\subsection{Cycle-Jump Variable Vector}
+
+The selected variable vector for cycle jumping is
+
+\[
+\bm{\beta}
+=
+\left[
+P,\ \alpha,\ \varepsilon_{\mathrm{eq}}^p
+\right].
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $P$ controls the phase-field crack-driving force,
+    \item $\alpha$ controls fatigue degradation,
+    \item $\varepsilon_{\mathrm{eq}}^p$ accounts for plastic strain accumulation at the crack tip.
+\end{itemize}
+
+This is one of the most important choices in the paper.
+
+\subsection{Why These Variables Are Selected}
+
+The method does not extrapolate every field variable. Instead, it updates the quantities that most directly control crack propagation.
+
+\begin{itemize}[leftmargin=*]
+    \item $P$ determines the history-dependent crack-driving energy.
+    \item $\alpha$ controls the reduction of fracture resistance under fatigue.
+    \item $\varepsilon_{\mathrm{eq}}^p$ accounts for plastic accumulation around the crack tip.
+\end{itemize}
+
+Thus, the crack propagation path and rate can be predicted without explicitly extrapolating all displacement and phase-field variables.
+
+\subsection{Evolution Rate of $\beta$}
+
+The evolution rate of $\bm{\beta}$ at cycle $N$ is defined as
+
+\[
+\bm{v}_N
+=
+\left.
+\frac{\partial \bm{\beta}}{\partial N}
+\right|_N.
+\]
+
+In discrete form,
+
+\[
+\bm{v}_N
+=
+\bm{\beta}_N-\bm{\beta}_{N-1}.
+\]
+
+This is the cycle-to-cycle change of the variable vector.
+
+\subsection{Trapezoidal Estimate of Variable Change}
+
+The change in $\bm{\beta}$ over a cycle jump $\Delta N$ is approximated as
+
+\[
+\Delta \bm{\beta}
+=
+\Delta N
+\frac{
+\bm{v}_N+\bm{v}_{N+\Delta N}
+}{2}.
+\]
+
+Therefore,
+
+\[
+\bm{\beta}_{N+\Delta N}
+=
+\bm{\beta}_{N}
++
+\Delta N
+\frac{
+\bm{v}_N+\bm{v}_{N+\Delta N}
+}{2}.
+\]
+
+\subsection{Earlier Second-Order Taylor Form}
+
+Earlier explicit cycle-jump methods approximate the variable update as
+
+\[
+\bm{\beta}_{N+\Delta N}
+=
+\bm{\beta}_N
++
+\Delta N\bm{v}_N
++
+\frac{\Delta N^2}{2}\bm{a}_N.
+\]
+
+Here,
+
+\[
+\bm{a}_N
+=
+\bm{v}_N-\bm{v}_{N-1}.
+\]
+
+This assumes that the evolution rate $\bm{v}$ changes linearly during the jump.
+
+\subsection{Modified Evolution Rate for Nonlinear Evolution}
+
+Li et al. modify the evolution rate to better account for nonlinear evolution:
+
+\[
+\bm{v}_{N+\Delta N}
+=
+\bm{v}_N
++
+\Delta N\bm{a}_N
++
+\frac{\Delta N^2}{2}
+(\bm{a}_N-\bm{a}_{N-1}).
+\]
+
+Substituting this into the trapezoidal expression gives
+
+\[
+\bm{\beta}_{N+\Delta N}
+=
+\bm{\beta}_N
++
+\Delta N\bm{v}_N
++
+\frac{\Delta N^2}{2}\bm{a}_N
++
+\frac{\Delta N^3}{4}
+(\bm{a}_N-\bm{a}_{N-1}).
+\]
+
+\subsection{Expression Using Previous Cycle Values}
+
+Using
+
+\[
+\bm{v}_N
+=
+\bm{\beta}_N-\bm{\beta}_{N-1},
+\]
+
+and
+
+\[
+\bm{a}_N
+=
+\bm{v}_N-\bm{v}_{N-1},
+\]
+
+the update becomes
+
+\[
+\begin{aligned}
+\bm{\beta}_{N+\Delta N}
+&=
+\bm{\beta}_N
++
+\Delta N
+(\bm{\beta}_N-\bm{\beta}_{N-1}) \\
+&\quad
++
+\frac{\Delta N^2}{2}
+(\bm{\beta}_N-2\bm{\beta}_{N-1}+\bm{\beta}_{N-2}) \\
+&\quad
++
+\frac{\Delta N^3}{4}
+(\bm{\beta}_N-3\bm{\beta}_{N-1}+3\bm{\beta}_{N-2}-\bm{\beta}_{N-3}).
+\end{aligned}
+\]
+
+\subsection{Adapted Formula Using Three Complete Cycles}
+
+To avoid computing four complete cycles, the paper uses the beginning value of cycle $N-2$:
+
+\[
+\begin{aligned}
+\bm{\beta}_{q,N+\Delta N}
+&=
+\bm{\beta}_{q,N}
++
+\Delta N
+(\bm{\beta}_{q,N}-\bm{\beta}_{q,N-1}) \\
+&\quad
++
+\frac{\Delta N^2}{2}
+(\bm{\beta}_{q,N}-2\bm{\beta}_{q,N-1}+\bm{\beta}_{q,N-2}) \\
+&\quad
++
+\frac{\Delta N^3}{4}
+(\bm{\beta}_{q,N}-3\bm{\beta}_{q,N-1}+3\bm{\beta}_{q,N-2}-\bm{\beta}_{0,N-2}).
+\end{aligned}
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item subscript $q$ denotes the end of a cycle,
+    \item subscript $0$ denotes the beginning of a cycle,
+    \item $\bm{\beta}_{q,N}$ is the value at the end of cycle $N$,
+    \item $\bm{\beta}_{0,N-2}$ is the value at the beginning of cycle $N-2$.
+\end{itemize}
+
+\subsection{Incremental Update Form}
+
+Because the evolution expression is nonlinear, the jump interval is divided into unit intervals. The final update is written as
+
+\[
+\bm{\beta}_{q,N+\Delta N}
+=
+\bm{\beta}_{q,N}
++
+\sum_{i=0}^{\Delta N-1}
+\Delta \bm{\beta}_i.
+\]
+
+The interval increment is
+
+\[
+\begin{aligned}
+\Delta \bm{\beta}_i
+&=
+(\bm{\beta}_{q,N+i}-\bm{\beta}_{q,N+i-1}) \\
+&\quad
++
+\frac{1}{2}
+(\bm{\beta}_{q,N+i}-2\bm{\beta}_{q,N+i-1}+\bm{\beta}_{q,N+i-2}) \\
+&\quad
++
+\frac{1}{4}
+(\bm{\beta}_{q,N+i}-3\bm{\beta}_{q,N+i-1}+3\bm{\beta}_{q,N+i-2}-\bm{\beta}_{0,N+i-2}).
+\end{aligned}
+\]
+
+This recursive update is used during the explicit cycle-jump step.
+
+\subsection{Adaptive Cycle-Jump Size}
+
+The cycle-jump size $\Delta N$ is selected adaptively based on phase-field evolution.
+
+The phase field after a proposed jump is estimated as
+
+\[
+\phi_{N+\Delta N}
+=
+\phi_N
++
+\Delta N(\phi_N-\phi_{N-1})
++
+\frac{\Delta N^2}{2}
+(\phi_N-2\phi_{N-1}+\phi_{N-2}).
+\]
+
+The adaptive condition is
+
+\[
+\Delta \phi_{N+\Delta N}
+\leq
+\phi_{\mathrm{cr}}.
+\]
+
+Here, $\phi_{\mathrm{cr}}$ is the allowable threshold for the phase-field change.
+
+\subsection{Threshold for Phase-Field Evolution}
+
+The threshold is defined as
+
+\[
+\phi_{\mathrm{cr}}
+=
+\delta_{\mathrm{cr}}\chi_{\mathrm{cr}}\phi.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\delta_{\mathrm{cr}}$ is a correction coefficient related to the phase-field evolution rate,
+    \item $\chi_{\mathrm{cr}}$ is an upper-limit correction factor,
+    \item $\phi$ is the current phase-field value.
+\end{itemize}
+
+\subsection{Correction Coefficient}
+
+The correction coefficient is
+
+\[
+\delta_{\mathrm{cr},N}
+=
+\frac{1}{
+1+
+\left(
+\left.
+\dfrac{\partial^2\phi}{\partial N^2}
+\right|_N
+\right)
+/
+\left(
+\left.
+\dfrac{\partial \phi}{\partial N}
+\right|_N
+\right)
+}.
+\]
+
+In discrete form,
+
+\[
+\delta_{\mathrm{cr},N}
+=
+\frac{\phi_N-\phi_{N-1}}
+{
+(\phi_N-\phi_{N-1})
++
+(\phi_N-2\phi_{N-1}+\phi_{N-2})
+}.
+\]
+
+\subsection{Final Adaptive Criterion}
+
+Combining the phase-field prediction and threshold gives
+
+\[
+\begin{aligned}
+&\Delta N(\phi_N-\phi_{N-1})
++
+\frac{\Delta N^2}{2}
+(\phi_N-2\phi_{N-1}+\phi_{N-2}) \\
+&\leq
+\frac{\phi_N-\phi_{N-1}}
+{
+(\phi_N-\phi_{N-1})
++
+(\phi_N-2\phi_{N-1}+\phi_{N-2})
+}
+\chi_{\mathrm{cr}}\phi_N.
+\end{aligned}
+\]
+
+This criterion is solved iteratively to obtain the allowable cycle-jump size.
+
+\subsection{Element-Wise Jump Size and Global Minimum}
+
+Because the adaptive cycle-jump calculation is performed element-wise in the UEL implementation, each element may produce a different jump size.
+
+The element-wise jump size is stored as
+
+\[
+\Delta N(i,e)
+=
+\Delta N_{i,e},
+\]
+
+where $i$ is the node number and $e$ is the element number.
+
+The global jump size is then chosen as
+
+\[
+\Delta N_{\min}
+=
+\min
+\left(
+\Delta N(i,e)
+\right)
+-
+1.
+\]
+
+This makes the most restrictive crack-tip region control the global jump.
+
+\subsection{Complete Adaptive Explicit Cycle-Jump Algorithm}
+
+The algorithm is:
+
+\begin{enumerate}[leftmargin=*]
+    \item Compute three complete cycles.
+    \item Store
+    \[
+    \bm{\beta}_{0,N-2},
+    \quad
+    \bm{\beta}_{q,N-2},
+    \quad
+    \bm{\beta}_{q,N-1},
+    \quad
+    \bm{\beta}_{q,N}.
+    \]
+    \item Compute the phase-field threshold $\phi_{\mathrm{cr}}$.
+    \item Initialize trial cycle-jump size $\Delta N=1$.
+    \item Estimate $\Delta \phi_{N+\Delta N}$.
+    \item Increase $\Delta N$ while
+    \[
+    \Delta \phi_{N+\Delta N}\leq \phi_{\mathrm{cr}}.
+    \]
+    \item Stop if the maximum allowed jump size is reached.
+    \item Store element-wise jump sizes.
+    \item Select the global minimum jump size.
+    \item Update $\bm{\beta}$ using the recursive cycle-jump formula.
+    \item Solve for the displacement and phase fields after the jump.
+    \item Continue with the next acceleration period.
+\end{enumerate}
+
+\subsection{Behavior of the Adaptive Jump Size}
+
+The adaptive jump size usually has three stages:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Initial stage}: $\Delta N$ is small because phase-field evolution near the initial crack tip changes rapidly.
+    \item \textbf{Stable propagation stage}: $\Delta N$ becomes large because crack growth is relatively stable.
+    \item \textbf{Final failure stage}: $\Delta N$ decreases again because crack propagation accelerates rapidly.
+\end{enumerate}
+
+Thus, the method automatically balances accuracy and efficiency.
+
+\subsection{Implementation in Abaqus}
+
+The method is implemented in Abaqus using:
+
+\begin{itemize}[leftmargin=*]
+    \item \texttt{UEL} for displacement and phase-field equations,
+    \item \texttt{UMAT} with CPE4 elements as a post-processing layer,
+    \item return mapping for the plastic constitutive models,
+    \item staggered solution of displacement and phase field.
+\end{itemize}
+
+\subsection{Numerical Validation Cases}
+
+The method is verified using several examples:
+
+\begin{itemize}[leftmargin=*]
+    \item single-edge notched tension specimen,
+    \item single-edge notched shear specimen,
+    \item three-point bending specimen,
+    \item three-crack square plate under biaxial loading,
+    \item compact tension specimen.
+\end{itemize}
+
+\subsection{Main Numerical Results}
+
+The paper shows that the proposed method:
+
+\begin{itemize}[leftmargin=*]
+    \item reproduces fatigue crack paths accurately,
+    \item predicts fatigue crack propagation life with low relative error,
+    \item works for elastic and elasto-plastic materials,
+    \item works for different plasticity models,
+    \item significantly reduces calculation time,
+    \item reproduces Paris-law behavior in the compact tension example.
+\end{itemize}
+
+Most reported relative errors are below approximately $5\%$ for the tested cases.
+
+\subsection{Paris Law Verification}
+
+For the compact tension specimen, the paper checks whether the accelerated simulation follows Paris' law:
+
+\[
+\frac{da}{dN}
+=
+L(\Delta K)^m.
+\]
+
+The stress intensity factor range is calculated as
+
+\[
+\begin{aligned}
+\Delta K
+&=
+\frac{\Delta F}{B\sqrt{W}}
+\frac{2+a/W}{(1-a/W)^{1.5}}
+\left[
+0.886
++
+4.64\left(\frac{a}{W}\right)
+-
+13.32\left(\frac{a}{W}\right)^2
++
+14.72\left(\frac{a}{W}\right)^3
+-
+5.6\left(\frac{a}{W}\right)^4
+\right].
+\end{aligned}
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $a$ is crack length,
+    \item $B$ is specimen thickness,
+    \item $W$ is specimen width,
+    \item $\Delta F$ is the load range.
+\end{itemize}
+
+The paper reports that the accelerated and unaccelerated $\Delta K$--$da/dN$ curves are consistent.
+
+\subsection{Key Technical Takeaways}
+
+\begin{itemize}[leftmargin=*]
+    \item The method uses an explicit cycle-jump strategy.
+    \item Three complete cycles are computed before each jump.
+    \item The jump variables are
+    \[
+    \bm{\beta}
+    =
+    [P,\alpha,\varepsilon_{\mathrm{eq}}^p].
+    \]
+    \item The proposed update formula includes nonlinear evolution of the variable rate.
+    \item The adaptive jump size is controlled by phase-field evolution.
+    \item The global jump size is the minimum value over elements and nodes.
+    \item Crack-tip phase-field evolution naturally controls the jump size.
+    \item The method is suitable for elasto-plastic fatigue crack propagation.
+\end{itemize}
+
+\subsection{Limitations}
+
+\begin{itemize}[leftmargin=*]
+    \item The method has been verified mainly for classical elasto-plastic constitutive models.
+    \item More complex viscoplastic models need further study.
+    \item Non-proportional multiaxial loading requires further research.
+    \item The choice of crack-driving force and plasticity model can affect the result.
+    \item The adaptive correction factor $\chi_{\mathrm{cr}}$ influences both accuracy and efficiency.
+\end{itemize}
+
+\subsection{Relevance for Thesis Work}
+
+This paper is important because it connects cycle jumping with elasto-plastic phase-field fatigue crack propagation.
+
+For thesis work, the most important lessons are:
+
+\begin{itemize}[leftmargin=*]
+    \item cycle-jump methods can be adapted to phase-field fatigue,
+    \item the crack-driving variables should be selected carefully,
+    \item plastic strain accumulation must be included for elasto-plastic fatigue,
+    \item phase-field evolution is a good adaptive criterion for crack-growth simulations,
+    \item using only selected variables can reduce computational cost,
+    \item adaptive jump control is necessary because crack growth is strongly nonlinear near failure.
+\end{itemize}
+
+\subsection{One-Sentence Summary}
+
+Li et al.'s method accelerates elasto-plastic phase-field fatigue crack propagation by explicitly extrapolating the crack-driving variables $P$, $\alpha$, and $\varepsilon_{\mathrm{eq}}^p$ over skipped cycles while adaptively selecting the jump size from the current phase-field evolution.
+
+% =========================================================
+\section{Cheng, Hu and Kirka (2022): Cycle-Jump Acceleration Method for Crystal Plasticity High-Cycle Fatigue}
+
+\subsection{Full Reference}
+
+Cheng, J., Hu, X., and Kirka, M. (2022).
+\textit{A cycle-jump acceleration method for the crystal plasticity simulation of high cycle fatigue of the metallic microstructure}.
+International Journal of Fatigue.
+
+\subsection{Main Problem Addressed}
+
+This paper develops a cycle-jump acceleration method for crystal plasticity finite element simulations of high-cycle fatigue in metallic microstructures.
+
+Direct cycle-by-cycle crystal plasticity finite element simulation is computationally expensive because:
+
+\begin{itemize}[leftmargin=*]
+    \item each loading and unloading cycle requires many finite element increments,
+    \item each integration point contains many crystal plasticity state variables,
+    \item high-cycle fatigue may require thousands or millions of cycles,
+    \item microstructure-level stress redistribution evolves slowly over cycles.
+\end{itemize}
+
+The proposed method accelerates the simulation by extrapolating the internal crystal plasticity variables over skipped cycles and then using a re-equilibration step to recover the displacement and stress fields.
+
+\subsection{Main Idea of the Method}
+
+The central idea is:
+
+\begin{quote}
+Compute a few complete cycles, estimate the evolution rate of the crystal plasticity internal variables, extrapolate these variables over $\Delta N$ skipped cycles, then perform a re-equilibration step so that the finite element displacement and stress fields become consistent with the extrapolated material state.
+\end{quote}
+
+Unlike some structural cycle-jump methods, this method does not directly extrapolate displacement or stress. Instead, it extrapolates the internal variables that store the material history.
+
+\subsection{Microstructure-Based Model}
+
+The paper studies an ACMZ aluminium alloy microstructure obtained from EBSD data.
+
+The microstructure contains:
+
+\begin{itemize}[leftmargin=*]
+    \item aluminium matrix grains,
+    \item Cu-based grain-boundary particles,
+    \item grain orientations from EBSD,
+    \item finite element mesh representation of the microstructure.
+\end{itemize}
+
+The aluminium grains are modeled using crystal plasticity, while the Cu-based particles are treated as elastic.
+
+\subsection{Crystal Plasticity Kinematics}
+
+The total deformation gradient is multiplicatively decomposed into elastic and plastic parts:
+
+\[
+\bm{F}
+=
+\bm{F}^e \bm{F}^p.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\bm{F}$ is the total deformation gradient,
+    \item $\bm{F}^e$ is the elastic deformation gradient,
+    \item $\bm{F}^p$ is the plastic deformation gradient.
+\end{itemize}
+
+The plastic velocity gradient is
+
+\[
+\bm{L}^p
+=
+\dot{\bm{F}}^p
+(\bm{F}^p)^{-1}.
+\]
+
+For crystal plasticity, it is written as the sum of slip-system contributions:
+
+\[
+\bm{L}^p
+=
+\sum_{\alpha}
+\dot{\gamma}^{\alpha}
+\bm{s}^{\alpha}
+\otimes
+\bm{m}^{\alpha}.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\alpha$ is the slip-system index,
+    \item $\dot{\gamma}^{\alpha}$ is the slip rate on slip system $\alpha$,
+    \item $\bm{s}^{\alpha}$ is the slip direction,
+    \item $\bm{m}^{\alpha}$ is the slip-plane normal.
+\end{itemize}
+
+\subsection{Stress Relation}
+
+The second Piola--Kirchhoff stress is obtained from the elastic strain measure:
+
+\[
+\bm{S}
+=
+\mathbb{C}^e
+:
+\bm{E}^e.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\bm{S}$ is the second Piola--Kirchhoff stress,
+    \item $\mathbb{C}^e$ is the anisotropic elastic stiffness tensor,
+    \item $\bm{E}^e$ is the elastic Green strain.
+\end{itemize}
+
+The Cauchy stress is obtained by pushing forward the stress measure to the current configuration.
+
+\subsection{Power-Law Slip Rule}
+
+The slip rate on slip system $\alpha$ is governed by a power-law relation:
+
+\[
+\dot{\gamma}^{\alpha}
+=
+\dot{\gamma}_0
+\left|
+\frac{
+\tau^{\alpha}-\chi^{\alpha}
+}{
+g^{\alpha}
+}
+\right|^{1/m}
+\mathrm{sign}
+\left(
+\tau^{\alpha}-\chi^{\alpha}
+\right).
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\dot{\gamma}_0$ is the reference slip rate,
+    \item $\tau^{\alpha}$ is the resolved shear stress,
+    \item $\chi^{\alpha}$ is the slip-system backstress,
+    \item $g^{\alpha}$ is the slip resistance,
+    \item $m$ is the strain-rate sensitivity parameter.
+\end{itemize}
+
+\subsection{Accumulated Slip}
+
+The accumulated slip is
+
+\[
+\gamma
+=
+\int_0^t
+\sum_{\alpha}
+\left|
+\dot{\gamma}^{\alpha}
+\right|
+\,d\xi.
+\]
+
+This variable measures the total accumulated slip activity in the crystal.
+
+\subsection{Slip Resistance Hardening}
+
+The slip resistance evolves according to a saturation-type hardening law:
+
+\[
+\begin{aligned}
+g^{\alpha}
+&=
+g_0^{\alpha}
++
+\left(
+g_s^{\alpha}
+-
+g_0^{\alpha}
+\right)
+\left[
+1
+-
+\exp
+\left(
+-
+\frac{
+h_0^{\alpha}\gamma
+}{
+g_s^{\alpha}
+}
+\right)
+\right].
+\end{aligned}
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $g_0^{\alpha}$ is the initial slip resistance,
+    \item $g_s^{\alpha}$ is the saturation slip resistance,
+    \item $h_0^{\alpha}$ is the hardening parameter,
+    \item $\gamma$ is the accumulated slip.
+\end{itemize}
+
+\subsection{Hall--Petch Grain-Size Dependence}
+
+The initial slip resistance includes grain-size dependence through a Hall--Petch type relation:
+
+\[
+g_0^{\alpha}
+=
+\bar{g}_0^{\alpha}
++
+\frac{k}{\sqrt{d^{\alpha}}}.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\bar{g}_0^{\alpha}$ is the base initial slip resistance,
+    \item $k$ is the Hall--Petch coefficient,
+    \item $d^{\alpha}$ is the equivalent grain size.
+\end{itemize}
+
+\subsection{Armstrong--Frederick Backstress Evolution}
+
+The slip-system backstress evolves according to an Armstrong--Frederick type law:
+
+\[
+\dot{\chi}^{\alpha}
+=
+c\dot{\gamma}^{\alpha}
+-
+d\chi^{\alpha}
+\left|
+\dot{\gamma}^{\alpha}
+\right|.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $c$ controls kinematic hardening,
+    \item $d$ controls dynamic recovery,
+    \item $\chi^{\alpha}$ shifts the slip response and stores cyclic hardening memory.
+\end{itemize}
+
+\subsection{Internal Variable Set for Cycle Jumping}
+
+The crystal plasticity material state is described by the internal variable set
+
+\[
+\bm{\mathcal{S}}
+=
+\left\{
+\bm{F}^p,\ \gamma,\ \chi^{\alpha}
+\right\}.
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $\bm{F}^p$ stores permanent plastic deformation,
+    \item $\gamma$ stores accumulated slip,
+    \item $\chi^{\alpha}$ stores the slip-system backstress.
+\end{itemize}
+
+This internal variable set is responsible for the path dependence of the crystal plasticity finite element solution.
+
+\subsection{Core Principle of the Cycle-Jump Method}
+
+The cycle-jump procedure consists of five main steps:
+
+\begin{enumerate}[leftmargin=*]
+    \item Compute a sufficient number of complete cycles.
+    \item Evaluate the evolution rate of the internal variables at each integration point.
+    \item Extrapolate the internal variables over $\Delta N$ skipped cycles.
+    \item Replace the internal variables in the UMAT by the extrapolated values.
+    \item Perform a re-equilibration step to recover consistent displacement and stress fields.
+\end{enumerate}
+
+\subsection{Two Key Postulations}
+
+The method relies on two important assumptions.
+
+\subsubsection*{Postulation 1}
+
+The internal variables evolve slowly and smoothly enough during high-cycle plasticity that they can be extrapolated over a limited number of cycles without significant loss of accuracy.
+
+\subsubsection*{Postulation 2}
+
+If the extrapolated internal variables are accurate, then the displacement and stress fields after the skipped cycles can be recovered accurately by a finite element re-equilibration step.
+
+\subsection{Why Re-Equilibration Is Needed}
+
+During the skipped cycles, plastic deformation accumulates. The extrapolated internal variables represent this accumulated plastic state, but the total displacement field has not yet been updated.
+
+Therefore, after the jump:
+
+\begin{itemize}[leftmargin=*]
+    \item the plastic strain state is updated,
+    \item the total deformation field is still inconsistent,
+    \item elastic strain and stress are not yet equilibrated.
+\end{itemize}
+
+The re-equilibration step fixes the extrapolated internal variables and lets the implicit finite element solver find a compatible displacement and stress field.
+
+This is why the method is naturally suited to Abaqus/Standard and implicit finite element simulation.
+
+\subsection{Taylor Expansion of Internal Variables}
+
+At integration point $i$, the internal variable array after a cycle jump is approximated by a Taylor expansion in cycle space:
+
+\[
+\bm{\mathcal{S}}_{i}^{N+\Delta N}
+=
+\bm{\mathcal{S}}_{i}^{N}
++
+\Delta N
+\left(
+\bm{\mathcal{S}}_{i}
+\right)'
++
+\frac{\Delta N^2}{2}
+\left(
+\bm{\mathcal{S}}_{i}
+\right)''
++
+O(\Delta N^3).
+\]
+
+Here:
+
+\begin{itemize}[leftmargin=*]
+    \item $N$ is the current cycle number,
+    \item $\Delta N$ is the number of skipped cycles,
+    \item $\bm{\mathcal{S}}_{i}^{N}$ is the internal state at cycle $N$,
+    \item $(\bm{\mathcal{S}}_i)'$ is the first derivative with respect to cycle number,
+    \item $(\bm{\mathcal{S}}_i)''$ is the second derivative with respect to cycle number.
+\end{itemize}
+
+\subsection{Backward Difference Approximation}
+
+The first derivative is approximated by a backward difference:
+
+\[
+\left(
+\bm{\mathcal{S}}_i
+\right)'
+\approx
+\bm{\mathcal{S}}_i^N
+-
+\bm{\mathcal{S}}_i^{N-1}.
+\]
+
+The second derivative is approximated as
+
+\[
+\left(
+\bm{\mathcal{S}}_i
+\right)''
+\approx
+\bm{\mathcal{S}}_i^N
+-
+2\bm{\mathcal{S}}_i^{N-1}
++
+\bm{\mathcal{S}}_i^{N-2}.
+\]
+
+Therefore, at least three complete cycles are required before each jump to evaluate the first and second cycle-space derivatives.
+
+\subsection{Linear Extrapolation Used in the Paper}
+
+Although the Taylor expansion contains higher-order terms, the implemented method uses a backward Eulerian linear approximation:
+
+\[
+\bm{\mathcal{S}}_i^{N+\Delta N}
+=
+\bm{\mathcal{S}}_i^N
++
+\Delta N
+\left(
+\bm{\mathcal{S}}_i
+\right)'.
+\]
+
+This is accurate only if the neglected second-order term is sufficiently small.
+
+\subsection{Adaptive Error Criterion}
+
+To control the jump length, the second-order term is required to be small compared with the current value of the internal variable:
+
+\[
+\frac{\Delta N^2}{2}
+\left|
+\left(
+\bm{\mathcal{S}}_i
+\right)''
+\right|
+\leq
+\left|
+\bm{\mathcal{S}}_i^N
+\right|
+\epsilon.
+\]
+
+Here, $\epsilon$ is the accuracy control parameter.
+
+\subsection{Allowed Local Jump Size}
+
+Solving the above inequality gives the allowable local jump size:
+
+\[
+\Delta N_i
+\leq
+\sqrt{
+\frac{
+2
+\left|
+\bm{\mathcal{S}}_i^N
+\right|
+\epsilon
+}{
+\left|
+\left(
+\bm{\mathcal{S}}_i
+\right)''
+\right|
+}
+}.
+\]
+
+This equation is the main adaptive jump-size criterion in the paper.
+
+\subsubsection*{Interpretation}
+
+If the second derivative is small,
+
+\[
+\left|
+\left(
+\bm{\mathcal{S}}_i
+\right)''
+\right|
+\rightarrow 0,
+\]
+
+then the state variable evolves almost linearly and a large jump is allowed.
+
+If the second derivative is large, the material state is changing nonlinearly and the jump size must be reduced.
+
+\subsection{Global Cycle-Jump Size}
+
+The local allowable jump size is calculated at every integration point.
+
+The global jump size is selected as
+
+\[
+\Delta N
+=
+\min_i
+\left\lfloor
+\Delta N_i
+\right\rfloor.
+\]
+
+An upper bound is also imposed:
+
+\[
+\Delta N
+\leq
+\Delta N_{\max}.
+\]
+
+Therefore, the most rapidly evolving integration point controls the global cycle jump.
+
+\subsection{Complete Cycle-Jump Algorithm}
+
+The full algorithm is:
+
+\begin{enumerate}[leftmargin=*]
+    \item Start at cycle $N$.
+    \item Compute at least three full cycles explicitly.
+    \item Store the internal variables
+    \[
+    \bm{\mathcal{S}}^N,
+    \quad
+    \bm{\mathcal{S}}^{N-1},
+    \quad
+    \bm{\mathcal{S}}^{N-2}.
+    \]
+    \item Compute
+    \[
+    (\bm{\mathcal{S}})'
+    \quad \text{and} \quad
+    (\bm{\mathcal{S}})''.
+    \]
+    \item Calculate the local allowable jump size $\Delta N_i$ at each integration point.
+    \item Select the global value
+    \[
+    \Delta N
+    =
+    \min_i
+    \left\lfloor
+    \Delta N_i
+    \right\rfloor.
+    \]
+    \item Limit the jump by
+    \[
+    \Delta N \leq \Delta N_{\max}.
+    \]
+    \item Extrapolate the internal variables:
+    \[
+    \bm{\mathcal{S}}^{N+\Delta N}
+    =
+    \bm{\mathcal{S}}^N
+    +
+    \Delta N(\bm{\mathcal{S}})'.
+    \]
+    \item Replace the UMAT state variables by the extrapolated values.
+    \item Run the re-equilibration virtual increment.
+    \item Update the effective cycle number:
+    \[
+    N \leftarrow N+\Delta N.
+    \]
+    \item Continue with the next block of cycles.
+\end{enumerate}
+
+\subsection{Known-State-Variable Cycle-Jump Validation}
+
+The paper first validates the method using a known-state-variable cycle-jump test.
+
+In this test:
+
+\begin{itemize}[leftmargin=*]
+    \item a normal cycle-by-cycle reference simulation is first performed,
+    \item internal variables are stored at every cycle,
+    \item a second simulation skips cycles by reading the already-known reference internal variables,
+    \item the result is compared with the reference solution.
+\end{itemize}
+
+This test checks whether accurate internal variables are sufficient to recover the correct displacement and stress fields through re-equilibration.
+
+The result shows that if the internal variables are known accurately, the skipped-cycle displacement and stress fields can be recovered accurately.
+
+\subsection{Implementation in Abaqus/Standard}
+
+The method is implemented in Abaqus/Standard using user subroutines:
+
+\begin{itemize}[leftmargin=*]
+    \item \texttt{UEXTERNALDB},
+    \item \texttt{UMAT},
+    \item \texttt{DLOAD},
+    \item \texttt{DISP}.
+\end{itemize}
+
+\subsection{Role of \texttt{UEXTERNALDB}}
+
+The \texttt{UEXTERNALDB} subroutine is used to manage global internal-variable arrays.
+
+Its main tasks are:
+
+\begin{itemize}[leftmargin=*]
+    \item initialize arrays for internal variables at all integration points,
+    \item store internal variables from previous cycles,
+    \item compute first and second cycle-space derivatives,
+    \item determine the jump size $\Delta N$,
+    \item extrapolate internal variables after the jump,
+    \item update the effective cycle number and effective time.
+\end{itemize}
+
+\subsection{Role of \texttt{UMAT}}
+
+The \texttt{UMAT} subroutine performs the crystal plasticity constitutive calculation.
+
+During ordinary cycles:
+
+\[
+\texttt{UMAT}
+\quad
+\rightarrow
+\quad
+\text{regular crystal plasticity update}.
+\]
+
+After a cycle jump:
+
+\[
+\texttt{UMAT}
+\quad
+\rightarrow
+\quad
+\text{read extrapolated internal variables}.
+\]
+
+Then the re-equilibration step is performed by fixing the extrapolated state variables and computing stress and tangent stiffness for virtual increments.
+
+\subsection{Role of \texttt{DLOAD} and \texttt{DISP}}
+
+For load-controlled cyclic plasticity:
+
+\begin{itemize}[leftmargin=*]
+    \item \texttt{DLOAD} applies periodic loading based on effective time,
+    \item during re-equilibration, zero load increment is applied.
+\end{itemize}
+
+For displacement-controlled cyclic plasticity:
+
+\begin{itemize}[leftmargin=*]
+    \item \texttt{DISP} applies periodic displacement based on effective time,
+    \item during re-equilibration, zero displacement increment is applied.
+\end{itemize}
+
+\subsection{Effective Cycle Number and Virtual Time}
+
+The paper distinguishes between:
+
+\begin{itemize}[leftmargin=*]
+    \item Abaqus step time,
+    \item effective cycle number,
+    \item effective simulation time.
+\end{itemize}
+
+After a jump,
+
+\[
+N_{\mathrm{eff}}
+\leftarrow
+N_{\mathrm{eff}}+\Delta N.
+\]
+
+The re-equilibration increment is called a virtual increment because it is not a physical loading increment. It is only used to restore equilibrium after updating the internal material state.
+
+\subsection{Acceleration Behavior}
+
+The jump size is small during early cycles because the material state evolves rapidly during initial plastic redistribution.
+
+As the material response stabilizes, the internal variables evolve more smoothly and the allowable jump size increases.
+
+Therefore:
+
+\[
+\text{rapid evolution}
+\quad
+\Rightarrow
+\quad
+\Delta N \text{ small},
+\]
+
+\[
+\text{stable evolution}
+\quad
+\Rightarrow
+\quad
+\Delta N \text{ large}.
+\]
+
+\subsection{Validation Cases}
+
+The paper validates the method under several conditions:
+
+\begin{itemize}[leftmargin=*]
+    \item load-controlled cyclic plasticity with peak stress of 120 MPa and $R=0$,
+    \item higher load magnitude with peak stress of 150 MPa,
+    \item negative load ratio case with $R=-0.8$,
+    \item strain-controlled cyclic plasticity,
+    \item elastic shakedown condition,
+    \item dislocation-density-based crystal plasticity with SSD and GND.
+\end{itemize}
+
+\subsection{Important Numerical Findings}
+
+The paper reports the following trends:
+
+\begin{itemize}[leftmargin=*]
+    \item At lower load, the acceleration efficiency is very high because the internal variables evolve smoothly after initial stabilization.
+    \item At higher load, the stress and internal variables evolve faster, so the acceleration efficiency is lower.
+    \item A negative $R$ ratio causes stronger nonlinear kinematic hardening and reduces the acceleration efficiency.
+    \item Strain-controlled cyclic plasticity can also be accelerated successfully.
+    \item Elastic shakedown reduces acceleration efficiency during the transition stage, but the acceleration rate recovers after the microstructure becomes mostly elastic.
+    \item Dislocation-density-based crystal plasticity can also be accelerated, although GND effects may reduce efficiency because they create localized deformation near grain boundaries.
+\end{itemize}
+
+\subsection{Accuracy Measures}
+
+The paper assesses accuracy by comparing:
+
+\begin{itemize}[leftmargin=*]
+    \item displacement evolution,
+    \item von Mises stress distribution,
+    \item accumulated slip evolution,
+    \item mean absolute error in the stress field.
+\end{itemize}
+
+For the main validation cases, the accelerated results show good agreement with the cycle-by-cycle reference solution.
+
+\subsection{Key Technical Takeaways}
+
+\begin{itemize}[leftmargin=*]
+    \item The method accelerates CPFE high-cycle fatigue simulations by extrapolating internal variables, not external response quantities.
+    \item The internal variables used are
+    \[
+    \bm{\mathcal{S}}
+    =
+    \{\bm{F}^p,\gamma,\chi^\alpha\}.
+    \]
+    \item A backward Eulerian linear extrapolation is used.
+    \item The jump size is controlled by the second cycle-space derivative of the internal variables.
+    \item The global jump size is the minimum over all integration points.
+    \item Re-equilibration is essential after each jump.
+    \item The method is well suited for Abaqus/Standard because re-equilibration requires an implicit solver.
+\end{itemize}
+
+\subsection{Limitations}
+
+\begin{itemize}[leftmargin=*]
+    \item The method assumes that internal variables evolve smoothly enough over skipped cycles.
+    \item Strongly nonlinear evolution reduces the allowable jump size.
+    \item Reversing an inaccurate jump is difficult in commercial Abaqus.
+    \item The method is currently tied to implicit finite element simulation.
+    \item More complex dislocation-density or higher-order GND models may reduce acceleration efficiency.
+\end{itemize}
+
+\subsection{Relevance for Thesis Work}
+
+This paper is highly relevant for cycle-jump implementation in user material subroutines because it clearly shows how cycle jumping can be performed at the internal-variable level.
+
+For thesis work, the most important lessons are:
+
+\begin{itemize}[leftmargin=*]
+    \item do not extrapolate only stress or displacement;
+    \item extrapolate the material history variables stored inside the constitutive model;
+    \item use previous cycles to compute cycle-space derivatives;
+    \item choose the jump size based on an error criterion;
+    \item after jumping, perform re-equilibration to recover a consistent stress and displacement field;
+    \item use global arrays or external databases to manage state variables across cycles.
+\end{itemize}
+
+\subsection{One-Sentence Summary}
+
+Cheng, Hu and Kirka's method accelerates high-cycle crystal plasticity fatigue simulations by extrapolating the internal variables $\bm{F}^p$, accumulated slip $\gamma$, and slip-system backstress $\chi^\alpha$ over skipped cycles, then performing an implicit re-equilibration step in Abaqus/Standard to recover the consistent displacement and stress fields.
+
+% =========================================================
+\section{Comparative Summary of Cycle-Jump Techniques}
+
+\begin{landscape}
+\begin{table}[htbp]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\linewidth}{p{3.1cm} Y Y Y Y}
+\toprule
+\textbf{Comparison Point}
+&
+\textbf{Cojocaru and Karlsson (2006)}
+&
+\textbf{Nesnas and Saanouni (2000)}
+&
+\textbf{Li et al. (2025)}
+&
+\textbf{Cheng, Hu and Kirka (2022)}
+\\
+\midrule
+
+\textbf{Main objective}
+&
+Accelerate finite element simulations of cyclically loaded structures with slowly evolving structural or material properties.
+&
+Accelerate numerical integration of coupled damage--viscoplastic constitutive equations under cyclic loading.
+&
+Accelerate elasto-plastic phase-field fatigue crack propagation simulations.
+&
+Accelerate crystal plasticity finite element simulations for high-cycle fatigue of metallic microstructures.
+\\
+
+\midrule
+
+\textbf{Level of application}
+&
+Structural finite element level.
+&
+Constitutive/material-point level and structural finite element level.
+&
+Phase-field finite element level using UEL/UMAT implementation.
+&
+Crystal plasticity finite element level using UMAT and global state-variable storage.
+\\
+
+\midrule
+
+\textbf{Main physical problem}
+&
+Cyclic structural evolution, especially thermal barrier coating evolution, transformation strain, oxidation-growth type problems, and slowly changing material properties.
+&
+Low-cycle fatigue with coupled viscoplasticity and damage evolution.
+&
+Fatigue crack propagation in elastic and elasto-plastic materials using phase-field fracture.
+&
+High-cycle fatigue in metallic microstructures where grain orientation, slip, particles, and local stress redistribution are important.
+\\
+
+\midrule
+
+\textbf{Variables used for cycle jump}
+&
+General finite element variables such as displacement, stress, strain, and possibly equivalent plastic strain. In the examples, displacement components $u_1$ and $u_2$ are mainly used as control variables.
+&
+Representative internal variables from the asymptotic constitutive integration, mainly $\Delta L$ and damage $D$.
+&
+Selected phase-field and plasticity variables:
+\[
+\bm{\beta}=[P,\alpha,\varepsilon_{\mathrm{eq}}^p].
+\]
+Here, $P$ is the crack-driving history field, $\alpha$ is the fatigue history variable, and $\varepsilon_{\mathrm{eq}}^p$ is equivalent plastic strain.
+&
+Crystal plasticity internal variables:
+\[
+\bm{\mathcal{S}}=\{\bm{F}^p,\gamma,\chi^\alpha\}.
+\]
+Here, $\bm{F}^p$ is plastic deformation gradient, $\gamma$ is accumulated slip, and $\chi^\alpha$ is slip-system backstress.
+\\
+
+\midrule
+
+\textbf{Type of extrapolation}
+&
+Heun-type extrapolation using the current and predicted evolution slopes.
+&
+Taylor expansion in cycle space. Two versions are discussed: direct extrapolation of all state variables or extrapolation of selected scalar variables followed by reconstruction.
+&
+Explicit nonlinear cycle-jump extrapolation. The method modifies the evolution-rate prediction to include nonlinear evolution of $\bm{\beta}$.
+&
+Backward Eulerian linear extrapolation of crystal plasticity internal variables.
+\\
+
+\midrule
+
+\textbf{Basic evolution-rate idea}
+&
+Uses slopes between characteristic values from consecutive cycles:
+\[
+s_{12}=\frac{y_1-y_2}{\Delta t_{\mathrm{cycle}}},
+\qquad
+s_{23}=\frac{y_2-y_3}{\Delta t_{\mathrm{cycle}}}.
+\]
+&
+Uses pseudo-derivatives of state variables with respect to cycle number:
+\[
+\dot{\bm{y}}_N \approx \bm{y}_{N+1}-\bm{y}_N.
+\]
+&
+Uses cycle-to-cycle evolution rate:
+\[
+\bm{v}_N=\bm{\beta}_N-\bm{\beta}_{N-1}.
+\]
+Also uses acceleration of this evolution rate.
+&
+Uses first and second backward differences of internal variables:
+\[
+(\bm{\mathcal{S}})' \approx \bm{\mathcal{S}}^N-\bm{\mathcal{S}}^{N-1},
+\]
+\[
+(\bm{\mathcal{S}})'' \approx \bm{\mathcal{S}}^N-2\bm{\mathcal{S}}^{N-1}+\bm{\mathcal{S}}^{N-2}.
+\]
+\\
+
+\midrule
+
+\textbf{Jump-size control}
+&
+Jump size is controlled by limiting the change in predicted slope:
+\[
+\Delta t^M_{y,\mathrm{jump}}
+=
+q_y\Delta t_{\mathrm{cycle}}
+\frac{|s_{12}|}{|s_{12}-s_{23}|}.
+\]
+&
+Jump size is controlled mainly by $\Delta L$ and $D$:
+\[
+\Delta N=\min(\Delta N_{\Delta L},\Delta N_D).
+\]
+&
+Jump size is adaptively controlled by phase-field evolution:
+\[
+\Delta \phi_{N+\Delta N}\leq \phi_{\mathrm{cr}}.
+\]
+The most restrictive element controls the global jump.
+&
+Jump size is controlled by requiring the second-order term to remain small:
+\[
+\frac{\Delta N^2}{2}|(\bm{\mathcal{S}}_i)''|
+\leq
+|\bm{\mathcal{S}}_i^N|\epsilon.
+\]
+\\
+
+\midrule
+
+\textbf{Global jump selection}
+&
+Minimum admissible jump over all selected variables and material points/nodes.
+&
+Minimum jump over selected control variables and integration points.
+&
+Minimum jump over all elements/nodes:
+\[
+\Delta N_{\min}=\min(\Delta N(i,e))-1.
+\]
+&
+Minimum admissible jump over all integration points:
+\[
+\Delta N=\min_i \lfloor \Delta N_i \rfloor.
+\]
+\\
+
+\midrule
+
+\textbf{Need for complete cycles before jump}
+&
+Needs at least a few complete cycles to estimate the global evolution slope.
+&
+Computes several real cycles after each jump, for example five cycles, to stabilize the solution and estimate pseudo-derivatives.
+&
+Uses three complete cycles before each acceleration period.
+&
+Needs at least three complete cycles to compute first and second cycle-space derivatives.
+\\
+
+\midrule
+
+\textbf{How accuracy is maintained}
+&
+A control function limits slope changes. If the response becomes nonlinear, the jump length automatically becomes small.
+&
+Accuracy is maintained by controlling $\Delta L$ and $D$, and by computing real cycles between jumps.
+&
+Accuracy is maintained by adaptive phase-field thresholding. The jump size decreases near rapid crack growth or final failure.
+&
+Accuracy is maintained by checking the second derivative of internal variables. Strong nonlinear evolution reduces the jump size.
+\\
+
+\midrule
+
+\textbf{Treatment after jump}
+&
+The extrapolated state is imposed into the next finite element analysis using subroutines such as UMAT, DISP, SDVINI, and UEXPAN.
+&
+The extrapolated variables are used to update or reconstruct the full constitutive state.
+&
+The variables $P$, $\alpha$, and $\varepsilon_{\mathrm{eq}}^p$ are updated, then the displacement and phase-field equations are solved.
+&
+The extrapolated internal variables are inserted into UMAT, followed by a re-equilibration virtual increment in Abaqus/Standard.
+\\
+
+\midrule
+
+\textbf{Most suitable material/model type}
+&
+General structural FE models with slowly evolving material properties or boundary conditions.
+&
+Coupled damage--viscoplastic constitutive models, especially low-cycle fatigue and damage accumulation.
+&
+Elasto-plastic phase-field fatigue fracture models, especially crack-growth simulations.
+&
+Crystal plasticity models for microstructure-sensitive high-cycle fatigue.
+\\
+
+\midrule
+
+\textbf{Best suited application}
+&
+Thermal barrier coatings, oxidation growth, transformation strain, cyclic structural evolution, and quasi-linear cyclic degradation.
+&
+UMAT-type damage--viscoplastic fatigue simulations, material-point fatigue integration, and fatigue life prediction with damage.
+&
+Abaqus UEL/UMAT phase-field fatigue crack propagation, SENT, SENS, bending, CT, and complex crack-path problems.
+&
+CPFE simulation of metallic microstructures, grain-level cyclic plasticity, slip accumulation, stress redistribution, SSD/GND-based fatigue models.
+\\
+
+\midrule
+
+\textbf{Main advantage}
+&
+Simple and general finite element cycle-jump framework with automatic jump-length control.
+&
+Efficient two-time-scale integration and reduction of stored variables by using representative variables.
+&
+Adaptive method directly connected to phase-field crack evolution; suitable for elastic and elasto-plastic crack propagation.
+&
+Very efficient for high-cycle CPFE because it extrapolates only internal variables and uses re-equilibration to recover stress/displacement.
+\\
+
+\midrule
+
+\textbf{Main limitation}
+&
+Finite element convergence after a jump does not guarantee physical accuracy; careful control variables are needed.
+&
+Accuracy depends strongly on selected variables such as $\Delta L$ and $D$, and on damage extrapolation near failure.
+&
+Adaptive correction factor $\chi_{\mathrm{cr}}$ affects accuracy and efficiency; more complex viscoplastic and multiaxial cases still need further work.
+&
+Strongly nonlinear internal-variable evolution reduces acceleration; reversing a bad jump is difficult in commercial Abaqus.
+\\
+
+\bottomrule
+\end{tabularx}
+\caption{Comparison of the four cycle-jump techniques based on their level of application, extrapolated variables, jump-control strategy, suitable model type, advantages, and limitations.}
+\label{tab:cycle_jump_comparison_papers_as_columns}
+\end{table}
+\end{landscape}
+
+% =========================================================
+\section{Next Paper}
+
+% Add the next paper summary here in the same file.
+
+% =========================================================
+\begin{thebibliography}{9}
+
+\bibitem{cojocaru2006}
+D. Cojocaru and A. M. Karlsson,
+``A simple numerical method of cycle jumps for cyclically loaded structures,''
+\textit{International Journal of Fatigue},
+vol. 28, pp. 1677--1689, 2006.
+
+\bibitem{cheng2022}
+J. Cheng, X. Hu, and M. Kirka,
+``A cycle-jump acceleration method for the crystal plasticity simulation of high cycle fatigue of the metallic microstructure,''
+\textit{International Journal of Fatigue}, 2022.
+
+\end{thebibliography}
+
+\end{document}
+
+
+

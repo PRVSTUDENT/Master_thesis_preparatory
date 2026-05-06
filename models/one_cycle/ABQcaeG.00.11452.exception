@@ -1,0 +1,36 @@
+<Description>
+   ABAQUS/ABQcaeG rank 0 received the ABORT signal
+
+</Description>
+
+<Context>
+   ABQcaeG
+</Context>
+
+<Callstack>
+</Callstack>
+
+<Memory>
+   <Current>            0 GB </Current>
+   <Resident>           0 GB </Resident>
+   <Physical>          23 GB </Physical>
+   <Limit>              0 GB </Limit>
+   <Accessible>        23 GB </Accessible>
+   <Available>         11 GB </Available>
+   <Allocator>            DL </Allocator>
+</Memory>
+
+<Swap>
+       <Size>          40 GB </Size>
+       <Used>          21 GB </Used>
+       <Free>          19 GB </Free>
+</Swap>
+
+<Directories>
+  <current> D:\TUBAF\Master_Thesis\Abaqus_trial\models\one_cycle </current> <free>    268 GB </free>   <used>    233 GB </used> 
+     <temp> C:\Users\pruth\AppData\Local\Temp </temp>    <free>     24 GB </free>
+</Directories>
+
+<Installation>
+</Installation>
+

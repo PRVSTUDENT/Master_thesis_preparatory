@@ -1,0 +1,7 @@
+aspect,viscoelasticity,metallic_cyclic_plasticity,why_not_suitable
+permanent_deformation,mainly recoverable time-dependent strain,irreversible plastic strain accumulation,viscoelasticity does not naturally represent permanent plastic flow after unloading
+yield_surface,no true yield surface evolution,yielding and evolution of the plastic domain are central,metal cyclic plasticity requires yield-surface based inelastic modeling
+bauschinger_effect,not represented in the plasticity sense,important under reverse loading,viscoelasticity does not capture reverse-yield behavior through backstress evolution
+ratcheting,not a true plastic ratcheting mechanism,progressive plastic strain accumulation under mean load is important,viscoelastic hysteresis is not equivalent to cyclic plastic ratcheting in metals
+hardening_softening,time-dependent stiffness relaxation may appear,cyclic hardening or softening depends on plastic internal-variable evolution,metal cyclic response needs constitutive hardening laws rather than only hereditary or relaxation effects
+best_use_case,polymers adhesives biological tissues and time-dependent solids,metals under cyclic plastic loading,viscoelasticity is conceptually a different class of material behavior

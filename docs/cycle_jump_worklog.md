@@ -2,6 +2,35 @@
 
 This note documents the end‑to‑end workflow we built in Abaqus/CAE 2021 to demonstrate **cycle‑jump** ideas with **small, runnable scripts**, starting from a **1‑cycle ODB** and moving toward **elastic‑plastic (history‑dependent) cycle‑jump logic**.
 
+## Phase 6 audit blocked until UMAT source is located
+
+### Objective
+- begin the UMAT audit by locating the current constitutive source file in the workspace
+
+### Files created or modified
+- docs/cycle_jump_worklog.md
+
+### Commands run
+```powershell
+Set-Location 'D:\TUBAF\Master_Thesis\Abaqus_trial'
+Get-ChildItem -Recurse -File | Where-Object { $_.Name -match 'umat|vumat|umatht' } | Select-Object FullName
+```
+
+### Key results
+
+| Quantity                                   | Value   |
+| ------------------------------------------ | ------- |
+| UMAT/VUMAT file found in current workspace | no      |
+| Phase 6 audit status                       | blocked |
+
+### Interpretation
+
+* the UMAT audit cannot begin until the actual source file is available
+* the next action is to locate the file in a wider folder scope or copy it into the current workspace
+
+### Next step
+
+* search for the UMAT/VUMAT file outside the current Abaqus_trial folder and provide its full path
 > Scope: demonstration + scaffolding. For real fatigue life prediction you must use *material‑calibrated* S–N / damage parameters (or a validated EP/VP constitutive model).
 
 ---
@@ -490,6 +519,40 @@ Get-Content 'ml_kin_2cycle.inp' | Select-String -Pattern '^\*Plastic','^250\., 0
 
 ## Completed first Phase 4 cyclic model comparison with multilinear kinematic hardening
 
+## Prepared cycle-jump literature review LaTeX draft
+
+### Objective
+- create a structured LaTeX literature document for the two selected cycle-jump papers:
+  - Li et al. (2025), adaptive cycle jump for elasto-plastic phase-field fatigue crack propagation
+  - Cheng, Hu and Kirka (2022), cycle-jump acceleration for crystal plasticity high-cycle fatigue
+
+### Files created or modified
+- cycle_jump_literature_review.tex
+- docs/cycle_jump_worklog.md
+
+### Content included
+- main idea of each paper
+- why each paper matters
+- physical model
+- material model
+- numerical strategy
+- cycle-jump algorithm
+- equations in order
+- variables being extrapolated
+- meaning of important variables
+- important figures to study
+- flowcharts for both algorithms
+- comparison table between the two papers
+- short meeting summary
+
+### Interpretation
+- Li et al. is most relevant for phase-field fatigue crack propagation with plasticity.
+- Cheng, Hu and Kirka is most relevant for future UMAT/cycle-jump implementation in metallic cyclic plasticity.
+- Both papers show that cycle jumping must extrapolate physically meaningful internal variables, not just external force or displacement curves.
+
+### Next step
+- compile the LaTeX document and check whether all equations and figure references are readable before sending or presenting it to Dr. Omar.
+
 ### Objective
 - run the multilinear kinematic 2-cycle benchmark and compare it against the existing linear kinematic and tuned combined-hardening cases
 
@@ -621,3 +684,73 @@ git push origin main
 ### Next step
 
 * prepare the final report-style comparison table of what each cyclic model captures, misses, and when to use it
+
+## Finalized Phase 4 report-style comparison package
+
+### Objective
+- create the final report-ready comparison artifacts for the three built-in cyclic plasticity models
+
+### Files created or modified
+- phase4_final_model_table.csv
+- phase4_final_model_notes.md
+- phase4_reusable_thesis_paragraph.md
+- docs/cycle_jump_worklog.md
+
+### Commands run
+```powershell
+# generated final Phase 4 comparison table
+# generated final model notes
+# generated reusable thesis paragraph
+```
+
+### Key results
+
+| Quantity                 |              Value |
+| ------------------------ | -----------------: |
+| Linear max force         | 1204.1760864257812 |
+| Multilinear max force    | 1275.6618919372559 |
+| Combined tuned max force | 1450.5829467773438 |
+
+### Interpretation
+
+* the final Phase 4 package now contains both numeric and report-ready written comparison material
+* this completes the built-in model comparison part before moving to the remaining theory/report tasks
+
+### Next step
+
+* start the Phase 5 viscoelasticity note
+
+## Finalized Phase 5 viscoelasticity note package
+
+### Objective
+- complete the short report-ready note explaining why viscoelasticity is not suitable for true metallic cyclic plasticity
+
+### Files created or modified
+- phase5_viscoelasticity_summary.csv
+- phase5_viscoelasticity_note.md
+- phase5_reusable_thesis_paragraph.md
+- docs/cycle_jump_worklog.md
+
+### Commands run
+```powershell
+# generated Phase 5 viscoelasticity summary table
+# generated Phase 5 explanatory note
+# generated reusable thesis paragraph
+```
+
+### Key results
+
+| Quantity         | Value                                                                                                              |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Main conclusion  | viscoelasticity is not suitable as the main constitutive route for true metallic cyclic plasticity                 |
+| Main reason      | it does not naturally represent yield-surface evolution, permanent plastic flow, Bauschinger effect, or ratcheting |
+| Recommended role | short conceptual contrast note only                                                                                |
+
+### Interpretation
+
+* the built-in cyclic plasticity benchmark study is now complemented by a clear conceptual explanation of why viscoelasticity is not the right route for the present metallic cyclic-plasticity thesis direction
+* this completes Phase 5 as a concise report package
+
+### Next step
+
+* locate the current UMAT/VUMAT file and begin the Phase 6 audit sheet

@@ -1,0 +1,46 @@
+<Description>
+   ABQcaeG.exe / rank 0 / thread 0  encountered an unhandled exception
+
+</Description>
+
+<Context>
+   ABQcaeG
+</Context>
+
+<Callstack>
+  1)  KERNELBASE.dll              RaiseException                          
+  2)  VCRUNTIME140.dll            CxxThrowException                       
+  3)  ABQSMAInbVwrIPC.dll         nex_PrimException<enum ipc_IPCMsgErrorTypeEnm,1>::Propagate
+  4)  ABQSMAInbVwrIPC.dll         ipc_Socket::Send                        
+  5)  ABQSMAInbVwrIPC.dll         ipc_OsokStreamDevice::flush             
+  6)  ABQSMAInbVwrIPC.dll         ipc_Que::RemoteSend                     
+  7)  ABQSMAInbVwrIPC.dll         ipc_Client::SendDirective               
+  8)  ABQSMAIngVwrGui.dll         cnvG_KerClntBase::ModifyConfig          
+  9)  ABQSMAIngVwrGui.dll         cnvG_Viewport::position                 
+ 10)  ABQSMAFoxFoxAPI.dll         FXMDIChild::layout                      
+</Callstack>
+
+<Memory>
+   <Current>            0 GB </Current>
+   <Resident>           0 GB </Resident>
+   <Physical>          23 GB </Physical>
+   <Limit>              0 GB </Limit>
+   <Accessible>        23 GB </Accessible>
+   <Available>         11 GB </Available>
+   <Allocator>            DL </Allocator>
+</Memory>
+
+<Swap>
+       <Size>          40 GB </Size>
+       <Used>          21 GB </Used>
+       <Free>          19 GB </Free>
+</Swap>
+
+<Directories>
+  <current> D:\TUBAF\Master_Thesis\Abaqus_trial\models\one_cycle </current> <free>    268 GB </free>   <used>    233 GB </used> 
+     <temp> C:\Users\pruth\AppData\Local\Temp </temp>    <free>     24 GB </free>
+</Directories>
+
+<Installation>
+</Installation>
+

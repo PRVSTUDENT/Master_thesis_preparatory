@@ -1,0 +1,150 @@
+** Chaboche Unified Viscoplastic UMAT - Single Cycle Test
+** Base geometry: 10 x 2 x 2 mm block, C3D8R mesh
+** Loading: Cyclic displacement on right face
+** 
+** Created: 2026-05-06
+** Purpose: Validate Chaboche UMAT implementation on single cycle
+
+*HEADING
+Chaboche Unified Viscoplastic UMAT - 1 Cycle Validation Test
+
+** ============================================================================
+** PART AND ASSEMBLY
+** ============================================================================
+
+*PART, NAME=BLOCK
+*NODE
+1,0.0,0.0,0.0
+2,10.0,0.0,0.0
+3,10.0,2.0,0.0
+4,0.0,2.0,0.0
+5,0.0,0.0,2.0
+6,10.0,0.0,2.0
+7,10.0,2.0,2.0
+8,0.0,2.0,2.0
+** 
+** (Add full mesh here - import from existing geometry)
+** For now, using simplified 1-element representation
+**
+*ELEMENT, TYPE=C3D8R, ELSET=BLOCK
+1,1,2,3,4,5,6,7,8
+*NSET, NSET=LEFT_FACE
+1, 4, 5, 8
+*NSET, NSET=RIGHT_FACE
+2, 3, 6, 7
+*SOLID SECTION, ELSET=BLOCK, MATERIAL=CHABOCHE_VP
+*END PART
+
+*ASSEMBLY, NAME=ASSEMBLY
+*INSTANCE, NAME=BLOCK_INST, PART=BLOCK
+*END INSTANCE
+*END ASSEMBLY
+
+** ============================================================================
+** MATERIAL DEFINITION: Chaboche Unified Viscoplastic UMAT
+** ============================================================================
+
+*MATERIAL, NAME=CHABOCHE_VP
+** User Material - Chaboche Unified Viscoplastic Model
+** Properties: E, nu, sigma_y, Q, b, C, gamma, K, m
+** Units (all in MPa): E [MPa], sigma_y,Q,C [MPa], K [MPa·s], b,gamma,m [-]
+** 
+** For 316 Stainless Steel (Yue & Zhou 2023):
+** E=210000 MPa, nu=0.3, sigma_y=520 MPa, Q=200 MPa, b=0.05
+** C=120000 MPa, gamma=800, K=0.001 MPa·s, m=5.0
+**
+*USER MATERIAL, CONSTANTS=9
+210000.0, 0.3, 520.0, 200.0, 0.05, 120000.0, 800.0, 0.001, 5.0
+** 
+** State Variables (DEPVAR) - CORRECTED LAYOUT:
+** STATEV(1):    Accumulated viscoplastic strain (p)
+** STATEV(2-7):  Backstress tensor (X11, X22, X33, X12, X13, X23)
+** STATEV(8-13): Viscoplastic strain tensor
+** STATEV(14):   Current isotropic hardening (R)
+** STATEV(15):   Last viscoplastic multiplier increment (dp)
+**
+*DEPVAR
+15
+
+** ============================================================================
+** STEP 1: INITIAL STATE
+** ============================================================================
+
+*STEP, NAME=INITIAL, NLGEOM=NO
+*STATIC
+0.001, 1.0
+
+*BOUNDARY
+BLOCK_INST.LEFT_FACE, 1, 1, 0.0
+
+*END STEP
+
+** ============================================================================
+** STEP 2: MONOTONIC LOADING (Tension)
+** ============================================================================
+
+*STEP, NAME=MONOTONIC_TENSION, NLGEOM=NO
+*STATIC
+0.001, 1.0
+
+*BOUNDARY, OP=NEW
+BLOCK_INST.LEFT_FACE, 1, 1, 0.0
+BLOCK_INST.1, 2, 3, 0.0
+BLOCK_INST.4, 3, 3, 0.0
+BLOCK_INST.RIGHT_FACE, 1, 1, 0.5
+
+*OUTPUT, FIELD, VARIABLE=PRESELECT
+*OUTPUT, HISTORY, VARIABLE=PRESELECT
+
+*END STEP
+
+** ============================================================================
+** STEP 3: CYCLIC LOADING
+** ============================================================================
+
+*STEP, NAME=CYCLIC_HALF_1, NLGEOM=NO
+*STATIC
+0.001, 1.0
+
+*BOUNDARY, OP=NEW
+BLOCK_INST.LEFT_FACE, 1, 1, 0.0
+BLOCK_INST.1, 2, 3, 0.0
+BLOCK_INST.4, 3, 3, 0.0
+BLOCK_INST.RIGHT_FACE, 1, 1, 0.5
+
+*OUTPUT, FIELD, FREQUENCY=10
+*OUTPUT, HISTORY, FREQUENCY=1
+
+*END STEP
+
+*STEP, NAME=CYCLIC_HALF_2, NLGEOM=NO
+*STATIC
+0.001, 1.0
+
+*BOUNDARY, OP=NEW
+BLOCK_INST.LEFT_FACE, 1, 1, 0.0
+BLOCK_INST.1, 2, 3, 0.0
+BLOCK_INST.4, 3, 3, 0.0
+BLOCK_INST.RIGHT_FACE, 1, 1, -0.5
+
+*OUTPUT, FIELD, FREQUENCY=10
+*OUTPUT, HISTORY, FREQUENCY=1
+
+*END STEP
+
+** ============================================================================
+** NOTES
+** ============================================================================
+** 
+** This is a template input file for single-cycle validation
+** 
+** TODO:
+** 1. Import full mesh from existing geometry
+** 2. Define proper element sets (BLOCK_INST.BLOCK)
+** 3. Replace node/element definitions with actual mesh
+** 4. Adjust boundary conditions to match existing setup
+** 5. Set displacement magnitude based on desired strain level
+** 6. Adjust time stepping for convergence
+** 7. Add output requests for hysteresis extraction
+** 8. Compile UMAT and run with: abaqus job=chaboche_umat_1cycle user=chaboche_umat.f
+**
