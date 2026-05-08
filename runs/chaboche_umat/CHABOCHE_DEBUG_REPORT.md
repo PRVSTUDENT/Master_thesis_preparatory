@@ -785,3 +785,33 @@ Updated PDF specifications:
 
 The thesis narrative is now complete through Level-2 preparation, positioning the work as rigorous cycle-jump diagnostics and preparation rather than attempting incomplete Level-3 implementation.
 
+## Chaboche-v1 Increment-Schedule Sensitivity Study (Stage 3)
+
+Before proceeding to Level-3 full-state STATEV injection and constitutive cycle-jump integration, a controlled robustness study must be performed.
+
+**Motivation:**
+
+The exact-output diagnostic run revealed that `TIME MARKS=YES` altered the accepted time increment sequence, causing a 5.12232% difference in cycle-20 STATEV(1). This indicates that the Chaboche-v1 UMAT integration is sensitive to time increment scheduling. Before injecting a state vector and restarting the integration, we must quantify this sensitivity and ensure it remains within acceptable bounds for vector-valued continuation.
+
+**Study Package Created:**
+
+- **Preparation script:** `prepare_chaboche_increment_sensitivity_study.py`
+- **Study plan:** `CHABOCHE_V1_INCREMENT_SENSITIVITY_STUDY_PLAN.md`
+- **Study folder:** `increment_sensitivity_study/`
+
+**Generated input decks (no Abaqus runs yet):**
+
+1. `chaboche_eps005_20cycles_dt_original_output.inp` — baseline (DMAX=0.02, original output)
+2. `chaboche_eps005_20cycles_dtmax_0p02.inp` — explicit DMAX=0.02 (same as original)
+3. `chaboche_eps005_20cycles_dtmax_0p01.inp` — finer: DMAX=0.01
+4. `chaboche_eps005_20cycles_dtmax_0p005.inp` — very fine: DMAX=0.005
+5. `chaboche_eps005_20cycles_exact_timemarks_diagnostic.inp` — TIME MARKS=YES reference
+
+**Next Steps:**
+
+1. Run **datacheck** on first deck to verify input integrity.
+2. Run each deck sequentially (one full job at a time).
+3. Extract STATEV(1-15) and FE metrics from all ODB files.
+4. Compare results; determine if variation is acceptable (<0.5%), moderate (1-2%), or high (>5%).
+5. Decide whether to proceed to Level-3 or defer STATEV injection pending UMAT robustness improvements.
+
