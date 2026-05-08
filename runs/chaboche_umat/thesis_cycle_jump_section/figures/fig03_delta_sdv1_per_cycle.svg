@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="680" viewBox="0 0 1000 680">
+<rect width="100%" height="100%" fill="white"/>
+<line x1="115" y1="585" x2="790" y2="585" stroke="black" stroke-width="1.8"/>
+<line x1="115" y1="45" x2="115" y2="585" stroke="black" stroke-width="1.8"/>
+<line x1="115.00" y1="45" x2="115.00" y2="585" stroke="#dddddd" stroke-width="1"/>
+<text x="115.00" y="613" text-anchor="middle" font-size="15" font-family="Arial">0.64</text>
+<line x1="115" y1="585.00" x2="790" y2="585.00" stroke="#dddddd" stroke-width="1"/>
+<text x="103" y="590.00" text-anchor="end" font-size="15" font-family="Arial">0.005502</text>
+<line x1="250.00" y1="45" x2="250.00" y2="585" stroke="#dddddd" stroke-width="1"/>
+<text x="250.00" y="613" text-anchor="middle" font-size="15" font-family="Arial">2.584</text>
+<line x1="115" y1="477.00" x2="790" y2="477.00" stroke="#dddddd" stroke-width="1"/>
+<text x="103" y="482.00" text-anchor="end" font-size="15" font-family="Arial">0.005859</text>
+<line x1="385.00" y1="45" x2="385.00" y2="585" stroke="#dddddd" stroke-width="1"/>
+<text x="385.00" y="613" text-anchor="middle" font-size="15" font-family="Arial">4.528</text>
+<line x1="115" y1="369.00" x2="790" y2="369.00" stroke="#dddddd" stroke-width="1"/>
+<text x="103" y="374.00" text-anchor="end" font-size="15" font-family="Arial">0.006215</text>
+<line x1="520.00" y1="45" x2="520.00" y2="585" stroke="#dddddd" stroke-width="1"/>
+<text x="520.00" y="613" text-anchor="middle" font-size="15" font-family="Arial">6.472</text>
+<line x1="115" y1="261.00" x2="790" y2="261.00" stroke="#dddddd" stroke-width="1"/>
+<text x="103" y="266.00" text-anchor="end" font-size="15" font-family="Arial">0.006572</text>
+<line x1="655.00" y1="45" x2="655.00" y2="585" stroke="#dddddd" stroke-width="1"/>
+<text x="655.00" y="613" text-anchor="middle" font-size="15" font-family="Arial">8.416</text>
+<line x1="115" y1="153.00" x2="790" y2="153.00" stroke="#dddddd" stroke-width="1"/>
+<text x="103" y="158.00" text-anchor="end" font-size="15" font-family="Arial">0.006929</text>
+<line x1="790.00" y1="45" x2="790.00" y2="585" stroke="#dddddd" stroke-width="1"/>
+<text x="790.00" y="613" text-anchor="middle" font-size="15" font-family="Arial">10.36</text>
+<line x1="115" y1="45.00" x2="790" y2="45.00" stroke="#dddddd" stroke-width="1"/>
+<text x="103" y="50.00" text-anchor="end" font-size="15" font-family="Arial">0.007286</text>
+<line x1="115" y1="75.29" x2="790" y2="75.29" stroke="#666666" stroke-width="2" stroke-dasharray="8 6"/>
+<polyline points="140.00,556.07 209.44,77.04 278.89,73.93 348.33,74.19 417.78,74.54 487.22,74.89 556.67,75.24 626.11,75.59 695.56,75.94 765.00,76.28" fill="none" stroke="black" stroke-width="2.4"/>
+<circle cx="140.00" cy="556.07" r="3.2" fill="black"/>
+<circle cx="209.44" cy="77.04" r="3.2" fill="black"/>
+<circle cx="278.89" cy="73.93" r="3.2" fill="black"/>
+<circle cx="348.33" cy="74.19" r="3.2" fill="black"/>
+<circle cx="417.78" cy="74.54" r="3.2" fill="black"/>
+<circle cx="487.22" cy="74.89" r="3.2" fill="black"/>
+<circle cx="556.67" cy="75.24" r="3.2" fill="black"/>
+<circle cx="626.11" cy="75.59" r="3.2" fill="black"/>
+<circle cx="695.56" cy="75.94" r="3.2" fill="black"/>
+<circle cx="765.00" cy="76.28" r="3.2" fill="black"/>
+<line x1="818" y1="57" x2="850" y2="57" stroke="black" stroke-width="3"/>
+<text x="860" y="62" font-size="15" font-family="Arial">Delta SDV1</text>
+<line x1="818" y1="83" x2="850" y2="83" stroke="#666666" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="860" y="88" font-size="15" font-family="Arial">Mean cycles 2-10</text>
+<text x="452.5" y="645" text-anchor="middle" font-size="20" font-family="Arial">Cycle</text>
+<text x="32" y="315.0" text-anchor="middle" font-size="20" font-family="Arial" transform="rotate(-90 32,315.0)">Delta SDV1 per cycle</text>
+</svg>
