@@ -1,0 +1,42 @@
+\relax 
+\@writefile{toc}{\contentsline {section}{\numberline {1}Cycle-Jump Demonstration Using a Chaboche Unified Viscoplastic UMAT}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Motivation}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Abaqus--UMAT Model}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Amplitude Selection}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Explicit 10-Cycle Baseline}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.5}Stabilized Internal-Variable Increment}{1}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Single-element Abaqus validation model and Chaboche-v1 material-state workflow. The block is a one-element C3D8 specimen with \(L_0=10~\mathrm  {mm}\), a \(2~\mathrm  {mm}\times 2~\mathrm  {mm}\) cross-section, fixed left face, and displacement-controlled cyclic loading on the right face.}}{2}{}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:geometry_material_model}{{1}{2}{}{figure.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Actual Abaqus single-element geometry reconstructed from the input deck using the node coordinates and C3D8 element connectivity. The extracted model confirms the \(10~\mathrm  {mm}\times 2~\mathrm  {mm}\times 2~\mathrm  {mm}\) block, the left and right node sets, and the displacement-controlled cyclic loading direction.}}{2}{}\protected@file@percent }
+\newlabel{fig:actual_abaqus_geometry}{{2}{2}{}{figure.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Amplitude sweep for the Chaboche-v1 UMAT. The smaller amplitudes remain mainly elastic, while the $\pm 0.5\%$ case activates viscoplasticity at a moderate stress level and was selected for the cycle-jump demonstration.}}{3}{}\protected@file@percent }
+\newlabel{fig:amplitude_sweep}{{3}{3}{}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Selected hysteresis loops from the explicit 10-cycle Abaqus simulation at $\pm 0.5\%$ strain amplitude. The loop shape becomes nearly repeatable after the initial transient.}}{3}{}\protected@file@percent }
+\newlabel{fig:ten_cycle_loops}{{4}{3}{}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Per-cycle increment of accumulated viscoplastic strain. After the first cycle, the increment remains nearly constant, supporting the use of a cycle-jump predictor.}}{4}{}\protected@file@percent }
+\newlabel{fig:delta_sdv1}{{5}{4}{}{figure.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.6}Cycle-Jump Predictor}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.7}Explicit 20-Cycle Validation}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.8}Discussion and Limitations}{4}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Cycle-jump prediction of accumulated viscoplastic strain using the stabilized per-cycle increment obtained from explicit cycles 2--10.}}{5}{}\protected@file@percent }
+\newlabel{fig:jump_prediction}{{6}{5}{}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Validation of the cycle-jump predictor against an independent explicit 20-cycle Abaqus simulation. The predicted and explicit SDV1 values agree closely, with a relative error of 0.0674\% at cycle 20.}}{5}{}\protected@file@percent }
+\newlabel{fig:jump_validation}{{7}{5}{}{figure.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.9}Summary}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Level-2 Preparation: Full-State Cycle-Jump Diagnostics}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}STATEV Inventory}{6}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces STATEV inventory for Chaboche-v1 UMAT. STATEV(1--13) form the independent material state.}}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Full-State Cycle-History Extraction}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Key Findings}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Vector-Valued STATEV Cycle-Jump Control}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}Original Result}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Exact-Output Diagnostic Branch}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}Exact-Output Results}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.2}Exact Vector Result}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.3}Interpretation}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Why STATEV Injection is Deferred}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.1}Status}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.2}Robustness Requirement}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Distinction Between Method Levels}{8}{}\protected@file@percent }
+\gdef \@abspage@last{8}

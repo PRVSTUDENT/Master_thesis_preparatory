@@ -765,3 +765,23 @@ Key conclusion:
 
 The simplified Chaboche-v1 UMAT is increment-schedule sensitive, as revealed by the exact-output diagnostic branch. The 5.12% difference in cycle-20 SDV1 between original and exact-output runs indicates that STATEV injection should be deferred until UMAT integration robustness is improved. The work remains at Level-2 preparation, which is thesis-strong content: it demonstrates rigorous diagnostics and identifies robustness as a prerequisite for Level-3 restart/state injection.
 
+## Thesis Package Integration
+
+The Level-2 preparation subsection was integrated into the standalone thesis cycle-jump PDF package:
+
+- Integration date: May 8, 2026
+- Standalone wrapper: `thesis_cycle_jump_section/cycle_jump_chaboche_standalone.tex`
+- New section file: `thesis_cycle_jump_section/latex/chaboche_level2_cycle_jump_preparation_section.tex`
+- Build report: `thesis_cycle_jump_section/THESIS_SECTION_BUILD_REPORT.md` (updated)
+
+The standalone PDF now contains:
+1. **Section 1:** Cycle-Jump Demonstration Using a Chaboche Unified Viscoplastic UMAT (Level-1 scalar SDV1 prediction)
+2. **Section 2:** Level-2 Preparation: Full-State Cycle-Jump Diagnostics (Level-2 preparation diagnostics, robustness findings, deferral rationale)
+
+Updated PDF specifications:
+- Pages: 8 (previously 6)
+- Size: 1070847 bytes
+- Compilation status: successful
+
+The thesis narrative is now complete through Level-2 preparation, positioning the work as rigorous cycle-jump diagnostics and preparation rather than attempting incomplete Level-3 implementation.
+

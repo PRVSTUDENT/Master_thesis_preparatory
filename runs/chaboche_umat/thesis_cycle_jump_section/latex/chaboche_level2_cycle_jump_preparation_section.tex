@@ -1,0 +1,112 @@
+\section{Level-2 Preparation: Full-State Cycle-Jump Diagnostics}
+
+This section synthesizes the progression from Level-1 scalar SDV1 cycle-jump postprocessing to Level-2 preparation diagnostics for the simplified Chaboche-v1 unified viscoplastic UMAT. It explains the current findings and the rationale for deferring full STATEV injection to a later phase.
+
+\subsection{STATEV Inventory}
+
+The Chaboche-v1 UMAT manages 15 solution-dependent state variables (STATEV):
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{r|l|l|l}
+\toprule
+\textbf{Index} & \textbf{Symbol} & \textbf{Physical meaning} & \textbf{Category} \\
+\midrule
+1  & $p$ & Accumulated viscoplastic strain & Active / required \\
+2--4 & $X_{11}, X_{22}, X_{33}$ & Backstress normal components & Active / required \\
+5--7 & $X_{12}, X_{13}, X_{23}$ & Backstress shear components & Near-zero \\
+8--10 & $E_{vp,11}, E_{vp,22}, E_{vp,33}$ & Visc.~strain normal & Active / required \\
+11--13 & $E_{vp,12}, E_{vp,13}, E_{vp,23}$ & Visc.~strain shear & Near-zero \\
+14 & RISO & Isotropic hardening stress & Recomputable \\
+15 & DP & Last visc.~multiplier increment & Diagnostic \\
+\bottomrule
+\end{tabular}
+\caption{STATEV inventory for Chaboche-v1 UMAT. STATEV(1--13) form the independent material state.}
+\end{table}
+
+\subsection{Full-State Cycle-History Extraction}
+
+Extract entire state vector $\text{STATEV}(1\text{--}15)$ at each cycle end. Perform stability classification over cycles 2--10.
+
+\subsubsection{Key Findings}
+\begin{itemize}
+  \item $\text{STATEV}(1)$: \textbf{stable extrapolation candidate}
+  \item $\text{STATEV}(2\text{--}4)$: \textbf{needs caution} (high cycle-to-cycle variation)
+  \item $\text{STATEV}(5\text{--}7)$: \textbf{near-zero}
+  \item $\text{STATEV}(8\text{--}10)$: \textbf{needs caution}
+  \item $\text{STATEV}(11\text{--}13)$: \textbf{near-zero}
+  \item $\text{STATEV}(14\text{--}15)$: \textbf{recomputable/diagnostic}
+\end{itemize}
+
+Full-state restart/injection cannot blindly extrapolate all components. The normal stress and strain components exhibit higher cycle-to-cycle variability than the scalar accumulated strain, indicating that phase-point consistency and accurate integration are critical for vector-valued cycle jumping.
+
+\subsection{Vector-Valued STATEV Cycle-Jump Control}
+
+Extend the scalar cycle-jump approach to a vector of active components: $\text{STATEV}(1), \text{STATEV}(2\text{--}4), \text{STATEV}(8\text{--}10)$. Use first-order and second-order Taylor extrapolation with adaptive curvature checking to estimate a conservative global jump size.
+
+\subsubsection{Original Result}
+\begin{itemize}
+  \item Jump base: cycle 10
+  \item Conservative global $\Delta N$: \textbf{2}
+  \item Adaptive target cycle: \textbf{12}
+  \item Controlling component: \textbf{STATEV(2) / $X_{11}$}
+  \item First-order SDV1 relative error at target: $0.0118\%$
+\end{itemize}
+
+The vector-valued analysis is more restrictive than scalar SDV1 jumping because the normal backstress components impose tighter constraints on the global jump.
+
+\subsection{Exact-Output Diagnostic Branch}
+
+The original extraction used nearest available ODB frames at integer cycle-end times. For phase-sensitive components (especially backstress and viscoplastic strain), this introduces time ambiguity. A separate ``exact-output'' Abaqus run was created with \texttt{TIME MARKS=YES} to force exact integer cycle-end frame output.
+
+\subsubsection{Exact-Output Results}
+\begin{itemize}
+  \item Maximum absolute cycle-end time error: $0$ (exact frames) vs. original $0.00974$
+  \item Cycle-20 $\text{STATEV}(1)$: $0.134750679135$ (exact) vs. $0.142025694251$ (original)
+  \item Relative difference: \textbf{5.12\%}
+\end{itemize}
+
+\textit{Key observation}: The \texttt{TIME MARKS=YES} directive forced Abaqus to accept smaller time increments to align with requested output times. This altered the accepted increment sequence compared to the original run, causing the UMAT integration to produce a noticeably different cumulative viscoplastic strain by cycle 20.
+
+\subsubsection{Exact Vector Result}
+\begin{itemize}
+  \item Conservative global $\Delta N$: \textbf{1} (vs. original 2)
+  \item Adaptive target cycle: \textbf{11} (vs. original 12)
+  \item Controlling component: \textbf{STATEV(2) / $X_{11}$} (unchanged)
+\end{itemize}
+
+\subsubsection{Interpretation}
+
+The exact-output run successfully demonstrated that phase-point ambiguity can be removed by requesting exact output marks. However, the 5.12\% difference in cycle-20 SDV1 indicates that the simplified Chaboche-v1 UMAT is \textbf{increment-schedule sensitive}. The exact-output run cannot replace the original validation baseline because it represents a different computational path (forced smaller increments) with a measurably different material response. Therefore, the original 20-cycle result remains the main validation reference, while the exact-output branch is used to demonstrate phase sensitivity and the need for caution in vector-valued STATEV cycle jumping.
+
+\subsection{Why STATEV Injection is Deferred}
+
+\subsubsection{Status}
+\begin{itemize}
+  \item Level 1 (postprocessing SDV1 prediction): validated with 0.0674\% error; thesis-ready as demonstration case
+  \item Level 2a (full-state extraction): completed; inventory and stability classification available
+  \item Level 2b (vector-valued control): completed; shows vector approach is more conservative than scalar
+  \item Level 2c (exact-phase diagnostics): completed; reveals increment-schedule sensitivity
+\end{itemize}
+
+\subsubsection{Robustness Requirement}
+
+\begin{enumerate}
+  \item \textbf{Increment-schedule sensitivity}: The exact-output comparison revealed that the Chaboche-v1 UMAT response is sensitive to the number and size of time increments. An injected state at a given cycle could produce different future predictions depending on the integration scheme used in the next Abaqus run.
+  
+  \item \textbf{Vector-valued complexity}: The vector cycle-jump approach requires consistent treatment of 13 independent components. Without first reducing the UMAT's increment sensitivity, injecting a state vector carries high risk of uncontrolled accuracy loss.
+  
+  \item \textbf{Thesis narrative alignment}: The demonstrated Level-2 preparation diagnostics are themselves strong thesis content. Stopping here allows a clear discussion of why material model integration robustness is necessary before advanced continuation methods.
+\end{enumerate}
+
+\subsection{Distinction Between Method Levels}
+
+\begin{description}
+  \item[Level 1 (Postprocessing):] Extract computed STATEV history from existing ODB. Fit polynomial or first-order model to cycle-end values. Extrapolate and predict cycle-end state at skipped cycles. Read-only ODB access; no material model changes. Postprocessing-level accuracy.
+  
+  \item[Level 2 (Preparation):] Extract full state vector. Perform stability and sensitivity analysis. Diagnose increment-schedule dependence. Design injected-state continuation logic. Diagnostic runs only; no material model changes. Diagnostic-level accuracy.
+  
+  \item[Level 3 (Full Integration):] Implement injected-state restart in Abaqus. Modify UMAT or use Abaqus restart keywords. Run accelerated multi-cycle segments with injected STATEV. Active Abaqus workflows and state-variable management. Subject to robustness of UMAT and increment selection.
+\end{description}
+

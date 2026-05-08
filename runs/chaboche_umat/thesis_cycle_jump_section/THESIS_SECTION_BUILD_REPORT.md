@@ -76,3 +76,32 @@ The Chaboche unified viscoplastic UMAT has been successfully implemented and val
 - PDF pages after adding actual Abaqus geometry figure: 6
 - PDF size after adding actual Abaqus geometry figure: 964447 bytes
 - Note: MiKTeX printed a maintenance warning that user/administrator updates are out-of-sync, but the PDF was generated successfully.
+
+## Level-2 Cycle-Jump Preparation Integration
+
+**Integration Date:** May 8, 2026
+
+The Level-2 preparation subsection was added to the standalone thesis package:
+
+- New LaTeX file: `latex/chaboche_level2_cycle_jump_preparation_section.tex` (includable section format)
+- Original Level-2 document: `../CHABOCHE_V1_LEVEL2_CYCLE_JUMP_PREPARATION_SUMMARY.md`
+- Standalone wrapper updated: `cycle_jump_chaboche_standalone.tex` now includes both Level-1 scalar SDV1 section and Level-2 full-STATEV preparation section
+
+**Content added:**
+- STATEV inventory table (15 state variables with symbols, meanings, and categories)
+- Full-state cycle-history extraction findings and stability classification
+- Vector-valued STATEV cycle-jump control analysis (original DeltaN=2, target cycle 12)
+- Exact-output diagnostic branch findings (increment-schedule sensitivity, 5.12% cycle-20 difference)
+- Decision rationale for deferring STATEV injection to Level-3
+- Method level distinctions (Level 1: postprocessing only, Level 2: preparation diagnostics, Level 3: full integration)
+
+**Updated PDF:**
+- New page count: 8 pages (previously 6)
+- New size: 1070847 bytes
+- Compilation status: successful with booktabs package support
+
+**Thesis narrative now covers:**
+1. Validated scalar SDV1 cycle-jump demonstration (Level 1)
+2. Full-state preparation diagnostics identifying robustness requirements (Level 2)
+3. Clear identification of why Level-3 injection is deferred pending UMAT robustness improvements
+
