@@ -418,3 +418,350 @@ Confirmed:
 Careful conclusion:
 
 The Chaboche unified viscoplastic UMAT has been successfully implemented and validated at the computational workflow level. It reproduces nonzero stress, reaction force, viscoplastic strain accumulation, cyclic hysteresis, and a stable per-cycle internal-variable increment suitable for cycle-jump prediction. However, the current Chaboche-v1 parameter set should be treated as a demonstration/validation set, not yet as a fully calibrated 316 stainless steel material model.
+
+## Nesnas-Saanouni-Inspired SDV1 Cycle-Jump Analyzer
+
+A postprocessing bridge script was added to connect the validated Chaboche-v1 workflow to the Nesnas-Saanouni two-time-scale cycle-jump concept:
+
+- Script: `nesnas_saanouni_sdv1_cycle_jump_analyzer.py`
+- Input: `chaboche_vp_v1_cyclic_eps005_20cycles_cycle_increments.csv`
+- Scalar cycle-evolution marker: `SDV1 = accumulated viscoplastic strain p`
+- Stabilized reference window: cycles `2-10`
+- Method level: postprocessing only; no Abaqus rerun, UMAT change, restart, or STATEV injection
+
+Generated CSV files:
+
+- `nesnas_sdv1_cycle_derivatives.csv`
+- `nesnas_sdv1_first_second_order_predictions.csv`
+- `nesnas_sdv1_adaptive_jump_recommendations.csv`
+- `nesnas_sdv1_adaptive_jump_validation.csv`
+
+Generated SVG files:
+
+- `nesnas_sdv1_cycle_derivatives.svg`
+- `nesnas_sdv1_first_second_order_prediction.svg`
+- `nesnas_sdv1_adaptive_jump_size.svg`
+
+Generated report:
+
+- `NESNAS_SDV1_CYCLE_JUMP_ANALYZER_REPORT.md`
+
+Reference statistics:
+
+- Mean `dSDV1/dN` over cycles `2-10`: `0.00718546519056`
+- Standard deviation of `dSDV1/dN` over cycles `2-10`: `3.36821320212e-06`
+- Relative range of `dSDV1/dN` over cycles `2-10`: `0.142903719212%`
+- Mean `d2SDV1/dN2` over stabilized curvature points: `3.1146925e-07`
+
+Adaptive jump settings used for the demonstration:
+
+- `eta = 1.0`
+- `JUMPMIN = 5`
+- `JUMPMAX = 60`
+- Curvature check tolerance = `0.01`
+- Recommended `Delta N` from cycle 10 = `9`
+
+Cycle-20 validation from this Nesnas-style analyzer:
+
+- First-order predicted `SDV1` at cycle 20 = `0.142121435146`
+- Second-order predicted `SDV1` at cycle 20 = `0.142137008608`
+- Explicit Abaqus `SDV1` at cycle 20 = `0.1420256943`
+- First-order relative error = `0.0674109329494%`
+- Second-order relative error = `0.0783761759477%`
+
+Adaptive jump validation:
+
+- Jump base cycle = `10`
+- Recommended `Delta N` = `9`
+- Adaptive target cycle = `19`
+- First-order predicted `SDV1` at cycle 19 = `0.134935969955`
+- Second-order predicted `SDV1` at cycle 19 = `0.13494858446`
+- Explicit Abaqus `SDV1` at cycle 19 = `0.1348549426`
+- First-order relative error = `0.0600848240619%`
+- Second-order relative error = `0.0694389525661%`
+
+Interpretation:
+
+The new analyzer formalizes the current cycle-jump demonstration as a first-order cycle-space extrapolation with optional second-order curvature diagnostics and an adaptive jump-size estimate. This matches the first practical layer of the Nesnas-Saanouni idea: observe internal-variable evolution from computed cycles, estimate cycle derivatives, and predict skipped-cycle evolution. It is still not a full Nesnas-Saanouni FE acceleration method because the complete UMAT state vector is not yet extrapolated and injected back into Abaqus.
+
+## Chaboche-v1 STATEV Inventory for Level-2 Preparation
+
+A STATEV inventory was created to prepare the transition from Level-1 postprocessing prediction toward Level-2 restart/state-variable injection.
+
+Files created:
+
+- `create_chaboche_v1_statev_inventory.py`
+- `chaboche_v1_statev_inventory.csv`
+- `CHABOCHE_V1_STATEV_INVENTORY_REPORT.md`
+
+Source inspected:
+
+- Active UMAT: `umat\chaboche_vp_v1_working.f`
+- Representative input deck: `chaboche_vp_v1_cyclic_eps005_20cycles.inp`
+- Confirmed `*DEPVAR` count: `15`
+
+STATEV layout inferred from the active UMAT:
+
+- `STATEV(1)`: accumulated viscoplastic strain `p`
+- `STATEV(2-7)`: backstress tensor components `X11, X22, X33, X12, X13, X23`
+- `STATEV(8-13)`: viscoplastic strain tensor components `Evp11, Evp22, Evp33, Evp12, Evp13, Evp23`
+- `STATEV(14)`: current isotropic hardening stress `RISO`
+- `STATEV(15)`: last viscoplastic multiplier increment `DP`
+
+Classification:
+
+- Required for restart/injection: `STATEV(1-13)`
+- Diagnostic or recomputable: `STATEV(14-15)`
+- Unclear variables needing manual confirmation: none identified from the active UMAT
+
+Implication:
+
+The current Level-1 cycle-jump predictor uses only `STATEV(1)` / `SDV1`. For a Level-2 Abaqus restart or injected-state continuation, the jump must eventually be extended to a consistent internal state vector including accumulated viscoplastic strain, backstress tensor components, and viscoplastic strain tensor components. `STATEV(14)` can be recomputed from `STATEV(1)` and the material constants in this UMAT, while `STATEV(15)` is a last-increment diagnostic.
+
+## Full STATEV Cycle-History Extraction from 20-Cycle ODB
+
+A full state-vector cycle-history extractor was created and run on the validated 20-cycle ODB. This is the next Level-2 preparation step before any vector-valued cycle-jump predictor or Abaqus restart/state injection.
+
+Files created:
+
+- `extract_chaboche_v1_full_statev_cycle_history.py`
+- `chaboche_v1_full_statev_cycle_history.csv`
+- `chaboche_v1_full_statev_cycle_stability.csv`
+- `CHABOCHE_V1_FULL_STATEV_CYCLE_HISTORY_REPORT.md`
+
+Input ODB:
+
+- `chaboche_vp_v1_cyclic_eps005_20cycles.odb`
+
+Execution:
+
+- Command: `abaqus python extract_chaboche_v1_full_statev_cycle_history.py`
+- Status: succeeded
+- Abaqus was not rerun; only the existing ODB was postprocessed.
+- UMAT and input files were not modified.
+
+Extraction:
+
+- Cycle-end targets: cycles `1-20`
+- Extracted fields: `SDV1` through `SDV15`
+- Values are averaged over the available integration point field values.
+- The nearest available ODB frame to each integer cycle-end time was used.
+
+Final cycle-end state at cycle 20:
+
+- `STATEV(1)` / `p` = `0.142025694251`
+- `STATEV(2)` / `X11` = `-85.8880233765`
+- `STATEV(3)` / `X22` = `42.9440116882`
+- `STATEV(4)` / `X33` = `42.9440116882`
+- `STATEV(8)` / `Evp11` = `-0.0017925434513`
+- `STATEV(9)` / `Evp22` = `0.000896271725651`
+- `STATEV(10)` / `Evp33` = `0.000896271725651`
+- `STATEV(14)` / `RISO` = `1.41522598267`
+- `STATEV(15)` / `DP` = `0`
+
+Stability classification over cycles `2-10`:
+
+- Stable extrapolation candidate: `STATEV(1)` / accumulated viscoplastic strain `p`
+- Small or nearly zero components: `STATEV(5-7)` and `STATEV(11-13)` shear components
+- Diagnostic or recomputable: `STATEV(14-15)`
+- Needs caution: `STATEV(2-4)` normal backstress components and `STATEV(8-10)` normal viscoplastic strain components
+
+Interpretation:
+
+This confirms that a vector-valued Level-2 cycle-jump method cannot simply extrapolate all state variables blindly. `STATEV(1)` remains the cleanest stabilized scalar marker. The shear components are effectively zero for this uniaxial block test. The normal backstress and viscoplastic strain components are physically important for restart/injection, but their cycle-end increments need more careful handling, likely including consistent phase-point extraction and/or vector-valued conservative jump control.
+
+## Vector-Valued STATEV Cycle-Jump Postprocessing Analyzer
+
+A vector-valued STATEV cycle-jump analyzer was created as a Level-2 preparation step. This extends the scalar `SDV1` predictor to selected independent state variables, but it remains postprocessing only.
+
+Files created:
+
+- `vector_statev_cycle_jump_analyzer.py`
+- `chaboche_v1_vector_statev_cycle_jump_predictions.csv`
+- `chaboche_v1_vector_statev_cycle_jump_errors.csv`
+- `chaboche_v1_vector_statev_adaptive_jump_control.csv`
+- `CHABOCHE_V1_VECTOR_STATEV_CYCLE_JUMP_REPORT.md`
+
+Inputs:
+
+- `chaboche_v1_full_statev_cycle_history.csv`
+- `chaboche_v1_full_statev_cycle_stability.csv`
+
+Method:
+
+- Reference window: cycles `2-10`
+- Jump base cycle: `10`
+- Active vector components used for jump control: `STATEV(1), STATEV(2-4), STATEV(8-10)`
+- Near-zero shear components reported only: `STATEV(5-7), STATEV(11-13)`
+- Recomputable/diagnostic components reported only: `STATEV(14-15)`
+- No Abaqus rerun, no UMAT edit, no input-file edit, and no `STATEV` injection
+
+Phase consistency:
+
+- Maximum absolute cycle-end frame time error = `0.00974273681641`
+- Interpretation: cycle-end data are nearest available ODB frames rather than exact integer cycle times. This is acceptable for this postprocessing diagnostic, but it is important for backstress and viscoplastic strain trends.
+
+Adaptive vector jump result:
+
+- Conservative global `Delta N` = `2`
+- Vector-global adaptive target cycle = `12`
+- Controlling component = `STATEV(2)` / `X11`
+- Controlling component prior stability classification = `needs caution`
+
+Comparison with scalar SDV1-only result:
+
+- Scalar SDV1-only adaptive target retained for comparison = cycle `19`
+- Fixed validation target retained for comparison = cycle `20`
+- First-order `SDV1` relative error at vector-global target cycle 12 = `0.0118027922862%`
+- First-order `SDV1` relative error at scalar adaptive target cycle 19 = `0.0600848519171%`
+- First-order `SDV1` relative error at fixed target cycle 20 = `0.0674109657445%`
+
+Active component first-order errors at vector-global target cycle 12:
+
+- `STATEV(1)` / `p`: `0.0118027922862%`
+- `STATEV(2)` / `X11`: `0.427408706426%`
+- `STATEV(3)` / `X22`: `0.427408706426%`
+- `STATEV(4)` / `X33`: `0.427408706426%`
+- `STATEV(8)` / `Evp11`: `0.202728724628%`
+- `STATEV(9)` / `Evp22`: `0.202728724739%`
+- `STATEV(10)` / `Evp33`: `0.202728724739%`
+
+Interpretation:
+
+The vector-valued analysis is more conservative than the scalar SDV1-only cycle jump. While `STATEV(1)` remains highly predictable, the normal backstress and viscoplastic strain components restrict the global vector jump. This confirms that a future Level-2 injected-state Abaqus continuation should not blindly jump only `SDV1` if the goal is a physically consistent material state. A scalar-only injection test may still be useful as a controlled experiment, but a consistent vector state will require careful treatment of `STATEV(1-4,8-10)` and preferably exact phase-point extraction.
+
+## Exact Cycle-End Phase Output Preparation
+
+An exact phase-point output preparation deck was created to remove the cycle-end frame ambiguity observed in the full STATEV extraction and vector-valued cycle-jump analyzer.
+
+Files created:
+
+- `prepare_exact_phase_output_deck.py`
+- `chaboche_vp_v1_cyclic_eps005_20cycles_exact_cycle_outputs.inp`
+- `CHABOCHE_V1_EXACT_PHASE_OUTPUT_PREP_REPORT.md`
+
+Source input deck:
+
+- `chaboche_vp_v1_cyclic_eps005_20cycles.inp`
+
+Reason:
+
+- Previous maximum absolute cycle-end time error = `0.00974273681641`
+- The previous extraction used nearest available ODB frames at cycle-end targets.
+- This is acceptable for preliminary diagnostics but not ideal for phase-sensitive state variables such as `STATEV(2-4)` backstress components and `STATEV(8-10)` viscoplastic strain components.
+
+Output-control change in the copied deck:
+
+```text
+*OUTPUT, FIELD, TIME INTERVAL=1.0, TIME MARKS=YES
+*NODE OUTPUT
+U, RF
+*ELEMENT OUTPUT
+S, SDV
+
+*OUTPUT, HISTORY, TIME INTERVAL=1.0, TIME MARKS=YES
+*NODE OUTPUT, NSET=RIGHT_FACE
+U1, RF1
+```
+
+Preserved:
+
+- Geometry
+- Material constants
+- UMAT expectation
+- Boundary conditions
+- Amplitude definition
+- Total step time
+- Number of cycles
+
+Status:
+
+- Abaqus was not run automatically.
+- The original input deck was not modified.
+- The UMAT was not modified.
+- No `STATEV` injection was attempted.
+
+Next intended use:
+
+Run the copied exact-output deck once, repeat full `STATEV(1-15)` cycle-history extraction, and rerun the vector-valued STATEV cycle-jump analyzer before deciding on any scalar-only or vector-state injection test.
+
+## Exact Cycle-End Output Datacheck
+
+A datacheck-only run was performed for the copied exact-output deck.
+
+Job:
+
+- `chaboche_vp_v1_cyclic_eps005_20cycles_exact_check`
+
+Input:
+
+- `chaboche_vp_v1_cyclic_eps005_20cycles_exact_cycle_outputs.inp`
+
+UMAT:
+
+- `umat\chaboche_vp_v1_working.f`
+
+Environment note:
+
+- The first attempt failed before datacheck because `ifx` was not on the shell `PATH`.
+- The second attempt found `ifx` but failed at linking because Microsoft `LINK` was not on the shell `PATH`.
+- The successful datacheck used Intel oneAPI plus Visual Studio Build Tools:
+
+```text
+set "VS2022INSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools"
+call "C:\Program Files (x86)\Intel\oneAPI\setvars.bat" intel64
+```
+
+Result:
+
+- Datacheck status: passed
+- Abaqus job status: completed
+- Errors: `0`
+- Dat file warnings: `1`
+- Full analysis was not run.
+- UMAT was not modified.
+- Original input deck was not modified.
+- No `STATEV` injection was attempted.
+
+Warning:
+
+- Abaqus warned that exact predefined output time points were requested and that `TIME MARKS=YES` can force smaller increments and increase the increment count.
+- Interpretation: this warning is expected and confirms that Abaqus accepted the exact phase-point output request.
+
+Report:
+
+- `CHABOCHE_V1_EXACT_PHASE_DATACHECK_REPORT.md`
+
+Next intended step:
+
+Run the full exact-output analysis using the same compiler/linker environment, then repeat full `STATEV(1-15)` extraction and vector-valued STATEV cycle-jump analysis on the exact-output ODB.
+
+## Exact-Output Full STATEV Extraction
+
+The exact-output ODB `chaboche_vp_v1_cyclic_eps005_20cycles_exact.odb` was postprocessed to produce a separate exact-output extraction set.
+
+- Extractor script: `extract_chaboche_v1_full_statev_cycle_history_exact.py`
+- History CSV: `chaboche_v1_full_statev_cycle_history_exact.csv`
+- Stability CSV: `chaboche_v1_full_statev_cycle_stability_exact.csv`
+- Exact extraction report: `CHABOCHE_V1_FULL_STATEV_CYCLE_HISTORY_EXACT_REPORT.md`
+
+Key observation:
+
+- Maximum absolute cycle-end `time_error` = `0` (exact-phase frames), improving on the previous nearest-frame max time error `0.00974273681641`.
+
+Notes:
+
+- Abaqus was not rerun by these postprocessing scripts; the exact-output ODB was produced by the earlier full analysis and then postprocessed.
+- UMAT and input files were not modified; no STATEV injection was attempted.
+
+## Level-2 Cycle-Jump Preparation Summary
+
+A comprehensive Level-2 preparation summary was created to synthesize all STATEV diagnostics and formalize the decision to defer injection:
+
+- Document: `CHABOCHE_V1_LEVEL2_CYCLE_JUMP_PREPARATION_SUMMARY.md`
+- Optional LaTeX version: `thesis_cycle_jump_section/latex/chaboche_level2_cycle_jump_preparation.tex`
+
+Key conclusion:
+
+The simplified Chaboche-v1 UMAT is increment-schedule sensitive, as revealed by the exact-output diagnostic branch. The 5.12% difference in cycle-20 SDV1 between original and exact-output runs indicates that STATEV injection should be deferred until UMAT integration robustness is improved. The work remains at Level-2 preparation, which is thesis-strong content: it demonstrates rigorous diagnostics and identifies robustness as a prerequisite for Level-3 restart/state injection.
+

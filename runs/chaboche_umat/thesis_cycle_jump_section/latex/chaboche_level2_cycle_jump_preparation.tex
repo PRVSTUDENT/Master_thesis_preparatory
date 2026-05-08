@@ -1,0 +1,142 @@
+\documentclass[11pt]{article}
+\usepackage[utf-8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\title{Chaboche-v1 Level-2 Cycle-Jump Preparation Summary}
+\author{Thesis Work}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Overview}
+
+This document synthesizes the progression from Level-1 scalar SDV1 cycle-jump postprocessing to Level-2 preparation diagnostics for the simplified Chaboche-v1 unified viscoplastic UMAT. It explains the current findings and the rationale for deferring full STATEV injection to a later phase.
+
+\section{STATEV Inventory}
+
+The Chaboche-v1 UMAT manages 15 solution-dependent state variables (STATEV):
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{r|l|l|l}
+\toprule
+\textbf{Index} & \textbf{Symbol} & \textbf{Physical meaning} & \textbf{Category} \\
+\midrule
+1  & $p$ & Accumulated viscoplastic strain & Active / required \\
+2--4 & $X_{11}, X_{22}, X_{33}$ & Backstress normal components & Active / required \\
+5--7 & $X_{12}, X_{13}, X_{23}$ & Backstress shear components & Near-zero \\
+8--10 & $E_{vp,11}, E_{vp,22}, E_{vp,33}$ & Visc.~strain normal & Active / required \\
+11--13 & $E_{vp,12}, E_{vp,13}, E_{vp,23}$ & Visc.~strain shear & Near-zero \\
+14 & RISO & Isotropic hardening stress & Recomputable \\
+15 & DP & Last visc.~multiplier increment & Diagnostic \\
+\bottomrule
+\end{tabular}
+\caption{STATEV inventory for Chaboche-v1 UMAT. STATEV(1--13) form the independent material state.}
+\end{table}
+
+\section{Level-1: Scalar SDV1 Postprocessing Prediction}
+
+Extract the accumulated viscoplastic strain $\text{STATEV}(1)$ at each cycle end.  Use cycles 2--10 as the stabilized reference window. Estimate the per-cycle increment and extrapolate.
+
+\subsection{Validation Result}
+\begin{itemize}
+  \item Predicted $\text{SDV1}$ at cycle 20 (from cycle 10 base): $0.142121435146$
+  \item Explicit Abaqus $\text{SDV1}$ at cycle 20: $0.1420256943$
+  \item Relative error: $0.0674\%$
+\end{itemize}
+
+Conclusion: scalar SDV1 cycle jumping is accurate and thesis-ready.
+
+\section{Level-2a: Full-State Cycle-History Extraction}
+
+Extract entire state vector $\text{STATEV}(1\text{--}15)$ at each cycle end. Perform stability classification.
+
+\subsection{Key Findings}
+\begin{itemize}
+  \item $\text{STATEV}(1)$: \textbf{stable extrapolation candidate}
+  \item $\text{STATEV}(2\text{--}4)$: \textbf{needs caution} (high cycle-to-cycle variation)
+  \item $\text{STATEV}(5\text{--}7)$: \textbf{near-zero}
+  \item $\text{STATEV}(8\text{--}10)$: \textbf{needs caution}
+  \item $\text{STATEV}(11\text{--}13)$: \textbf{near-zero}
+  \item $\text{STATEV}(14\text{--}15)$: \textbf{recomputable/diagnostic}
+\end{itemize}
+
+\section{Level-2b: Vector-Valued STATEV Cycle-Jump Control}
+
+Extend scalar cycle-jump to vector: $\text{STATEV}(1), \text{STATEV}(2\text{--}4), \text{STATEV}(8\text{--}10)$. Use adaptive curvature checking for conservative global jump.
+
+\subsection{Original Result}
+\begin{itemize}
+  \item Conservative global $\Delta N$: \textbf{2}
+  \item Adaptive target cycle: \textbf{12}
+  \item Controlling component: \textbf{STATEV(2) / $X_{11}$}
+  \item First-order SDV1 error at target: $0.0118\%$
+\end{itemize}
+
+\section{Level-2c: Exact-Output Diagnostic Branch}
+
+Request exact integer cycle-end frames using Abaqus \texttt{TIME MARKS=YES}. Compare against original nearest-frame run.
+
+\subsection{Exact-Output Results}
+\begin{itemize}
+  \item Max cycle-end time error: $0$ (exact frames) vs. original $0.00974$
+  \item Cycle-20 $\text{STATEV}(1)$: $0.134750679135$ (exact) vs. $0.142025694251$ (original)
+  \item Relative difference: \textbf{5.12\%}
+\end{itemize}
+
+\textit{Key insight}: \texttt{TIME MARKS=YES} forced smaller time increments, altering the UMAT-integrated response. The Chaboche-v1 UMAT is \textbf{increment-schedule sensitive}.
+
+\subsection{Exact Vector Result}
+\begin{itemize}
+  \item Conservative global $\Delta N$: \textbf{1} (vs. original 2)
+  \item Adaptive target: \textbf{11} (vs. original 12)
+  \item Controlling component: \textbf{STATEV(2) / $X_{11}$} (unchanged)
+\end{itemize}
+
+\section{Final Decision: Deferring STATEV Injection}
+
+\subsection{Status}
+\begin{itemize}
+  \item Level 1: validated ($0.0674\%$ error); thesis-ready
+  \item Level 2a: completed; full-state stability known
+  \item Level 2b: completed; vector approach more conservative
+  \item Level 2c: completed; increment-schedule sensitivity revealed
+\end{itemize}
+
+\subsection{Why Not Proceed to Injection}
+
+\begin{enumerate}
+  \item \textbf{Increment-schedule sensitivity}: Injected state at a given cycle may produce different predictions depending on next Abaqus run's integration scheme.
+  \item \textbf{Vector-valued complexity}: Consistent treatment of 13 components requires robust integration; current UMAT is not robust enough.
+  \item \textbf{Thesis narrative}: Level-2 diagnostics are strong content; stopping here allows clear discussion of why robustness is necessary.
+\end{enumerate}
+
+\section{Distinction Between Method Levels}
+
+\begin{description}
+  \item[Level 1:] Postprocessing prediction from existing ODB. Read-only. No UMAT changes. Accuracy: postprocessing-level.
+  \item[Level 2:] Full-state extraction, stability analysis, increment-schedule diagnostics. Test runs only. No UMAT changes. Accuracy: diagnostic.
+  \item[Level 3:] Abaqus restart/state-injection with STATEV modification. Full forward integration. Subject to UMAT robustness. \textit{Not pursued in this project.}
+\end{description}
+
+\section{Thesis Narrative}
+
+The Chaboche-v1 unified viscoplastic UMAT cycle-jump workflow demonstrates:
+
+\begin{enumerate}
+  \item Scalar postprocessing cycle jumping is accurate ($0.0674\%$ error).
+  \item Vector-valued jumping is feasible but more conservative, requiring robust integration.
+  \item Integration robustness is a prerequisite for restart injection.
+  \item Exact phase-point output can remove frame-time ambiguity but at the cost of altering the increment schedule.
+\end{enumerate}
+
+By stopping at Level-2 preparation, the thesis presents a rigorous diagnostics and preparation study without committing to advanced continuation that could amplify robustness issues.
+
+\end{document}
