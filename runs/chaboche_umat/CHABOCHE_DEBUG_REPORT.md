@@ -882,6 +882,111 @@ Conclusion:
 - This is a successful first FE cycle-skipping demonstration for the simplified Chaboche model.
 - Remaining refinement target: improve vector/stress prediction quality for larger or more conservative jumps.
 
+## Stage 6A Explicit 50-Cycle Reference
+
+Date: May 9, 2026
+
+Purpose:
+
+- Create a no-skip 50-cycle Abaqus reference for validating a larger predicted FE cycle jump.
+- Intended next jump: cycle 10 -> predicted cycle 49 -> run cycle 49 to 50.
+- This increases skipped intermediate cycles from 8 to 38 for the next validation stage.
+
+Files:
+
+- Input deck: `chaboche_vp_v1_cyclic_eps005_50cycles.inp`
+- Runner: `run_chaboche_50cycle_reference.bat`
+- Monitor: `monitor_chaboche_50cycle_reference.py`
+- Postprocessor: `postprocess_chaboche_50cycle_reference.py`
+- Summary CSV: `chaboche_vp_v1_cyclic_eps005_50cycles_summary.csv`
+- Cycle history CSV: `chaboche_vp_v1_cyclic_eps005_50cycles_cycle_history.csv`
+- Report: `CHABOCHE_50CYCLE_REFERENCE_REPORT.md`
+
+Model setup:
+
+- Source basis: validated 20-cycle Chaboche-v1 cyclic deck
+- UMAT: `umat/chaboche_vp_v1_working.f`
+- Total cycles: `50`
+- Total step time: `50.0`
+- DMAX: `0.02`
+- INC limit: `6000`
+- Amplitude: explicit 50-cycle tabular fully reversed sequence
+- Original 20-cycle input deck was not modified.
+- Stage 5B validated files were not modified.
+
+Run status:
+
+- Datacheck job: `chaboche_vp_v1_cyclic_eps005_50cycles_check`
+- Datacheck status: passed
+- Full job: `chaboche_vp_v1_cyclic_eps005_50cycles`
+- Full job status: completed
+- Increments: `2507`
+- Cutbacks: `0`
+- User input warnings: `0`
+- Analysis warnings: `0`
+- Errors: `0`
+
+Final cycle-50 reference:
+
+- Final time: `50`
+- Final time error: `0`
+- Final `STATEV1 = 0.356620669365`
+- Final `S11 = 374.653869629 MPa`
+- Final RIGHT_FACE average `U1 = 0`
+- Final RIGHT_FACE summed `RF1 = 1498.61547852`
+- Final cycle increment `Delta_STATEV1 = 0.00713682174683`
+- Final cycle increment `Delta_S11 = 40.8583984375 MPa`
+
+Conclusion:
+
+- Stage 6A explicit 50-cycle no-skip reference is ready.
+- This is the validation target for Stage 6B predicted jump to cycle 50.
+
+## Stage 6B.1 Predicted Cycle-49 State Preparation
+
+Date: May 9, 2026
+
+Purpose:
+
+- Prepare the larger predicted FE cycle-jump input state for the 50-cycle validation case.
+- Intended jump route: cycle 10 data -> predicted cycle 49 state -> one computed continuation cycle to cycle 50.
+- Exact cycle-49 data from the 50-cycle no-skip reference were used only for validation/error comparison.
+- No Abaqus run was performed.
+- No UMAT or Abaqus input deck was modified.
+
+Files:
+
+- Script: `prepare_stage6b_predicted_cycle49_state.py`
+- Folder: `stage6_50cycle_jump/`
+- Predicted STATEV CSV: `stage6_50cycle_jump/cycle49_predicted_statev_for_injection.csv`
+- Predicted stress CSV: `stage6_50cycle_jump/cycle49_predicted_stress_for_injection.csv`
+- Error CSV: `stage6_50cycle_jump/cycle49_predicted_vs_exact_error.csv`
+- Report: `stage6_50cycle_jump/STAGE6B_PREDICTED_CYCLE49_STATE_REPORT.md`
+
+Prediction setup:
+
+- Base cycle: `10`
+- Target cycle: `49`
+- DeltaN: `39`
+- Mean increment window: cycles `2-10`
+- Prediction rule: `predicted_cycle49 = value_cycle10 + DeltaN * mean_increment_per_cycle`
+- Actually skipped intermediate FE cycles in the next test: `38`
+- Cycle-jump route would compute `10` base cycles + `1` continuation cycle instead of `50` full cycles.
+
+Key cycle-49 validation errors:
+
+- `STATEV1`: predicted `0.350499925669`, exact `0.349483847618`, relative error `0.290736770316%`
+- `STATEV2-4`: relative error `8.35356376404%`
+- `STATEV8-10`: relative error `3.96914287256%`
+- `S11`: predicted `348.668233236 MPa`, exact `333.795471191 MPa`, relative error `4.45565123814%`
+
+Interpretation:
+
+- The accumulated viscoplastic strain prediction remains reasonable for the 39-cycle extrapolation.
+- The stress, backstress, and viscoplastic strain-tensor components show larger drift than in Stage 5A.
+- Stage 6B.2 FE injection can be attempted as an exploratory stress-test, but the current first-order predictor is not yet a clean high-confidence cycle-49 input state.
+- A shorter target such as cycle 29 or cycle 39, or an improved stress/backstress predictor, is recommended before claiming a robust 50-cycle skipped-FE validation.
+
 ## Stage 3 Thesis Package Integration
 
 The Stage 3 sensitivity result was integrated into the standalone thesis cycle-jump package on May 9, 2026. The package now includes the new subsection, the summary table, the two Stage 3 plots, and the updated standalone PDF.
