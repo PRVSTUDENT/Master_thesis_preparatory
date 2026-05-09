@@ -1,9 +1,7 @@
 component,value
-S11,
-S22,
-S33,
-S12,
-S13,
-S23,
-
-# Note: stress averages were not present in the fallback CSV; fill these by extracting from the ODB if needed.
+S11,335.5768737792969
+S22,2.220446049250313e-16
+S33,-5.329070518200751e-15
+S12,-8.976868290776868e-15
+S13,-6.977829043877193e-15
+S23,3.2197274248314003e-15

@@ -525,6 +525,252 @@ The current Level-1 cycle-jump predictor uses only `STATEV(1)` / `SDV1`. For a L
 - DMAX=0.005: STATEV1=0.145257070661, +2.2752%
 - Conclusion: increment-size sensitivity confirmed
 
+## Stage 4B Direct State Injection Follow-Up
+
+Date: May 9, 2026
+
+Compiler and linker environment:
+
+- Intel oneAPI and Visual Studio Build Tools were loaded successfully.
+- `ifx`, `link`, and `abaqus` were all found.
+- Batch wrappers that invoke Abaqus from another `.bat` must use `call abaqus ...`.
+
+STATEV-only path:
+
+- Datacheck job: `chaboche_stage4b_statev_only_check`
+- Datacheck status: passed
+- Full job: `chaboche_stage4b_cycle19_exact_to_cycle20_statev_only`
+- Full job status: completed
+- ODB created: yes
+- Increments: 57
+- Cutbacks: 0
+- User input warnings: 0
+- Analysis warnings: 0
+- Errors: 0
+
+Interpretation:
+
+- `SDVINI` works.
+- STATEV injection mechanics work.
+- This path intentionally omits residual stress, so it is not a final cycle-jump accuracy validation.
+
+Direct stress path:
+
+- Original deck `chaboche_stage4b_cycle19_exact_to_cycle20_statev_stress.inp` failed because `*INITIAL CONDITIONS, TYPE=STRESS` was placed inside `*STEP`.
+- Copied model-level deck created: `chaboche_stage4b_cycle19_exact_to_cycle20_statev_stress_modellevel.inp`
+- Original stress deck was not modified.
+- Model-level datacheck job: `chaboche_stage4b_statev_stress_modellevel_check`
+- Model-level datacheck status: failed during input processing.
+- No `.msg` file was created.
+
+Exact model-level stress error:
+
+```text
+***ERROR: AN INITIAL CONDITION HAS BEEN SPECIFIED ON ELEMENT 0 BUT THIS
+          ELEMENT HAS NOT BEEN DEFINED
+```
+
+Conclusion:
+
+- Moving `*INITIAL CONDITIONS, TYPE=STRESS` to model level fixed the keyword-placement issue.
+- Direct stress initialization remains blocked by the element/data-line format.
+- Next branch: prepare a `SIGINI` residual-stress initialization variant while preserving the working `SDVINI` STATEV initialization.
+
+## Stage 4B STATEV-Only Postprocess and Direct-Stress Label Tests
+
+Date: May 9, 2026
+
+STATEV-only postprocess:
+
+- Script: `postprocess_stage4b_injection_results.py`
+- ODB: `chaboche_stage4b_cycle19_exact_to_cycle20_statev_only.odb`
+- CSV: `stage4_injected_cycle_jump/stage4b_statev_only_result.csv`
+- Report: `stage4_injected_cycle_jump/STAGE4B_STATEV_ONLY_RESULT_REPORT.md`
+
+Key comparison against explicit cycle-20 reference:
+
+- STATEV1 result: `0.00559759652242`
+- STATEV1 reference: `0.142025694251`
+- STATEV1 absolute error: `0.136428097729`
+- STATEV1 relative error: `96.0587437703%`
+- S11 result: `374.138793945 MPa`
+- S11 reference: `376.434143066 MPa`
+- S11 absolute error: `2.29534912109 MPa`
+- S11 relative error: `0.60976113973%`
+- RIGHT_FACE average U1: `0`
+- RIGHT_FACE summed RF1: `1496.55517578`
+
+Interpretation:
+
+- SDVINI initialization is confirmed mechanically.
+- The completed STATEV-only run is a successful injection-mechanics checkpoint.
+- The STATEV-only result is not a final cycle-jump accuracy validation because the residual stress/consistent continuation state is missing.
+
+Direct-stress element-label tests:
+
+- Source deck: `chaboche_stage4b_cycle19_exact_to_cycle20_statev_stress_modellevel.inp`
+- Copied deck 1: `chaboche_stage4b_cycle19_exact_to_cycle20_statev_stress_elabel_instance.inp`
+- Copied deck 2: `chaboche_stage4b_cycle19_exact_to_cycle20_statev_stress_elabel_plain.inp`
+- Datacheck job 1: `chaboche_stage4b_stress_elabel_instance_check`
+- Datacheck job 2: `chaboche_stage4b_stress_elabel_plain_check`
+- Result: both failed during input processing.
+- No `.msg` file was created for either failed datacheck.
+
+Instance-label error:
+
+```text
+***ERROR: AN INITIAL CONDITION HAS BEEN SPECIFIED ON ELEMENT 0 BUT THIS
+          ELEMENT HAS NOT BEEN DEFINED
+```
+
+Plain-label error:
+
+```text
+***ERROR: AN INITIAL CONDITION HAS BEEN SPECIFIED ON ELEMENT 0 BUT THIS
+          ELEMENT HAS NOT BEEN DEFINED
+LINE IMAGE: , 335.5768737792969, 0.0, 0.0, 0.0, 0.0, 0.0
+```
+
+Conclusion:
+
+- Direct stress initialization remains blocked after testing `BLOCK_INST.BLOCK.1`, `BLOCK_INST.1`, and `1`.
+- Next branch: create a `SIGINI` residual-stress initialization variant while keeping the validated `SDVINI` path.
+
+## Stage 4B SDVINI Debug Correction
+
+Date: May 9, 2026
+
+Important correction:
+
+- The original STATEV-only full job ran successfully, but it did not numerically prove SDVINI.
+- Its final `STATEV1 = 0.00559759652242`, close to a fresh one-cycle result.
+- Therefore the original run is a stable control/check run, not a proven injected continuation.
+
+Root findings:
+
+- Original deck `chaboche_stage4b_cycle19_exact_to_cycle20_statev_only.inp` omitted `*INITIAL CONDITIONS, TYPE=SOLUTION, USER`.
+- Original `umat_chaboche_v1_with_sdvini.f` used a nonstandard SDVINI signature with `ORNT`; the copied debug UMAT uses the standard Abaqus/Standard `NOEL,NPT,LAYER,KSPT` form.
+
+Copied debug files:
+
+- `umat_chaboche_v1_with_sdvini_debug.f`
+- `chaboche_stage4b_cycle19_exact_to_cycle20_statev_only_debug.inp`
+- `postprocess_stage4b_sdvini_debug.py`
+- `stage4_injected_cycle_jump/stage4b_sdvini_debug_first_final.csv`
+- `stage4_injected_cycle_jump/STAGE4B_SDVINI_DEBUG_REPORT.md`
+
+Debug run:
+
+- Datacheck job: `chaboche_stage4b_statev_only_debug_check`
+- Datacheck status: passed
+- Full debug job: `chaboche_stage4b_cycle19_exact_to_cycle20_statev_only_debug`
+- Full debug status: completed
+- Increments: 57
+- Cutbacks: 0
+- User input warnings: 0
+- Analysis warnings: 0
+- Errors: 0
+
+ODB first/final frame evidence:
+
+- First output frame time: `0`
+- First output `STATEV1 = 0.13485494256`
+- Injected cycle-19 `STATEV1 = 0.13485494256`
+- Final output time: `1`
+- Final output `STATEV1 = 0.14071752131`
+- Explicit cycle-20 reference `STATEV1 = 0.142025694251`
+- Final absolute error from reference: `0.00130817294121`
+- Final `S11 = 368.581756592 MPa`
+
+Conclusion:
+
+- SDVINI is numerically proven in the copied debug branch.
+- UMAT does not reset `STATEV1` to zero at initialization; the first ODB frame retains the injected value.
+- The original STATEV-only mismatch was due to missing/improper SDVINI activation, not proof that injected STATEV was erased by UMAT.
+- Fortran trace-file writes did not appear in the working directory or standard Abaqus text outputs; the ODB first-frame check is the reliable evidence.
+
+Next branch:
+
+- Create a clean corrected STATEV-only branch from the debug fix without trace instrumentation.
+- After that, proceed to residual-stress initialization through `SIGINI`.
+
+## Stage 4B.2 Clean SDVINI and SIGINI Branches
+
+Date: May 9, 2026
+
+Clean SDVINI branch:
+
+- UMAT: `umat_chaboche_v1_with_sdvini_clean.f`
+- Input: `chaboche_stage4b_cycle19_exact_to_cycle20_statev_only_clean.inp`
+- Runner: `run_stage4b_statev_only_clean.bat`
+- Postprocessor: `postprocess_stage4b_clean_sdvini_result.py`
+- Root report: `STAGE4B_CLEAN_SDVINI_BRANCH_REPORT.md`
+- Detailed report: `stage4_injected_cycle_jump/STAGE4B_CLEAN_SDVINI_BRANCH_REPORT.md`
+
+Clean branch status:
+
+- Datacheck job: `chaboche_stage4b_statev_only_clean_check`
+- Datacheck status: passed
+- Full job: `chaboche_stage4b_cycle19_exact_to_cycle20_statev_only_clean`
+- Full job status: completed
+- Increments: 57
+- Cutbacks: 0
+- User input warnings: 0
+- Analysis warnings: 0
+- Errors: 0
+
+Clean branch first/final frame:
+
+- First `STATEV1 = 0.13485494256`
+- First `S11 = 0 MPa`
+- Final `STATEV1 = 0.14071752131`
+- Final `S11 = 368.581756592 MPa`
+- Conclusion: clean branch reproduces the debug SDVINI result without instrumentation.
+
+STATEV + SIGINI branch:
+
+- UMAT: `umat_chaboche_v1_with_sdvini_sigini.f`
+- Input: `chaboche_stage4b_cycle19_exact_to_cycle20_statev_sigini.inp`
+- Runner: `run_stage4b_statev_sigini.bat`
+- Postprocessor: `postprocess_stage4b_sigini_result.py`
+- CSV: `stage4_injected_cycle_jump/stage4b_sigini_result.csv`
+- Report: `stage4_injected_cycle_jump/STAGE4B_SIGINI_RESULT_REPORT.md`
+
+SIGINI branch status:
+
+- Datacheck job: `chaboche_stage4b_statev_sigini_check`
+- Datacheck status: passed
+- Full job: `chaboche_stage4b_cycle19_exact_to_cycle20_statev_sigini`
+- Full job status: completed
+- Increments: 57
+- Cutbacks: 0
+- User input warnings: 0
+- Analysis warnings: 0
+- Errors: 0
+
+SIGINI branch first/final frame:
+
+- First `STATEV1 = 0.13485494256`
+- First `S11 = 335.576873779 MPa`
+- Final `STATEV1 = 0.141863301396`
+- Final `S11 = 375.865997314 MPa`
+- Final RIGHT_FACE average `U1 = 0`
+- Final RIGHT_FACE summed `RF1 = 1503.46398926`
+
+Reference comparison:
+
+- Cycle-20 `STATEV1 = 0.142025694251`
+- Cycle-20 `S11 = 376.434143066 MPa`
+- Final STATEV1 absolute error: `0.000162392854691`
+- Final S11 absolute error: `0.568145751953 MPa`
+
+Conclusion:
+
+- SDVINI and SIGINI are both numerically proven.
+- The FE model starts from injected cycle-19 STATEV and residual stress.
+- The one-cycle continuation to cycle 20 completes cleanly.
+- This is a controlled exact-state FE continuation demonstration from cycle 19 to cycle 20.
+
 ## Stage 3 Thesis Package Integration
 
 The Stage 3 sensitivity result was integrated into the standalone thesis cycle-jump package on May 9, 2026. The package now includes the new subsection, the summary table, the two Stage 3 plots, and the updated standalone PDF.

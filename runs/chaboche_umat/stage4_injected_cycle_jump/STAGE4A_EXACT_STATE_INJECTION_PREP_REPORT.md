@@ -1,44 +1,48 @@
-# Stage 4A â€” Exact-State Injection Preparation Report
+# Stage 4A.1 — Exact-State Injection Preparation Report
 
 Prepared: May 9, 2026
 
-Purpose
-- Prepare exact cycle-19 STATEV and stress averages for an injection-mechanics test.
+## Purpose
+Extract exact cycle-19 STATEV and stress for injection-mechanics validation.
 
-Scope
-- This is an injection-mechanics preparation step only. It does not predict a jump.
-- It is intended to verify that Abaqus can be initialized with the exact explicit
-  cycle-19 STATEV (+ stress) and continue for one more cycle (cycle 20).
-- No UMAT changes, no damage model, and no input-deck modification are performed.
+## Data source
+Extracted from: ODB (Abaqus Python)
 
-Inputs
-- runs/chaboche_umat/chaboche_v1_full_statev_cycle_history.csv (averaged integration-point history)
+## Files created
+- cycle19_exact_statev_for_injection.csv
+- cycle19_exact_stress_for_injection.csv
+- cycle20_reference_statev.csv
+- cycle20_reference_stress.csv
 
-Outputs (created here)
-- stage4_injected_cycle_jump/cycle19_exact_statev_for_injection.csv
-- stage4_injected_cycle_jump/cycle19_exact_stress_for_injection.csv
+## Summary
+Cycle-19 frame time: 18.990257
+Cycle-19 time error: 9.742737e-03
+Cycle-20 frame time: 20.000000
+Cycle-20 time error: 0.000000e+00
 
-Summary of extraction method
-- The extraction script `prepare_stage4a_exact_state_injection_data.py` prefers
-  to use Abaqus `odbAccess` when available. For portability (outside Abaqus
-  Python) it falls back to the precomputed CSV `chaboche_v1_full_statev_cycle_history.csv`.
-- The CSV contains averaged `STATEV1_end`..`STATEV15_end` for each cycle; the
-  script copies the cycle-19 values into the `cycle19_exact_statev_for_injection.csv` file.
-- Stress averages were not present in the fallback CSV; the stress CSV contains
-  placeholders and a note that these must be filled by running an ODB extraction
-  under Abaqus Python if exact stress initialization is required.
+| Variable | Cycle 19 | Cycle 20 |
+|---:|---:|---:|
+| STATEV1_end | 0.13485494256019592 | 0.14202569425106049 |
+| STATEV2_end | -85.89347076416016 | -85.88802337646484 |
+| STATEV3_end | 42.94673538208008 | 42.94401168823242 |
+| STATEV4_end | 42.94673538208008 | 42.94401168823242 |
+| STATEV5_end | -2.0947599256398208e-15 | 1.1030211997830208e-15 |
+| STATEV6_end | 2.2161001084864085e-16 | 2.8931807586961353e-15 |
+| STATEV7_end | -2.4222445285629373e-15 | -2.306375073442314e-15 |
+| STATEV8_end | -0.0017928289016708732 | -0.0017925434513017535 |
+| STATEV9_end | 0.0008964144508354366 | 0.0008962717256508768 |
+| STATEV10_end | 0.0008964144508354366 | 0.0008962717256508768 |
+| STATEV11_end | -3.3179593353900074e-19 | -2.5770435713846094e-19 |
+| STATEV12_end | -2.99851439388397e-19 | -2.6635644339474113e-19 |
+| STATEV13_end | -1.0530329811066763e-19 | -1.2047765260593373e-19 |
+| STATEV14_end | 1.3440132141113281 | 1.4152259826660156 |
+| STATEV15_end | 0.0 | 0.0 |
 
-How to use
-1. Create an SDVINI-based restart deck that reads `cycle19_exact_statev_for_injection.csv` into SDVINI.
-2. Initialize element stresses via `*INITIAL CONDITIONS, TYPE=STRESS` using the stress CSV,
-   or extract and embed stresses in the restart step if your workflow supports that.
-3. Run Abaqus for one cycle (cycle 19 -> 20) and compare the resulting SDV1 and stress field
-   to the full explicit `cycle 20` reference.
-
-Checks performed here
-- Quick tabular comparison `STATEV1..15` cycle 19 vs cycle 20 is included in the local script output.
-
-Next steps
-- If the SDVINI + INITIAL STRESS continuation reproduces the full explicit cycle-20, proceed to
-  prepare a predicted-cycle jump (Level-3A continuation): derive cycle-19 STATEV from cycle-10 data.
-- If the continuation fails, debug initialization order, SDVINI feed, and initial stress specification.
+| Stress | Cycle 19 | Cycle 20 |
+|---:|---:|---:|
+| S11 | 335.5768737792969 | 376.43414306640625 |
+| S22 | 2.220446049250313e-16 | 2.6645352591003757e-15 |
+| S33 | -5.329070518200751e-15 | 8.881784197001252e-16 |
+| S12 | -8.976868290776868e-15 | 9.556535883800389e-15 |
+| S13 | -6.977829043877193e-15 | -9.16453761201969e-15 |
+| S23 | 3.2197274248314003e-15 | 3.772474438054273e-15 |
