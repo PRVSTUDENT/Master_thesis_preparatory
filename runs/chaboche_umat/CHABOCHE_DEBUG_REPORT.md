@@ -819,6 +819,69 @@ Interpretation:
 - The predicted residual stress `S11` is close but slightly above the initial 1% target.
 - This Stage 5A result is a candidate input for Stage 5B, with the caveat that stress/backstress prediction errors may dominate the skipped-cycle FE result.
 
+## Stage 5B Predicted-State FE Cycle-Jump Continuation
+
+Date: May 9, 2026
+
+Purpose:
+
+- Run the first true FE skipped-cycle continuation test.
+- Workflow: cycle-10 data -> predicted cycle-19 state -> SDVINI/SIGINI injection -> one computed cycle to cycle 20.
+- This uses the predicted Stage 5A state, not exact cycle-19 state.
+
+Files:
+
+- UMAT: `umat_chaboche_v1_with_sdvini_sigini_predicted_cycle19.f`
+- Input: `chaboche_stage5b_predicted_cycle19_to_cycle20.inp`
+- Runner: `run_stage5b_predicted_cycle_jump.bat`
+- Monitor: `monitor_stage5b_predicted_cycle_jump.py`
+- Postprocessor: `postprocess_stage5b_predicted_cycle_jump.py`
+- CSV: `stage5_predicted_cycle_jump/stage5b_predicted_cycle_jump_result.csv`
+- Report: `stage5_predicted_cycle_jump/STAGE5B_PREDICTED_CYCLE_JUMP_RESULT_REPORT.md`
+
+Run status:
+
+- Datacheck job: `chaboche_stage5b_predicted_cycle19_to_cycle20_check`
+- Datacheck status: passed
+- Full job: `chaboche_stage5b_predicted_cycle19_to_cycle20`
+- Full job status: completed
+- Increments: 57
+- Cutbacks: 0
+- User input warnings: 0
+- Analysis warnings: 0
+- Errors: 0
+
+First-frame injection check:
+
+- Injected/predicted `STATEV1 = 0.134935969953`
+- First-frame `STATEV1 = 0.134935975075`
+- Injected/predicted `S11 = 339.014099121 MPa`
+- First-frame `S11 = 339.014099121 MPa`
+
+Final cycle-20 comparison:
+
+- Final `STATEV1 = 0.141955494881`
+- Reference `STATEV1 = 0.142025694251`
+- STATEV1 absolute error: `7.01993703842e-05`
+- STATEV1 relative error: `0.049427232695%`
+- Final `S11 = 375.95602417 MPa`
+- Reference `S11 = 376.434143066 MPa`
+- S11 absolute error: `0.478118896484 MPa`
+- S11 relative error: `0.127012627651%`
+- Final RIGHT_FACE average `U1 = 0`
+- Final RIGHT_FACE summed `RF1 = 1503.82409668`
+
+Comparison to exact-state SIGINI result:
+
+- Difference from exact-state SIGINI final `STATEV1 = 9.21934846763e-05`
+- Difference from exact-state SIGINI final `S11 = 0.0900268559218 MPa`
+
+Conclusion:
+
+- Stage 5B satisfies the first-success criterion: both final `STATEV1` and `S11` errors are below 1%.
+- This is a successful first FE cycle-skipping demonstration for the simplified Chaboche model.
+- Remaining refinement target: improve vector/stress prediction quality for larger or more conservative jumps.
+
 ## Stage 3 Thesis Package Integration
 
 The Stage 3 sensitivity result was integrated into the standalone thesis cycle-jump package on May 9, 2026. The package now includes the new subsection, the summary table, the two Stage 3 plots, and the updated standalone PDF.
