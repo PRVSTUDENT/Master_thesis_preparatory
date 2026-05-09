@@ -524,6 +524,16 @@ The current Level-1 cycle-jump predictor uses only `STATEV(1)` / `SDV1`. For a L
 - DMAX=0.010: STATEV1=0.143569096923, +1.0867%
 - DMAX=0.005: STATEV1=0.145257070661, +2.2752%
 - Conclusion: increment-size sensitivity confirmed
+
+## Stage 3 Thesis Package Integration
+
+The Stage 3 sensitivity result was integrated into the standalone thesis cycle-jump package on May 9, 2026. The package now includes the new subsection, the summary table, the two Stage 3 plots, and the updated standalone PDF.
+
+Current Stage 3 thesis status:
+
+- Commit: `0da3bda`
+- Branch: `copilot/curved-cephalopod`
+- Message: `Add Chaboche increment-schedule sensitivity summary`
 ## Full STATEV Cycle-History Extraction from 20-Cycle ODB
 
 A full state-vector cycle-history extractor was created and run on the validated 20-cycle ODB. This is the next Level-2 preparation step before any vector-valued cycle-jump predictor or Abaqus restart/state injection.

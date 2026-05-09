@@ -105,3 +105,35 @@ The Level-2 preparation subsection was added to the standalone thesis package:
 2. Full-state preparation diagnostics identifying robustness requirements (Level 2)
 3. Clear identification of why Level-3 injection is deferred pending UMAT robustness improvements
 
+## Stage 3 Increment-Schedule Sensitivity Integration
+
+**Integration Date:** May 9, 2026
+
+The Stage 3 increment-schedule sensitivity subsection was added to the standalone thesis package immediately after the Level-2 preparation section.
+
+Added and copied into the thesis package:
+
+- `latex/chaboche_increment_sensitivity_section.tex`
+- `tables/chaboche_increment_sensitivity_summary.csv`
+- `tables/chaboche_eps005_20cycles_dt_original_output_statev_history.csv`
+- `tables/chaboche_eps005_20cycles_dtmax_0p01_statev_history.csv`
+- `tables/chaboche_eps005_20cycles_dtmax_0p005_inc6000_statev_history.csv`
+- `figures/chaboche_increment_sensitivity_statev1_vs_dmax.svg`
+- `figures/chaboche_increment_sensitivity_statev1_vs_cycle.svg`
+
+**Content added:**
+- Cycle-20 summary table for the three controlled DMAX cases
+- LaTeX/PGFPlots rendering of STATEV1 versus DMAX
+- LaTeX/PGFPlots rendering of STATEV1 versus cycle for the three completed cases
+- Thesis conclusion that increment-size sensitivity is confirmed and Level-3 injection remains deferred
+
+**Updated PDF:**
+- New page count: 10 pages
+- New size: 1084855 bytes
+- Compilation status: successful
+
+**Thesis narrative now covers:**
+1. Validated scalar SDV1 cycle-jump demonstration (Level 1)
+2. Full-state preparation diagnostics identifying robustness requirements (Level 2)
+3. Increment-schedule sensitivity evidence showing the UMAT remains increment-size sensitive (Stage 3)
+
