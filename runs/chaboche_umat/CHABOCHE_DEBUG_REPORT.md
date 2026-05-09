@@ -534,6 +534,19 @@ Current Stage 3 thesis status:
 - Commit: `0da3bda`
 - Branch: `copilot/curved-cephalopod`
 - Message: `Add Chaboche increment-schedule sensitivity summary`
+
+## Stage 4A Preparation: Exact-State Injection
+
+Prepared: May 9, 2026
+
+- Purpose: prepare exact cycle-19 averaged STATEV (and stresses if available)
+	for an injection-mechanics continuation test. This confirms whether Abaqus
+	can be restarted/continued correctly from an injected explicit state.
+- Files created: `stage4_injected_cycle_jump/cycle19_exact_statev_for_injection.csv`,
+	`stage4_injected_cycle_jump/cycle19_exact_stress_for_injection.csv`,
+	and `stage4_injected_cycle_jump/STAGE4A_EXACT_STATE_INJECTION_PREP_REPORT.md`.
+- Note: Stress placeholders are included; extract stresses from the ODB using Abaqus Python
+	if exact stress initialization is required.
 ## Full STATEV Cycle-History Extraction from 20-Cycle ODB
 
 A full state-vector cycle-history extractor was created and run on the validated 20-cycle ODB. This is the next Level-2 preparation step before any vector-valued cycle-jump predictor or Abaqus restart/state injection.
