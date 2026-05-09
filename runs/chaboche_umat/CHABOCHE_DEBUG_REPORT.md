@@ -518,6 +518,12 @@ Implication:
 
 The current Level-1 cycle-jump predictor uses only `STATEV(1)` / `SDV1`. For a Level-2 Abaqus restart or injected-state continuation, the jump must eventually be extended to a consistent internal state vector including accumulated viscoplastic strain, backstress tensor components, and viscoplastic strain tensor components. `STATEV(14)` can be recomputed from `STATEV(1)` and the material constants in this UMAT, while `STATEV(15)` is a last-increment diagnostic.
 
+## Stage 3 Increment-Schedule Sensitivity
+
+- DMAX=0.020: STATEV1=0.142025694251
+- DMAX=0.010: STATEV1=0.143569096923, +1.0867%
+- DMAX=0.005: STATEV1=0.145257070661, +2.2752%
+- Conclusion: increment-size sensitivity confirmed
 ## Full STATEV Cycle-History Extraction from 20-Cycle ODB
 
 A full state-vector cycle-history extractor was created and run on the validated 20-cycle ODB. This is the next Level-2 preparation step before any vector-valued cycle-jump predictor or Abaqus restart/state injection.
@@ -789,6 +795,8 @@ The thesis narrative is now complete through Level-2 preparation, positioning th
 
 Before proceeding to Level-3 full-state STATEV injection and constitutive cycle-jump integration, a controlled robustness study must be performed.
 
+- Increment-sensitivity baseline postprocess: `chaboche_eps005_20cycles_dt_original_output` was postprocessed to produce a state-vector history and summary report under `increment_sensitivity_study/` (see `CHABOCHE_INCREMENT_SENSITIVITY_BASELINE_REPORT.md`).
+
 **Motivation:**
 
 The exact-output diagnostic run revealed that `TIME MARKS=YES` altered the accepted time increment sequence, causing a 5.12232% difference in cycle-20 STATEV(1). This indicates that the Chaboche-v1 UMAT integration is sensitive to time increment scheduling. Before injecting a state vector and restarting the integration, we must quantify this sensitivity and ensure it remains within acceptable bounds for vector-valued continuation.
@@ -815,3 +823,42 @@ The exact-output diagnostic run revealed that `TIME MARKS=YES` altered the accep
 4. Compare results; determine if variation is acceptable (<0.5%), moderate (1-2%), or high (>5%).
 5. Decide whether to proceed to Level-3 or defer STATEV injection pending UMAT robustness improvements.
 
+
+- Increment-sensitivity baseline run `chaboche_eps005_20cycles_dt_original_output`: STATEV1_cycle20=0.142025694251
+
+- Increment-sensitivity baseline run `chaboche_eps005_20cycles_dtmax_0p01`: STATEV1_cycle20=0.143569096923
+
+## dtmax_0p005 Increment-Limit Correction (Copied Deck)
+
+- Original full run `chaboche_eps005_20cycles_dtmax_0p005` failed because `INC=2500` was insufficient for `DMAX=0.005` and total step time `20.0`.
+- Theoretical minimum increments at max-step sizing: `20 / 0.005 = 4000`.
+- A copied deck was created (no overwrite):
+	- `increment_sensitivity_study\chaboche_eps005_20cycles_dtmax_0p005_inc6000.inp`
+- Required step update applied in copied deck:
+	- `*STEP, NAME=CYCLIC_20, NLGEOM=NO, INC=6000`
+- Preserved unchanged in copied deck:
+	- `DMAX=0.005`
+	- total step time `20.0`
+	- geometry, material constants, boundary conditions, amplitude, and output requests
+	- UMAT path expectation (`umat\chaboche_vp_v1_working.f`)
+- UMAT change: none
+- Physics/modeling change: none (increment-capacity fix only)
+
+Datacheck status for copied deck job `chaboche_eps005_20cycles_dtmax_0p005_inc6000_check`:
+
+- passed
+- no warning/error messages observed in the datacheck message summary block
+- full analysis intentionally not run yet
+
+- Increment-sensitivity baseline run `chaboche_eps005_20cycles_dtmax_0p005_inc6000`: STATEV1_cycle20=0.145257070661
+
+- Increment-sensitivity baseline run `chaboche_eps005_20cycles_dtmax_0p005_inc6000`: STATEV1_cycle20=0.145257070661
+
+- Increment-sensitivity baseline run `chaboche_eps005_20cycles_dtmax_0p005_inc6000`: STATEV1_cycle20=0.145257070661
+
+## Stage 3 Increment-Schedule Sensitivity
+
+- DMAX=0.020: STATEV1=0.142025694251
+- DMAX=0.010: STATEV1=0.143569096923, +1.0867%
+- DMAX=0.005: STATEV1=0.145257070661, +2.2752%
+- Conclusion: increment-size sensitivity confirmed

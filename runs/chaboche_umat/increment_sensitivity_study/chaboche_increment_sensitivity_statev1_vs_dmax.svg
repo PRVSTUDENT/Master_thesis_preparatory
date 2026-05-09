@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="500" viewBox="0 0 760 500">
+<title>Chaboche-v1: STATEV1 vs DMAX</title>
+<rect width="100%%" height="100%%" fill="white"/>
+<rect x="80" y="50" width="650" height="370" fill="none" stroke="#cccccc" stroke-width="1"/>
+<line x1="80" y1="420" x2="730" y2="420" stroke="#333333" stroke-width="1.5"/>
+<line x1="80" y1="50" x2="80" y2="420" stroke="#333333" stroke-width="1.5"/>
+<text x="80" y="28" font-size="18" font-family="Arial" font-weight="bold">Chaboche-v1: STATEV1 vs DMAX</text>
+<text x="385.0" y="428" font-size="14" font-family="Arial">DMAX</text>
+<text x="18" y="253.0" font-size="14" font-family="Arial" transform="rotate(-90 18 253.0)">STATEV1 at cycle 20</text>
+<line x1="80.0" y1="50" x2="80.0" y2="420" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="80.0" y="438" font-size="11" font-family="Arial" text-anchor="middle">0.005</text>
+<line x1="210.0" y1="50" x2="210.0" y2="420" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="210.0" y="438" font-size="11" font-family="Arial" text-anchor="middle">0.008</text>
+<line x1="340.0" y1="50" x2="340.0" y2="420" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="340.0" y="438" font-size="11" font-family="Arial" text-anchor="middle">0.0110</text>
+<line x1="470.0" y1="50" x2="470.0" y2="420" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="470.0" y="438" font-size="11" font-family="Arial" text-anchor="middle">0.0140</text>
+<line x1="600.0" y1="50" x2="600.0" y2="420" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="600.0" y="438" font-size="11" font-family="Arial" text-anchor="middle">0.0170</text>
+<line x1="730.0" y1="50" x2="730.0" y2="420" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="730.0" y="438" font-size="11" font-family="Arial" text-anchor="middle">0.0200</text>
+<line x1="80" y1="420.0" x2="730" y2="420.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="424.0" font-size="11" font-family="Arial" text-anchor="end">0.1416</text>
+<line x1="80" y1="346.0" x2="730" y2="346.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="350.0" font-size="11" font-family="Arial" text-anchor="end">0.1424</text>
+<line x1="80" y1="272.0" x2="730" y2="272.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="276.0" font-size="11" font-family="Arial" text-anchor="end">0.1432</text>
+<line x1="80" y1="198.0" x2="730" y2="198.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="202.0" font-size="11" font-family="Arial" text-anchor="end">0.1440</text>
+<line x1="80" y1="124.0" x2="730" y2="124.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="128.0" font-size="11" font-family="Arial" text-anchor="end">0.1448</text>
+<line x1="80" y1="50.0" x2="730" y2="50.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="54.0" font-size="11" font-family="Arial" text-anchor="end">0.1456</text>
+<polyline fill="none" stroke="#1f77b4" stroke-width="2.5" points="80.0000,85.8065 296.6667,241.6749 730.0000,384.1935"/>
+<circle cx="80.0000" cy="85.8065" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="296.6667" cy="241.6749" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="730.0000" cy="384.1935" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<text x="88" y="97.8064516129" font-size="11" font-family="Arial">0.145257070661</text>
+<text x="304.666666667" y="253.674886362" font-size="11" font-family="Arial">0.143569096923</text>
+<text x="738" y="396.193548387" font-size="11" font-family="Arial">0.142025694251</text>
+</svg>
