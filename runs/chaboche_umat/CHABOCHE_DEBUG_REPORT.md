@@ -987,6 +987,50 @@ Interpretation:
 - Stage 6B.2 FE injection can be attempted as an exploratory stress-test, but the current first-order predictor is not yet a clean high-confidence cycle-49 input state.
 - A shorter target such as cycle 29 or cycle 39, or an improved stress/backstress predictor, is recommended before claiming a robust 50-cycle skipped-FE validation.
 
+## Stage 6C Multi-Target Prediction Scan
+
+Date: May 9, 2026
+
+Purpose:
+
+- Evaluate predicted injection-state quality for target cycles 29, 39, and 49 before running another Abaqus FE cycle-jump continuation.
+- Use the existing 50-cycle no-skip reference history.
+- Select the largest defensible target for the next FE injection test.
+- No Abaqus run was performed.
+- No UMAT or Abaqus input deck was modified.
+
+Files:
+
+- Script: `prepare_stage6c_multitarget_prediction_scan.py`
+- Folder: `stage6_multitarget_jump_scan/`
+- Detailed error CSV: `stage6_multitarget_jump_scan/stage6c_multitarget_prediction_errors.csv`
+- Summary CSV: `stage6_multitarget_jump_scan/stage6c_multitarget_prediction_summary.csv`
+- Report: `stage6_multitarget_jump_scan/STAGE6C_MULTITARGET_PREDICTION_SCAN_REPORT.md`
+
+Prediction setup:
+
+- Base cycle: `10`
+- Mean increment window: cycles `2-10`
+- Targets: `29`, `39`, `49`
+- Prediction rule: `predicted_target = value_cycle10 + DeltaN * mean_increment_per_cycle`
+- `STATEV14` recomputed from predicted `STATEV1`
+- `STATEV15` reset to `0`
+
+Scan summary:
+
+| Target | Continue to | DeltaN | Skipped cycles | Computed route | Full route | Reduction | STATEV1 err | STATEV2-4 max err | STATEV8-10 max err | S11 err | Recommendation |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| 29 | 30 | 19 | 18 | 11 | 30 | 63.3333% | 0.135335% | 4.06463% | 1.92948% | 2.16515% | `acceptable_exploratory_candidate` |
+| 39 | 40 | 29 | 28 | 11 | 40 | 72.5% | 0.212701% | 6.20776% | 2.94821% | 3.30894% | `not_headline_candidate` |
+| 49 | 50 | 39 | 38 | 11 | 50 | 78% | 0.290737% | 8.35356% | 3.96914% | 4.45565% | `not_headline_candidate` |
+
+Interpretation:
+
+- Target cycle 29 is the largest target satisfying the current decision rules.
+- Cycle 29 -> 30 would skip 18 intermediate FE cycles and reduce the computed route from 30 cycles to 11 cycles.
+- Targets 39 and 49 remain useful as exploratory stress tests, but are not headline validation candidates with the current first-order vector/stress predictor.
+- The scan confirms that scalar `STATEV1` extrapolation remains robust while stress/backstress consistency limits larger FE cycle jumps.
+
 ## Stage 3 Thesis Package Integration
 
 The Stage 3 sensitivity result was integrated into the standalone thesis cycle-jump package on May 9, 2026. The package now includes the new subsection, the summary table, the two Stage 3 plots, and the updated standalone PDF.
