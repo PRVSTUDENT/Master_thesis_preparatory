@@ -1,0 +1,7 @@
+component,value,base_cycle_value,mean_increment_cycles_2_to_10,delta_n,policy
+S11,339.014099121,336.117858887,0.321804470486,9,first_order_cycle_space
+S22,-1.42108547152e-14,-3.5527136788e-15,-1.18423789293e-15,9,first_order_cycle_space
+S33,-1.50990331349e-14,-3.5527136788e-15,-1.28292438401e-15,9,first_order_cycle_space
+S12,3.87337054501e-14,3.57134500227e-15,3.90692893865e-15,9,first_order_cycle_space
+S13,-1.20852815838e-14,6.9170483948e-16,-1.41966515815e-15,9,first_order_cycle_space
+S23,1.04574270107e-14,6.78603680962e-15,4.07932244568e-16,9,first_order_cycle_space

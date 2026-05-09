@@ -771,6 +771,54 @@ Conclusion:
 - The one-cycle continuation to cycle 20 completes cleanly.
 - This is a controlled exact-state FE continuation demonstration from cycle 19 to cycle 20.
 
+## Stage 5A Predicted Cycle-19 State Preparation
+
+Date: May 9, 2026
+
+Purpose:
+
+- Prepare the first predicted cycle-19 internal state for FE cycle-jump testing.
+- Prediction uses cycle-10 data and first-order cycle-space extrapolation to target cycle 19.
+- Exact cycle-19 data are used only for validation/error comparison, not for prediction.
+- No Abaqus analysis rerun was performed.
+- No UMAT was modified.
+
+Files:
+
+- Script: `prepare_stage5a_predicted_cycle19_state.py`
+- Output folder: `stage5_predicted_cycle_jump/`
+- Predicted STATEV: `stage5_predicted_cycle_jump/cycle19_predicted_statev_for_injection.csv`
+- Predicted stress: `stage5_predicted_cycle_jump/cycle19_predicted_stress_for_injection.csv`
+- Error CSV: `stage5_predicted_cycle_jump/cycle19_predicted_vs_exact_error.csv`
+- Report: `stage5_predicted_cycle_jump/STAGE5A_PREDICTED_CYCLE19_STATE_REPORT.md`
+
+Method:
+
+- Base cycle: `10`
+- Target cycle: `19`
+- DeltaN: `9`
+- Mean increment window: cycles `2-10`
+- Formula: `predicted_cycle19 = value_cycle10 + DeltaN * mean_increment_per_cycle`
+- `STATEV14` recomputed from predicted `STATEV1`
+- `STATEV15` reset to `0` for injection
+
+Key predicted-vs-exact errors:
+
+- `STATEV1`: predicted `0.134935969953`, exact `0.13485494256`, absolute error `8.10273923441e-05`, relative error `0.0600848517717%`
+- `STATEV2`: relative error `1.9241569878%`
+- `STATEV3`: relative error `1.9241569878%`
+- `STATEV4`: relative error `1.9241569878%`
+- `STATEV8`: relative error `0.912963742425%`
+- `STATEV9`: relative error `0.912963742313%`
+- `STATEV10`: relative error `0.912963742313%`
+- `S11`: predicted `339.014099121 MPa`, exact `335.576873779 MPa`, absolute error `3.4372253418 MPa`, relative error `1.02427360476%`
+
+Interpretation:
+
+- The first-order predicted cycle-19 `STATEV1` is very accurate.
+- The predicted residual stress `S11` is close but slightly above the initial 1% target.
+- This Stage 5A result is a candidate input for Stage 5B, with the caveat that stress/backstress prediction errors may dominate the skipped-cycle FE result.
+
 ## Stage 3 Thesis Package Integration
 
 The Stage 3 sensitivity result was integrated into the standalone thesis cycle-jump package on May 9, 2026. The package now includes the new subsection, the summary table, the two Stage 3 plots, and the updated standalone PDF.
