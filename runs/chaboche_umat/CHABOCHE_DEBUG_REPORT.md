@@ -1031,6 +1031,83 @@ Interpretation:
 - Targets 39 and 49 remain useful as exploratory stress tests, but are not headline validation candidates with the current first-order vector/stress predictor.
 - The scan confirms that scalar `STATEV1` extrapolation remains robust while stress/backstress consistency limits larger FE cycle jumps.
 
+## Stage 6D Predicted Cycle-29 to Cycle-30 FE Jump
+
+Date: May 9, 2026
+
+Purpose:
+
+- Run the largest currently acceptable FE cycle-jump validation from the Stage 6C scan.
+- Route: cycle 10 data -> predicted cycle 29 state -> SDVINI/SIGINI injection -> one computed continuation cycle to cycle 30.
+- Skipped intermediate FE cycles: cycles 11-28, i.e. `18` cycles.
+- Computed-cycle route: `10` base cycles + `1` continuation cycle = `11` computed cycles instead of `30`.
+
+Files:
+
+- Preparation script: `prepare_stage6d_predicted_cycle29_state.py`
+- Stage folder: `stage6_cycle29_jump/`
+- Predicted STATEV CSV: `stage6_cycle29_jump/cycle29_predicted_statev_for_injection.csv`
+- Predicted stress CSV: `stage6_cycle29_jump/cycle29_predicted_stress_for_injection.csv`
+- Prediction error CSV: `stage6_cycle29_jump/cycle29_predicted_vs_exact_error.csv`
+- Cycle-30 reference CSV: `stage6_cycle29_jump/cycle30_reference_statev_stress.csv`
+- UMAT: `umat_chaboche_v1_with_sdvini_sigini_predicted_cycle29.f`
+- Input deck: `chaboche_stage6d_predicted_cycle29_to_cycle30.inp`
+- Runner: `run_stage6d_predicted_cycle29_jump.bat`
+- Monitor: `monitor_stage6d_predicted_cycle29_jump.py`
+- Postprocessor: `postprocess_stage6d_predicted_cycle29_jump.py`
+- Result CSV: `stage6_cycle29_jump/stage6d_predicted_cycle29_jump_result.csv`
+- Result report: `stage6_cycle29_jump/STAGE6D_PREDICTED_CYCLE29_JUMP_RESULT_REPORT.md`
+
+Run status:
+
+- Datacheck job: `chaboche_stage6d_predicted_cycle29_to_cycle30_check`
+- Datacheck status: passed
+- Full job: `chaboche_stage6d_predicted_cycle29_to_cycle30`
+- Full job status: completed
+- ODB created: yes
+- Increments: `57`
+- Cutbacks: `0`
+- User input warnings: `0`
+- Analysis warnings: `0`
+- Errors: `0`
+
+Injection check:
+
+- Expected injected `STATEV1 = 0.206790621858`
+- First-frame `STATEV1 = 0.206790626049`
+- First-frame `STATEV1` absolute injection error: `4.19090173676e-09`
+- Expected injected `S11 = 342.232143826 MPa`
+- First-frame `S11 = 342.232147217 MPa`
+- First-frame `S11` absolute injection error: `3.3905514556e-06 MPa`
+
+Reference handling:
+
+- The original 50-cycle history row for cycle 30 is at time `29.9902572632`, not exact time `30.0`.
+- The Stage 6D result report therefore uses a linear interpolation between the bracketing explicit 50-cycle ODB frames at `29.9902572632` and `30.0102577209`.
+- Interpolation alpha: `0.487125691398`
+- Interpolated explicit cycle-30 reference:
+  - `STATEV1 = 0.213713369924`
+  - `S11 = 366.855714346 MPa`
+  - RIGHT_FACE `RF1 = 1467.42285738`
+
+Final comparison:
+
+- Final Stage 6D `STATEV1 = 0.213811308146`
+- Final `STATEV1` absolute error: `9.79382215782e-05`
+- Final `STATEV1` relative error: `0.0458269043313%`
+- Final Stage 6D `S11 = 375.453552246 MPa`
+- Final `S11` absolute error: `8.59783790031 MPa`
+- Final `S11` relative error: `2.34365652874%`
+- Final RIGHT_FACE `RF1 = 1501.81420898`
+- Final RIGHT_FACE `RF1` relative error: `2.34365652874%`
+
+Conclusion:
+
+- Stage 6D is an `acceptable_exploratory_success` by the stated rule: final `STATEV1 < 1%` and final `S11 < 3%`.
+- It is not a clean success because final `S11` is not below `1%`.
+- This increases the skipped intermediate FE cycles from Stage 5B's `8` cycles to `18` cycles while retaining excellent accumulated-strain accuracy.
+- Stress/backstress prediction remains the limiting factor for larger jumps.
+
 ## Stage 3 Thesis Package Integration
 
 The Stage 3 sensitivity result was integrated into the standalone thesis cycle-jump package on May 9, 2026. The package now includes the new subsection, the summary table, the two Stage 3 plots, and the updated standalone PDF.
