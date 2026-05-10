@@ -525,6 +525,33 @@ The current Level-1 cycle-jump predictor uses only `STATEV(1)` / `SDV1`. For a L
 - DMAX=0.005: STATEV1=0.145257070661, +2.2752%
 - Conclusion: increment-size sensitivity confirmed
 
+## Stage 7B Grouped Adaptive DeltaN Controller
+
+- Created `prepare_stage7b_grouped_adaptive_deltaN_controller.py`.
+- Input history: `chaboche_vp_v1_cyclic_eps005_50cycles_cycle_history.csv`.
+- Base cycle: `N0 = 10`.
+- Mean increment window: cycles `2-10`.
+- Controller notation: paper-style damage variable `D` replaced by generic cycle-control quantity `Y_i`; paper-style `DeltaL` replaced by admissible state change `A_i = tau_i S_i`.
+- Group A accuracy monitor: `STATEV1 = p`, reported separately because accumulated viscoplastic strain is cumulative and was accurately predicted in Stage 6C/6D.
+- Group B restart-state controller: `STATEV2-4` backstress and `STATEV8-10` viscoplastic strain tensor.
+- Group C stress consistency controller: `S11`.
+- Per-variable Stage 7B result:
+  - `STATEV1` monitor: `DeltaN = 1` (not included in restart minimum).
+  - `STATEV2-4` backstress: `DeltaN = 17`.
+  - `STATEV8-10` viscoplastic strain tensor: `DeltaN = 43`.
+  - `S11` stress consistency: `DeltaN = 23`.
+- Grouped restart recommendation: `DeltaN_restart = min(17, 43, 23) = 17`.
+- Recommended target cycle: `27`.
+- Skipped intermediate FE cycles: `16`.
+- Nearest scanned Stage 6C target: `29` (`DeltaN = 19`).
+- Interpretation: Stage 7B resolves the Stage 7A over-conservatism from cumulative `STATEV1`, and the grouped recommendation is close to the validated Stage 6D exploratory success (`DeltaN = 19`, `STATEV1` error `0.0458269043313%`, `S11` error `2.34365652874%`).
+- Abaqus run performed: none.
+- UMAT/input deck modification: none.
+- Outputs:
+  - `stage7_adaptive_deltaN/stage7b_grouped_adaptive_deltaN_by_variable.csv`
+  - `stage7_adaptive_deltaN/stage7b_grouped_adaptive_deltaN_summary.csv`
+  - `stage7_adaptive_deltaN/STAGE7B_GROUPED_ADAPTIVE_DELTAN_CONTROLLER_REPORT.md`
+
 ## Stage 4B Direct State Injection Follow-Up
 
 Date: May 9, 2026
