@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1778383173.37564 "./cycle_jump_chaboche_standalone.tex" "cycle_jump_chaboche_standalone.pdf" "cycle_jump_chaboche_standalone" 1778383178.17199 0
+["pdflatex"] 1778383399.54301 "./cycle_jump_chaboche_standalone.tex" "cycle_jump_chaboche_standalone.pdf" "cycle_jump_chaboche_standalone" 1778383404.27764 0
   "./cycle_jump_chaboche_standalone.tex" 1778331683 706 ec6f889eaf4e5d5d0f9882c5940570df ""
   "C:/Users/pruth/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1774166717 81088 29d6fa367ac022d1b69251d68c0742e6 ""
   "C:/Users/pruth/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1777603084 13321621 ad88c515992b813e8a40c7de2fbdc0d2 ""
@@ -206,7 +206,7 @@
   "C:/Users/pruth/AppData/Local/Programs/MiKTeX/tex/latex/pgf/utilities/pgfrcs.sty" 1756451144 325 f9f16d12354225b7dd52a3321f085955 ""
   "C:/Users/pruth/AppData/Local/Programs/MiKTeX/tex/latex/pgfplots/pgfplots.sty" 1621075461 4904 ee78b44e85d6fccf08cd99370557481e ""
   "C:/Users/pruth/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "cycle_jump_chaboche_standalone.aux" 1778383177 8849 cabf1424364aed0dd0e713562c9a0a0e "pdflatex"
+  "cycle_jump_chaboche_standalone.aux" 1778383403 9192 86c47e77c58f4b8e516a9ed87dcafb91 "pdflatex"
   "cycle_jump_chaboche_standalone.tex" 1778331683 706 ec6f889eaf4e5d5d0f9882c5940570df ""
   "figures/fig00_geometry_material_model.png" 1778224256 140757 210a3bb23f54e3268817c1d2e209dfb3 ""
   "figures/fig00b_actual_abaqus_geometry.png" 1778224489 103355 5b63dc9b21234e40c4dca82fb8c23fec ""
@@ -217,7 +217,7 @@
   "figures/fig05_cycle_jump_vs_explicit_20cycles.png" 1778223551 103454 a086ab447fadfcfe1ba116f677ab5069 ""
   "latex/chaboche_increment_sensitivity_section.tex" 1778305389 4712 af59fc7d8befc5048f271faa30562c78 ""
   "latex/chaboche_level2_cycle_jump_preparation_section.tex" 1778231670 7507 75dc30fb6f56e88a75a307e0f9c83720 ""
-  "latex/chaboche_predicted_fe_cycle_jump_section.tex" 1778383157 8056 8a660f9f7027581285d481b2bffd9d87 ""
+  "latex/chaboche_predicted_fe_cycle_jump_section.tex" 1778383389 9217 45cdf5076fd3bfa503a73daaf579d886 ""
   "latex/cycle_jump_chaboche_section.tex" 1778224996 7740 65d0e34efca7615412f64bf73dda6afb ""
   "tables/chaboche_eps005_20cycles_dt_original_output_statev_history.csv" 1778301618 11102 aa5d2a03664f730fc727241eada920f6 ""
   "tables/chaboche_eps005_20cycles_dtmax_0p005_inc6000_statev_history.csv" 1778304260 11071 b07c19fedbf4867c82d778952ea29b34 ""

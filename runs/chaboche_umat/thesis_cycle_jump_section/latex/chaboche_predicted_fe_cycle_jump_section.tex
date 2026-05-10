@@ -93,10 +93,29 @@ The grouped controller gave \(\Delta N_X=17\), \(\Delta N_{\varepsilon^{vp}}=43\
 
 The adaptive recommendation was then checked directly in Abaqus by injecting the predicted cycle-27 state and computing the continuation cycle to cycle 28. This Stage 7C validation skipped 16 intermediate FE cycles. The injected state was reproduced accurately in the first output frame, with an absolute error of \(1.40\times10^{-9}\) in \(\text{STATEV1}\) and \(3.39\times10^{-6}\,\mathrm{MPa}\) in \(S_{11}\). At cycle 28, the relative error was \(0.0232\%\) for accumulated viscoplastic strain and \(2.365\%\) for \(S_{11}\). Therefore, the formula-selected \(\Delta N_{\mathrm{restart}}=17\) was accepted as an exploratory cycle jump, consistent with the Stage 6D result while being selected by the adaptive controller rather than by manual target scanning.
 
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrl}
+\toprule
+\textbf{Stage} & \textbf{Purpose} & \textbf{$\Delta N$} & \textbf{Skipped} & \textbf{STATEV1 err.} & \textbf{$S_{11}$ err.} & \textbf{Outcome} \\
+\midrule
+5B & Clean predicted FE jump & 9 & 8 & 0.049427\% & 0.127013\% & Clean success \\
+6D & Larger manually selected FE jump & 19 & 18 & 0.0458269\% & 2.34366\% & Accepted exploratory \\
+7B & Grouped adaptive controller & 17 & 16 & monitor only & controller only & Recommended \\
+7C & Formula-selected FE validation & 17 & 16 & 0.0231585\% & 2.36495\% & Accepted exploratory \\
+\bottomrule
+\end{tabular}
+}
+\caption{Final cycle-jump validation summary. Stage 7B provides the grouped adaptive recommendation, while Stage 7C validates that recommendation through a direct Abaqus continuation run.}
+\label{tab:final_cycle_jump_summary}
+\end{table}
+
 \subsection{Interpretation and Limitation}
 
 The remaining limitation is not Abaqus initialization, \texttt{SDVINI}, \texttt{SIGINI}, or UMAT continuation. These mechanisms were verified by the exact-state and predicted-state continuation tests. The remaining limitation is the accuracy of first-order stress and backstress extrapolation for larger cycle jumps.
 
 The core FE cycle-jump concept was successfully demonstrated for the simplified Chaboche-v1 UMAT. A predicted future material state was obtained from cycle-space extrapolation, injected into Abaqus through \texttt{SDVINI} and \texttt{SIGINI}, and used to continue the FE simulation after skipping intermediate cycles. The method reproduced the no-skip FE reference accurately for accumulated viscoplastic strain and acceptably for stress in the larger exploratory jump.
 
-This result should be interpreted within its intended scope. It does not claim a full Nesnas--Saanouni damage model, a fatigue-life prediction method, a calibrated 316 stainless steel material model, or a general production-ready adaptive cycle-jump framework.
+This result should be interpreted within its intended scope. It does not claim a full Nesnas--Saanouni damage model, a fatigue-life prediction method, a calibrated 316 stainless steel material model, or a general production-ready adaptive cycle-jump framework. Future work should calibrate the Chaboche parameters for the target material, improve the stress and backstress extrapolation beyond the present first-order predictor, and test the grouped adaptive controller on multi-element geometries and longer cyclic histories.

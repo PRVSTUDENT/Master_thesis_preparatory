@@ -276,3 +276,44 @@ Stage 7C confirms that the grouped adaptive controller is not only close to the 
 - Compile command: `latexmk -pdf -interaction=nonstopmode -halt-on-error .\cycle_jump_chaboche_standalone.tex`
 - Note: MiKTeX printed user/administrator update warnings, but the PDF was generated successfully.
 
+## Stage 8 Final Thesis Polishing Snapshot
+
+**Integration Date:** May 10, 2026
+
+The cycle-jump thesis package was consolidated through the adaptive Abaqus validation stage.
+
+Updated:
+
+- `latex/chaboche_predicted_fe_cycle_jump_section.tex`
+- `cycle_jump_chaboche_standalone.pdf`
+- `THESIS_SECTION_BUILD_REPORT.md`
+
+**Content added:**
+
+- Final summary table comparing Stage 5B, Stage 6D, Stage 7B, and Stage 7C:
+  - Stage 5B: clean predicted FE jump, `DeltaN = 9`, 8 skipped cycles, clean success
+  - Stage 6D: larger manually selected jump, `DeltaN = 19`, 18 skipped cycles, accepted exploratory success
+  - Stage 7B: grouped adaptive controller, `DeltaN_restart = 17`, recommendation stage
+  - Stage 7C: formula-selected FE validation, `DeltaN = 17`, 16 skipped cycles, accepted exploratory success
+- Limitations and future-work sentence covering material calibration, improved stress/backstress extrapolation, multi-element tests, and longer cyclic histories.
+
+**Reference/order check:**
+
+- Figure numbering in `.aux`: 1 through 9, in order.
+- Table numbering in `.aux`: 1 through 6, in order.
+- Final summary table label: `tab:final_cycle_jump_summary`.
+- No missing-reference or citation warnings were reported by the LaTeX log.
+- Remaining log issues are pre-existing overfull hbox warnings.
+
+**Updated PDF:**
+
+- New page count: 12 pages
+- New size: 1107407 bytes
+- Compilation status: successful
+- Compile command: `latexmk -pdf -interaction=nonstopmode -halt-on-error .\cycle_jump_chaboche_standalone.tex`
+- Note: MiKTeX printed user/administrator update warnings, but the PDF was generated successfully.
+
+**Current thesis-package status:**
+
+The cycle-jump thesis section is complete through the final Stage 8 polishing snapshot. It now documents the clean small jump, larger exploratory jump, grouped adaptive controller, direct adaptive-target Abaqus validation, and remaining limitations/future work.
+
