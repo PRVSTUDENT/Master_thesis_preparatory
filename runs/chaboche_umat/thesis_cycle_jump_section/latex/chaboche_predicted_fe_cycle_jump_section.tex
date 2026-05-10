@@ -84,6 +84,8 @@ was prescribed and a jump estimate was computed from the ratio of this admissibl
 \end{equation}
 Here, \(\eta\) is a safety factor and \(\epsilon\) prevents division by zero.
 
+The adaptive jump-size controller in this work is inspired by the damage-based cycle-jump strategy of Nesnas--Saanouni. However, the present implementation is not a direct implementation of their coupled damage-viscoplasticity formulation. Since the current Chaboche UMAT does not include an explicit damage variable, the damage-control quantity is replaced by generalized Chaboche state and stress-control variables. Therefore, the contribution of this work is a Chaboche-based adaptive cycle-jump workflow with practical Abaqus continuation through \texttt{SDVINI}/\texttt{SIGINI}, rather than a full damage-based fatigue-life model.
+
 Because accumulated viscoplastic strain \(p\) is cumulative and was accurately predicted even for larger jumps, it was retained as an accuracy monitor rather than the global limiter. The restart jump size was instead controlled by backstress, viscoplastic strain tensor, and residual stress consistency:
 \begin{equation}
 \Delta N_{\mathrm{restart}} =

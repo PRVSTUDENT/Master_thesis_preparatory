@@ -317,3 +317,23 @@ Updated:
 
 The cycle-jump thesis section is complete through the final Stage 8 polishing snapshot. It now documents the clean small jump, larger exploratory jump, grouped adaptive controller, direct adaptive-target Abaqus validation, and remaining limitations/future work.
 
+## Supervisor Note: Nesnas--Saanouni Comparison
+
+**Integration Date:** May 10, 2026
+
+A short thesis-safe scope paragraph was added to the adaptive jump-size subsection to clarify that the present work is inspired by the Nesnas--Saanouni damage-based cycle-jump strategy, but is not a direct implementation of their coupled damage-viscoplasticity formulation. The paragraph states that the Chaboche UMAT does not include an explicit damage variable, so the damage-control quantity is replaced by generalized Chaboche state and stress-control variables.
+
+Created:
+
+- `NESNAS_SAANOUNI_COMPARISON_SUPERVISOR_NOTE.md`
+
+This supervisor/discussion note keeps the full comparison table outside the thesis main text under the title `Comparison Between Nesnas--Saanouni Damage-Based Cycle Jumping and the Present Chaboche UMAT Cycle-Jump Workflow`.
+
+**Updated PDF:**
+
+- Page count: 12 pages
+- PDF size: 1107982 bytes
+- Compilation status: successful
+- Compile command: `latexmk -pdf -interaction=nonstopmode -halt-on-error .\cycle_jump_chaboche_standalone.tex`
+- Note: MiKTeX printed the same user/administrator update warning; the PDF was generated successfully.
+
