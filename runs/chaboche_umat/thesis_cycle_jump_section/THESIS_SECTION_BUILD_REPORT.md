@@ -337,3 +337,5 @@ This supervisor/discussion note keeps the full comparison table outside the thes
 - Compile command: `latexmk -pdf -interaction=nonstopmode -halt-on-error .\cycle_jump_chaboche_standalone.tex`
 - Note: MiKTeX printed the same user/administrator update warning; the PDF was generated successfully.
 
+PDF copies were also generated for review: `NESNAS_SAANOUNI_COMPARISON_SUPERVISOR_NOTE.pdf` and `THESIS_SECTION_BUILD_REPORT.pdf`.
+
