@@ -137,3 +137,142 @@ Added and copied into the thesis package:
 2. Full-state preparation diagnostics identifying robustness requirements (Level 2)
 3. Increment-schedule sensitivity evidence showing the UMAT remains increment-size sensitive (Stage 3)
 
+## Predicted-State FE Cycle-Jump Continuation Integration
+
+**Integration Date:** May 9, 2026
+
+The final predicted-state FE cycle-jump subsection was added to the standalone thesis package after the Stage 3 increment-schedule sensitivity section.
+
+Added and copied into the thesis package:
+
+- `latex/chaboche_predicted_fe_cycle_jump_section.tex`
+- `tables/table_predicted_fe_cycle_jump_summary.csv`
+- `tables/table_multitarget_jump_scan.csv`
+
+Updated:
+
+- `cycle_jump_chaboche_standalone.tex`
+- `cycle_jump_chaboche_standalone.pdf`
+
+**New section name:**
+
+- `Predicted-State FE Cycle-Jump Continuation`
+
+**Content added:**
+
+- Method paragraph covering cycle-space prediction, `SDVINI` STATEV injection, `SIGINI` residual-stress injection, one computed continuation cycle, and comparison against full no-skip Abaqus references.
+- Stage 5B clean predicted FE cycle-jump result:
+  - Route: cycle 10 -> predicted cycle 19 -> cycle 20
+  - Skipped intermediate FE cycles: `8`
+  - STATEV1 relative error: `0.049427%`
+  - S11 relative error: `0.127013%`
+  - Decision: clean success
+- Stage 6C multi-target prediction scan:
+  - Target 29 -> 30: acceptable exploratory candidate
+  - Target 39 -> 40: not headline candidate
+  - Target 49 -> 50: not headline candidate
+- Stage 6D larger predicted FE cycle-jump result:
+  - Route: cycle 10 -> predicted cycle 29 -> cycle 30
+  - Skipped intermediate FE cycles: `18`
+  - Computed route: `11` cycles instead of `30`
+  - Route reduction: `63.33%`
+  - STATEV1 relative error: `0.0458269%`
+  - S11 relative error: `2.34366%`
+  - Outcome: acceptable exploratory success
+
+**Limitation stated in the thesis text:**
+
+The remaining limitation is not Abaqus initialization, `SDVINI`, `SIGINI`, or UMAT continuation. These mechanisms were verified. The remaining limitation is the accuracy of first-order stress/backstress extrapolation for larger cycle jumps.
+
+**Updated PDF:**
+
+- New page count: 11 pages
+- New size: 1091019 bytes
+- Compilation status: successful
+- Compile command: `latexmk -pdf -interaction=nonstopmode -halt-on-error .\cycle_jump_chaboche_standalone.tex`
+- Note: MiKTeX again printed user/administrator update warnings, but the PDF was generated successfully.
+
+**Thesis narrative now covers:**
+
+1. Validated scalar SDV1 cycle-jump demonstration (Level 1)
+2. Full-state preparation diagnostics identifying robustness requirements (Level 2)
+3. Increment-schedule sensitivity evidence for the Chaboche-v1 UMAT (Stage 3)
+4. Predicted-state FE cycle-jump continuation through `SDVINI`/`SIGINI`, including clean Stage 5B and larger exploratory Stage 6D validation
+
+## Stage 7B Adaptive Jump-Size Selection Integration
+
+**Integration Date:** May 10, 2026
+
+A short subsection was added after the predicted FE cycle-jump continuation results:
+
+- `Adaptive Jump-Size Selection Inspired by Nesnas--Saanouni`
+
+Updated:
+
+- `latex/chaboche_predicted_fe_cycle_jump_section.tex`
+- `cycle_jump_chaboche_standalone.pdf`
+- `THESIS_SECTION_BUILD_REPORT.md`
+
+**Content added:**
+
+- The paper damage variable `D` is not used directly because the present model is a Chaboche viscoplastic UMAT without damage.
+- `D` is replaced by a generalized Chaboche cycle-control quantity `Y_i`.
+- The paper-style jump budget is written as an admissible state change `A_i = tau_i S_i`.
+- The per-variable jump estimate is documented as `DeltaN_i = floor(eta A_i / (abs(mean DeltaY_i) + eps))`.
+- Accumulated viscoplastic strain `p` is treated as an accuracy monitor rather than the global restart limiter.
+- Backstress, viscoplastic strain tensor, and residual stress consistency control the grouped restart recommendation.
+- The grouped Stage 7B recommendation `DeltaN_restart = 17` is stated as close to the validated Stage 6D exploratory FE jump with `DeltaN = 19`.
+
+**Updated PDF:**
+
+- New page count: 12 pages
+- New size: 1105468 bytes
+- Compilation status: successful
+- Compile command: `latexmk -pdf -interaction=nonstopmode -halt-on-error .\cycle_jump_chaboche_standalone.tex`
+- Note: MiKTeX printed user/administrator update warnings, but the PDF was generated successfully.
+
+**Thesis narrative now covers:**
+
+1. Validated scalar SDV1 cycle-jump demonstration (Level 1)
+2. Full-state preparation diagnostics identifying robustness requirements (Level 2)
+3. Increment-schedule sensitivity evidence for the Chaboche-v1 UMAT (Stage 3)
+4. Predicted-state FE cycle-jump continuation through `SDVINI`/`SIGINI`, including clean Stage 5B and larger exploratory Stage 6D validation
+5. Paper-inspired grouped adaptive `DeltaN` selection with Stage 7B recommendation `DeltaN_restart = 17`
+
+## Stage 7C Adaptive Target Abaqus Validation Integration
+
+**Integration Date:** May 10, 2026
+
+The Stage 7C direct Abaqus validation was added to the adaptive jump-size subsection.
+
+Updated:
+
+- `latex/chaboche_predicted_fe_cycle_jump_section.tex`
+- `cycle_jump_chaboche_standalone.pdf`
+- `THESIS_SECTION_BUILD_REPORT.md`
+
+**Content added:**
+
+- Stage 7B formula-selected recommendation: `DeltaN_restart = 17`.
+- Direct validation route: cycle 10 -> predicted cycle 27 -> cycle 28.
+- Skipped intermediate FE cycles: `16`.
+- First-frame injection check:
+  - STATEV1 absolute error: `1.39693476231e-09`
+  - S11 absolute error: `3.39113159953e-06 MPa`
+- Final cycle-28 comparison against the interpolated 50-cycle Abaqus reference:
+  - STATEV1 relative error: `0.0231584782019%`
+  - S11 relative error: `2.36494669088%`
+- Stage 7C outcome: `accepted_exploratory_success`.
+
+**Thesis interpretation:**
+
+Stage 7C confirms that the grouped adaptive controller is not only close to the manually validated Stage 6D jump, but also produces an Abaqus-validated formula-selected exploratory cycle jump.
+
+**Updated PDF:**
+
+- New page count: 12 pages
+- New size: 1106447 bytes
+- Compilation status: successful
+- Compile command: `latexmk -pdf -interaction=nonstopmode -halt-on-error .\cycle_jump_chaboche_standalone.tex`
+- Note: MiKTeX printed user/administrator update warnings, but the PDF was generated successfully.
+
