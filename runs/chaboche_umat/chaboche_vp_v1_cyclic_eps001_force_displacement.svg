@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+<rect width="100%" height="100%" fill="white"/>
+<text x="450.0" y="28" text-anchor="middle" font-size="22" font-family="Arial">chaboche_vp_v1_cyclic_eps001: force-displacement</text>
+<line x1="95" y1="520" x2="750" y2="520" stroke="black" stroke-width="2"/>
+<line x1="95" y1="50" x2="95" y2="520" stroke="black" stroke-width="2"/>
+<line x1="95.00" y1="50" x2="95.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="95.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">-0.01059</text>
+<line x1="95" y1="520.00" x2="750" y2="520.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="525.00" text-anchor="end" font-size="13" font-family="Arial">-923</text>
+<line x1="226.00" y1="50" x2="226.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="226.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">-0.006353</text>
+<line x1="95" y1="426.00" x2="750" y2="426.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="431.00" text-anchor="end" font-size="13" font-family="Arial">-553.8</text>
+<line x1="357.00" y1="50" x2="357.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="357.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">-0.002118</text>
+<line x1="95" y1="332.00" x2="750" y2="332.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="337.00" text-anchor="end" font-size="13" font-family="Arial">-184.6</text>
+<line x1="488.00" y1="50" x2="488.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="488.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.002118</text>
+<line x1="95" y1="238.00" x2="750" y2="238.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="243.00" text-anchor="end" font-size="13" font-family="Arial">184.6</text>
+<line x1="619.00" y1="50" x2="619.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="619.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.006353</text>
+<line x1="95" y1="144.00" x2="750" y2="144.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="149.00" text-anchor="end" font-size="13" font-family="Arial">553.8</text>
+<line x1="750.00" y1="50" x2="750.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="750.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.01059</text>
+<line x1="95" y1="50.00" x2="750" y2="50.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="55.00" text-anchor="end" font-size="13" font-family="Arial">923</text>
+<polyline points="422.50,285.00 423.74,284.14 424.97,283.29 426.83,282.01 429.61,280.08 433.79,277.19 440.05,272.86 449.45,266.37 463.54,256.62 484.68,242.01 509.42,224.90 534.16,207.79 558.90,190.68 583.65,173.57 608.39,156.47 633.13,139.36 657.87,122.25 682.62,105.14 707.36,88.03 731.46,71.36 706.72,88.47 681.98,105.58 657.23,122.69 632.49,139.80 607.75,156.91 583.01,174.01 558.26,191.12 533.52,208.23 508.78,225.34 484.04,242.45 459.29,259.56 434.55,276.67 409.81,293.77 385.07,310.88 360.32,327.99 335.58,345.10 310.84,362.21 286.10,379.32 261.35,396.43 236.61,413.53 211.87,430.64 187.13,447.75 162.38,464.86 137.64,481.97 113.54,498.64 138.28,481.53 163.02,464.42 187.77,447.31 212.51,430.20 237.25,413.09 261.99,395.99 286.74,378.88 311.48,361.77 336.22,344.66 360.96,327.55 385.71,310.44 410.45,293.33 422.50,285.00" fill="none" stroke="black" stroke-width="2.5"/>
+<line x1="775" y1="58" x2="805" y2="58" stroke="black" stroke-width="3"/>
+<text x="815" y="63" font-size="14" font-family="Arial">chaboche_vp_v1_cyclic_eps001</text>
+<text x="422.5" y="575" text-anchor="middle" font-size="18" font-family="Arial">Displacement U1 [mm]</text>
+<text x="25" y="285.0" text-anchor="middle" font-size="18" font-family="Arial" transform="rotate(-90 25,285.0)">Reaction force RF1 [N]</text>
+</svg>

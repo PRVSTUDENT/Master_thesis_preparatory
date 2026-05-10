@@ -1,152 +1,71 @@
 #!/usr/bin/env python3
-"""
-Extract hysteresis loop data from Chaboche UMAT Abaqus simulation
-
-Extracts force-displacement data from .odb file using:
-- U1 (displacement) from loaded nodes
-- RF1 (reaction force) from loaded face reference node
-"""
-
 import csv
 import os
 from odbAccess import openOdb
 
-def extract_hysteresis(odb_file, output_csv, ref_node_label='RIGHT_FACE'):
-    """
-    Extract force-displacement hysteresis from .odb file
-    
-    Uses reaction force RF1 from RIGHT_FACE nodes (loaded face).
-    
-    Parameters
-    ----------
-    odb_file : str
-        Path to Abaqus .odb results file
-    output_csv : str
-        Path to output .csv file
-    ref_node_label : str
-        Reference node set label for reaction force extraction (RIGHT_FACE by default)
-    """
-    
-    # Open the ODB
-    print(f"Opening {odb_file}...")
+def extract_hysteresis(odb_file, output_csv, nset_name="RIGHT_FACE"):
     odb = openOdb(odb_file)
-    
-    displacement_data = []
-    force_data = []
-    time_data = []
-    
     assembly = odb.rootAssembly
-    
-    # Get the assembly instance
-    instances = assembly.instances
-    if 'BLOCK_INST' not in instances:
-        print("Warning: BLOCK_INST instance not found. Available instances:")
-        for inst_name in instances.keys():
-            print(f"  - {inst_name}")
-        part_inst = list(instances.values())[0]
-    else:
-        part_inst = instances['BLOCK_INST']
-    
-    # Get RIGHT_FACE nodeset
-    try:
-        right_face_nodes = part_inst.nodeSets['RIGHT_FACE']
-        right_face_node_labels = [node.label for node in right_face_nodes.nodes]
-        print(f"Found RIGHT_FACE nodes: {right_face_node_labels}")
-    except KeyError:
-        print(f"Error: RIGHT_FACE node set not found in instance. Available nodesets:")
-        for nset_name in part_inst.nodeSets.keys():
-            print(f"  - {nset_name}")
-        right_face_node_labels = []
-    
-    try:
-        # Process all steps
-        for step_name in sorted(odb.steps.keys()):
-            step = odb.steps[step_name]
-            print(f"\nProcessing step: {step_name}")
-            
-            for frame_idx, frame in enumerate(step.frames):
-                time_val = frame.frameValue
-                
-                try:
-                    # Get displacement field output (U)
-                    u_field = frame.fieldOutputs['U']
-                    
-                    # Get reaction force field output (RF)
-                    rf_field = frame.fieldOutputs['RF']
-                    
-                    # Get maximum displacement from RIGHT_FACE nodes
-                    u_max = 0.0
-                    for value in u_field.values:
-                        if right_face_node_labels:
-                            if value.nodeLabel in right_face_node_labels:
-                                u_comp = value.data[0]  # X-displacement
-                                if abs(u_comp) > abs(u_max):
-                                    u_max = u_comp
-                        else:
-                            u_comp = value.data[0]
-                            if abs(u_comp) > abs(u_max):
-                                u_max = u_comp
-                    
-                    # Sum reaction forces in X-direction from RIGHT_FACE only
-                    rf_sum = 0.0
-                    count = 0
-                    for value in rf_field.values:
-                        if right_face_node_labels:
-                            if value.nodeLabel in right_face_node_labels:
-                                rf_x = value.data[0]  # RF1 (X-direction)
-                                rf_sum += rf_x
-                                count += 1
-                        else:
-                            rf_x = value.data[0]
-                            rf_sum += rf_x
-                            count += 1
-                    
-                    displacement_data.append(u_max)
-                    force_data.append(rf_sum)
-                    time_data.append(time_val)
-                    
-                    if frame_idx % 5 == 0:
-                        print(f"  Frame {frame_idx}: Time={time_val:.4f}, "
-                              f"U1_max={u_max:.6f}, RF1_sum={rf_sum:.2f} ({count} nodes)")
-                
-                except KeyError as e:
-                    print(f"  Frame {frame_idx}: Field not available - {e}")
-                    continue
-    
-    except Exception as e:
-        print(f"Error processing steps: {e}")
-        import traceback
-        traceback.print_exc()
-    
-    # Write to CSV
-    if displacement_data:
-        print(f"\nWriting {len(displacement_data)} data points to {output_csv}...")
-        with open(output_csv, 'w', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(['Time_s', 'Displacement_mm', 'ReactionForce_N'])
-            
-            for i in range(len(displacement_data)):
-                writer.writerow([
-                    f"{time_data[i]:.6f}",
-                    f"{displacement_data[i]:.8f}",
-                    f"{force_data[i]:.4f}"
-                ])
-        
-        print(f"Hysteresis extraction complete. Results saved to {output_csv}")
-    else:
-        print("No displacement/force data found in simulation results")
-    
-    odb.close()
 
+    if nset_name not in assembly.nodeSets:
+        print("Available assembly node sets:")
+        for k in assembly.nodeSets.keys():
+            print("  ", k)
+        raise RuntimeError("Node set %s not found at assembly level" % nset_name)
+
+    right_set = assembly.nodeSets[nset_name]
+    right_labels = set(node.label for node in right_set.nodes[0])
+    print("Using assembly node set %s with node labels: %s" % (nset_name, sorted(right_labels)))
+
+    rows = []
+
+    for step_name in odb.steps.keys():
+        step = odb.steps[step_name]
+        print("Processing step:", step_name)
+
+        for frame_idx, frame in enumerate(step.frames):
+            time_val = frame.frameValue
+
+            u_max = 0.0
+            rf_sum = 0.0
+            s11_vals = []
+
+            if "U" in frame.fieldOutputs:
+                for v in frame.fieldOutputs["U"].values:
+                    if v.nodeLabel in right_labels:
+                        u_max = max(u_max, v.data[0], key=abs)
+
+            if "RF" in frame.fieldOutputs:
+                for v in frame.fieldOutputs["RF"].values:
+                    if v.nodeLabel in right_labels:
+                        rf_sum += v.data[0]
+
+            if "S" in frame.fieldOutputs:
+                for v in frame.fieldOutputs["S"].values:
+                    s11_vals.append(v.data[0])
+
+            s11_avg = sum(s11_vals) / len(s11_vals) if s11_vals else 0.0
+
+            rows.append([time_val, u_max, rf_sum, s11_avg])
+
+            if frame_idx % 5 == 0:
+                print("  frame=%d time=%.6g U1=%.6g RF1=%.6g S11avg=%.6g"
+                      % (frame_idx, time_val, u_max, rf_sum, s11_avg))
+
+    with open(output_csv, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["Time_s", "Displacement_mm", "ReactionForce_N", "Avg_S11_MPa"])
+        for r in rows:
+            w.writerow(["%.8g" % r[0], "%.10g" % r[1], "%.10g" % r[2], "%.10g" % r[3]])
+
+    odb.close()
+    print("Wrote", output_csv)
 
 if __name__ == "__main__":
-    # Configure file paths
     odb_file = "chaboche_umat_1cycle.odb"
     output_csv = "chaboche_umat_1cycle_hys.csv"
-    
-    if os.path.exists(odb_file):
-        extract_hysteresis(odb_file, output_csv)
-    else:
-        print(f"Error: {odb_file} not found")
-        print("Run the simulation first: abaqus job=chaboche_umat_1cycle user=chaboche_umat.f")
 
+    if not os.path.exists(odb_file):
+        raise RuntimeError("%s not found" % odb_file)
+
+    extract_hysteresis(odb_file, output_csv)

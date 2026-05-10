@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+<rect width="100%" height="100%" fill="white"/>
+<text x="450.0" y="28" text-anchor="middle" font-size="22" font-family="Arial">Chaboche-v1: SDV1 Evolution</text>
+<line x1="90" y1="520" x2="870" y2="520" stroke="black" stroke-width="2"/>
+<line x1="90" y1="50" x2="90" y2="520" stroke="black" stroke-width="2"/>
+<line x1="90.00" y1="50" x2="90.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="90.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0</text>
+<line x1="90" y1="520.00" x2="870" y2="520.00" stroke="#dddddd" stroke-width="1"/>
+<text x="80" y="525.00" text-anchor="end" font-size="13" font-family="Arial">-0.0009975</text>
+<line x1="246.00" y1="50" x2="246.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="246.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.01</text>
+<line x1="90" y1="426.00" x2="870" y2="426.00" stroke="#dddddd" stroke-width="1"/>
+<text x="80" y="431.00" text-anchor="end" font-size="13" font-family="Arial">0.003392</text>
+<line x1="402.00" y1="50" x2="402.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="402.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.02</text>
+<line x1="90" y1="332.00" x2="870" y2="332.00" stroke="#dddddd" stroke-width="1"/>
+<text x="80" y="337.00" text-anchor="end" font-size="13" font-family="Arial">0.007781</text>
+<line x1="558.00" y1="50" x2="558.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="558.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.03</text>
+<line x1="90" y1="238.00" x2="870" y2="238.00" stroke="#dddddd" stroke-width="1"/>
+<text x="80" y="243.00" text-anchor="end" font-size="13" font-family="Arial">0.01217</text>
+<line x1="714.00" y1="50" x2="714.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="714.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.04</text>
+<line x1="90" y1="144.00" x2="870" y2="144.00" stroke="#dddddd" stroke-width="1"/>
+<text x="80" y="149.00" text-anchor="end" font-size="13" font-family="Arial">0.01656</text>
+<line x1="870.00" y1="50" x2="870.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="870.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.05</text>
+<line x1="90" y1="50.00" x2="870" y2="50.00" stroke="#dddddd" stroke-width="1"/>
+<text x="80" y="55.00" text-anchor="end" font-size="13" font-family="Arial">0.02095</text>
+<polyline points="90.00,498.64 90.78,498.64 91.56,498.64 92.73,498.64 94.49,498.64 97.12,498.64 101.07,498.64 106.99,498.64 115.87,498.64 129.20,498.07 149.19,478.27 179.18,456.85 218.18,435.44 257.18,414.02 296.18,392.61 335.18,371.19 374.18,349.77 413.18,328.36 452.18,306.94 491.18,285.53 530.18,264.11 569.18,242.69 608.18,221.28 647.18,199.86 686.18,178.44 725.18,157.03 764.18,135.61 803.18,114.20 842.18,92.78 870.00,71.36" fill="none" stroke="black" stroke-width="2.5"/>
+<text x="480.0" y="575" text-anchor="middle" font-size="18" font-family="Arial">Engineering strain, U1/L0</text>
+<text x="25" y="285.0" text-anchor="middle" font-size="18" font-family="Arial" transform="rotate(-90 25,285.0)">Accumulated viscoplastic strain SDV1</text>
+</svg>

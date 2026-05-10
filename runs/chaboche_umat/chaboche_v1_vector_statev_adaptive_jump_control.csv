@@ -1,0 +1,16 @@
+statev_index,symbol_or_name,role,used_for_jump_control,base_value_cycle_10,mean_dSTATEV_dN_cycles_2_10,mean_d2STATEV_dN2_cycles_2_10,relative_range_dSTATEV_dN_cycles_2_10,raw_candidate_DeltaN,candidate_DeltaN_after_curvature_check,first_second_order_relative_difference,prior_stability_classification
+1,p,active_vector_component,yes,0.0702667832375,0.00718546519056,3.1146919375e-07,0.00142903719908,9,9,9.34850977935e-05,stable extrapolation candidate
+2,X11,active_vector_component,yes,-85.9424591064,0.189079284668,-0.201655387879,8.53209861599,454,2,0.00469280004262,needs caution
+3,X22,active_vector_component,yes,42.9712295532,-0.094539642334,0.100827693939,8.53209861599,454,2,0.00469280004261,needs caution
+4,X33,active_vector_component,yes,42.9712295532,-0.094539642334,0.100827693939,8.53209861599,454,2,0.00469280004261,needs caution
+5,X12,near_zero_report_only,no,1.89103408034e-15,1.85613432164e-16,5.73649405063e-16,,60,1,0.0286824702532,small/nearly zero component
+6,X13,near_zero_report_only,no,1.57150387987e-15,2.57878636696e-17,1.59586871146e-16,,60,1,0.00797934355731,small/nearly zero component
+7,X23,near_zero_report_only,no,-1.78002985219e-15,2.046092383e-17,5.71430698056e-17,,60,1,0.00285715349028,small/nearly zero component
+8,Evp11,active_vector_component,yes,-0.00179540505633,-1.53241368632e-06,1.99883652385e-06,10.4355026589,1171,4,0.00887614992513,needs caution
+9,Evp22,active_vector_component,yes,0.000897702528164,7.66206843158e-07,-9.99418261927e-07,10.4355026589,1171,4,0.00887614992514,needs caution
+10,Evp33,active_vector_component,yes,0.000897702528164,7.66206843158e-07,-9.99418261927e-07,10.4355026589,1171,4,0.00887614992514,needs caution
+11,Evp12,near_zero_report_only,no,-2.50127276099e-19,-3.20502158586e-20,8.51927932039e-21,,60,60,0.00153347027767,small/nearly zero component
+12,Evp13,near_zero_report_only,no,-1.54258927686e-19,-1.88107538284e-20,3.083024347e-21,,60,60,0.00055494438246,small/nearly zero component
+13,Evp23,near_zero_report_only,no,-4.94534226677e-20,-1.07239781599e-21,3.54577017294e-21,,60,60,0.000638238631129,small/nearly zero component
+14,RISO,recomputable_report_only,no,0.701434910297,0.0717185309364,-2.264464275e-05,0.00359717077904,9,9,0.000680901983458,diagnostic/recomputable
+15,DP,diagnostic_report_only,no,0,0,0,,60,60,0,diagnostic/recomputable

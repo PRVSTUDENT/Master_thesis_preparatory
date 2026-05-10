@@ -1,0 +1,16 @@
+statev_index,symbol_or_name,inferred_meaning,mean_delta_cycles_2_10,std_delta_cycles_2_10,relative_range_delta_cycles_2_10,max_abs_end_cycles_1_20,max_abs_delta_cycles_1_20,classification
+1,p,Accumulated viscoplastic strain,0.00680734574174,2.6033755306e-05,0.0119928198635,0.134750679135,0.00687641231343,stable extrapolation candidate
+2,X11,Backstress tensor component,0.391053941515,1.18738618316,9.28558483956,87.6441726685,87.6441726685,needs caution
+3,X22,Backstress tensor component,-0.195526970757,0.593693091579,9.28558483956,43.8220863342,43.8220863342,needs caution
+4,X33,Backstress tensor component,-0.195526970757,0.593693091579,9.28558483956,43.8220863342,43.8220863342,needs caution
+5,X12,Backstress tensor component,-1.52442305676e-16,2.22788752725e-15,,4.25292793038e-15,5.63226579293e-15,small/nearly zero component
+6,X13,Backstress tensor component,-6.12567277299e-17,1.13992438915e-15,,2.6958679475e-15,1.94027094958e-15,small/nearly zero component
+7,X23,Backstress tensor component,-4.63150082701e-17,5.03157900467e-16,,2.54384873464e-15,1.96417816666e-15,small/nearly zero component
+8,Evp11,Viscoplastic strain tensor component,9.22874702762e-06,2.66044059034e-05,8.65716520269,0.00178161333315,0.00178161333315,needs caution
+9,Evp22,Viscoplastic strain tensor component,-4.61437351381e-06,1.33022029517e-05,8.65716520269,0.000890806666575,0.000890806666575,needs caution
+10,Evp33,Viscoplastic strain tensor component,-4.61437351381e-06,1.33022029517e-05,8.65716520269,0.000890806666575,0.000890806666575,needs caution
+11,Evp12,Viscoplastic strain tensor component,3.1562331241e-20,4.90946622107e-20,,4.12441355637e-19,1.32579829276e-19,small/nearly zero component
+12,Evp13,Viscoplastic strain tensor component,-1.27859488774e-21,4.91055213911e-20,,1.65830312847e-19,8.08686380786e-20,small/nearly zero component
+13,Evp23,Viscoplastic strain tensor component,9.04735100257e-22,1.08517818211e-20,,7.55710936363e-20,3.98018423238e-20,small/nearly zero component
+14,RISO,Current isotropic hardening stress,0.0679502723118,0.000304029598851,0.0147264877605,1.3429775238,0.0687330625951,diagnostic/recomputable
+15,DP,Last viscoplastic multiplier increment,0,0,,0,0,diagnostic/recomputable

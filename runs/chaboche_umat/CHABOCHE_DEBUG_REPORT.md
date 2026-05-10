@@ -552,6 +552,119 @@ The current Level-1 cycle-jump predictor uses only `STATEV(1)` / `SDV1`. For a L
   - `stage7_adaptive_deltaN/stage7b_grouped_adaptive_deltaN_summary.csv`
   - `stage7_adaptive_deltaN/STAGE7B_GROUPED_ADAPTIVE_DELTAN_CONTROLLER_REPORT.md`
 
+## Thesis Integration: Predicted-State FE Cycle-Jump Continuation
+
+Date: May 9, 2026
+
+The final predicted-state FE cycle-jump continuation subsection was integrated into the standalone thesis package.
+
+Files created:
+
+- `thesis_cycle_jump_section/latex/chaboche_predicted_fe_cycle_jump_section.tex`
+- `thesis_cycle_jump_section/tables/table_predicted_fe_cycle_jump_summary.csv`
+- `thesis_cycle_jump_section/tables/table_multitarget_jump_scan.csv`
+
+Files updated:
+
+- `thesis_cycle_jump_section/cycle_jump_chaboche_standalone.tex`
+- `thesis_cycle_jump_section/cycle_jump_chaboche_standalone.pdf`
+- `thesis_cycle_jump_section/THESIS_SECTION_BUILD_REPORT.md`
+- `CHABOCHE_DEBUG_REPORT.md`
+
+Integrated thesis content:
+
+- Stage 5B clean predicted FE cycle-jump validation:
+  - cycle 10 -> predicted cycle 19 -> cycle 20
+  - skipped intermediate FE cycles: `8`
+  - STATEV1 error: `0.049427%`
+  - S11 error: `0.127013%`
+  - outcome: clean success
+- Stage 6C multi-target prediction scan:
+  - target 29 selected as the largest acceptable next FE validation target
+  - targets 39 and 49 identified as not headline candidates because stress/backstress drift became too large
+- Stage 6D larger predicted FE cycle-jump validation:
+  - cycle 10 -> predicted cycle 29 -> cycle 30
+  - skipped intermediate FE cycles: `18`
+  - computed route: `11` cycles instead of `30`
+  - route reduction: `63.33%`
+  - STATEV1 error: `0.0458269%`
+  - S11 error: `2.34366%`
+  - outcome: acceptable exploratory success
+
+Build status:
+
+- Compile command: `latexmk -pdf -interaction=nonstopmode -halt-on-error .\cycle_jump_chaboche_standalone.tex`
+- Compile status: successful
+- Updated PDF page count: `11`
+- Updated PDF size: `1091019` bytes
+
+Thesis-safe conclusion:
+
+- The core FE cycle-jump concept was successfully demonstrated for the simplified Chaboche-v1 UMAT.
+- A predicted future material state was obtained from cycle-space extrapolation, injected into Abaqus through `SDVINI` and `SIGINI`, and used to continue the FE simulation after skipping intermediate cycles.
+- The method reproduced the no-skip FE reference accurately for accumulated viscoplastic strain and acceptably for stress in the larger exploratory jump.
+- The remaining limitation is stress/backstress prediction quality for larger jumps, not Abaqus initialization or UMAT continuation.
+
+## Stage 7A Paper-Inspired Adaptive DeltaN Controller
+
+Date: May 9, 2026
+
+Purpose:
+
+- Implement a paper-inspired adaptive jump-size estimate without introducing a damage variable.
+- Replace the paper-style damage variable `D` with generalized Chaboche control variables `Y_i`.
+- Replace a damage increment budget with an admissible state-change budget `A_i = tau_i S_i`.
+- Compare the resulting recommendation with the Stage 6C scan and Stage 6D cycle-29 FE jump.
+- No Abaqus run was performed.
+- No UMAT or input deck was modified.
+
+Files created:
+
+- `prepare_stage7a_adaptive_deltaN_controller.py`
+- `stage7_adaptive_deltaN/stage7a_adaptive_deltaN_by_variable.csv`
+- `stage7_adaptive_deltaN/stage7a_adaptive_deltaN_summary.csv`
+- `stage7_adaptive_deltaN/STAGE7A_ADAPTIVE_DELTAN_CONTROLLER_REPORT.md`
+
+Controller settings:
+
+- Base cycle: `10`
+- Mean increment window: cycles `2-10`
+- Safety factor: `eta = 0.75`
+- `eps = 1e-12`
+- `JUMPMIN = 1`
+- `JUMPMAX = 60`
+- Controlled variables:
+  - `STATEV1`
+  - `STATEV2-4`
+  - `STATEV8-10`
+  - `S11`
+
+Per-variable adaptive estimates:
+
+- `STATEV1`: `DeltaN_i = 1`
+- `STATEV2`: `DeltaN_i = 17`
+- `STATEV3`: `DeltaN_i = 17`
+- `STATEV4`: `DeltaN_i = 17`
+- `STATEV8`: `DeltaN_i = 43`
+- `STATEV9`: `DeltaN_i = 43`
+- `STATEV10`: `DeltaN_i = 43`
+- `S11`: `DeltaN_i = 23`
+
+Global recommendation:
+
+- `DeltaN_global = 1`
+- Controlling variable: `STATEV1`
+- Recommended target cycle: `11`
+- Skipped intermediate FE cycles: `0`
+
+Interpretation:
+
+- With the requested `STATEV1` tolerance of `tau = 0.02`, the controller is very conservative because `STATEV1` grows monotonically and its early-cycle per-cycle increment is large relative to its base-cycle magnitude.
+- The backstress variables would allow `DeltaN = 17`, close to the Stage 6D validated `DeltaN = 19` exploratory jump.
+- The stress variable `S11` would allow `DeltaN = 23`, below the Stage 6C non-headline target `DeltaN = 29`.
+- Thus, the vector/stress part of the controller is consistent with the Stage 6C/6D observation, while the scalar `STATEV1` budget is stricter than the manually validated accumulated-strain behavior.
+- This supports using the formula as a conservative adaptive controller and motivates calibrated tolerances or separate scalar/vector budgets for future Stage 7 work.
+
 ## Stage 4B Direct State Injection Follow-Up
 
 Date: May 9, 2026

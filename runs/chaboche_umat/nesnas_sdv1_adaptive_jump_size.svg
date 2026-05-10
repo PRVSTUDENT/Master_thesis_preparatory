@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="520" viewBox="0 0 760 520">
+<rect width="100%" height="100%" fill="white"/>
+<line x1="82" y1="442" x2="732" y2="442" stroke="#222" stroke-width="1.2"/>
+<line x1="82" y1="32" x2="82" y2="442" stroke="#222" stroke-width="1.2"/>
+<line x1="82.00" y1="32" x2="82.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="32.00" x2="732" y2="32.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="82.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">2.15</text>
+<text x="72" y="36.00" font-family="Arial" font-size="12" text-anchor="end">19.7</text>
+<line x1="212.00" y1="32" x2="212.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="114.00" x2="732" y2="114.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="212.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">5.89</text>
+<text x="72" y="118.00" font-family="Arial" font-size="12" text-anchor="end">16.62</text>
+<line x1="342.00" y1="32" x2="342.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="196.00" x2="732" y2="196.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="342.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">9.63</text>
+<text x="72" y="200.00" font-family="Arial" font-size="12" text-anchor="end">13.54</text>
+<line x1="472.00" y1="32" x2="472.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="278.00" x2="732" y2="278.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="472.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">13.37</text>
+<text x="72" y="282.00" font-family="Arial" font-size="12" text-anchor="end">10.46</text>
+<line x1="602.00" y1="32" x2="602.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="360.00" x2="732" y2="360.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="602.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">17.11</text>
+<text x="72" y="364.00" font-family="Arial" font-size="12" text-anchor="end">7.38</text>
+<line x1="732.00" y1="32" x2="732.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="442.00" x2="732" y2="442.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="732.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">20.85</text>
+<text x="72" y="446.00" font-family="Arial" font-size="12" text-anchor="end">4.3</text>
+<polyline points="111.55,423.36 146.30,423.36 181.06,423.36 215.82,423.36 250.58,396.74 285.34,370.12 320.10,343.49 354.86,316.87 389.62,290.25 424.38,263.62 459.14,237.00 493.90,210.38 528.66,183.75 563.42,157.13 598.18,130.51 632.94,103.88 667.70,77.26 702.45,50.64" fill="none" stroke="#ff7f0e" stroke-width="2.0" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="111.55" cy="423.36" r="3.5" fill="#ff7f0e"/>
+<circle cx="146.30" cy="423.36" r="3.5" fill="#ff7f0e"/>
+<circle cx="181.06" cy="423.36" r="3.5" fill="#ff7f0e"/>
+<circle cx="215.82" cy="423.36" r="3.5" fill="#ff7f0e"/>
+<circle cx="250.58" cy="396.74" r="3.5" fill="#ff7f0e"/>
+<circle cx="285.34" cy="370.12" r="3.5" fill="#ff7f0e"/>
+<circle cx="320.10" cy="343.49" r="3.5" fill="#ff7f0e"/>
+<circle cx="354.86" cy="316.87" r="3.5" fill="#ff7f0e"/>
+<circle cx="389.62" cy="290.25" r="3.5" fill="#ff7f0e"/>
+<circle cx="424.38" cy="263.62" r="3.5" fill="#ff7f0e"/>
+<circle cx="459.14" cy="237.00" r="3.5" fill="#ff7f0e"/>
+<circle cx="493.90" cy="210.38" r="3.5" fill="#ff7f0e"/>
+<circle cx="528.66" cy="183.75" r="3.5" fill="#ff7f0e"/>
+<circle cx="563.42" cy="157.13" r="3.5" fill="#ff7f0e"/>
+<circle cx="598.18" cy="130.51" r="3.5" fill="#ff7f0e"/>
+<circle cx="632.94" cy="103.88" r="3.5" fill="#ff7f0e"/>
+<circle cx="667.70" cy="77.26" r="3.5" fill="#ff7f0e"/>
+<circle cx="702.45" cy="50.64" r="3.5" fill="#ff7f0e"/>
+<text x="407.00" y="495" font-family="Arial" font-size="16" text-anchor="middle">Cycle used as jump base</text>
+<text x="22" y="260.00" font-family="Arial" font-size="16" text-anchor="middle" transform="rotate(-90 22 260.00)">Recommended Delta N</text>
+<line x1="485" y1="44" x2="523" y2="44" stroke="#ff7f0e" stroke-width="2.4"/>
+<text x="533" y="49" font-family="Arial" font-size="13">Adaptive Delta N</text>
+</svg>

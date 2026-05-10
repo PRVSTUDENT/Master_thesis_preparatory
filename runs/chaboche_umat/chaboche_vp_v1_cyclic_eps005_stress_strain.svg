@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+<rect width="100%" height="100%" fill="white"/>
+<text x="450.0" y="28" text-anchor="middle" font-size="22" font-family="Arial">chaboche_vp_v1_cyclic_eps005: stress-strain</text>
+<line x1="95" y1="520" x2="750" y2="520" stroke="black" stroke-width="2"/>
+<line x1="95" y1="50" x2="95" y2="520" stroke="black" stroke-width="2"/>
+<line x1="95.00" y1="50" x2="95.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="95.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">-0.005295</text>
+<line x1="95" y1="520.00" x2="750" y2="520.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="525.00" text-anchor="end" font-size="13" font-family="Arial">-740.9</text>
+<line x1="226.00" y1="50" x2="226.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="226.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">-0.003177</text>
+<line x1="95" y1="426.00" x2="750" y2="426.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="431.00" text-anchor="end" font-size="13" font-family="Arial">-449.8</text>
+<line x1="357.00" y1="50" x2="357.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="357.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">-0.001059</text>
+<line x1="95" y1="332.00" x2="750" y2="332.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="337.00" text-anchor="end" font-size="13" font-family="Arial">-158.8</text>
+<line x1="488.00" y1="50" x2="488.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="488.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.001059</text>
+<line x1="95" y1="238.00" x2="750" y2="238.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="243.00" text-anchor="end" font-size="13" font-family="Arial">132.3</text>
+<line x1="619.00" y1="50" x2="619.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="619.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.003177</text>
+<line x1="95" y1="144.00" x2="750" y2="144.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="149.00" text-anchor="end" font-size="13" font-family="Arial">423.3</text>
+<line x1="750.00" y1="50" x2="750.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="750.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.005295</text>
+<line x1="95" y1="50.00" x2="750" y2="50.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="55.00" text-anchor="end" font-size="13" font-family="Arial">714.4</text>
+<polyline points="422.50,280.71 423.74,279.36 424.97,278.00 426.83,275.97 429.61,272.91 433.79,268.34 440.05,261.47 449.45,251.17 463.54,235.72 484.68,212.54 509.42,185.41 534.16,158.28 558.90,131.15 583.65,110.34 608.39,102.14 633.13,93.96 657.87,86.80 682.62,80.66 707.36,75.47 731.46,71.36 706.72,98.48 681.98,125.61 657.23,152.74 632.49,179.87 607.75,207.00 583.01,234.13 558.26,261.26 533.52,288.39 508.78,315.52 484.04,342.65 459.29,369.78 434.55,396.91 409.81,415.71 385.07,426.38 360.32,438.33 335.58,448.80 310.84,458.20 286.10,466.51 261.35,473.78 236.61,480.04 211.87,485.35 187.13,489.79 162.38,493.46 137.64,496.45 113.54,498.64 138.28,471.52 163.02,444.39 187.77,417.26 212.51,390.13 237.25,363.00 261.99,335.87 286.74,308.74 311.48,281.61 336.22,254.48 360.96,227.35 385.71,200.22 410.45,173.10 422.50,159.88" fill="none" stroke="black" stroke-width="2.5"/>
+<line x1="775" y1="58" x2="805" y2="58" stroke="black" stroke-width="3"/>
+<text x="815" y="63" font-size="14" font-family="Arial">chaboche_vp_v1_cyclic_eps005</text>
+<text x="422.5" y="575" text-anchor="middle" font-size="18" font-family="Arial">Engineering strain, U1/L0</text>
+<text x="25" y="285.0" text-anchor="middle" font-size="18" font-family="Arial" transform="rotate(-90 25,285.0)">Average S11 [MPa]</text>
+</svg>
