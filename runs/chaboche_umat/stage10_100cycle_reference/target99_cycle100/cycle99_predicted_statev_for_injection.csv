@@ -1,0 +1,16 @@
+variable,value,base_cycle_value,mean_increment_cycles_2_to_10,delta_n,policy
+STATEV1_end,0.709773185197,0.0702667832375,0.00718546519056,89,active_first_order_cycle_space
+STATEV2_end,-69.1144027709,-85.9424591064,0.189079284668,89,active_first_order_cycle_space
+STATEV3_end,34.5572013855,42.9712295532,-0.094539642334,89,active_first_order_cycle_space
+STATEV4_end,34.5572013855,42.9712295532,-0.094539642334,89,active_first_order_cycle_space
+STATEV5_end,1.84106295429e-14,1.89103408034e-15,1.85613432164e-16,89,near_zero_predicted_flagged
+STATEV6_end,3.86662374646e-15,1.57150387987e-15,2.57878636696e-17,89,near_zero_predicted_flagged
+STATEV7_end,4.0992368684e-17,-1.78002985219e-15,2.046092383e-17,89,near_zero_predicted_flagged
+STATEV8_end,-0.00193178987441,-0.00179540505633,-1.53241368632e-06,89,active_first_order_cycle_space
+STATEV9_end,0.000965894937205,0.000897702528164,7.66206843158e-07,89,active_first_order_cycle_space
+STATEV10_end,0.000965894937205,0.000897702528164,7.66206843158e-07,89,active_first_order_cycle_space
+STATEV11_end,-3.10259648752e-18,-2.50127276099e-19,-3.20502158586e-20,89,near_zero_predicted_flagged
+STATEV12_end,-1.82841601841e-18,-1.54258927686e-19,-1.88107538284e-20,89,near_zero_predicted_flagged
+STATEV13_end,-1.44896828291e-19,-4.94534226677e-20,-1.07239781599e-21,89,near_zero_predicted_flagged
+STATEV14_end,6.97326410036,0.701434910297,0.0717185309364,89,recomputed_from_predicted_STATEV1
+STATEV15_end,0,0,0,89,reset_to_zero_for_injection
