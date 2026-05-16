@@ -1,4 +1,0 @@
-target_route,delta_n,skipped_intermediate_fe_cycles,route_reduction_percent,statev1_relative_error_percent,s11_relative_error_percent,recommendation
-29 -> 30,19,18,63.33,0.135335,2.16515,acceptable exploratory candidate
-39 -> 40,29,28,72.5,0.212701,3.30894,not headline candidate
-49 -> 50,39,38,78.0,0.290737,4.45565,not headline candidate

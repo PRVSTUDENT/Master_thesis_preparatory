@@ -1,3 +1,0 @@
-route,skipped_intermediate_fe_cycles,computed_cycles,reference_cycle,statev1_relative_error_percent,s11_relative_error_percent,decision
-cycle 10 -> predicted cycle 19 -> cycle 20,8,11 instead of 20,20,0.049427,0.127013,clean success
-cycle 10 -> predicted cycle 29 -> cycle 30,18,11 instead of 30,30,0.0458269,2.34366,acceptable exploratory success

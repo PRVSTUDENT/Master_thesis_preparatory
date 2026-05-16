@@ -1,0 +1,58 @@
+#!/bin/bash
+#PBS -N chaboche_5000
+#PBS -q entry_teachingq
+#PBS -l select=1:ncpus=40:mem=180gb
+#PBS -l walltime=24:00:00
+#PBS -m ae
+#PBS -j oe
+#PBS -o chaboche_5000.pbs.log
+
+set -euo pipefail
+
+cd "$PBS_O_WORKDIR"
+
+set +u
+source /etc/profile
+module purge
+module load intel/2024.2.0
+module load abaqus/2023
+set -u
+
+JOB="chaboche_vp_v1_cyclic_eps005_5000cycles"
+CHECK_JOB="${JOB}_datacheck"
+INPUT="${JOB}.inp"
+USER_SUB="umat_chaboche_v1_with_sdvini_sigini.f"
+CPUS="${PBS_NCPUS:-$(wc -l < "$PBS_NODEFILE")}"
+SCRATCH="${TMPDIR:-$PBS_O_WORKDIR/scratch_${PBS_JOBID}}"
+
+mkdir -p "$SCRATCH"
+
+echo "Started: $(date)"
+echo "Host: $(hostname)"
+echo "Workdir: $PBS_O_WORKDIR"
+echo "CPUs: $CPUS"
+echo "Scratch: $SCRATCH"
+echo "Abaqus: $(command -v abaqus)"
+
+abaqus job="$CHECK_JOB" \
+    input="$INPUT" \
+    user="$USER_SUB" \
+    datacheck \
+    cpus="$CPUS" \
+    mp_mode=threads \
+    interactive \
+    ask_delete=OFF \
+    scratch="$SCRATCH"
+
+abaqus job="$JOB" \
+    input="$INPUT" \
+    user="$USER_SUB" \
+    cpus="$CPUS" \
+    mp_mode=threads \
+    interactive \
+    ask_delete=OFF \
+    scratch="$SCRATCH"
+
+abaqus python extract_5000cycle_reference_history.py
+
+echo "Finished: $(date)"
