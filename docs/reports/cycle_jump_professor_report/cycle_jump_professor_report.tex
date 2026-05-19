@@ -642,6 +642,8 @@ Mean $\Delta\texttt{STATEV1}$, cycles 3000--4380 & 0.00516311540541 \\
 
 The conclusion is mixed but useful. \texttt{STATEV1} does not stabilize to a flat constant by cycle 4380; it keeps increasing, so long-cycle acceleration remains meaningful. However, the increment is not perfectly constant. The early cycles 2--10 slope is higher than the late-cycle average, so a single long linear extrapolation from the first 10 cycles tends to overpredict later accumulated viscoplastic strain. This is consistent with the Stage 12 boundary result: cycle jumping is useful, but it must be bounded and re-anchored against no-skip reference data.
 
+The partial 4380-cycle trend shows that the early cycles 2--10 slope is not globally valid for very long extrapolation. Therefore, the next logical step is not one larger jump, but a blockwise cycle-jump strategy where the slope is periodically re-estimated from newer no-skip or continuation data.
+
 For the completed 1000-cycle validation, the maximum accepted target was cycle 373, corresponding to the route cycle 10 $\rightarrow$ predicted cycle 373 $\rightarrow$ Abaqus continuation to cycle 1000. Target cycle 374 was the first rejected case under the 1\% \texttt{STATEV1} criterion. The longer partial trend supports the need for Stage 14 blockwise jumping: repeated shorter jumps with updated slopes are more defensible than one very long extrapolation from cycles 2--10.
 
 \section{Professor-Feedback Response Table}
