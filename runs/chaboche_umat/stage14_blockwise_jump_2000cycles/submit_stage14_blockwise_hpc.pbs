@@ -1,0 +1,15 @@
+#!/bin/bash
+#PBS -N stage14_blockwise
+#PBS -q entry_teachingq
+#PBS -l select=1:ncpus=40:mem=180gb
+#PBS -l walltime=24:00:00
+#PBS -j oe
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
+
+set -euo pipefail
+
+cd "$PBS_O_WORKDIR"
+export REPO_ROOT="$HOME/master_thesis/Abaqus_trial"
+
+bash runs/chaboche_umat/stage14_blockwise_jump_2000cycles/run_stage14_blockwise_controller_hpc.sh
