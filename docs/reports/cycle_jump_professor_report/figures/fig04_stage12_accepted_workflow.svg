@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="780" viewBox="0 0 1400 780">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="700.0" y="60" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#111827">Stage 12 Accepted Cycle-Jump Workflow</text>
+  <text x="700.0" y="100" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#4b5563">Actual accepted route: cycles 1-10 no-skip baseline, cycles 11-372 skipped, state injected at 373, continuation to 1000</text>
+  <line x1="120" y1="350" x2="1280" y2="350" stroke="#d1d5db" stroke-width="10" stroke-linecap="round"/>
+  <line x1="120" y1="350" x2="320" y2="350" stroke="#2563eb" stroke-width="18" stroke-linecap="round"/>
+  <line x1="320" y1="350" x2="760" y2="350" stroke="#dc2626" stroke-width="18" stroke-linecap="round" stroke-dasharray="28 18"/>
+  <line x1="760" y1="350" x2="1280" y2="350" stroke="#16a34a" stroke-width="18" stroke-linecap="round"/>
+  <rect x="70" y="185" width="250" height="96" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="195" y="222" text-anchor="middle" font-family="Arial" font-size="21" font-weight="700" fill="#1d4ed8">1-10</text>
+  <text x="195" y="252" text-anchor="middle" font-family="Arial" font-size="18" fill="#1f2937">no-skip baseline</text>
+  <rect x="355" y="178" width="360" height="110" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="535" y="213" text-anchor="middle" font-family="Arial" font-size="21" font-weight="700" fill="#b91c1c">11-372 skipped</text>
+  <text x="535" y="243" text-anchor="middle" font-family="Arial" font-size="18" fill="#1f2937">state predicted</text>
+  <text x="535" y="270" text-anchor="middle" font-family="Arial" font-size="18" fill="#1f2937">and injected at 373</text>
+  <rect x="840" y="185" width="365" height="96" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="1022" y="222" text-anchor="middle" font-family="Arial" font-size="21" font-weight="700" fill="#15803d">373-1000</text>
+  <text x="1022" y="252" text-anchor="middle" font-family="Arial" font-size="18" fill="#1f2937">Abaqus continuation</text>
+  <g font-family="Arial">
+    <line x1="120" y1="310" x2="120" y2="435" stroke="#111827" stroke-width="2"/>
+    <line x1="320" y1="310" x2="320" y2="435" stroke="#111827" stroke-width="2"/>
+    <line x1="760" y1="310" x2="760" y2="435" stroke="#111827" stroke-width="2"/>
+    <line x1="1280" y1="310" x2="1280" y2="435" stroke="#111827" stroke-width="2"/>
+    <text x="120" y="470" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">1</text>
+    <text x="320" y="470" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">10</text>
+    <text x="760" y="470" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">373</text>
+    <text x="1280" y="470" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">1000</text>
+    <text x="120" y="500" text-anchor="middle" font-size="16" fill="#6b7280">cycle</text>
+    <text x="320" y="500" text-anchor="middle" font-size="16" fill="#6b7280">state measured</text>
+    <text x="760" y="500" text-anchor="middle" font-size="16" fill="#6b7280">state injected</text>
+    <text x="1280" y="500" text-anchor="middle" font-size="16" fill="#6b7280">final check</text>
+  </g>
+  <rect x="170" y="570" width="1060" height="92" rx="8" fill="#f9fafb" stroke="#d1d5db"/>
+  <text x="700" y="605" text-anchor="middle" font-family="Arial" font-size="21" font-weight="700" fill="#111827">Why this route was selected</text>
+  <text x="700" y="636" text-anchor="middle" font-family="Arial" font-size="18" fill="#374151">Cycle 373 was the largest accepted target before the 1% STATEV1 error limit.</text>
+  <text x="700" y="663" text-anchor="middle" font-family="Arial" font-size="18" fill="#374151">Cycle 374 was the first rejected target, so 373 is the practical Stage 12 boundary.</text>
+</svg>
