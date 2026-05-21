@@ -1,0 +1,2 @@
+final_cycle,final_STATEV1,reference_STATEV1,final_statev1_error_pct,final_S11,reference_S11,final_s11_error_pct,final_RIGHT_FACE_RF1_SUM,reference_RIGHT_FACE_RF1_SUM,final_rf1_error_pct,outcome,number_of_blocks,solved_recovery_cycles,skipped_cycles,effective_speedup_estimate,best_fixed_stage14_statev1_error_pct,best_fixed_stage14_strategy
+2000,28.4674358368,12.6968250275,124.209089872,-9611.54101562,300.884613037,3294.42756431,-38446.1650391,1203.53845215,3294.42764545,not_accepted,30,291,1669,6.64451827243,2.85226684954,jump25
