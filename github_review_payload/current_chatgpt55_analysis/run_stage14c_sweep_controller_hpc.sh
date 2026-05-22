@@ -9,6 +9,7 @@ STATUS_FILE="$LOG_DIR/stage14c_progress_status.txt"
 FINAL_CYCLE=2000
 SANITY_ONLY="${SANITY_ONLY:-1}"
 MAX_CASES="${MAX_CASES:-999}"
+SKIP_COMPLETED="${SKIP_COMPLETED:-1}"
 START_EPOCH="$(date +%s)"
 PROGRESS_DONE=0
 PROGRESS_TOTAL=0
@@ -107,6 +108,43 @@ for output in [path, os.path.join(stage_dir, "STAGE14C_SWEEP_MASTER_SUMMARY.csv"
         writer.writeheader()
         writer.writerows(rows)
 PY
+}
+
+case_already_recorded() {
+    local case_id="$1"
+    local summary="$STAGE14C/STAGE14C_SWEEP_CASE_SUMMARY.csv"
+    if [[ "$SKIP_COMPLETED" != "1" || ! -f "$summary" ]]; then
+        return 1
+    fi
+    python3 - "$summary" "$case_id" <<'PY'
+import csv
+import sys
+
+summary, case_id = sys.argv[1:3]
+with open(summary, "r") as handle:
+    for row in csv.DictReader(handle):
+        if row.get("case_id") == case_id:
+            outcome = row.get("outcome", "")
+            final_cycle = row.get("final_cycle", "")
+            if outcome == "runtime_error" or final_cycle == "2000":
+                sys.exit(0)
+sys.exit(1)
+PY
+}
+
+run_sweep_case() {
+    local case_id="$1"
+    shift
+    if case_already_recorded "$case_id"; then
+        log "Skipping already recorded case $case_id."
+        return 0
+    fi
+    run_case "$case_id" "$@" || true
+    case_count=$((case_count + 1))
+    if [[ "$case_count" -ge "$MAX_CASES" ]]; then
+        log "MAX_CASES=$MAX_CASES reached."
+        exit 0
+    fi
 }
 
 run_case() {
@@ -260,14 +298,31 @@ fi
 
 PROGRESS_TOTAL=999
 case_count=0
-run_case "B1" "0.001" "0.70" "1" "150" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"; case_count=$((case_count + 1)); [[ "$case_count" -ge "$MAX_CASES" ]] && exit 0
-run_case "B2" "0.001" "0.70" "1" "150" "25" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"; case_count=$((case_count + 1)); [[ "$case_count" -ge "$MAX_CASES" ]] && exit 0
-run_case "B3" "0.001" "0.70" "1" "150" "50" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"; case_count=$((case_count + 1)); [[ "$case_count" -ge "$MAX_CASES" ]] && exit 0
-run_case "C1" "0.001" "0.70" "1" "25" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"; case_count=$((case_count + 1)); [[ "$case_count" -ge "$MAX_CASES" ]] && exit 0
-run_case "C2" "0.001" "0.70" "1" "50" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"; case_count=$((case_count + 1)); [[ "$case_count" -ge "$MAX_CASES" ]] && exit 0
-run_case "C5" "0.001" "0.70" "1" "25" "25" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"; case_count=$((case_count + 1)); [[ "$case_count" -ge "$MAX_CASES" ]] && exit 0
-run_case "C6" "0.001" "0.70" "1" "50" "25" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"; case_count=$((case_count + 1)); [[ "$case_count" -ge "$MAX_CASES" ]] && exit 0
-run_case "D2" "0.0005" "0.70" "1" "150" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"; case_count=$((case_count + 1)); [[ "$case_count" -ge "$MAX_CASES" ]] && exit 0
-run_case "D4" "0.001" "0.50" "1" "150" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"; case_count=$((case_count + 1)); [[ "$case_count" -ge "$MAX_CASES" ]] && exit 0
+run_sweep_case "B1" "0.001" "0.70" "1" "150" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "B2" "0.001" "0.70" "1" "150" "25" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "B3" "0.001" "0.70" "1" "150" "50" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "B4" "0.001" "0.70" "1" "150" "100" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "C1" "0.001" "0.70" "1" "25" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "C2" "0.001" "0.70" "1" "50" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "C3" "0.001" "0.70" "1" "75" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "C4" "0.001" "0.70" "1" "100" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "C5" "0.001" "0.70" "1" "25" "25" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "C6" "0.001" "0.70" "1" "50" "25" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "D1" "0.001" "0.70" "1" "150" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "D2" "0.0005" "0.70" "1" "150" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "D3" "0.00025" "0.70" "1" "150" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "D4" "0.001" "0.50" "1" "150" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "D5" "0.0005" "0.50" "1" "150" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "D6" "0.00025" "0.50" "1" "150" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "X01" "0.001" "0.80" "1" "10" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "X02" "0.001" "0.80" "1" "15" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "X03" "0.001" "0.80" "1" "20" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "X04" "0.001" "0.80" "1" "30" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "X05" "0.001" "0.60" "1" "10" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "X06" "0.001" "0.60" "1" "15" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "X07" "0.001" "0.60" "1" "20" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "X08" "0.001" "0.60" "1" "30" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "X09" "0.0005" "0.60" "1" "25" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
+run_sweep_case "X10" "0.00025" "0.60" "1" "25" "10" "first_order" "STATEV1_only" "full_STATEV_plus_predicted_stress" "0"
 
-log "Stage 14C sweep controller finished selected priority cases."
+log "Stage 14C sweep controller finished expanded supported first-order case list."
