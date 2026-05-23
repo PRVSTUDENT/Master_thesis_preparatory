@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#PBS -N stage14d_24h_sweep
+#PBS -q teachingq
+#PBS -l select=1:ncpus=30:mpiprocs=30:mem=135gb:ompthreads=1
+#PBS -l walltime=24:00:00
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
+#PBS -j oe
+
+cd "$HOME/master_thesis/Abaqus_trial" || exit 1
+
+export REPO_ROOT="$HOME/master_thesis/Abaqus_trial"
+export PARALLEL_LANES="${PARALLEL_LANES:-3}"
+export CPUS_PER_CASE="${CPUS_PER_CASE:-8}"
+export WALLTIME_STOP_SECONDS="${WALLTIME_STOP_SECONDS:-84000}"
+export SKIP_COMPLETED="${SKIP_COMPLETED:-1}"
+
+bash runs/chaboche_umat/stage14d_24h_controller_sweep_2000cycles/run_stage14d_24h_sweep_controller_hpc.sh
