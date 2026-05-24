@@ -1,0 +1,7 @@
+case_name,base_cycle,requested_target_cycle,chosen_target_cycle,chosen_jump_size,method,max_normalized_error_percent,accepted,adaptive_status
+B1_stress_m150_to_250,500,1000,1000,500,local_linear,0.4561584309578703,True,accepted
+B1_stress_m150_to_250,1000,5000,5000,4000,quadratic_curvature_limited,0.11156816503813911,True,accepted
+B1_stress_m150_to_250,5000,10000,10000,5000,local_linear,0.7505886821676001,True,accepted
+B1_stress_m150_to_250,10000,50000,15000,5000,local_linear,0.31354219989653087,True,accepted
+B1_stress_m150_to_250,50000,100000,100000,50000,quadratic_curvature_limited,0.7574648760396416,True,accepted
+B1_stress_m150_to_250,100000,200000,106250,6250,least_squares_local_linear,0.07349354402213419,True,accepted
