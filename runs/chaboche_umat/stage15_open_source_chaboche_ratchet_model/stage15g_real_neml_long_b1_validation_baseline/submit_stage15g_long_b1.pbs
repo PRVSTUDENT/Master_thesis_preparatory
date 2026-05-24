@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#PBS -N stage15g_long_b1
+#PBS -q teachingq
+#PBS -l select=1:ncpus=30:mpiprocs=30:mem=120gb:ompthreads=1
+#PBS -l walltime=23:55:00
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
+#PBS -j oe
+
+set -euo pipefail
+
+cd "$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage15_open_source_chaboche_ratchet_model/stage15g_real_neml_long_b1_validation_baseline"
+
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export STAGE15G_ACTIVE_WORKERS=1
+export STAGE15G_STOP_SECONDS="${STAGE15G_STOP_SECONDS:-84900}"
+
+bash run_stage15g_full_hpc.sh
+
