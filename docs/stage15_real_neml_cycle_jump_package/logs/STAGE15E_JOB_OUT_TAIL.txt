@@ -1,0 +1,4 @@
+[Stage 15E full] host=mfatnode004.cluster
+[Stage 15E full] python=/cluster/stages/2024.0/spack-0.22/opt/spack/linux-rocky8-cascadelake/gcc-11.4.0/python-3.11.7-qfpdtq2pisspwunkuc4fqloxqo2ltw6j/bin/python3
+Python 3.11.7
+[Stage 15E full] stop seconds=84900
