@@ -1,0 +1,6 @@
+[Stage 15I smoke] host=mlogin01.cluster
+[Stage 15I smoke] python=/cluster/stages/2024.0/spack-0.22/opt/spack/linux-rocky8-cascadelake/gcc-11.4.0/python-3.11.7-qfpdtq2pisspwunkuc4fqloxqo2ltw6j/bin/python3
+Python 3.11.7
+Stage 15I finished: 3 cases
+wrote 3 rows to STAGE15I_TARGET_CYCLE_VALUES.csv
+[Stage 15I smoke] passed
