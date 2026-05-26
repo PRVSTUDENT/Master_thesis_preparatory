@@ -186,8 +186,10 @@ def run_case(case, args):
     last_row = checkpoint.get("last_row") if checkpoint else None
     stop_at_epoch = args["stop_at_epoch"]
 
+    chunk_end_cycle = min(args["target_cycles"], cycle + args["max_cycles_per_launch"])
+
     try:
-        while cycle < args["target_cycles"]:
+        while cycle < chunk_end_cycle:
             if time.time() >= stop_at_epoch:
                 status = "stopped_by_time_guard"
                 break
@@ -249,6 +251,8 @@ def run_case(case, args):
 
         if cycle >= args["target_cycles"]:
             status = "completed"
+        elif status == "running":
+            status = "chunk_completed"
         elapsed = time.time() - start
         if last_row:
             if not should_write_summary(cycle, final_cycle=True):
@@ -300,13 +304,23 @@ def parse_status(path):
     return values
 
 
+def checkpoint_cycle(output_dir, case_name):
+    path = Path(output_dir) / ("%s_checkpoint.json" % case_name)
+    if not path.exists():
+        return 0
+    try:
+        return int(read_json(str(path)).get("cycle", 0))
+    except Exception:
+        return 0
+
+
 def write_global_status(stage_dir, output_dir, active_workers, total_cases, start_time, results=None):
     results = results or []
     status_files = sorted(Path(output_dir).glob("*_status.txt"))
     statuses = [parse_status(path) for path in status_files]
-    completed = len([r for r in results if r.get("status") == "completed"])
-    failed = len([r for r in results if r.get("status") == "failed"])
-    running = len([s for s in statuses if s.get("status") == "running"])
+    completed = len([s for s in statuses if s.get("status") == "completed"])
+    failed = len([s for s in statuses if s.get("status") == "failed"])
+    running = len([s for s in statuses if s.get("status") in ("running", "chunk_completed")])
     with (stage_dir / "STAGE15I_GLOBAL_STATUS.txt").open("w") as handle:
         handle.write("active_worker_count=%d\n" % active_workers)
         handle.write("completed_case_count=%d\n" % completed)
@@ -343,6 +357,7 @@ def write_final_outputs(stage_dir, results, args, started_at):
         "points_per_cycle": args["points_per_cycle"],
         "active_workers": args["active_workers"],
         "stop_after_seconds": args["stop_after_seconds"],
+        "max_cycles_per_launch": args.get("max_cycles_per_launch"),
         "started_at": started_at,
         "finished_at": time.strftime("%Y-%m-%d %H:%M:%S"),
         "case_count": len(results),
@@ -370,6 +385,7 @@ def write_final_outputs(stage_dir, results, args, started_at):
         "| Maximum final cycle | %d |" % max_cycle,
         "| Target cycle | %d |" % args["target_cycles"],
         "| Active workers | %d |" % args["active_workers"],
+        "| Max cycles per worker launch | %s |" % args.get("max_cycles_per_launch", ""),
     ]
     (stage_dir / "STAGE15I_MASTER_SUMMARY.md").write_text("\n".join(lines) + "\n")
 
@@ -387,6 +403,7 @@ def main():
     parser.add_argument("--checkpoint-every", type=int, default=1000)
     parser.add_argument("--output-dir", default="case_outputs")
     parser.add_argument("--active-workers", type=int, default=int(os.environ.get("STAGE15I_ACTIVE_WORKERS", DEFAULT_ACTIVE_WORKERS)))
+    parser.add_argument("--max-cycles-per-launch", type=int, default=int(os.environ.get("STAGE15I_MAX_CYCLES_PER_LAUNCH", "10000")))
     parser.add_argument("--case", action="append", dest="case_names")
     parser.add_argument("--resume", action="store_true")
     args_ns = parser.parse_args()
@@ -413,27 +430,76 @@ def main():
         "output_dir": args_ns.output_dir,
         "resume": args_ns.resume,
         "stop_at_epoch": stop_at_epoch,
+        "max_cycles_per_launch": args_ns.max_cycles_per_launch,
     }
 
     results = []
     active_workers = min(args_ns.active_workers, len(selected_cases))
-    with ProcessPoolExecutor(max_workers=active_workers) as executor:
-        futures = [executor.submit(run_case, case, worker_args) for case in selected_cases]
-        while futures:
-            try:
-                for future in as_completed(futures, timeout=30):
-                    results.append(future.result())
-                    futures.remove(future)
-                    break
-            except TimeoutError:
-                pass
-            write_global_status(stage_dir, args_ns.output_dir, active_workers, len(selected_cases), start_time, results)
+    final_by_case = {}
+    while time.time() < stop_at_epoch:
+        pending_cases = []
+        for case in selected_cases:
+            case_name = case["case_name"]
+            if final_by_case.get(case_name, {}).get("status") in ("completed", "stopped_by_time_guard", "failed"):
+                continue
+            if checkpoint_cycle(args_ns.output_dir, case_name) >= target_cycles:
+                final_by_case[case_name] = {
+                    "case_name": case_name,
+                    "group": case["group"],
+                    "stress_min": case["stress_min"],
+                    "stress_max": case["stress_max"],
+                    "final_cycle": target_cycles,
+                    "target_cycle": target_cycles,
+                    "status": "completed",
+                    "elapsed_seconds": 0.0,
+                    "cycles_per_hour": 0.0,
+                }
+                continue
+            pending_cases.append(case)
+        if not pending_cases:
+            break
+
+        with ProcessPoolExecutor(max_workers=min(active_workers, len(pending_cases))) as executor:
+            futures = [executor.submit(run_case, case, worker_args) for case in pending_cases]
+            while futures:
+                try:
+                    for future in as_completed(futures, timeout=30):
+                        result = future.result()
+                        results.append(result)
+                        final_by_case[result["case_name"]] = result
+                        futures.remove(future)
+                        break
+                except TimeoutError:
+                    pass
+                write_global_status(stage_dir, args_ns.output_dir, active_workers, len(selected_cases), start_time, results)
+
+        write_global_status(stage_dir, args_ns.output_dir, active_workers, len(selected_cases), start_time, results)
+
+    for case in selected_cases:
+        case_name = case["case_name"]
+        if case_name not in final_by_case:
+            final_by_case[case_name] = {
+                "case_name": case_name,
+                "group": case["group"],
+                "stress_min": case["stress_min"],
+                "stress_max": case["stress_max"],
+                "final_cycle": checkpoint_cycle(args_ns.output_dir, case_name),
+                "target_cycle": target_cycles,
+                "status": "stopped_by_time_guard",
+                "elapsed_seconds": time.time() - start_time,
+                "cycles_per_hour": 0.0,
+            }
+        elif final_by_case[case_name].get("status") == "chunk_completed":
+            final_by_case[case_name]["status"] = "stopped_by_time_guard"
+            final_by_case[case_name]["final_cycle"] = checkpoint_cycle(args_ns.output_dir, case_name)
+    results = list(final_by_case.values())
     write_global_status(stage_dir, args_ns.output_dir, active_workers, len(selected_cases), start_time, results)
     write_final_outputs(stage_dir, results, {
         "target_cycles": target_cycles,
         "points_per_cycle": args_ns.points_per_cycle,
         "active_workers": active_workers,
         "stop_after_seconds": args_ns.stop_after_seconds,
+        "max_cycles_per_launch": args_ns.max_cycles_per_launch,
     }, started_at)
     print("Stage 15I finished: %d cases" % len(results))
     return 1 if any(row.get("status") == "failed" for row in results) else 0

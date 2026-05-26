@@ -20,6 +20,7 @@ export OPENBLAS_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
 export STAGE15I_ACTIVE_WORKERS="${STAGE15I_ACTIVE_WORKERS:-24}"
 export STAGE15I_HARD_MAX_WORKERS="${STAGE15I_HARD_MAX_WORKERS:-32}"
+export STAGE15I_MAX_CYCLES_PER_LAUNCH="${STAGE15I_MAX_CYCLES_PER_LAUNCH:-10000}"
 export STAGE15I_STOP_SECONDS="${STAGE15I_STOP_SECONDS:-70800}"
 
 mkdir -p case_outputs logs
@@ -29,6 +30,7 @@ mkdir -p case_outputs logs
   echo "[Stage 15I full] python=$(command -v python3 || command -v python)"
   python3 --version 2>/dev/null || python --version
   echo "[Stage 15I full] active workers=${STAGE15I_ACTIVE_WORKERS}"
+  echo "[Stage 15I full] max cycles per launch=${STAGE15I_MAX_CYCLES_PER_LAUNCH}"
   echo "[Stage 15I full] stop seconds=${STAGE15I_STOP_SECONDS}"
 } | tee logs/STAGE15I_FULL_LOG.txt
 
@@ -43,6 +45,7 @@ python3 stage15i_multicase_long_runner.py \
   --checkpoint-every 1000 \
   --output-dir case_outputs \
   --active-workers "${STAGE15I_ACTIVE_WORKERS}" \
+  --max-cycles-per-launch "${STAGE15I_MAX_CYCLES_PER_LAUNCH}" \
   --resume \
   2>&1 | tee -a logs/STAGE15I_FULL_LOG.txt
 runner_status=${PIPESTATUS[0]}
