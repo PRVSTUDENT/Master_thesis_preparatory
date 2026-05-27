@@ -31,7 +31,7 @@ Threading variables are set to one thread per worker: `OMP_NUM_THREADS=1`, `MKL_
 
 ## OOM Fix
 
-The first full PBS attempt, job `1332149.mmaster02`, failed after `01:01:27` because the cgroup memory limit was exceeded. PBS reported `resources_used.mem = 167774208kb` against the 160 GB allocation, and the wrapper log showed `BrokenProcessPool` after one worker was killed. The fix keeps the intended 40 active real-NEML workers but trims each `Driver_sd` object to its latest stress, strain, and history state after every material increment. This preserves continuous material state while preventing retained per-step arrays from growing throughout the run. The retry uses `STAGE15J_RESUME=1` to continue from per-case checkpoints.
+The first full PBS attempt, job `1332149.mmaster02`, failed after `01:01:27` because the cgroup memory limit was exceeded. PBS reported `resources_used.mem = 167774208kb` against the 160 GB allocation, and the wrapper log showed `BrokenProcessPool` after one worker was killed. A first fix trimmed `stress_int`, `strain_int`, and `stored_int`, but the resumed retry `1332165.mmaster02` still reached the cgroup limit after `02:31:46`. A driver inspection showed that `Driver_sd` also retains `mechanical_strain_int`, `thermal_strain_int`, `T_int`, `t_int`, `u_int`, and `p_int`. The final fix keeps the intended 40 active real-NEML workers but trims every retained `Driver_sd` integration-history list to its latest value after every material increment. This preserves continuous material state while preventing retained per-step arrays from growing throughout the run. Retries use `STAGE15J_RESUME=1` to continue from per-case checkpoints.
 
 ## Case Groups
 

@@ -22,4 +22,4 @@ Do not commit huge full files until file sizes are checked. Stage 15J is designe
 
 ## Memory Safety Note
 
-The first full run attempt, `1332149.mmaster02`, exceeded the 160 GB PBS cgroup memory limit with 40 active workers. The fixed runner keeps 40 active continuous workers but trims each `Driver_sd` object to its latest state after every material increment, preventing retained per-step arrays from accumulating. The retry resumes from checkpoints with `STAGE15J_RESUME=1`.
+The first full run attempt, `1332149.mmaster02`, exceeded the 160 GB PBS cgroup memory limit with 40 active workers. A partial driver-state trim improved early memory behavior, but retry `1332165.mmaster02` again reached the cgroup limit after `02:31:46`. The fixed runner keeps 40 active continuous workers and trims every retained `Driver_sd` integration-history list to its latest state after every material increment, preventing per-step arrays from accumulating while preserving the continuous material state. Retries resume from checkpoints with `STAGE15J_RESUME=1`.

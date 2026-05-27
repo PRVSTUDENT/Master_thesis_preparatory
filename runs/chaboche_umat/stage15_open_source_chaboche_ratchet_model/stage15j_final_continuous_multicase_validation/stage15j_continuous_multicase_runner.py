@@ -92,8 +92,18 @@ def trapz(xs, ys):
 
 
 def trim_driver_state(driver):
-    """Keep Driver_sd continuous state but drop retained per-step history arrays."""
-    for attr in ["stress_int", "strain_int", "stored_int"]:
+    """Keep Driver_sd continuous state but drop retained per-step integration arrays."""
+    for attr in [
+        "stress_int",
+        "strain_int",
+        "stored_int",
+        "mechanical_strain_int",
+        "thermal_strain_int",
+        "T_int",
+        "t_int",
+        "u_int",
+        "p_int",
+    ]:
         values = getattr(driver, attr, None)
         if values:
             setattr(driver, attr, [values[-1]])
