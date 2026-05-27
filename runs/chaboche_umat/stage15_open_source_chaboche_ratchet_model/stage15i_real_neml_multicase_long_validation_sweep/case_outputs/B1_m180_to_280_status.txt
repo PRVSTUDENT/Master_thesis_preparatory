@@ -1,0 +1,9 @@
+case_name=B1_m180_to_280
+cycle=900667
+target_cycle=1500000
+elapsed_seconds=527.307
+cycles_per_hour=6148976.292808
+estimated_final_cycle_at_stop_guard=900667
+current_memory=586904kb
+status=stopped_by_time_guard
+last_checkpoint_cycle=900667

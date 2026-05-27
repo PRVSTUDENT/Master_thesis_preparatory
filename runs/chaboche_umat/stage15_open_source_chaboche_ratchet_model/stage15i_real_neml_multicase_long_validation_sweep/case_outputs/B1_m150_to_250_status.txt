@@ -1,0 +1,9 @@
+case_name=B1_m150_to_250
+cycle=936000
+target_cycle=1500000
+elapsed_seconds=436.783
+cycles_per_hour=7714588.770334
+estimated_final_cycle_at_stop_guard=1129928
+current_memory=665144kb
+status=chunk_completed
+last_checkpoint_cycle=936000

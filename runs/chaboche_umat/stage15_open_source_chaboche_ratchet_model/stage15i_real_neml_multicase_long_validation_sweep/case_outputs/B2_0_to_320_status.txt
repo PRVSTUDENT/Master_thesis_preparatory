@@ -1,0 +1,9 @@
+case_name=B2_0_to_320
+cycle=1086000
+target_cycle=1500000
+elapsed_seconds=241.518
+cycles_per_hour=16187588.919938
+estimated_final_cycle_at_stop_guard=2370935
+current_memory=665060kb
+status=chunk_completed
+last_checkpoint_cycle=1086000

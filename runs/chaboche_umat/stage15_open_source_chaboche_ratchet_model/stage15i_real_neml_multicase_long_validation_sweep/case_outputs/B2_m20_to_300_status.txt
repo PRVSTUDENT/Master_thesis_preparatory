@@ -1,0 +1,9 @@
+case_name=B2_m20_to_300
+cycle=1087000
+target_cycle=1500000
+elapsed_seconds=216.084
+cycles_per_hour=18109595.812068
+estimated_final_cycle_at_stop_guard=2652443
+current_memory=665060kb
+status=chunk_completed
+last_checkpoint_cycle=1087000

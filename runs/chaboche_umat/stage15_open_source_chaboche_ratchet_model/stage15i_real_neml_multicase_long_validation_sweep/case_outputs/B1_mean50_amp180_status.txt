@@ -1,0 +1,9 @@
+case_name=B1_mean50_amp180
+cycle=971000
+target_cycle=1500000
+elapsed_seconds=359.140
+cycles_per_hour=9733239.221956
+estimated_final_cycle_at_stop_guard=1425592
+current_memory=665408kb
+status=chunk_completed
+last_checkpoint_cycle=971000

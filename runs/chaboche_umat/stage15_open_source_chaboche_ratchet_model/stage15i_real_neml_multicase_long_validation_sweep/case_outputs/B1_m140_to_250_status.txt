@@ -1,0 +1,9 @@
+case_name=B1_m140_to_250
+cycle=938000
+target_cycle=1500000
+elapsed_seconds=432.698
+cycles_per_hour=7804059.617454
+estimated_final_cycle_at_stop_guard=1143033
+current_memory=665980kb
+status=chunk_completed
+last_checkpoint_cycle=938000

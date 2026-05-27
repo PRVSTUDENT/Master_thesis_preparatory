@@ -1,0 +1,9 @@
+case_name=B2_stress_0_to_300
+cycle=1219000
+target_cycle=1500000
+elapsed_seconds=150.558
+cycles_per_hour=29147521.492264
+estimated_final_cycle_at_stop_guard=4269128
+current_memory=665032kb
+status=chunk_completed
+last_checkpoint_cycle=1219000
