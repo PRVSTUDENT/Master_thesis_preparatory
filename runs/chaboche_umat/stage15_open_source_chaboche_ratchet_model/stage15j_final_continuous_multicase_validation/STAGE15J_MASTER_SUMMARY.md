@@ -1,34 +1,65 @@
 # Stage 15J Final Continuous Real-NEML Multicase Validation Summary
 
-Stage 15J is the final continuous real-NEML multicase transferability validation. Each case uses one continuous worker process; no 10,000-cycle chunk relaunch is used.
+## Stage 15J: Final Continuous Real-NEML Multicase Transferability Validation
 
-| Field | Value |
+Stage 15J was designed as the final Stage 15 validation campaign. Unlike Stage 15I, which used a chunked multicase execution strategy, Stage 15J used one continuous real-NEML worker process per case. This avoided the 10,000-cycle relaunch strategy and therefore removed the main continuity caveat identified in Stage 15I.
+
+## Headline Result
+
+| Quantity | Stage 15J result |
 |---|---:|
-| Case count | 40 |
+| Total cases | 40 |
 | Failed cases | 0 |
-| Minimum final cycle | 557136 |
-| Maximum final cycle | 2000000 |
+| Minimum final cycle | 557,136 |
+| Maximum final cycle | 2,000,000 |
 | Clean transferability cases | 25 |
 | Aggressive but stable cases | 7 |
 | Diagnostic B2 cases | 5 |
 | Incomplete below 500k | 0 |
 
-## B1 transferability summary
+## Main Interpretation
 
-Group A maps the B1 neighbourhood by mean stress and stress amplitude. Cases classified as `clean_transferability_case` are the strongest evidence for transferability of the accepted B1 adaptive cycle-jump strategy.
+The final continuous multicase validation confirms that the selected real-NEML Chaboche ratcheting model remains numerically stable over a broad B1-type asymmetric stress neighbourhood. All 40 cases ran without numerical failure. The 25 B1 grid cases were classified as clean transferability cases, showing that the adaptive cycle-jump strategy is not limited to a single stress path. The aggressive B1 cases remained stable but became computationally more demanding and therefore require stricter jump-size control. The B2 cases reached long cycle counts but remain diagnostic rather than the primary cycle-jump target.
 
-## Aggressive B1 stress-test summary
+## Completion Statuses
 
-Group B identifies more severe B1-type stress paths. These cases are expected to require stricter jump-size control even when numerically stable.
+The completion statuses show that 8 cases reached the extension target, 9 reached the primary target, and 23 stopped at the configured time guard. Time-guard termination is not interpreted as failure, because all cases exceeded 500,000 cycles and no case failed numerically.
 
-## B2 diagnostic summary
+## B1 Transferability Map Result
 
-Group C remains diagnostic. B2-type loading is not treated as the primary thesis cycle-jump target.
+The B1 grid was constructed using mean stresses from 30 to 70 MPa and stress amplitudes from 180 to 220 MPa. The canonical B1 case, corresponding to mean stress 50 MPa and amplitude 200 MPa, is contained inside this grid. All B1 grid cases were classified as clean transferability cases. This supports the conclusion that the adaptive cycle-jump strategy is applicable to a B1-type neighbourhood rather than only to one isolated loading path.
 
-## Canonical B1 repeat check against Stage 15G
+## Aggressive-Case Limitation
 
-The canonical `B1_grid_mean50_amp200` repeat was compared with Stage 15G at overlapping preserved cycles. Last overlap cycle: `1500000`; strain-mean absolute difference: `9.748754329379352`; ratcheting-strain absolute difference: `9.748754329379352`.
+The aggressive B1 cases were stable but more expensive. The most severe high-amplitude cases became borderline or time-limited, especially the amplitude-260 MPa cases. These cases should not be treated as failures; rather, they identify the boundary where adaptive jumps require stronger jump-size reduction and more conservative error control.
 
-## Thesis-ready conclusion
+| Borderline case | Stress min | Stress max | Final cycle |
+|---|---:|---:|---:|
+| `B1_aggr_m100_amp260` | -160 | 360 | 557,136 |
+| `B1_aggr_m70_amp260` | -190 | 330 | 582,485 |
+| `B1_aggr_m80_amp260` | -180 | 340 | 682,736 |
 
-The final continuous multicase validation confirmed that the real NEML Chaboche ratcheting model remains stable across a neighbourhood of B1-type asymmetric stress paths. The canonical B1 repeat agrees with the Stage 15G long reference where overlap data are available, while nearby B1 grid cases provide a transferability map for the adaptive cycle-jump strategy. Aggressive B1 cases remain stable but show stronger inelastic accumulation and therefore require stricter jump-size control. B2-type cases remain diagnostic and are not selected as the primary cycle-jump target. Therefore, the thesis cycle-jump study is concluded with a robust B1-type adaptive ratcheting benchmark rather than a universal fixed-jump extrapolation rule.
+## B2 Diagnostic Conclusion
+
+The B2 diagnostic cases reached the extension target of 2,000,000 cycles, showing that they are numerically stable in the real-NEML material-point framework. However, they are not selected as the primary thesis target because the earlier Stage 15E prediction benchmark found no accepted B2 cycle-jump predictions under the selected error rules. Therefore, B2 is retained as a diagnostic comparison class.
+
+## Canonical B1 Repeat Check Against Stage 15G
+
+The canonical B1 repeat check showed exact agreement with Stage 15G at the early preserved cycles up to 50,000 cycles. At later cycles, the strain-like quantities show a growing offset. Therefore, Stage 15G remains the clean single-case B1 reference, while Stage 15J is used primarily as the final continuous multicase transferability map. This does not invalidate Stage 15J, but it means the canonical repeat should be reported as a consistency check with a documented long-cycle offset, not as a perfect reproduction of Stage 15G.
+
+At the last overlap cycle, `1,500,000`, the absolute difference in both `strain_mean` and `ratcheting_strain` is about `9.75`.
+
+## Recommended Figures
+
+The recommended Stage 15J figures are:
+
+- `plots/STAGE15J_final_cycle_by_case.svg`
+- `plots/STAGE15J_final_accumulated_inelastic_by_case.svg`
+- `plots/STAGE15J_b1_transferability_map.svg`
+- `plots/STAGE15J_selected_loop_examples.svg`
+
+The most important figure is `plots/STAGE15J_b1_transferability_map.svg`, because it visually supports the final thesis claim that adaptive cycle jumping is transferable in the B1-type stress neighbourhood.
+
+## Final Stage 15 Conclusion
+
+Stage 15 concludes with a real-NEML Chaboche ratcheting benchmark suitable for adaptive cycle-jump research. The fixed one-shot cycle-jump strategy was accurate only for local or moderate jumps, while the adaptive strategy provided accepted refined jumps for the canonical B1 case. The final continuous multicase validation extended the study to 40 stress paths and showed that the method is most suitable for a B1-type asymmetric stress-controlled neighbourhood. Aggressive B1 paths remain stable but require stricter jump-size control, and B2 paths are retained as diagnostic rather than primary cycle-jump targets. Therefore, the thesis result should be framed as a robust B1-type adaptive ratcheting benchmark, not as a universal fixed-jump rule for all cyclic stress paths.

@@ -11,7 +11,7 @@ PBS job `1333807.mmaster02` (`stage15j_final_multi`) completed with scheduler ex
 - Final runner message: `Stage 15J finished: 40 cases`
 - Postprocessing message: `wrote Stage 15J transferability postprocessing outputs`
 
-The run used continuous real-NEML workers per case. It did not use the older 10,000-cycle chunk relaunch strategy.
+The run used continuous real-NEML workers per case. It did not use the older 10,000-cycle chunk relaunch strategy, so Stage 15J should be treated as the final continuous multicase transferability validation.
 
 ## Headline Results
 
@@ -61,6 +61,8 @@ These are not failures. They are stable but too expensive/severe to reach the pr
 
 The canonical `B1_grid_mean50_amp200` repeat was compared with the Stage 15G long B1 reference at preserved overlapping cycles. The last overlap cycle was `1500000`.
 
+Important correction: the canonical B1 repeat does not fully agree with Stage 15G over the full overlap range. It shows exact agreement only at the early preserved cycles up to `50000` cycles. At later cycles, the strain-like quantities show a growing offset. Therefore, Stage 15G remains the clean single-case B1 long reference, while Stage 15J is used primarily as the final continuous multicase transferability map.
+
 At cycle `1500000`:
 
 | Quantity | Stage 15J | Stage 15G | Absolute difference |
@@ -68,13 +70,26 @@ At cycle `1500000`:
 | `strain_mean` | 45.70391764596161 | 55.45267197534096 | 9.748754329379352 |
 | `ratcheting_strain` | 45.689947687551395 | 55.43870201693075 | 9.748754329379352 |
 
-The comparison data are in `STAGE15J_CANONICAL_B1_REPEAT_CHECK.csv`.
+The comparison data are in `STAGE15J_CANONICAL_B1_REPEAT_CHECK.csv`. Report this as a consistency check with a documented long-cycle offset, not as a perfect reproduction of Stage 15G.
 
 ## Thesis Interpretation
 
-Stage 15J confirms that the real-NEML Chaboche ratcheting model remains numerically stable across a B1-type asymmetric stress neighbourhood. The clean B1 grid cases support transferability of the accepted adaptive cycle-jump strategy. Aggressive B1 cases remain stable but show stronger inelastic accumulation and need stricter jump-size control. B2 cases remain diagnostic and are not the primary thesis cycle-jump target.
+The final continuous multicase validation confirms that the selected real-NEML Chaboche ratcheting model remains numerically stable over a broad B1-type asymmetric stress neighbourhood. All 40 cases ran without numerical failure. The 25 B1 grid cases were classified as clean transferability cases, showing that the adaptive cycle-jump strategy is not limited to a single stress path. The aggressive B1 cases remained stable but became computationally more demanding and therefore require stricter jump-size control. The B2 cases reached long cycle counts but remain diagnostic rather than the primary cycle-jump target.
 
-The strongest thesis-ready conclusion is: use a robust B1-type adaptive ratcheting benchmark, not a universal fixed-jump extrapolation rule.
+The B1 grid was constructed using mean stresses from 30 to 70 MPa and stress amplitudes from 180 to 220 MPa. The canonical B1 case, corresponding to mean stress 50 MPa and amplitude 200 MPa, is contained inside this grid. All B1 grid cases were classified as clean transferability cases.
+
+The strongest thesis-ready conclusion is: Stage 15 concludes with a real-NEML Chaboche ratcheting benchmark suitable for adaptive cycle-jump research. The fixed one-shot cycle-jump strategy was accurate only for local or moderate jumps, while the adaptive strategy provided accepted refined jumps for the canonical B1 case. The final continuous multicase validation extended the study to 40 stress paths and showed that the method is most suitable for a B1-type asymmetric stress-controlled neighbourhood. Aggressive B1 paths remain stable but require stricter jump-size control, and B2 paths are retained as diagnostic rather than primary cycle-jump targets. Therefore, the thesis result should be framed as a robust B1-type adaptive ratcheting benchmark, not as a universal fixed-jump rule for all cyclic stress paths.
+
+## Recommended Figures
+
+Use these four Stage 15J figures:
+
+- `plots/STAGE15J_final_cycle_by_case.svg`
+- `plots/STAGE15J_final_accumulated_inelastic_by_case.svg`
+- `plots/STAGE15J_b1_transferability_map.svg`
+- `plots/STAGE15J_selected_loop_examples.svg`
+
+The most important one is `plots/STAGE15J_b1_transferability_map.svg`, which visually supports the final thesis claim that adaptive cycle jumping is transferable in the B1-type stress neighbourhood.
 
 ## Artifact Map
 
