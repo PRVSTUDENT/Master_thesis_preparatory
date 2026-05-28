@@ -1,0 +1,24 @@
+[Stage 15J preflight]
+Python: 3.11.7
+[OK] Python version is acceptable
+[OK] numpy import works: 2.4.4
+[OK] pandas import works: 3.0.2
+[OK] neml import works: /home/pr21vyci/.local/lib/python3.11/site-packages/neml/__init__.py
+[OK] real NEML import path looks valid
+[OK] fallback backend is not enabled
+[OK] . path writable
+[OK] case_outputs path writable
+[OK] smoke_test_outputs path writable
+[OK] logs path writable
+[OK] exactly 40 cases defined
+[OK] case stress ranges checked
+[OK] points_per_cycle = 40
+[OK] preserved target cycles sorted and inside extension target
+[OK] stop guard is less than PBS walltime
+[OK] STAGE15J_ACTIVE_WORKERS=40
+[OK] OMP_NUM_THREADS=1
+[OK] MKL_NUM_THREADS=1
+[OK] OPENBLAS_NUM_THREADS=1
+[OK] NUMEXPR_NUM_THREADS=1
+[OK] output path does not overwrite Stage 15G or Stage 15I
+[Stage 15J preflight] PASSED
