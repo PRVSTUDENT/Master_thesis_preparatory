@@ -20,15 +20,8 @@ echo "PBS_O_WORKDIR=${PBS_O_WORKDIR:-unset}"
 echo "HOSTNAME=$(hostname)"
 echo "PWD=$(pwd)"
 
-source /etc/profile >/dev/null 2>&1 || true
-source /etc/profile.d/modules.sh >/dev/null 2>&1 || true
-if command -v module >/dev/null 2>&1; then
-  module purge >/dev/null 2>&1 || true
-  module load python/gcc/11.4.0/3.11.7 >/dev/null 2>&1 || echo "WARNING: module load failed; using PATH fallback"
-else
-  echo "WARNING: module command not available; using PATH fallback"
-fi
-export PATH="/cluster/stages/2024.0/spack-0.22/opt/spack/linux-rocky8-cascadelake/gcc-11.4.0/python-3.11.7-qfpdtq2pisspwunkuc4fqloxqo2ltw6j/bin:${PATH}"
+PYTHON_DIR="/cluster/stages/2024.0/spack-0.22/opt/spack/linux-rocky8-cascadelake/gcc-11.4.0/python-3.11.7-qfpdtq2pisspwunkuc4fqloxqo2ltw6j/bin"
+export PATH="${PYTHON_DIR}:${PATH}"
 hash -r
 which python
 python --version
