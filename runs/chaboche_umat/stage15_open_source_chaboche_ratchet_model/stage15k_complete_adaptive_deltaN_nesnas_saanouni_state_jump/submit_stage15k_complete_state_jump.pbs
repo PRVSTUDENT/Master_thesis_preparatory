@@ -1,0 +1,21 @@
+#!/bin/bash
+#PBS -N stage15k_statejump
+#PBS -q teachingq
+#PBS -l select=1:ncpus=40:mpiprocs=40:mem=160gb:ompthreads=1
+#PBS -l walltime=23:55:00
+#PBS -j oe
+
+set -euo pipefail
+
+cd "$PBS_O_WORKDIR"
+
+source /etc/profile >/dev/null 2>&1 || true
+module load python/gcc/11.4.0/3.11.7
+
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export STAGE15K_ACTIVE_WORKERS=40
+
+bash run_stage15k_full_hpc.sh

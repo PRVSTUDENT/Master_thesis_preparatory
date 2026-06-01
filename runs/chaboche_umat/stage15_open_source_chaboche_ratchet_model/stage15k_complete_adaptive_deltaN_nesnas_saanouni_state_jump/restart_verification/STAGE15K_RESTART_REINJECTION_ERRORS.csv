@@ -1,0 +1,9 @@
+component,max_abs_error,max_rel_error,strict_abs_tol,strict_rel_tol,relaxed_diagnostic_tol,near_roundoff_tol,strict_pass,relaxed_pass
+stress,0.00000000000000000e+00,0.00000000000000000e+00,1.0e-08,1.0e-08,1.0e-06,1.0e-10,true,true
+strain,0.00000000000000000e+00,0.00000000000000000e+00,1.0e-08,1.0e-08,1.0e-06,1.0e-10,true,true
+history_internal_variables,0.00000000000000000e+00,0.00000000000000000e+00,1.0e-08,1.0e-08,1.0e-06,1.0e-10,true,true
+accumulated_inelastic_strain,0.00000000000000000e+00,0.00000000000000000e+00,1.0e-08,1.0e-08,1.0e-06,1.0e-10,true,true
+backstress_norm,0.00000000000000000e+00,0.00000000000000000e+00,1.0e-08,1.0e-08,1.0e-06,1.0e-10,true,true
+time,0.00000000000000000e+00,0.00000000000000000e+00,1.0e-08,1.0e-08,1.0e-06,1.0e-10,true,true
+energy_u,0.00000000000000000e+00,0.00000000000000000e+00,1.0e-08,1.0e-08,1.0e-06,1.0e-10,true,true
+plastic_dissipation_or_work_p,0.00000000000000000e+00,0.00000000000000000e+00,1.0e-08,1.0e-08,1.0e-06,1.0e-10,true,true
