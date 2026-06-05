@@ -26,7 +26,7 @@ C because the Stage 16N C3D8 mesh uses 8 integration points per element.
       RECNO=(NOEL-1)*8+NPT
       UNITNO=10000+NOEL*10+NPT
       OPEN(UNIT=UNITNO,FILE=STATEBIN,STATUS='OLD',
-     1 ACCESS='DIRECT',FORM='UNFORMATTED',RECL=264,IOSTAT=IOS)
+     1 ACCESS='DIRECT',FORM='UNFORMATTED',RECL=66,IOSTAT=IOS)
       IF (IOS.NE.0) THEN
         WRITE(6,*) 'STAGE16N ERROR: cannot open state binary'
         WRITE(6,*) STATEBIN
