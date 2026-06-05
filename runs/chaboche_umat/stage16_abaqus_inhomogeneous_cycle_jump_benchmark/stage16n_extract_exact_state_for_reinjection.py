@@ -52,7 +52,11 @@ def field_by_label_and_ip(field):
     out = {}
     for value in field.values:
         key = (int(value.elementLabel), int(value.integrationPoint))
-        out[key] = tuple(float(v) for v in value.data)
+        data = value.data
+        try:
+            out[key] = tuple(float(v) for v in data)
+        except TypeError:
+            out[key] = (float(data),)
     return out
 
 
