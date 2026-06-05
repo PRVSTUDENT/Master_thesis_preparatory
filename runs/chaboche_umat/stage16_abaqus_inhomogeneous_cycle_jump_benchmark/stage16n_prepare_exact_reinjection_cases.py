@@ -158,7 +158,7 @@ def write_submit_script(case_dir, job, name):
         "export ABAQUS_CPUS=16",
         "export ABAQUS_MP_MODE=threads",
         "export LOG_DIR=_logs",
-        "bash ../../run_stage16n_exact_reinjection_hpc.sh %s" % job,
+        "bash ../../../run_stage16n_exact_reinjection_hpc.sh %s" % job,
         "",
     ]
     path.write_text("\n".join(lines))
