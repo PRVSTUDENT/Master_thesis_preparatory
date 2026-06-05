@@ -29,9 +29,16 @@ if [[ ! -f "stage16n_sdvini_sigini_state_reader.for" ]]; then
   echo "Missing UMAT/state-reader file: stage16n_sdvini_sigini_state_reader.for" >&2
   exit 2
 fi
+if [[ ! -f "state.csv" ]]; then
+  echo "Missing exact state CSV: state.csv" >&2
+  exit 2
+fi
+
+export STAGE16N_STATE_FILE="$PWD/state.csv"
 
 echo "Stage 16N-B exact reinjection job: ${JOB}"
 echo "Abaqus cpus=${ABAQUS_CPUS} mp_mode=${ABAQUS_MP_MODE}"
+echo "State file: ${STAGE16N_STATE_FILE}"
 
 abaqus job="${JOB}_datacheck" \
   input="${JOB}.inp" \
