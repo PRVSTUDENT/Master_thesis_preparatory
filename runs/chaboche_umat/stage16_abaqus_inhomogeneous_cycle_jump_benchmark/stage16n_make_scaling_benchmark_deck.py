@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import argparse
 import shutil
 from pathlib import Path
@@ -12,9 +10,10 @@ UMAT_NAME = "stage16n_neml_equivalent_chaboche_umat.for"
 EXTRACTOR = "stage16n_extract_hysteresis_and_local_states.py"
 
 
-def truncate_deck(source: Path, target: Path, cycles: int) -> None:
-    lines = source.read_text(encoding="utf-8").splitlines()
-    out: list[str] = []
+def truncate_deck(source, target, cycles):
+    with source.open("r") as handle:
+        lines = handle.read().splitlines()
+    out = []
     completed_steps = 0
     for line in lines:
         out.append(line)
@@ -24,10 +23,11 @@ def truncate_deck(source: Path, target: Path, cycles: int) -> None:
                 break
     if completed_steps < cycles:
         raise RuntimeError(f"Source deck ended after {completed_steps} cycles, requested {cycles}")
-    target.write_text("\n".join(out) + "\n", encoding="utf-8")
+    with target.open("w") as handle:
+        handle.write("\n".join(out) + "\n")
 
 
-def main() -> None:
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--cycles", type=int, default=50)
     parser.add_argument("--out-dir", default=None)
@@ -54,7 +54,8 @@ def main() -> None:
         "- Purpose: compare Abaqus walltime and CPU efficiency at different CPU counts.",
         "- Accept the CPU count with the lowest practical core-hour cost, not necessarily the lowest walltime.",
     ]
-    (out_dir / "STAGE16N_CPU_SCALING_BENCHMARK_MANIFEST.md").write_text("\n".join(manifest) + "\n", encoding="utf-8")
+    with (out_dir / "STAGE16N_CPU_SCALING_BENCHMARK_MANIFEST.md").open("w") as handle:
+        handle.write("\n".join(manifest) + "\n")
     print(out_dir)
     print(job)
 

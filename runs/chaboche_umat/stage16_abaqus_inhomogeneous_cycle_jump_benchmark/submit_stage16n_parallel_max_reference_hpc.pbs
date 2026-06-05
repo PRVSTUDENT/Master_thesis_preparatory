@@ -1,7 +1,7 @@
 #!/bin/bash
-#PBS -N stage16n_maxref
+#PBS -N stage16n_maxref16
 #PBS -q entry_teachingq
-#PBS -l select=1:ncpus=30:mpiprocs=1:ompthreads=30:mem=135gb
+#PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
 #PBS -l walltime=22:00:00
 #PBS -j oe
 #PBS -m abe
@@ -11,7 +11,7 @@ set -euo pipefail
 
 cd "$PBS_O_WORKDIR"
 export REPO_ROOT="$HOME/master_thesis/Abaqus_trial"
-export ABAQUS_CPUS="${ABAQUS_CPUS:-30}"
+export ABAQUS_CPUS="${ABAQUS_CPUS:-16}"
 export ABAQUS_MP_MODE="${ABAQUS_MP_MODE:-threads}"
 
 bash runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/run_stage16n_parallel_max_reference_hpc.sh
