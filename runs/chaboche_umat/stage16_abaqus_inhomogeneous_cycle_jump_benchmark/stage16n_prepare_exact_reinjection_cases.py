@@ -167,17 +167,25 @@ def write_submit_script(case_dir, job, name):
 
 def prepare_case(name, base_cycle, compare_cycle):
     state_csv = STATE_DIR / ("stage16n_exact_state_cycle%04d.csv" % base_cycle)
+    state_bin = STATE_DIR / ("stage16n_exact_state_cycle%04d.bin" % base_cycle)
     if not state_csv.exists():
         raise RuntimeError(
             "Missing exact state CSV for cycle %d: %s\n"
             "Run stage16n_extract_exact_state_for_reinjection.py first." % (base_cycle, state_csv)
+        )
+    if not state_bin.exists():
+        raise RuntimeError(
+            "Missing exact state binary for cycle %d: %s\n"
+            "Run stage16n_extract_exact_state_for_reinjection.py first." % (base_cycle, state_bin)
         )
 
     case_dir = CASES_DIR / name
     case_dir.mkdir(parents=True, exist_ok=True)
     job = "stage16n_exact_%s" % name.lower()
     local_state_name = "state.csv"
+    local_state_bin_name = "state.bin"
     shutil.copy2(state_csv, case_dir / local_state_name)
+    shutil.copy2(state_bin, case_dir / local_state_bin_name)
     umat = write_case_umat(case_dir, local_state_name)
     mesh = write_deck(case_dir / (job + ".inp"), job, base_cycle, compare_cycle)
     submit = write_submit_script(case_dir, job, name)
@@ -191,7 +199,9 @@ def prepare_case(name, base_cycle, compare_cycle):
         "- Compare cycle: `%d`" % compare_cycle,
         "- Continuation cycles: `%d`" % (compare_cycle - base_cycle),
         "- Source state CSV: `%s`" % state_csv.name,
+        "- Source state binary: `%s`" % state_bin.name,
         "- Local state CSV used by Fortran: `%s`" % local_state_name,
+        "- Local state binary used by Fortran: `%s`" % local_state_bin_name,
         "- UMAT with reader hooks: `%s`" % umat.name,
         "- PBS submit script: `%s`" % submit.name,
         "- Nodes: `%d`" % len(mesh["nodes"]),

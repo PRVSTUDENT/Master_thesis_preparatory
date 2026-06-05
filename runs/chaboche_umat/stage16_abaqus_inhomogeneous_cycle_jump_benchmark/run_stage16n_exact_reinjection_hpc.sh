@@ -33,12 +33,18 @@ if [[ ! -f "state.csv" ]]; then
   echo "Missing exact state CSV: state.csv" >&2
   exit 2
 fi
+if [[ ! -f "state.bin" ]]; then
+  echo "Missing exact state binary: state.bin" >&2
+  exit 2
+fi
 
 export STAGE16N_STATE_FILE="$PWD/state.csv"
+export STAGE16N_STATE_BIN="$PWD/state.bin"
 
 echo "Stage 16N-B exact reinjection job: ${JOB}"
 echo "Abaqus cpus=${ABAQUS_CPUS} mp_mode=${ABAQUS_MP_MODE}"
 echo "State file: ${STAGE16N_STATE_FILE}"
+echo "State binary: ${STAGE16N_STATE_BIN}"
 
 abaqus job="${JOB}_datacheck" \
   input="${JOB}.inp" \

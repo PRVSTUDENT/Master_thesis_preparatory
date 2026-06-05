@@ -15,6 +15,7 @@ import argparse
 import csv
 import os
 import re
+import struct
 import sys
 
 
@@ -88,6 +89,7 @@ def extract_cycle(odb, cycle, outdir):
 
     keys = sorted(stress.keys())
     state_path = os.path.join(outdir, "stage16n_exact_state_cycle%04d.csv" % cycle)
+    binary_path = os.path.join(outdir, "stage16n_exact_state_cycle%04d.bin" % cycle)
     summary_path = os.path.join(outdir, "stage16n_exact_state_cycle%04d_summary.md" % cycle)
 
     fields = ["NOEL", "NPT"]
@@ -108,6 +110,20 @@ def extract_cycle(odb, cycle, outdir):
                 row["SDV%d" % i] = fmt(field[key][0])
             writer.writerow(row)
 
+    max_record = max((noel - 1) * 8 + npt for noel, npt in keys)
+    zero_record = struct.pack("<33d", *([0.0] * 33))
+    with open(binary_path, "wb") as handle:
+        handle.truncate(max_record * 33 * 8)
+        for key in keys:
+            noel, npt = key
+            recno = (noel - 1) * 8 + npt
+            svals = list(stress[key][:STRESS_COMPONENTS])
+            while len(svals) < STRESS_COMPONENTS:
+                svals.append(0.0)
+            vals = svals + [sdv_fields[i][key][0] for i in range(NSTATEV)]
+            handle.seek((recno - 1) * 33 * 8)
+            handle.write(struct.pack("<33d", *vals))
+
     lines = [
         "# Stage 16N Exact Reinjection State",
         "",
@@ -117,6 +133,7 @@ def extract_cycle(odb, cycle, outdir):
         "- Frame value: `%s`" % frame.frameValue,
         "- Element/IP records: `%d`" % len(keys),
         "- State CSV: `%s`" % os.path.basename(state_path),
+        "- State binary: `%s`" % os.path.basename(binary_path),
         "- Stress components: `S1-S6`",
         "- State variables: `SDV1-SDV27`",
     ]
