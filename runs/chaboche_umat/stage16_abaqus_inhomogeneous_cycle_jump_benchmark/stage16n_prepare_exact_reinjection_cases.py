@@ -103,6 +103,18 @@ def write_deck(path, job, base_cycle, compare_cycle):
         "0.50, 0.0",
         "0.75, -1.0",
         "1.00, 0.0",
+        "*STEP, NAME=REINJECTION_EQUILIBRATE, NLGEOM=NO, INC=400",
+        "*STATIC",
+        "1.0E-06, 1.0, 1.0E-12, 1.0E-02",
+        "*BOUNDARY",
+        "LEFT_EDGE, 1, 1, 0.0",
+        "ANCHOR_A, 2, 3, 0.0",
+        "ANCHOR_B, 3, 3, 0.0",
+        "RIGHT_EDGE, 1, 1, 0.0",
+        "*OUTPUT, FIELD, NUMBER INTERVAL=1",
+        "*ELEMENT OUTPUT",
+        "S, SDV",
+        "*END STEP",
     ])
 
     for cycle in range(base_cycle + 1, compare_cycle + 1):
@@ -111,13 +123,6 @@ def write_deck(path, job, base_cycle, compare_cycle):
             "*STATIC",
             "0.005, 1.0, 1.0E-08, 0.025",
         ])
-        if cycle == base_cycle + 1:
-            lines.extend([
-                "*BOUNDARY",
-                "LEFT_EDGE, 1, 1, 0.0",
-                "ANCHOR_A, 2, 3, 0.0",
-                "ANCHOR_B, 3, 3, 0.0",
-            ])
         lines.extend([
             "*BOUNDARY, AMPLITUDE=AMP_ONE_CYCLE",
             "RIGHT_EDGE, 1, 1, 0.10",

@@ -39,9 +39,10 @@ These are no-jump tests. They must not extrapolate stress or state variables.
 
 1. Extract exact stress and `SDV1-SDV27` for each element/integration point from the completed 1000-cycle reference ODB. The extractor writes both human-readable CSV files and direct-access binary files.
 2. Prepare continuation decks with `*INITIAL CONDITIONS, TYPE=SOLUTION, USER` and `*INITIAL CONDITIONS, TYPE=STRESS, USER`.
-3. Generate a case-specific UMAT file where `SIGINI` and `SDVINI` read the extracted direct-access binary state file. The CSV copy remains for audit/debugging.
-4. Run each continuation normally with the 16-CPU production launcher.
-5. Compare final global and local metrics against the completed 1000-cycle full reference.
+3. Add a short `REINJECTION_EQUILIBRATE` step at zero right-edge displacement. Abaqus can inject stress and SDV fields, but not the full compatible nodal displacement history; this step lets the injected residual stress field settle before the physical continuation cycles.
+4. Generate a case-specific UMAT file where `SIGINI` and `SDVINI` read the extracted direct-access binary state file. The CSV copy remains for audit/debugging.
+5. Run each continuation normally with the 16-CPU production launcher.
+6. Compare final global and local metrics against the completed 1000-cycle full reference.
 
 ## Commands
 
