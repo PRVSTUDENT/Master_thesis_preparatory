@@ -16,6 +16,11 @@ ABAQUS_MP_MODE="${ABAQUS_MP_MODE:-threads}"
 LOG_DIR="${LOG_DIR:-_logs}"
 mkdir -p "$LOG_DIR"
 
+module purge
+module load gcc/11.4.0
+module load intel/2024.2.0
+module load abaqus/2023
+
 if [[ ! -f "${JOB}.inp" ]]; then
   echo "Missing input deck: ${JOB}.inp" >&2
   exit 2
