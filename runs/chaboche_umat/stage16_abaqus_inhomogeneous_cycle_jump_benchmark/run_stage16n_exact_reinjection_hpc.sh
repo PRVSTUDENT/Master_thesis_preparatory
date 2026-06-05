@@ -38,14 +38,14 @@ abaqus job="${JOB}_datacheck" \
   user=stage16n_sdvini_sigini_state_reader.for \
   cpus="${ABAQUS_CPUS}" \
   mp_mode="${ABAQUS_MP_MODE}" \
-  interactive datacheck | tee "${LOG_DIR}/${JOB}_datacheck.log"
+  interactive datacheck ask_delete=OFF scratch=. | tee "${LOG_DIR}/${JOB}_datacheck.log"
 
 abaqus job="${JOB}" \
   input="${JOB}.inp" \
   user=stage16n_sdvini_sigini_state_reader.for \
   cpus="${ABAQUS_CPUS}" \
   mp_mode="${ABAQUS_MP_MODE}" \
-  interactive | tee "${LOG_DIR}/${JOB}.log"
+  interactive ask_delete=OFF scratch=. | tee "${LOG_DIR}/${JOB}.log"
 
 grep -m 5 -A3 "SPARSE SOLVER RUNNING ON" "${JOB}.msg" | tee "${LOG_DIR}/${JOB}_parallelism_check.log" || true
 
