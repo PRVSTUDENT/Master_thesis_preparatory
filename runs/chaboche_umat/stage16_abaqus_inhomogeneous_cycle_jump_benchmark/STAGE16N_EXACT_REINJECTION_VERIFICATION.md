@@ -64,6 +64,14 @@ Then run each prepared case from its case directory using the 16-CPU PBS wrapper
 bash ../../run_stage16n_exact_reinjection_hpc.sh <job-name>
 ```
 
+For normal HPC submission, use the generated PBS scripts:
+
+```bash
+qsub stage16n_exact_reinjection/submits/submit_stage16n_exact_b0_100_to_250.pbs
+qsub stage16n_exact_reinjection/submits/submit_stage16n_exact_b0_250_to_500.pbs
+qsub stage16n_exact_reinjection/submits/submit_stage16n_exact_b0_500_to_1000.pbs
+```
+
 After all runs finish:
 
 ```bash

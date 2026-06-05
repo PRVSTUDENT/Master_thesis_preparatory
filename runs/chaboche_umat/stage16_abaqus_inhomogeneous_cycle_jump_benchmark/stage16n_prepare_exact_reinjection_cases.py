@@ -139,6 +139,31 @@ def write_deck(path, job, base_cycle, compare_cycle):
     return mesh
 
 
+def write_submit_script(case_dir, job, name):
+    submit_dir = OUT_DIR / "submits"
+    submit_dir.mkdir(parents=True, exist_ok=True)
+    rel_case = os.path.relpath(str(case_dir), str(STAGE_DIR)).replace(os.sep, "/")
+    path = submit_dir / ("submit_stage16n_exact_%s.pbs" % name.lower())
+    lines = [
+        "#!/bin/bash",
+        "#PBS -N s16n_%s" % name.lower(),
+        "#PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb",
+        "#PBS -l walltime=22:00:00",
+        "#PBS -q teachingq",
+        "#PBS -j oe",
+        "",
+        "set -euo pipefail",
+        "cd \"$PBS_O_WORKDIR/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/%s\"" % rel_case,
+        "export ABAQUS_CPUS=16",
+        "export ABAQUS_MP_MODE=threads",
+        "export LOG_DIR=_logs",
+        "bash ../../run_stage16n_exact_reinjection_hpc.sh %s" % job,
+        "",
+    ]
+    path.write_text("\n".join(lines))
+    return path
+
+
 def prepare_case(name, base_cycle, compare_cycle):
     state_csv = STATE_DIR / ("stage16n_exact_state_cycle%04d.csv" % base_cycle)
     if not state_csv.exists():
@@ -154,6 +179,7 @@ def prepare_case(name, base_cycle, compare_cycle):
     shutil.copy2(state_csv, case_dir / local_state_name)
     umat = write_case_umat(case_dir, local_state_name)
     mesh = write_deck(case_dir / (job + ".inp"), job, base_cycle, compare_cycle)
+    submit = write_submit_script(case_dir, job, name)
 
     manifest = [
         "# Stage 16N-B Exact Reinjection Case",
@@ -166,6 +192,7 @@ def prepare_case(name, base_cycle, compare_cycle):
         "- Source state CSV: `%s`" % state_csv.name,
         "- Local state CSV used by Fortran: `%s`" % local_state_name,
         "- UMAT with reader hooks: `%s`" % umat.name,
+        "- PBS submit script: `%s`" % submit.name,
         "- Nodes: `%d`" % len(mesh["nodes"]),
         "- Elements: `%d`" % len(mesh["elements"]),
         "- Hole-ring elements: `%d`" % len(mesh["hole_ring"]),
