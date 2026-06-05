@@ -1,0 +1,122 @@
+[Stage16N] parallel max reference
+[Stage16N] start: 2026-06-04 07:09:30
+[Stage16N] PBS job: 1335408.mmaster02
+[Stage16N] Abaqus CPU request: 30
+[Stage16N] Abaqus mp_mode: threads
+[Stage16N] datacheck
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_parallel_max_reference_1000cycles_datacheck
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 21 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<219 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Thu 04 Jun 2026 07:09:33 AM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_neml_equivalent_chaboche_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Thu 04 Jun 2026 07:09:39 AM CEST
+Begin Analysis Input File Processor
+Thu 04 Jun 2026 07:09:39 AM CEST
+Run pre
+Thu 04 Jun 2026 07:10:13 AM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Datacheck
+Begin Abaqus/Standard Analysis
+Thu 04 Jun 2026 07:10:13 AM CEST
+Run standard
+Thu 04 Jun 2026 07:10:17 AM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Thu 04 Jun 2026 07:10:17 AM CEST
+Run SMASimUtility
+Thu 04 Jun 2026 07:10:17 AM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_parallel_max_reference_1000cycles_datacheck COMPLETED
+[Stage16N] full max-cycle reference
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_parallel_max_reference_1000cycles
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 21 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<219 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Thu 04 Jun 2026 07:10:18 AM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_neml_equivalent_chaboche_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Thu 04 Jun 2026 07:10:24 AM CEST
+Begin Analysis Input File Processor
+Thu 04 Jun 2026 07:10:24 AM CEST
+Run pre
+Thu 04 Jun 2026 07:10:52 AM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+Thu 04 Jun 2026 07:10:52 AM CEST
+Run standard
+Fri 05 Jun 2026 01:04:24 AM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Fri 05 Jun 2026 01:04:24 AM CEST
+Run SMASimUtility
+Fri 05 Jun 2026 01:04:24 AM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_parallel_max_reference_1000cycles COMPLETED
+[Stage16N] Abaqus exit status: 0
+[Stage16N] solver parallelism check
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 30 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 30 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 30 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 30 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 30 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+[Stage16N] completed-cycle check
+max_completed_cycle=1000
+wrote=/home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_parallel_max_reference/STAGE16N_PARALLEL_MAX_REFERENCE_STATUS.md
+[Stage16N] extraction
+Wrote: stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv
+Wrote: stage16n_parallel_max_reference_1000cycles_selected_cycle_loops.csv
+Wrote: stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv
+[Stage16N] end: 2026-06-05 01:06:10
