@@ -1,0 +1,2 @@
+job,cycles,abaqus_cpus,mp_mode,wall_seconds,analysis_completed,parallelism
+stage16n_scaling_0050cycles_16cpu,50,16,threads,2157,0,"1 HOST:        1 MPI RANK  x 16 THREADS"

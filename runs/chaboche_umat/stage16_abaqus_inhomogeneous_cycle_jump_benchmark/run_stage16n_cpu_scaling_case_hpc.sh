@@ -37,7 +37,11 @@ END_EPOCH="$(date +%s)"
 WALL_SECONDS="$((END_EPOCH - START_EPOCH))"
 
 PARALLEL_LINE="$(grep -m 1 -A1 "SPARSE SOLVER RUNNING ON" "${JOB}.msg" | tail -n 1 | sed 's/^[[:space:]]*//')"
-COMPLETED="$(grep -c "THE ANALYSIS HAS COMPLETED" "${JOB}.dat" || true)"
+if grep -q "THE ANALYSIS HAS COMPLETED" "${JOB}.dat" || grep -q "Abaqus JOB ${JOB} COMPLETED" "$LOG_DIR/${JOB}.log"; then
+    COMPLETED=1
+else
+    COMPLETED=0
+fi
 
 cat > "${JOB}_scaling_summary.csv" <<EOF
 job,cycles,abaqus_cpus,mp_mode,wall_seconds,analysis_completed,parallelism
