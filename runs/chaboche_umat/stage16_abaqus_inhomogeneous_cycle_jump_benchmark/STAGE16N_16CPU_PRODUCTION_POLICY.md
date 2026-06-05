@@ -2,6 +2,16 @@
 
 Future Stage 16N Abaqus production jobs should use 16 CPUs by default.
 
+## Locked Production Setting
+
+```text
+Production default : 1 MPI rank x 16 OpenMP threads
+PBS request        : select=1:ncpus=16:mpiprocs=1:ompthreads=16
+Abaqus launch      : cpus=16 mp_mode=threads
+```
+
+The 16-CPU configuration is not claimed to provide perfect CPU saturation. It is selected as a resource-efficient production compromise after verifying that Abaqus launches correctly in threaded mode and avoids the earlier serial fallback.
+
 ## Reason
 
 The completed 1000-cycle reference run verified that Abaqus launched with `1 MPI RANK x 30 THREADS`, but PBS accounting showed:
@@ -11,6 +21,19 @@ The completed 1000-cycle reference run verified that Abaqus launched with `1 MPI
 - Average effective cores: about `9.9`
 
 This means the 30-thread run was valid and faster than the accidental serial run, but it did not keep 30 cores busy. A 16-core allocation is a more defensible production default because it leaves headroom above the observed average while avoiding the cost of reserving 30 cores.
+
+The 16-CPU verification benchmark then completed successfully:
+
+```text
+PBS job:        1335555.mmaster02
+Benchmark:      50 cycles
+Walltime:       00:36:00
+CPU time:       03:54:55
+Exit status:    0
+Abaqus launch:  1 MPI RANK x 16 THREADS
+```
+
+The measured effective usage was about 6.5 cores on average. This confirms correct threaded launch with lower resource reservation than the 30-CPU reference run.
 
 ## Required Settings
 
