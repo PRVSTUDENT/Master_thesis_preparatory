@@ -1,0 +1,27 @@
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_exact_b0_100_to_250
+Abaqus 2023
+Begin Compiling Abaqus/Standard User Subroutines
+Fri 05 Jun 2026 11:41:39 AM CEST
+ Intel(R) Fortran 2021.13.0-1693
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Fri 05 Jun 2026 11:41:44 AM CEST
+Begin Analysis Input File Processor
+Fri 05 Jun 2026 11:41:44 AM CEST
+Run pre
+Fri 05 Jun 2026 11:41:49 AM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+Fri 05 Jun 2026 11:41:49 AM CEST
+Run standard
+Fri 05 Jun 2026 01:22:53 PM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Fri 05 Jun 2026 01:22:53 PM CEST
+Run SMASimUtility
+Fri 05 Jun 2026 01:22:53 PM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_exact_b0_100_to_250 COMPLETED
