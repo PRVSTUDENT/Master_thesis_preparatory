@@ -62,7 +62,7 @@ abaqus job="${JOB}" \
 
 grep -m 5 -A3 "SPARSE SOLVER RUNNING ON" "${JOB}.msg" | tee "${LOG_DIR}/${JOB}_parallelism_check.log" || true
 
-abaqus python ../../stage16n_extract_hysteresis_and_local_states.py --job "${JOB}" \
+abaqus python ../../../stage16n_extract_hysteresis_and_local_states.py --job "${JOB}" \
   | tee "${LOG_DIR}/${JOB}_extract.log"
 
 echo "Stage 16N-B exact reinjection completed: ${JOB}"
