@@ -21,6 +21,8 @@ for cpus in $CPU_COUNTS; do
 #PBS -l select=1:ncpus=${cpus}:mpiprocs=1:ompthreads=${cpus}:mem=${MEM_PER_JOB}
 #PBS -l walltime=${WALLTIME}
 #PBS -j oe
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
 
 set -euo pipefail
 cd "\$PBS_O_WORKDIR"

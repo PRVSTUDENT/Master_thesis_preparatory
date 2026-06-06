@@ -156,6 +156,8 @@ def write_submit_script(case_dir, job, name):
         "#PBS -l walltime=22:00:00",
         "#PBS -q teachingq",
         "#PBS -j oe",
+        "#PBS -m abe",
+        "#PBS -M pr21vyci@mailserver.tu-freiberg.de",
         "",
         "set -euo pipefail",
         "REPO_ROOT=\"${REPO_ROOT:-$HOME/master_thesis/Abaqus_trial}\"",
