@@ -97,7 +97,7 @@ From the repository root on HPC:
 cd ~/master_thesis/Abaqus_trial
 python runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_prepare_fixed_jump_cases.py --cases B1_100_to_125_to_250
 bash runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/run_stage16n_fixed_jump_cases_hpc.sh B1_100_to_125_to_250
-abaqus python runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_compare_fixed_jumps_against_1000ref.py --cases B1_100_to_125_to_250
+python3 runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_compare_fixed_jumps_against_1000ref.py --cases B1_100_to_125_to_250
 ```
 
 If B1 gives acceptable global errors and controlled primary local-state errors, then prepare the next fixed cases:
@@ -124,4 +124,39 @@ After B1 passes, submit B2 and B3 simultaneously:
 ```bash
 qsub runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_fixed_jump_validation/submits/submit_stage16n_fixed_b2_250_to_300_to_500.pbs
 qsub runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_fixed_jump_validation/submits/submit_stage16n_fixed_b3_500_to_575_to_750.pbs
+```
+
+## B1 result and current gate decision
+
+B1 completed successfully as an Abaqus job, but it did not pass the method gate.
+
+```text
+PBS job                      : 1341006.mmaster02
+Exit status                  : 0
+Walltime                     : 01:24:54
+Comparison status            : review
+Maximum primary total error  : 11.2777%
+Controlling primary quantity : HOLE_RING_SDV11_MAX
+```
+
+The global quantities were close to the B0 reinjection baseline, but primary local state errors were too large:
+
+```text
+HOLE_RING_SDV1_MAX  total error : 10.2916%
+HOLE_RING_SDV11_MAX total error : 11.2777%
+```
+
+Current decision:
+
+```text
+Do not submit B2/B3 yet.
+Use the two available 16-core slots for smaller/debug B1 variants.
+```
+
+B1 result evidence:
+
+```text
+stage16n_fixed_jump_validation/cases/B1_100_to_125_to_250/STAGE16N_FIXED_B1_100_TO_125_TO_250_RESULT.md
+stage16n_fixed_jump_validation/stage16n_fixed_jump_comparison_summary.csv
+stage16n_fixed_jump_validation/stage16n_fixed_jump_comparison_details.csv
 ```

@@ -1,0 +1,2 @@
+case,base_cycle,jump_target_cycle,compare_cycle,status,max_primary_total_error_pct,controlling_primary_quantity
+B1_100_to_125_to_250,100,125,250,review,11.2777,HOLE_RING_SDV11_MAX

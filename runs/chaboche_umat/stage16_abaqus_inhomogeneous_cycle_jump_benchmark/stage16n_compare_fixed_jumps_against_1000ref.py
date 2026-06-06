@@ -3,6 +3,9 @@
 
 The comparison also reports the B0-1 state-initialized baseline where available
 so the first fixed-jump error can be interpreted against the reinjection floor.
+
+Run with Python 3. This script is pure CSV postprocessing and does not require
+Abaqus Python.
 """
 
 from __future__ import print_function

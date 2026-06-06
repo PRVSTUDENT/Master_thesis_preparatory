@@ -418,6 +418,31 @@ Case & Base state & Jump target & Compare endpoint \\
 
 If B1 passes, B2 and B3 are the first paired submission under the new two-job policy. If B1 fails, the paired slots should instead be used for B1-small and B1-diagnostic variants.
 
+\subsection{B1 Result}
+
+B1 completed successfully as an Abaqus job, but it did not pass the fixed-jump method gate. The comparison at cycle 250 gave good global errors but unacceptable primary local state errors.
+
+\begin{table}[H]
+\centering
+\caption{B1 fixed-jump comparison against the 1000-cycle reference and B0 baseline.}
+\begin{tabular}{lrrr}
+\toprule
+Quantity & B1 total error & B0 baseline & Additional error \\
+\midrule
+\code{RF1\_max} & 0.361433\% & 0.259048\% & 0.102384\% \\
+\code{RF1\_min} & 2.27018\% & 0.687538\% & 1.58264\% \\
+\code{loop\_area\_abs} & 1.26223\% & 0.967300\% & 0.294934\% \\
+\code{HOLE\_RING\_MISES\_MAX} & 2.40141\% & 7.63648\% & -5.23507\% \\
+\code{HOLE\_RING\_S11\_MAX\_ABS} & 1.21869\% & 9.58753\% & -8.36884\% \\
+\code{HOLE\_RING\_SDV1\_MAX} & 10.2916\% & 0.360172\% & 9.93139\% \\
+\code{HOLE\_RING\_SDV8\_MAX} & 16.1769\% & 10.9164\% & 5.26047\% \\
+\code{HOLE\_RING\_SDV11\_MAX} & 11.2777\% & 7.27213\% & 4.00560\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The B1 status is \code{review}, controlled by \code{HOLE\_RING\_SDV11\_MAX}. Therefore B2 and B3 remain held. The two-job policy should next be used for smaller or diagnostic B1 variants rather than larger fixed jumps.
+
 \section{Failures and Fixes}
 
 \begin{longtable}{p{0.26\linewidth}p{0.34\linewidth}p{0.32\linewidth}}
@@ -439,6 +464,7 @@ Postprocessing path failure & B0-1 solver completed but PBS exit status was 2. &
 B0-1 local mismatch & Global errors under 1\%, local \code{SDV8} max error 10.9164\%. & Added pointwise diagnostic and initialization-only audit. \\
 Initialization local mismatch & Binary audit passed, but \code{SDV8} mismatch appeared immediately. & Concluded manual \code{SDVINI}/\code{SIGINI} is not a mathematically exact local restart. \\
 Metric policy mismatch & Original adaptive table allowed \code{SDV8} to act as a hard controller. & Added reinjection-aware table with \code{SDV8} diagnostic-only. \\
+B1 fixed-jump gate & Global B1 errors were small, but \code{SDV1} and \code{SDV11} primary local errors exceeded 10\%. & Hold B2/B3 and use the two-job policy for smaller/debug B1 variants. \\
 \bottomrule
 \end{longtable}
 
@@ -450,13 +476,13 @@ The important methodological limitation is exact local reinjection. B0-1 proves 
 
 \section{Next Work}
 
-The next work is to run the first conservative Stage 16N-C fixed state-initialized jump and interpret it against the B0-1 reinjection baseline. B0-2 and B0-3 remain on hold as exact-local-restart claims, but practical fixed-jump validation can proceed with the reinjection floor explicitly documented.
+The first conservative Stage 16N-C fixed state-initialized jump has now been run and compared. It reproduced global response fairly well, but primary local state errors were too large for a pass. B0-2 and B0-3 remain on hold as exact-local-restart claims, and B2/B3 fixed jumps are also held until smaller/debug B1 variants clarify the local-state error.
 
 \begin{enumerate}
-  \item Prepare and submit \code{B1\_100\_to\_125\_to\_250} on HPC using the locked 16-CPU production policy.
-  \item Compare the fixed-jump result against the 1000-cycle reference and against the B0-1 reinjection baseline.
+  \item Do not submit B2/B3 yet.
+  \item Prepare smaller/debug B1 variants, especially \code{100 to 112 to 250}.
+  \item Use the second 16-core slot for an equilibration or cycle-phase diagnostic variant.
   \item Keep \code{SDV8} as a diagnostic warning metric, not a hard pass/fail metric.
-  \item If the first case is acceptable, expand to larger fixed state-initialized jumps.
 \end{enumerate}
 
 \appendix
