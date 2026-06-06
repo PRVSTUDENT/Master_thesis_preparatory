@@ -166,7 +166,7 @@ def write_submit_script(case_dir, job, name):
         "#!/bin/bash",
         "#PBS -N s16n_%s" % name.lower(),
         "#PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb",
-        "#PBS -l walltime=22:00:00",
+        "#PBS -l walltime=24:00:00",
         "#PBS -q teachingq",
         "#PBS -j oe",
         "#PBS -m abe",

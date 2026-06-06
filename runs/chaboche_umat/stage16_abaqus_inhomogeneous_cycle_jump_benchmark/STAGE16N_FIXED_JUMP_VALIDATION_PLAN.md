@@ -2,6 +2,20 @@
 
 Last updated: 2026-06-06
 
+## Two-job resource policy
+
+Stage 16N fixed-jump solver planning now uses:
+
+```text
+Maximum simultaneous jobs : 2
+Each job                  : 16 CPU cores
+Maximum walltime/job      : 24 h
+Total active usage        : 32 CPU cores
+Production mode           : 1 MPI rank x 16 OpenMP threads
+```
+
+Gate jobs still run alone until reviewed. Once B1 passes, B2 and B3 should be submitted together to use both 16-core slots.
+
 ## Purpose
 
 Stage 16N-C begins practical fixed cycle-jump validation after the Stage 16N-B0 reinjection audit. The method is now framed as:
@@ -104,3 +118,10 @@ B3_500_to_575_to_750
 ```
 
 B2 and B3 are intentionally held behind the B1 gate. If B1 is much worse than the B0 reinjection baseline, larger fixed jumps should not be launched.
+
+After B1 passes, submit B2 and B3 simultaneously:
+
+```bash
+qsub runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_fixed_jump_validation/submits/submit_stage16n_fixed_b2_250_to_300_to_500.pbs
+qsub runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_fixed_jump_validation/submits/submit_stage16n_fixed_b3_500_to_575_to_750.pbs
+```

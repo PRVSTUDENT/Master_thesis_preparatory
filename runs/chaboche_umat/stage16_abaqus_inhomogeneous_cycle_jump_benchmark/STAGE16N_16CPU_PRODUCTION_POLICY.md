@@ -8,9 +8,37 @@ Future Stage 16N Abaqus production jobs should use 16 CPUs by default.
 Production default : 1 MPI rank x 16 OpenMP threads
 PBS request        : select=1:ncpus=16:mpiprocs=1:ompthreads=16
 Abaqus launch      : cpus=16 mp_mode=threads
+Max walltime/job   : 24:00:00
+Simultaneous jobs  : 2
+Total active cores : 32
 ```
 
 The 16-CPU configuration is not claimed to provide perfect CPU saturation. It is selected as a resource-efficient production compromise after verifying that Abaqus launches correctly in threaded mode and avoids the earlier serial fallback.
+
+## Two-Job Scheduling Policy
+
+From 2026-06-06 onward, Stage 16N solver planning assumes at most two simultaneous production jobs:
+
+```text
+Maximum simultaneous jobs : 2
+Each job                  : 16 CPU cores
+Maximum walltime/job      : 24 h
+Total active usage        : 32 CPU cores
+Production mode           : 1 MPI rank x 16 OpenMP threads
+```
+
+The two available slots should not be used blindly. First-time method checks remain gate cases and must be reviewed before launching dependent jobs. Once a method class passes its gate, independent jobs may be submitted in pairs.
+
+For fixed cycle-jump validation:
+
+```text
+If B1 passes:
+    submit B2 and B3 simultaneously.
+
+If B1 fails:
+    do not submit B2/B3.
+    use the two slots for smaller/debug B1 variants instead.
+```
 
 ## Reason
 

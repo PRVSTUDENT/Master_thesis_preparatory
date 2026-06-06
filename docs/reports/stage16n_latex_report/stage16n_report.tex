@@ -120,11 +120,18 @@ Production default & 1 MPI rank $\times$ 16 OpenMP threads \\
 PBS request & \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16} \\
 Abaqus launch & \code{cpus=16 mp\_mode=threads} \\
 Expected message-file line & \code{1 MPI RANK x 16 THREADS} \\
+Maximum walltime per job & 24:00:00 \\
+Maximum simultaneous jobs & 2 \\
+Maximum active Stage 16N cores & 32 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 This policy is not claimed to perfectly saturate all 16 CPUs. It is a resource-efficient compromise that prevents the earlier serial fallback and avoids reserving 30 CPUs for a workload that did not use them efficiently.
+
+\subsection{Two-Job Scheduling Policy}
+
+From 2026-06-06 onward, \stage{} solver planning assumes at most two simultaneous production jobs. Each job requests 16 CPU cores with one MPI rank and 16 OpenMP threads, so the intended active usage is 32 CPU cores. The two slots are used only after the relevant method gate has passed. First-time method checks, such as the first fixed cycle-jump case B1, run alone until extracted and compared. If B1 passes, B2 and B3 can be submitted together. If B1 fails badly, B2 and B3 remain held and the two slots are used instead for smaller or diagnostic B1 variants.
 
 \subsection{Mail Notification Policy}
 
@@ -408,6 +415,8 @@ Case & Base state & Jump target & Compare endpoint \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+If B1 passes, B2 and B3 are the first paired submission under the new two-job policy. If B1 fails, the paired slots should instead be used for B1-small and B1-diagnostic variants.
 
 \section{Failures and Fixes}
 
