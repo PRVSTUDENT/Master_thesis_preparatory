@@ -122,7 +122,7 @@ def read_binary_record(noel, npt):
 
 
 def read_csv_target(noel, npt):
-    with open(STATE_CSV, newline="") as handle:
+    with open(STATE_CSV, "r") as handle:
         for row in csv.DictReader(handle):
             if int(row["NOEL"]) == noel and int(row["NPT"]) == npt:
                 return row

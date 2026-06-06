@@ -1,0 +1,28 @@
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_b0_audit_100_initialization_only_datacheck
+Abaqus 2023
+Begin Compiling Abaqus/Standard User Subroutines
+Sat 06 Jun 2026 06:54:14 AM CEST
+ Intel(R) Fortran 2021.13.0-1693
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Sat 06 Jun 2026 06:54:20 AM CEST
+Begin Analysis Input File Processor
+Sat 06 Jun 2026 06:54:20 AM CEST
+Run pre
+Sat 06 Jun 2026 06:54:21 AM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Datacheck
+Begin Abaqus/Standard Analysis
+Sat 06 Jun 2026 06:54:21 AM CEST
+Run standard
+Sat 06 Jun 2026 06:54:27 AM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Sat 06 Jun 2026 06:54:27 AM CEST
+Run SMASimUtility
+Sat 06 Jun 2026 06:54:27 AM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_b0_audit_100_initialization_only_datacheck COMPLETED
