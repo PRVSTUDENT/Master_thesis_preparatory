@@ -28,7 +28,7 @@
 \maketitle
 
 \begin{abstract}
-This living report records the geometry, numerical setup, HPC configuration, reference results, reinjection tests, diagnostic failures, and current conclusions for \stage{}. The stage uses an inhomogeneous Abaqus plate-with-hole benchmark with a NEML-equivalent Chaboche UMAT. The full 1000-cycle non-jump reference has been completed and is used as the validation baseline for later fixed and adaptive cycle-jump simulations. The present state of the work is that the global response can be reproduced well after manual \code{SDVINI}/\code{SIGINI} state injection, but exact local state reproduction near the hole is not yet clean. Therefore fixed cycle jumps remain on hold.
+This living report records the geometry, numerical setup, HPC configuration, reference results, reinjection tests, diagnostic failures, and current conclusions for \stage{}. The stage uses an inhomogeneous Abaqus plate-with-hole benchmark with a NEML-equivalent Chaboche UMAT. The full 1000-cycle non-jump reference has been completed and is used as the validation baseline for later fixed and adaptive cycle-jump simulations. The present state of the work is that the global response can be reproduced well after manual \code{SDVINI}/\code{SIGINI} state injection, but exact local state reproduction near the hole is not achieved by manual state initialization alone. Therefore later cycle-jump errors must be interpreted relative to the measured reinjection error floor.
 \end{abstract}
 
 \tableofcontents
@@ -52,10 +52,10 @@ Adaptive $\Delta N$ table & Completed \\
 Exact reinjection scaffold & Prepared \\
 HPC mail policy & Fixed \\
 B0-1 exact reinjection solver run & Completed \\
-B0-1 scientific result & Review / conditional pass \\
+B0-1 scientific result & Practical baseline accepted \\
 B0 initialization-only audit & Completed \\
 B0-2 / B0-3 exact reinjection jobs & On hold \\
-Fixed cycle-jump validation & On hold \\
+Fixed state-initialized jump validation & Scaffold prepared \\
 Adaptive cycle-jump workflow & On hold \\
 \bottomrule
 \end{tabular}
@@ -207,9 +207,34 @@ Base cycle & Next anchor & Target & $\Delta N$ & Controlling variable \\
 
 The table shows that local state variables near the hole strongly restrict the allowable jump size. This supports the decision that any later fixed/adaptive jump validation must include local metrics, not only global RF loops.
 
-\section{Stage 16N-B: Exact Reinjection Verification}
+\subsection{Reinjection-Aware Controller Update}
 
-Before any real cycle jump is allowed, the workflow must prove that stress and state-variable fields can be transferred into a new Abaqus run. The intended exact reinjection cases are:
+After the B0 initialization audit, \code{HOLE\_RING\_SDV8\_MAX} was downgraded from a hard pass/fail controller to a diagnostic-only variable because it already shows a large mismatch immediately after manual \code{SDVINI}/\code{SIGINI} initialization. A reinjection-aware table was therefore generated with \code{SDV8} retained in diagnostic output but removed from the hard controller list.
+
+\begin{table}[H]
+\centering
+\caption{Reinjection-aware adaptive $\Delta N$ estimates with \code{SDV8} diagnostic-only.}
+\begin{tabular}{rrrrl}
+\toprule
+Base & Next anchor & Target & $\Delta N$ & Controller \\
+\midrule
+1 & 2 & 2 & 1 & \code{HOLE\_RING\_SDV11\_MAX} \\
+2 & 10 & 3 & 1 & \code{HOLE\_RING\_SDV1\_MAX} \\
+10 & 50 & 15 & 5 & \code{HOLE\_RING\_SDV1\_MAX} \\
+50 & 100 & 61 & 11 & \code{HOLE\_RING\_SDV1\_MAX} \\
+100 & 250 & 124 & 24 & \code{HOLE\_RING\_SDV1\_MAX} \\
+250 & 500 & 299 & 49 & \code{HOLE\_RING\_SDV1\_MAX} \\
+500 & 750 & 575 & 75 & \code{HOLE\_RING\_SDV1\_MAX} \\
+750 & 1000 & 849 & 99 & \code{HOLE\_RING\_MISES\_MAX} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The first conservative fixed-jump gate remains cycle 100 to cycle 125, followed by normal continuation to cycle 250. This row is still controlled by \code{HOLE\_RING\_SDV1\_MAX}, not by diagnostic-only \code{SDV8}.
+
+\section{Stage 16N-B: State-Initialized Continuation Verification}
+
+Before any real cycle jump is allowed, the workflow must prove that stress and state-variable fields can be transferred into a new Abaqus run. The route used here is manual state-initialized continuation through \code{SDVINI}/\code{SIGINI}; it is not a native Abaqus restart. The originally intended verification cases were:
 
 \begin{itemize}
   \item B0-1: exact cycle 100 state, continue normally to cycle 250.
@@ -217,7 +242,7 @@ Before any real cycle jump is allowed, the workflow must prove that stress and s
   \item B0-3: exact cycle 500 state, continue normally to cycle 1000.
 \end{itemize}
 
-B0-2 and B0-3 remain on hold until the B0-1 local mismatch is understood.
+B0-2 and B0-3 remain on hold. The B0-1 and initialization-audit results are now treated as the measured reinjection baseline rather than as proof of an exact local restart.
 
 \subsection{State Reader Implementation}
 
@@ -239,7 +264,7 @@ On the Abaqus/Intel Fortran environment used here, direct-access \code{RECL} is 
 RECL = 66
 \end{verbatim}
 
-\section{B0-1 Exact Cycle-100 to Cycle-250 Reinjection}
+\section{B0-1 Cycle-100 to Cycle-250 State-Initialized Continuation}
 
 B0-1 completed the Abaqus solver successfully. PBS reported exit status 2 only because the original postprocessing path failed after solver completion; extraction was rerun manually afterward.
 
@@ -251,13 +276,13 @@ B0-1 completed the Abaqus solver successfully. PBS reported exit status 2 only b
 Quantity & Value \\
 \midrule
 PBS job & 1336497.mmaster02 \\
-Route & exact cycle 100 state $\rightarrow$ cycle 250 \\
+Route & cycle 100 state $\rightarrow$ cycle 250 \\
 PBS walltime & 01:41:36 \\
 PBS CPU time & 10:52:42 \\
 Requested CPUs & 16 \\
 Abaqus solver & completed \\
 Abaqus parallelism & 1 MPI rank $\times$ 16 threads \\
-Scientific status & Review / conditional pass \\
+Scientific status & Practical baseline accepted \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -333,6 +358,40 @@ The binary extraction and reader pipeline is correct to machine precision. There
 
 The most likely interpretation is that \code{SDVINI}/\code{SIGINI} inject stress and state variables correctly, but the manual state-initialized model does not reconstruct the compatible displacement, strain, solver-history, and full equilibrium state of the original reference analysis. Strain-like local state variables such as \code{SDV8} are therefore adjusted during the first equilibrium solve. This means B0-1 is useful as a practical state-initialized continuation test, but it is not a mathematically exact Abaqus restart for local fields.
 
+\section{Reinjection Error Floor and Revised Metric Policy}
+
+The B0 audit closes Stage 16N-B with the following conclusion:
+
+\begin{quote}
+Global continuation works, binary state transfer works, but local exact restart is not achieved with \code{SDVINI}/\code{SIGINI} alone.
+\end{quote}
+
+Future fixed and adaptive jump results must separate the manual reinjection error floor from the additional error caused by cycle-jump extrapolation. The primary pass/fail metrics are \code{RF1} maximum/minimum, loop area, global hysteresis shape, \code{HOLE\_RING\_SDV1\_MAX}, \code{HOLE\_RING\_MISES\_MAX}, and \code{HOLE\_RING\_S11\_MAX\_ABS}. \code{HOLE\_RING\_SDV8\_MAX} remains important but is diagnostic-only because it is already affected by initialization before any cycle-jump approximation is applied.
+
+\section{Stage 16N-C Fixed State-Initialized Jump Scaffold}
+
+Stage 16N-C now begins with one conservative fixed jump:
+
+\begin{table}[H]
+\centering
+\caption{First fixed state-initialized jump case.}
+\begin{tabular}{ll}
+\toprule
+Quantity & Value \\
+\midrule
+Case name & \code{B1\_100\_to\_125\_to\_250} \\
+Base state & cycle 100 \\
+Interpreted jump target & cycle 125 \\
+Normal Abaqus continuation & cycles 126--250 \\
+Comparison endpoint & cycle 250 \\
+Initial state strategy & zero-order hold from cycle 100 \\
+Baseline for interpretation & B0-1 cycle 100 to 250 continuation \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The zero-order state strategy is intentionally conservative. It measures the error added by skipping cycles 101--125 on top of the known manual reinjection floor. If this case gives acceptable global error and controlled primary local errors, the next fixed jump cases can be expanded to cycle 250 to 300, cycle 500 to 575, and cycle 750 to 850.
+
 \section{Failures and Fixes}
 
 \begin{longtable}{p{0.26\linewidth}p{0.34\linewidth}p{0.32\linewidth}}
@@ -353,6 +412,7 @@ Wrong direct-access record length & Abaqus/Intel runtime expected word-based \co
 Postprocessing path failure & B0-1 solver completed but PBS exit status was 2. & Fixed extractor path and reran extraction manually. \\
 B0-1 local mismatch & Global errors under 1\%, local \code{SDV8} max error 10.9164\%. & Added pointwise diagnostic and initialization-only audit. \\
 Initialization local mismatch & Binary audit passed, but \code{SDV8} mismatch appeared immediately. & Concluded manual \code{SDVINI}/\code{SIGINI} is not a mathematically exact local restart. \\
+Metric policy mismatch & Original adaptive table allowed \code{SDV8} to act as a hard controller. & Added reinjection-aware table with \code{SDV8} diagnostic-only. \\
 \bottomrule
 \end{longtable}
 
@@ -360,17 +420,17 @@ Initialization local mismatch & Binary audit passed, but \code{SDV8} mismatch ap
 
 \stage{} has successfully produced a full 1000-cycle non-jump reference and a conservative adaptive $\Delta N$ table. The inhomogeneous plate-with-hole benchmark is scientifically useful because both global hysteresis quantities and local hole-ring state variables evolve significantly. The HPC workflow is now resource-controlled with a 16-CPU production policy and explicit start/end/failure mail notifications.
 
-The important unresolved issue is exact local reinjection. B0-1 proves that the manual \code{SDVINI}/\code{SIGINI} workflow can run and reproduce the global force-displacement response well, but it does not reproduce local strain-like state variables exactly. The initialization-only audit shows that this local mismatch appears immediately during manual Abaqus initialization/equilibration, even though the binary reader is exact.
+The important methodological limitation is exact local reinjection. B0-1 proves that the manual \code{SDVINI}/\code{SIGINI} workflow can run and reproduce the global force-displacement response well, but it does not reproduce local strain-like state variables exactly. The initialization-only audit shows that this local mismatch appears immediately during manual Abaqus initialization/equilibration, even though the binary reader is exact.
 
 \section{Next Work}
 
-The next decision must be methodological, not simply computational. B0-2, B0-3, fixed jumps, and adaptive jumps remain on hold until the reinjection limitation is handled. The recommended next options are:
+The next work is to run the first conservative Stage 16N-C fixed state-initialized jump and interpret it against the B0-1 reinjection baseline. B0-2 and B0-3 remain on hold as exact-local-restart claims, but practical fixed-jump validation can proceed with the reinjection floor explicitly documented.
 
 \begin{enumerate}
-  \item Add a true Abaqus restart comparison from cycle 100 to cycle 250, if restart data are available.
-  \item Investigate whether a displacement/strain-field initialization or predefined field strategy can reduce the local \code{SDV8} mismatch.
-  \item If manual \code{SDVINI}/\code{SIGINI} is retained as the practical state-jump method, document that it is not a mathematically exact restart and use local equilibration error as part of the cycle-jump error budget.
-  \item Only after this decision, run B0-2 and B0-3 or begin conservative fixed jump tests.
+  \item Prepare and submit \code{B1\_100\_to\_125\_to\_250} on HPC using the locked 16-CPU production policy.
+  \item Compare the fixed-jump result against the 1000-cycle reference and against the B0-1 reinjection baseline.
+  \item Keep \code{SDV8} as a diagnostic warning metric, not a hard pass/fail metric.
+  \item If the first case is acceptable, expand to larger fixed state-initialized jumps.
 \end{enumerate}
 
 \appendix
@@ -379,6 +439,9 @@ The next decision must be methodological, not simply computational. B0-2, B0-3, 
 \begin{itemize}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_parallel\_max\_reference/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_adaptive\_deltan\_table\_1000ref.csv}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_adaptive\_deltan\_table\_1000ref\_reinjection\_aware.csv}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_REINJECTION\_LIMITATION\_AND\_ERROR\_FLOOR.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_FIXED\_JUMP\_VALIDATION\_PLAN.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_exact\_reinjection/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_HPC\_MAIL\_POLICY.md}
 \end{itemize}

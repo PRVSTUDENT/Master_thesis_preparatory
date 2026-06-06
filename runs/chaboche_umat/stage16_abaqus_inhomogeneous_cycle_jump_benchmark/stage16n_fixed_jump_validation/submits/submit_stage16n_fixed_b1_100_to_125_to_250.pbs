@@ -1,0 +1,16 @@
+#!/bin/bash
+#PBS -N s16n_b1_100_to_125_to_250
+#PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+#PBS -l walltime=22:00:00
+#PBS -q teachingq
+#PBS -j oe
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
+
+set -euo pipefail
+REPO_ROOT="${REPO_ROOT:-$HOME/master_thesis/Abaqus_trial}"
+cd "$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_fixed_jump_validation/cases/B1_100_to_125_to_250"
+export ABAQUS_CPUS=16
+export ABAQUS_MP_MODE=threads
+export LOG_DIR=_logs
+bash ../../../run_stage16n_fixed_jump_cases_hpc.sh stage16n_fixed_b1_100_to_125_to_250
