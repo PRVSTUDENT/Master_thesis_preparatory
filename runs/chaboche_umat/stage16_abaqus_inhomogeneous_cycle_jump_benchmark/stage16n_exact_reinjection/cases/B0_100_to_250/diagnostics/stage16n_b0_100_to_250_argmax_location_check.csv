@@ -1,0 +1,6 @@
+variable,reference_argmax_element,reference_argmax_ip,reference_argmax_value,reinjection_at_reference_argmax,reinjection_argmax_element,reinjection_argmax_ip,reinjection_argmax_value,reference_at_reinjection_argmax,same_argmax_location,max_pointwise_error_element,max_pointwise_error_ip,max_pointwise_relative_error_pct
+S11_ABS,1242,7,495.86126709,543.402099609,1242,7,543.402099609,495.86126709,true,1538,1,184.914612944
+MISES,1239,3,456.932529242,485.844056703,1242,7,491.826105528,455.17697296,false,1239,2,19.9434860956
+SDV1,1242,7,6.41741323471,6.39429950714,1242,7,6.39429950714,6.41741323471,true,1239,4,0.360172030758
+SDV8,1242,7,91.1466598511,81.1967315674,1242,7,81.1967315674,91.1466598511,true,1237,4,2199.63337835
+SDV11,1242,8,58.5626602173,54.3039093018,1242,8,54.3039093018,58.5626602173,true,1316,4,479.80250919
