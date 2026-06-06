@@ -1,0 +1,386 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{float}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\stage}{Stage 16N}
+
+\title{\stage{} Inhomogeneous Plate-with-Hole Cycle-Jump Benchmark\\Living Technical Report}
+\author{Master Thesis Preparation}
+\date{Last updated: 2026-06-06}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This living report records the geometry, numerical setup, HPC configuration, reference results, reinjection tests, diagnostic failures, and current conclusions for \stage{}. The stage uses an inhomogeneous Abaqus plate-with-hole benchmark with a NEML-equivalent Chaboche UMAT. The full 1000-cycle non-jump reference has been completed and is used as the validation baseline for later fixed and adaptive cycle-jump simulations. The present state of the work is that the global response can be reproduced well after manual \code{SDVINI}/\code{SIGINI} state injection, but exact local state reproduction near the hole is not yet clean. Therefore fixed cycle jumps remain on hold.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Purpose and Current Status}
+
+The purpose of \stage{} is to move from single-element or homogeneous cycle-jump demonstrations to an inhomogeneous finite-element benchmark. The model is deliberately more demanding: a plate with a central hole produces localized cyclic plasticity near the hole, so the method must be judged not only from global reaction-force loops but also from local stress and state-variable evolution.
+
+\begin{table}[H]
+\centering
+\caption{Current \stage{} infrastructure and validation status.}
+\begin{tabular}{p{0.58\linewidth}p{0.25\linewidth}}
+\toprule
+Item & Status \\
+\midrule
+1000-cycle full non-jump reference & Completed \\
+16-CPU production policy & Locked \\
+Abaqus threaded launcher & Verified \\
+Adaptive $\Delta N$ table & Completed \\
+Exact reinjection scaffold & Prepared \\
+HPC mail policy & Fixed \\
+B0-1 exact reinjection solver run & Completed \\
+B0-1 scientific result & Review / conditional pass \\
+B0 initialization-only audit & Completed \\
+B0-2 / B0-3 exact reinjection jobs & On hold \\
+Fixed cycle-jump validation & On hold \\
+Adaptive cycle-jump workflow & On hold \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Geometry and Model Definition}
+
+The \stage{} model is a three-dimensional plate-with-hole benchmark. It is intended to create localized cyclic evolution near the hole while retaining a global hysteresis response that can be compared across full-reference, exact-reinjection, fixed-jump, and adaptive-jump runs.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N model geometry and mesh summary.}
+\begin{tabular}{ll}
+\toprule
+Quantity & Value \\
+\midrule
+Plate length & 20.0 \\
+Plate height & 10.0 \\
+Plate thickness & 1.0 \\
+Central hole radius & 1.0 \\
+Mesh spacing & $\Delta x = \Delta y = 0.25$ \\
+Element type & C3D8 \\
+Nodes & 6642 \\
+Elements & 3148 \\
+Hole-ring elements & 60 \\
+Material model & NEML-equivalent Chaboche UMAT \\
+State variables & 27 SDVs \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/stage16_plate_with_hole_geometry.png}
+\caption{Plate-with-hole geometry used for the \stage{} benchmark.}
+\label{fig:geometry}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\linewidth]{figures/stage16_plate_with_hole_actual_mesh.png}
+\caption{Actual structured C3D8 mesh with the element-wise approximation of the central hole.}
+\label{fig:mesh}
+\end{figure}
+
+\subsection{Boundary Conditions and Loading}
+
+The left edge is fixed in the axial direction. Two anchor nodes constrain rigid-body modes. The right edge receives a cyclic axial displacement amplitude of $\pm 0.10$. The full reference contains 1000 full non-jump cycles. Selected field output is stored at cycles 1, 2, 10, 50, 100, 250, 500, 750, and 1000.
+
+\section{HPC and Production Policy}
+
+The first corrected 1000-cycle parallel reference used 30 OpenMP threads, but PBS accounting showed that the average effective CPU usage was far below the requested 30 cores. A 16-CPU verification run was therefore used to lock a more resource-efficient production policy.
+
+\begin{table}[H]
+\centering
+\caption{Locked \stage{} production setting.}
+\begin{tabular}{ll}
+\toprule
+Setting & Value \\
+\midrule
+Production default & 1 MPI rank $\times$ 16 OpenMP threads \\
+PBS request & \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16} \\
+Abaqus launch & \code{cpus=16 mp\_mode=threads} \\
+Expected message-file line & \code{1 MPI RANK x 16 THREADS} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This policy is not claimed to perfectly saturate all 16 CPUs. It is a resource-efficient compromise that prevents the earlier serial fallback and avoids reserving 30 CPUs for a workload that did not use them efficiently.
+
+\subsection{Mail Notification Policy}
+
+Future PBS jobs must explicitly request mail on abort, begin, and end:
+
+\begin{verbatim}
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
+\end{verbatim}
+
+This was added because PBS accounting previously showed \code{Mail\_Points = a}, which only requests abort/failure mail.
+
+\section{Full 1000-Cycle Non-Jump Reference}
+
+The full non-jump reference was completed using Abaqus/Standard with the corrected threaded launcher.
+
+\begin{table}[H]
+\centering
+\caption{Completed 1000-cycle reference run.}
+\begin{tabular}{ll}
+\toprule
+Quantity & Value \\
+\midrule
+PBS job & 1335408.mmaster02 \\
+Abaqus job & \code{stage16n\_parallel\_max\_reference\_1000cycles} \\
+Walltime & 17:56:43 \\
+CPU time & 178:03:42 \\
+Requested resources & 30 CPUs, 135 GB \\
+Abaqus parallelism & 1 MPI rank $\times$ 30 threads \\
+Completed cycles & 1000 \\
+Last partial cycle & none \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Reference evolution from cycle 1 to cycle 1000.}
+\begin{tabular}{lrrr}
+\toprule
+Quantity & Cycle 1 & Cycle 1000 & Change \\
+\midrule
+\code{RF1\_max} & 2356.834 & 2908.244 & +23.40\% \\
+\code{RF1\_min} magnitude & 2509.712 & 3074.823 & +22.52\% \\
+\code{loop\_area\_abs} & 433.822 & 577.068 & +33.02\% \\
+\code{HOLE\_RING\_MISES\_MAX} & 398.503 & 492.827 & +23.67\% \\
+\code{HOLE\_RING\_SDV1\_MAX} & 0.0561 & 26.0519 & -- \\
+\code{HOLE\_RING\_SDV8\_MAX} & 0.2996 & 92.4455 & -- \\
+\code{HOLE\_RING\_SDV11\_MAX} & 7.9019 & 61.3076 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The evolution clearly exceeds the original continuation thresholds for global loop quantities and local hole-ring state variables. This confirms that the plate-with-hole benchmark is meaningful for cycle-jump validation.
+
+\section{Adaptive \texorpdfstring{$\Delta N$}{Delta N} Table}
+
+The adaptive $\Delta N$ table was computed from the completed 1000-cycle reference. It uses dense global cycle metrics and selected local field-output anchors. The controlling variable is the most sensitive monitored quantity, not only the global reaction force.
+
+\begin{longtable}{rrrrl}
+\caption{Conservative adaptive $\Delta N$ estimates from the 1000-cycle reference.}\\
+\toprule
+Base cycle & Next anchor & Target & $\Delta N$ & Controlling variable \\
+\midrule
+\endfirsthead
+\toprule
+Base cycle & Next anchor & Target & $\Delta N$ & Controlling variable \\
+\midrule
+\endhead
+1 & 2 & 2 & 1 & \code{HOLE\_RING\_SDV8\_MAX} \\
+2 & 10 & 3 & 1 & \code{HOLE\_RING\_SDV8\_MAX} \\
+10 & 50 & 14 & 4 & \code{HOLE\_RING\_SDV8\_MAX} \\
+50 & 100 & 61 & 11 & \code{HOLE\_RING\_SDV1\_MAX} \\
+100 & 250 & 124 & 24 & \code{HOLE\_RING\_SDV1\_MAX} \\
+250 & 500 & 299 & 49 & \code{HOLE\_RING\_SDV1\_MAX} \\
+500 & 750 & 575 & 75 & \code{HOLE\_RING\_SDV1\_MAX} \\
+750 & 1000 & 849 & 99 & \code{HOLE\_RING\_MISES\_MAX} \\
+\bottomrule
+\end{longtable}
+
+The table shows that local state variables near the hole strongly restrict the allowable jump size. This supports the decision that any later fixed/adaptive jump validation must include local metrics, not only global RF loops.
+
+\section{Stage 16N-B: Exact Reinjection Verification}
+
+Before any real cycle jump is allowed, the workflow must prove that stress and state-variable fields can be transferred into a new Abaqus run. The intended exact reinjection cases are:
+
+\begin{itemize}
+  \item B0-1: exact cycle 100 state, continue normally to cycle 250.
+  \item B0-2: exact cycle 250 state, continue normally to cycle 500.
+  \item B0-3: exact cycle 500 state, continue normally to cycle 1000.
+\end{itemize}
+
+B0-2 and B0-3 remain on hold until the B0-1 local mismatch is understood.
+
+\subsection{State Reader Implementation}
+
+The initial CSV preload design failed under threaded Abaqus because multiple threads attempted to load the same file concurrently. The state-transfer implementation was therefore changed to a direct-access binary reader. Each record contains:
+
+\begin{verbatim}
+S1, S2, S3, S4, S5, S6, SDV1, ..., SDV27
+\end{verbatim}
+
+The record number is:
+
+\begin{verbatim}
+record = (NOEL - 1) * 8 + NPT
+\end{verbatim}
+
+On the Abaqus/Intel Fortran environment used here, direct-access \code{RECL} is interpreted in 4-byte words. Therefore the correct value for 33 double-precision values is:
+
+\begin{verbatim}
+RECL = 66
+\end{verbatim}
+
+\section{B0-1 Exact Cycle-100 to Cycle-250 Reinjection}
+
+B0-1 completed the Abaqus solver successfully. PBS reported exit status 2 only because the original postprocessing path failed after solver completion; extraction was rerun manually afterward.
+
+\begin{table}[H]
+\centering
+\caption{B0-1 run accounting and solver status.}
+\begin{tabular}{ll}
+\toprule
+Quantity & Value \\
+\midrule
+PBS job & 1336497.mmaster02 \\
+Route & exact cycle 100 state $\rightarrow$ cycle 250 \\
+PBS walltime & 01:41:36 \\
+PBS CPU time & 10:52:42 \\
+Requested CPUs & 16 \\
+Abaqus solver & completed \\
+Abaqus parallelism & 1 MPI rank $\times$ 16 threads \\
+Scientific status & Review / conditional pass \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{B0-1 comparison against the 1000-cycle reference at cycle 250.}
+\begin{tabular}{lr}
+\toprule
+Quantity & Relative error \\
+\midrule
+\code{RF1\_max} & 0.259048\% \\
+\code{RF1\_min} & 0.687538\% \\
+\code{loop\_area\_abs} & 0.967300\% \\
+\code{HOLE\_RING\_MISES\_MAX} & 7.63648\% \\
+\code{HOLE\_RING\_S11\_MAX\_ABS} & 9.58753\% \\
+\code{HOLE\_RING\_SDV1\_MAX} & 0.360172\% \\
+\code{HOLE\_RING\_SDV8\_MAX} & 10.9164\% \\
+\code{HOLE\_RING\_SDV11\_MAX} & 7.27213\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The global response is excellent, but the local hole-ring stress and state-variable errors are too large for a clean exact-restart claim.
+
+\section{B0-1 Local Diagnostic Review}
+
+A pointwise hole-ring diagnostic was run to determine whether the high local error was only a maximum-location artifact. It was not. The reference and reinjection maxima for \code{SDV8} occurred at the same element and integration point.
+
+\begin{table}[H]
+\centering
+\caption{B0-1 SDV8 argmax diagnostic at cycle 250.}
+\begin{tabular}{ll}
+\toprule
+Quantity & Value \\
+\midrule
+Reference SDV8 argmax & element 1242, IP 7 \\
+Reinjection SDV8 argmax & element 1242, IP 7 \\
+Same argmax location & true \\
+Reference value & 91.1466598511 \\
+Reinjection value & 81.1967315674 \\
+Argmax relative error & 10.9164\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This made B0-1 a real local mismatch rather than a harmless maximum-location shift.
+
+\section{B0 Cycle-100 Initialization-Only Audit}
+
+The initialization audit was created to answer whether the local mismatch already exists immediately after exact cycle-100 initialization, before any cycle-100 to cycle-250 continuation.
+
+\begin{table}[H]
+\centering
+\caption{Cycle-100 binary reader and initialization audit.}
+\begin{tabular}{lr}
+\toprule
+Quantity & Value \\
+\midrule
+CSV-vs-binary maximum absolute error & $3.55 \times 10^{-15}$ \\
+Common hole-ring element/IP records & 480 \\
+\code{SDV8} median relative error & 12.7022\% \\
+\code{SDV8} 95th percentile relative error & 150.665\% \\
+\code{SDV8} maximum relative error & 479.090\% \\
+\code{SDV8} argmax location & same element/IP, 1242/7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The binary extraction and reader pipeline is correct to machine precision. Therefore the local mismatch is not caused by the Python binary writer or direct-access file format. The mismatch appears during manual Abaqus initialization and the tiny equilibrium step.
+
+\subsection{Initialization Audit Interpretation}
+
+The most likely interpretation is that \code{SDVINI}/\code{SIGINI} inject stress and state variables correctly, but the manual state-initialized model does not reconstruct the compatible displacement, strain, solver-history, and full equilibrium state of the original reference analysis. Strain-like local state variables such as \code{SDV8} are therefore adjusted during the first equilibrium solve. This means B0-1 is useful as a practical state-initialized continuation test, but it is not a mathematically exact Abaqus restart for local fields.
+
+\section{Failures and Fixes}
+
+\begin{longtable}{p{0.26\linewidth}p{0.34\linewidth}p{0.32\linewidth}}
+\caption{Important failures and fixes recorded in \stage{}.}\\
+\toprule
+Issue & Observation & Fix / conclusion \\
+\midrule
+\endfirsthead
+\toprule
+Issue & Observation & Fix / conclusion \\
+\midrule
+\endhead
+Accidental serial-like run & A 22-hour run reached only 592 full cycles. & Parallel launcher corrected; later 1000-cycle reference completed. \\
+30-CPU over-allocation & 30-thread run averaged about 10 effective cores. & 16 CPUs selected as production compromise. \\
+Missing start/end email & PBS accounting showed \code{Mail\_Points = a}. & Added \code{\#PBS -m abe} and mail user to Stage 16N submit scripts. \\
+CSV state-reader race & Threaded Abaqus calls attempted concurrent CSV preload. & Replaced with direct-access binary state reader. \\
+Wrong direct-access record length & Abaqus/Intel runtime expected word-based \code{RECL}. & Set \code{RECL = 66} for 33 double values. \\
+Postprocessing path failure & B0-1 solver completed but PBS exit status was 2. & Fixed extractor path and reran extraction manually. \\
+B0-1 local mismatch & Global errors under 1\%, local \code{SDV8} max error 10.9164\%. & Added pointwise diagnostic and initialization-only audit. \\
+Initialization local mismatch & Binary audit passed, but \code{SDV8} mismatch appeared immediately. & Concluded manual \code{SDVINI}/\code{SIGINI} is not a mathematically exact local restart. \\
+\bottomrule
+\end{longtable}
+
+\section{Current Conclusion}
+
+\stage{} has successfully produced a full 1000-cycle non-jump reference and a conservative adaptive $\Delta N$ table. The inhomogeneous plate-with-hole benchmark is scientifically useful because both global hysteresis quantities and local hole-ring state variables evolve significantly. The HPC workflow is now resource-controlled with a 16-CPU production policy and explicit start/end/failure mail notifications.
+
+The important unresolved issue is exact local reinjection. B0-1 proves that the manual \code{SDVINI}/\code{SIGINI} workflow can run and reproduce the global force-displacement response well, but it does not reproduce local strain-like state variables exactly. The initialization-only audit shows that this local mismatch appears immediately during manual Abaqus initialization/equilibration, even though the binary reader is exact.
+
+\section{Next Work}
+
+The next decision must be methodological, not simply computational. B0-2, B0-3, fixed jumps, and adaptive jumps remain on hold until the reinjection limitation is handled. The recommended next options are:
+
+\begin{enumerate}
+  \item Add a true Abaqus restart comparison from cycle 100 to cycle 250, if restart data are available.
+  \item Investigate whether a displacement/strain-field initialization or predefined field strategy can reduce the local \code{SDV8} mismatch.
+  \item If manual \code{SDVINI}/\code{SIGINI} is retained as the practical state-jump method, document that it is not a mathematically exact restart and use local equilibration error as part of the cycle-jump error budget.
+  \item Only after this decision, run B0-2 and B0-3 or begin conservative fixed jump tests.
+\end{enumerate}
+
+\appendix
+\section{Key Repository Evidence Files}
+
+\begin{itemize}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_parallel\_max\_reference/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_adaptive\_deltan\_table\_1000ref.csv}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_exact\_reinjection/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_HPC\_MAIL\_POLICY.md}
+\end{itemize}
+
+\end{document}
