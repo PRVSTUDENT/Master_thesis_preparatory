@@ -392,6 +392,23 @@ Baseline for interpretation & B0-1 cycle 100 to 250 continuation \\
 
 The zero-order state strategy is intentionally conservative. It measures the error added by skipping cycles 101--125 on top of the known manual reinjection floor. If this case gives acceptable global error and controlled primary local errors, the next fixed jump cases can be expanded to cycle 250 to 300, cycle 500 to 575, and cycle 750 to 850.
 
+\subsection{Prepared-Only B2 and B3 Cases}
+
+B2 and B3 may be prepared while B1 is running, but their solver jobs are gated by the B1 result. They must not be submitted until B1 has been extracted, compared against the 1000-cycle reference, and interpreted against the B0 reinjection baseline.
+
+\begin{table}[H]
+\centering
+\caption{Prepared-only fixed-jump cases held behind the B1 gate.}
+\begin{tabular}{llll}
+\toprule
+Case & Base state & Jump target & Compare endpoint \\
+\midrule
+\code{B2\_250\_to\_300\_to\_500} & cycle 250 & cycle 300 & cycle 500 \\
+\code{B3\_500\_to\_575\_to\_750} & cycle 500 & cycle 575 & cycle 750 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Failures and Fixes}
 
 \begin{longtable}{p{0.26\linewidth}p{0.34\linewidth}p{0.32\linewidth}}

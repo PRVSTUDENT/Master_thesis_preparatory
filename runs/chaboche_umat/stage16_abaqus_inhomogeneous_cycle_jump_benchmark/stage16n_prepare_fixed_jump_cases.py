@@ -34,6 +34,20 @@ CASES = [
         "compare_cycle": 250,
         "state_strategy": "zero_order_hold_from_base_cycle",
     },
+    {
+        "name": "B2_250_to_300_to_500",
+        "base_cycle": 250,
+        "jump_target_cycle": 300,
+        "compare_cycle": 500,
+        "state_strategy": "zero_order_hold_from_base_cycle",
+    },
+    {
+        "name": "B3_500_to_575_to_750",
+        "base_cycle": 500,
+        "jump_target_cycle": 575,
+        "compare_cycle": 750,
+        "state_strategy": "zero_order_hold_from_base_cycle",
+    },
 ]
 
 

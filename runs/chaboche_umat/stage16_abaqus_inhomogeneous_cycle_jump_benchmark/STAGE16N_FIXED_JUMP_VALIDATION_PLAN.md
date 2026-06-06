@@ -89,7 +89,18 @@ abaqus python runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchma
 If B1 gives acceptable global errors and controlled primary local-state errors, then prepare the next fixed cases:
 
 ```text
-250 -> 300, continue to 500
-500 -> 575, continue to 750 or 1000
+B2: 250 -> 300, continue to 500
+B3: 500 -> 575, continue to 750
 750 -> 850, continue to 1000
 ```
+
+## Prepared-only next cases
+
+The next decks may be prepared in advance, but their solver jobs must not be submitted until B1 has been extracted and compared:
+
+```text
+B2_250_to_300_to_500
+B3_500_to_575_to_750
+```
+
+B2 and B3 are intentionally held behind the B1 gate. If B1 is much worse than the B0 reinjection baseline, larger fixed jumps should not be launched.

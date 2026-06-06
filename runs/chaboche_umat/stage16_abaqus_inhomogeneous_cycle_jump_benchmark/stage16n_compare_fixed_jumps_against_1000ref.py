@@ -21,6 +21,8 @@ B0_DIR = STAGE_DIR / "stage16n_exact_reinjection" / "cases" / "B0_100_to_250"
 
 CASES = [
     ("B1_100_to_125_to_250", 100, 125, 250, "B0_100_to_250"),
+    ("B2_250_to_300_to_500", 250, 300, 500, ""),
+    ("B3_500_to_575_to_750", 500, 575, 750, ""),
 ]
 
 QUANTITIES = [
