@@ -793,6 +793,27 @@ The completed dependency queue shows that a small jump from cycle 100 can work o
   \item Then retry later jumps with the preserved FE state, starting with small controlled jumps rather than the original B2/B3 queue.
 \end{enumerate}
 
+\section{Stage 16N-R1 Restart-Enabled Reference Submission}
+
+Stage 16N-R1 was started on 2026-06-07 to create native Abaqus restart files before any restart-preserved UMAT overwrite is attempted. Two ordinary no-jump reference jobs were generated and submitted under the two-job policy:
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R1 restart-enabled reference jobs.}
+\begin{tabular}{lllll}
+\toprule
+Case & PBS job & Abaqus job & Target & Restart checkpoints \\
+\midrule
+\code{R1B} & \code{1341177.mmaster02} & \code{stage16n\_r1b\_restart\_ref\_250cycles} & 250 cycles & 100, 250 \\
+\code{R1A} & \code{1341178.mmaster02} & \code{stage16n\_r1a\_restart\_ref\_500cycles} & 500 cycles & 100, 250, 500 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both jobs request \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb}, \code{walltime=24:00:00}, and run Abaqus with \code{cpus=16 mp\_mode=threads}. The first attempted submissions, \code{1341175.mmaster02} and \code{1341176.mmaster02}, failed before Abaqus started because the generated per-case shell runner had Windows CRLF line endings. The runner was corrected to write LF line endings explicitly, the remote copies were normalized, and the corrected jobs were submitted as \code{1341177.mmaster02} and \code{1341178.mmaster02}. At the first \code{qstat -f} check both corrected jobs were running.
+
+The acceptance condition for this substage is not a cycle-jump error threshold. It is the existence of usable native Abaqus restart files from the 250-cycle and 500-cycle checkpoint references. Only after those restart sources exist should native restart continuation tests be prepared.
+
 \appendix
 \section{Key Repository Evidence Files}
 
@@ -812,6 +833,7 @@ The completed dependency queue shows that a small jump from cycle 100 can work o
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_NATIVE\_RESTART\_CONTROL\_PLAN.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_restart\_reference\_with\_checkpoints.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/run\_stage16n\_native\_restart\_control\_hpc.sh}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_compare\_native\_restart\_against\_1000ref.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_PROFESSOR\_UPDATE\_2026\_06\_07.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/cases/B1D2\_100\_to\_102\_to\_250/}
