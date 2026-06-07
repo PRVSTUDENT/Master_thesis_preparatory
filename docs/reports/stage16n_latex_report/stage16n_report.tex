@@ -22,13 +22,13 @@
 
 \title{\stage{} Inhomogeneous Plate-with-Hole Cycle-Jump Benchmark\\Living Technical Report}
 \author{Master Thesis Preparation}
-\date{Last updated: 2026-06-06}
+\date{Last updated: 2026-06-07}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-This living report records the geometry, numerical setup, HPC configuration, reference results, reinjection tests, diagnostic failures, and current conclusions for \stage{}. The stage uses an inhomogeneous Abaqus plate-with-hole benchmark with a NEML-equivalent Chaboche UMAT. The full 1000-cycle non-jump reference has been completed and is used as the validation baseline for later fixed and adaptive cycle-jump simulations. The present state of the work is that the global response can be reproduced well after manual \code{SDVINI}/\code{SIGINI} state injection, but exact local state reproduction near the hole is not achieved by manual state initialization alone. Therefore later cycle-jump errors must be interpreted relative to the measured reinjection error floor.
+This living report records the geometry, numerical setup, HPC configuration, reference results, reinjection tests, diagnostic failures, and current conclusions for \stage{}. The stage uses an inhomogeneous Abaqus plate-with-hole benchmark with a NEML-equivalent Chaboche UMAT. The full 1000-cycle non-jump reference has been completed and is used as the validation baseline for later fixed and adaptive cycle-jump simulations. The current fixed-jump conclusion is frozen at a narrow accepted cycle-100 jump, \code{B1D5}/\code{B1D5\_EQ}: 100 $\rightarrow$ 105 $\rightarrow$ 250 with 2.34986\% maximum primary scalar-metric error. Larger and later manually initialized jumps remain blocked because \code{SDVINI}/\code{SIGINI}-based reinjection does not robustly reconstruct the later-cycle inhomogeneous finite-element state.
 \end{abstract}
 
 \tableofcontents
@@ -708,6 +708,37 @@ The smaller-equilibration \code{EQ} reruns reproduced the same comparison errors
 
 The later-cycle fixed-jump candidates \code{B2}, \code{B2SAFE}, \code{B2SAFE\_EQ}, \code{B2D2}, \code{B2D5}, and \code{B3} remain \code{missing\_outputs}. This is expected because the cycle-250 exact-reinjection/equilibration gate failed and the unsafe dependent jobs were not allowed to produce accepted fixed-jump validations.
 
+\subsection{Robust Scalar-Metric Re-score}
+
+The completed B1/B1\_EQ family was re-scored with robust scalar statistics: mean, median, 95th percentile, 99th percentile, and maximum relative error. This re-score uses the lightweight scalar metrics retained in the repository. It is not yet a full pointwise field-percentile study because complete per-integration-point fields were not retained for every B1 case. Loop errors were normalized by the full reference loop amplitude for \code{U1\_avg} and \code{RF1\_sum}, avoiding artificial blow-ups at zero crossings.
+
+\begin{table}[H]
+\centering
+\caption{Robust scalar-metric re-score for representative B1 cases.}
+\begin{tabular}{lrrrrrl}
+\toprule
+Case & Mean & Median & p95 & p99 & Max & Status \\
+\midrule
+\code{B1D1} & 2.97163\% & 1.77699\% & 7.47991\% & 8.46293\% & 8.70868\% & review \\
+\code{B1D3} & 2.78810\% & 1.49114\% & 6.93576\% & 7.33625\% & 7.43637\% & review \\
+\code{B1D5} & 0.392238\% & 0.000247\% & 1.76313\% & 2.23251\% & 2.34986\% & pass by max \\
+\code{B1D5\_EQ} & 0.392238\% & 0.000247\% & 1.76313\% & 2.23251\% & 2.34986\% & pass by max \\
+\code{B1Q} & 2.54352\% & 2.34673\% & 4.99948\% & 5.60287\% & 5.75372\% & robust pass, max review \\
+\code{B1Q\_EQ} & 2.54352\% & 2.34673\% & 4.99948\% & 5.60287\% & 5.75372\% & robust pass, max review \\
+\code{B1S} & 3.65193\% & 3.12240\% & 7.50946\% & 7.60616\% & 7.63033\% & review \\
+\code{B1} & 4.64409\% & 2.33580\% & 11.0312\% & 11.2284\% & 11.2777\% & review \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The robust scalar re-score supports the same conservative conclusion as the hard maximum-error gate. \code{B1D5} and \code{B1D5\_EQ} are the only clean passes. \code{B1Q} and \code{B1Q\_EQ} are scientifically interesting because their primary p95 error is just below 5\%, but their maxima still exceed the 5\% gate. Therefore they should be treated as borderline review cases unless a later full-field percentile acceptance rule is deliberately adopted.
+
+\subsection{Limitations of Manual SDVINI/SIGINI Reinjection}
+
+The later-cycle diagnostics show that the bottleneck is no longer only jump size. Manual \code{SDVINI}/\code{SIGINI} reinjection starts a scratch Abaqus model with injected stress and state variables, but it does not preserve the compatible displacement field, strain field, equilibrium state, solver history, or tangent/history information of the original inhomogeneous analysis. At cycle 100 this route is good enough for a narrow global-response demonstration. At cycle 250 and cycle 500 it failed before valid physical continuation in exact, \code{SDVINI}-only, \code{SIGINI}-only, and combined diagnostics.
+
+This is a thesis-useful limitation result: manual state initialization is not robust enough for later-cycle reinjection in the plate-with-hole benchmark. Repeating B2/B3 jobs with the same scratch \code{SDVINI}/\code{SIGINI} route is therefore not expected to add scientific value. The next path is Stage 16N-R, a reinjection-strategy repair that preserves Abaqus' finite-element state through native restart or in-analysis continuation and applies the cycle jump only to independent material memory variables.
+
 \section{Failures and Fixes}
 
 \begin{longtable}{p{0.26\linewidth}p{0.34\linewidth}p{0.32\linewidth}}
@@ -741,25 +772,25 @@ Cycle-250 reinjection gate & B2SAFE, B2SAFE\_EQ, exact B0-2, and \code{B0\_AUDIT
 
 \section{Current Conclusion}
 
-\stage{} has successfully produced a full 1000-cycle non-jump reference and a conservative adaptive $\Delta N$ table. The inhomogeneous plate-with-hole benchmark is scientifically useful because both global hysteresis quantities and local hole-ring state variables evolve significantly. The HPC workflow is now resource-controlled with a 16-CPU production policy and explicit start/end/failure mail notifications.
+\stage{} has successfully produced a full 1000-cycle non-jump reference and a conservative adaptive $\Delta N$ table. The inhomogeneous plate-with-hole benchmark is scientifically useful because both global hysteresis quantities and local hole-ring state variables evolve significantly. The HPC workflow is resource-controlled with a 16-CPU production policy and explicit start/end/failure mail notifications.
 
-The important methodological limitation is exact local reinjection. B0-1 proves that the manual \code{SDVINI}/\code{SIGINI} workflow can run and reproduce the global force-displacement response well, but it does not reproduce local strain-like state variables exactly. The cycle-100 initialization-only audit shows that this local mismatch appears immediately during manual Abaqus initialization/equilibration, even though the binary reader is exact. The new cycle-250 exact-reinjection and initialization-only failures show that the same mechanism becomes a hard equilibration gate at cycle 250.
+The fixed-jump result is now frozen as Stage 16N-C. The cycle-jump method can work in the inhomogeneous Abaqus model, but only for a very conservative early jump: \code{B1D5}/\code{B1D5\_EQ}, 100 $\rightarrow$ 105 $\rightarrow$ 250, with 2.34986\% maximum primary scalar-metric error. The adaptive cycle-100 table estimated $\Delta N \approx 24$, while the accepted observed jump is $\Delta N = 5$, giving an effective safety factor of about $5/24 \approx 0.21$. Thus the thesis-safe result is that adaptive $\Delta N$ estimates must be strongly reduced when applied to the inhomogeneous plate-with-hole benchmark. Local hole-ring stress and STATEV extrema are much more restrictive than the global hysteresis response.
+
+The important methodological limitation is exact local reinjection. B0-1 proves that the manual \code{SDVINI}/\code{SIGINI} workflow can run and reproduce the global force-displacement response well near cycle 100, but it does not reproduce local strain-like state variables exactly. The cycle-100 initialization-only audit shows that this local mismatch appears immediately during manual Abaqus initialization/equilibration, even though the binary reader is exact. The cycle-250 and cycle-500 exact, \code{SDVINI}-only, \code{SIGINI}-only, and combined diagnostic failures show that the same mechanism becomes a hard equilibration gate at later cycles. The next scientific path is therefore not more scratch state-initialized B2/B3 jobs, but Stage 16N-R: a restart-preserved material-state jumping strategy.
 
 \section{Next Work}
 
-The completed dependency queue shows that a small jump from cycle 100 can work only in a narrow window: \code{B1D5\_100\_to\_105\_to\_250} and \code{B1D5\_EQ\_100\_to\_105\_to\_250} passed with maximum primary error 2.34986\%. The surrounding smaller and larger B1 variants remain review cases, including \code{B1D1}, \code{B1D2}, \code{B1D3}, \code{B1D4}, \code{B1Q}, \code{B1S}, and \code{B1}. The \code{EQ} fallback cases did not reduce the comparison errors. B0-2 and B0-3 remain on hold as exact-local-restart claims, and B2/B3 fixed jumps are also held because the cycle-250 reinjection/equilibration gate has not passed.
+The completed dependency queue shows that a small jump from cycle 100 can work only in a narrow window: \code{B1D5\_100\_to\_105\_to\_250} and \code{B1D5\_EQ\_100\_to\_105\_to\_250} passed with maximum primary error 2.34986\%. The surrounding smaller and larger B1 variants remain review cases, including \code{B1D1}, \code{B1D2}, \code{B1D3}, \code{B1D4}, \code{B1Q}, \code{B1S}, and \code{B1}. The \code{EQ} fallback cases did not reduce the comparison errors. B0-2 and B0-3 remain on hold as exact-local-restart claims, and B2/B3 fixed jumps are also held because the cycle-250 reinjection/equilibration gate has not passed. The next work is the Stage 16N-R repair path.
 
 \begin{enumerate}
-  \item Do not submit B2/B3 yet.
-  \item Use the completed B1D4 pointwise diagnostic as evidence that the anomaly is not a simple phase mismatch or argmax-location swap.
-  \item Treat the completed B1D3 result as confirmation that cycle-100 jumps are not robust under a hard local stress-maximum criterion.
-  \item Use the refreshed comparison summary as the current B1 boundary result: only \code{B1D5} and \code{B1D5\_EQ} pass the 5\% primary-error gate.
-  \item Do not rerun the \code{EQ} variants just to change the equilibration initial increment; those reruns reproduced the same comparison errors.
-  \item Diagnose the cycle-250 reinjection/equilibration failure before rerunning \code{B2SAFE}.
-  \item Treat the failed \code{B0\_AUDIT\_0250\_INITIALIZATION\_ONLY} job as evidence that the cycle-250 failure appears immediately during manual initialization/equilibration.
-  \item Avoid or re-score cycle-100 jumps using robust percentile-based local stress metrics if hard local maxima remain too brittle for acceptance.
-  \item Use the submitted \code{SDVINI}-only and \code{SIGINI}-only audits to isolate whether stress, STATEV, or coupled field injection controls the cycle-250/500 equilibration barrier.
-  \item Keep \code{SDV8} as a diagnostic warning metric, not a hard pass/fail metric.
+  \item Freeze Stage 16N-C as a validated small-jump demonstration plus a limitation study of manual reinjection.
+  \item Do not submit B2/B3/B3SAFE/B4SAFE with the current scratch \code{SDVINI}/\code{SIGINI} route.
+  \item Use the robust scalar re-score as supporting evidence: only \code{B1D5} and \code{B1D5\_EQ} pass the hard 5\% maximum primary-error gate; \code{B1Q}/\code{B1Q\_EQ} remain borderline review cases.
+  \item Treat the completed STATEV independence audit as the first Stage 16N-R artifact. Independent memory variables are \code{STATEV(1)}, \code{STATEV(2:19)}, and \code{STATEV(20:25)}; \code{STATEV(26)} is derived from alpha and \code{STATEV(27)} is increment-local/diagnostic.
+  \item Prepare a restart-enabled reference or checkpoint run because no local usable \code{.res}/\code{.stt}/\code{.mdl}/\code{.sim} restart files were found for the completed Stage 16N reference.
+  \item Run a native Abaqus restart control before any new jump: continue from checkpoint without memory overwrite and compare 250 $\rightarrow$ 500 and 500 $\rightarrow$ 1000 against the full reference.
+  \item Implement restart-preserved material-memory overwrite only after the native restart control passes, and modify only the independent material memory variables inside the UMAT.
+  \item Then retry later jumps with the preserved FE state, starting with small controlled jumps rather than the original B2/B3 queue.
 \end{enumerate}
 
 \appendix
@@ -773,6 +804,16 @@ The completed dependency queue shows that a small jump from cycle 100 can work o
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_FIXED\_JUMP\_VALIDATION\_PLAN.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/stage16n\_fixed\_jump\_comparison\_summary.csv}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/stage16n\_fixed\_jump\_comparison\_details.csv}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/STAGE16N\_B1\_ROBUST\_SCALAR\_METRIC\_RESCORE.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/stage16n\_b1\_robust\_scalar\_metric\_rescore.csv}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_make\_b1\_robust\_scalar\_rescore.py}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_STATEV\_INDEPENDENCE\_AUDIT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_audit\_umat\_statev\_independent\_vs\_derived.py}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_NATIVE\_RESTART\_CONTROL\_PLAN.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_restart\_reference\_with\_checkpoints.py}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/run\_stage16n\_native\_restart\_control\_hpc.sh}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_compare\_native\_restart\_against\_1000ref.py}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_PROFESSOR\_UPDATE\_2026\_06\_07.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/cases/B1D2\_100\_to\_102\_to\_250/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/cases/B1D2\_EQ\_100\_to\_102\_to\_250/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/cases/B1D1\_EQ\_100\_to\_101\_to\_250/}
