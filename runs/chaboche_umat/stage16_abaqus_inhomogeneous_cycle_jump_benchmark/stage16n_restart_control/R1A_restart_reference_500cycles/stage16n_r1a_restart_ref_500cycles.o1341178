@@ -1,0 +1,113 @@
+[Stage16N-R1] start: 2026-06-07 17:52:44
+[Stage16N-R1] PBS job: 1341178.mmaster02
+[Stage16N-R1] Abaqus job: stage16n_r1a_restart_ref_500cycles
+[Stage16N-R1] cpus=16 mp_mode=threads
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r1a_restart_ref_500cycles_datacheck
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 16 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<236 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Sun 07 Jun 2026 05:52:45 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_neml_equivalent_chaboche_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Sun 07 Jun 2026 05:52:51 PM CEST
+Begin Analysis Input File Processor
+Sun 07 Jun 2026 05:52:51 PM CEST
+Run pre
+Sun 07 Jun 2026 05:53:04 PM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Datacheck
+Begin Abaqus/Standard Analysis
+Sun 07 Jun 2026 05:53:04 PM CEST
+Run standard
+Sun 07 Jun 2026 05:53:06 PM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Sun 07 Jun 2026 05:53:06 PM CEST
+Run SMASimUtility
+Sun 07 Jun 2026 05:53:06 PM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_r1a_restart_ref_500cycles_datacheck COMPLETED
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r1a_restart_ref_500cycles
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 16 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<236 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Sun 07 Jun 2026 05:53:07 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_neml_equivalent_chaboche_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Sun 07 Jun 2026 05:53:13 PM CEST
+Begin Analysis Input File Processor
+Sun 07 Jun 2026 05:53:13 PM CEST
+Run pre
+Sun 07 Jun 2026 05:53:26 PM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+Sun 07 Jun 2026 05:53:26 PM CEST
+Run standard
+Mon 08 Jun 2026 02:24:19 AM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Mon 08 Jun 2026 02:24:19 AM CEST
+Run SMASimUtility
+Mon 08 Jun 2026 02:24:19 AM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_r1a_restart_ref_500cycles COMPLETED
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+Wrote: stage16n_r1a_restart_ref_500cycles_cycle_metrics.csv
+Wrote: stage16n_r1a_restart_ref_500cycles_selected_cycle_loops.csv
+Wrote: stage16n_r1a_restart_ref_500cycles_selected_cycle_local_states.csv
+run_stage16n_r1_restart_reference_hpc.sh: Zeile 68: Syntaxfehler beim unerwarteten Wort `('

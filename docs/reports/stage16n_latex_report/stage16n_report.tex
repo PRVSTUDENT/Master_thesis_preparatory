@@ -814,6 +814,29 @@ Both jobs request \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb}, \c
 
 The acceptance condition for this substage is not a cycle-jump error threshold. It is the existence of usable native Abaqus restart files from the 250-cycle and 500-cycle checkpoint references. Only after those restart sources exist should native restart continuation tests be prepared.
 
+\subsection{Stage 16N-R1 Completion Check on 2026-06-08}
+
+Both restart-enabled reference analyses completed successfully as Abaqus jobs. PBS marked the jobs with exit status 2 because the post-run status-file shell block failed after extraction; this was a scripting issue, not a solver failure. The \code{.sta} files for both jobs end with \code{THE ANALYSIS HAS COMPLETED SUCCESSFULLY}, and both logs show \code{1 MPI RANK x 16 THREADS}.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R1 completed job accounting.}
+\begin{tabular}{llllll}
+\toprule
+Case & PBS job & Walltime & CPU time & CPU percent & PBS status \\
+\midrule
+\code{R1B} & \code{1341177.mmaster02} & 03:13:22 & 18:58:17 & 655 & exit 2 after extraction \\
+\code{R1A} & \code{1341178.mmaster02} & 08:32:36 & 43:30:54 & 661 & exit 2 after extraction \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Native restart files now exist. The 250-cycle reference produced \code{.res} (29 MB), \code{.mdl} (50 MB), \code{.sim} (1.6 MB), and \code{.stt} (226 GB). The 500-cycle reference produced \code{.res} (78 MB), \code{.mdl} (107 MB), \code{.sim} (1.6 MB), and \code{.stt} (1.1 TB). These large \code{.stt} files should not be deleted until native restart continuation has been tested.
+
+The extracted endpoint global metrics match the existing 1000-cycle reference exactly at the checked cycles. For \code{R1B} at cycle 250 and \code{R1A} at cycle 500, the shared \code{U1\_max}, \code{U1\_min}, \code{RF1\_max}, \code{RF1\_min}, and \code{loop\_area\_abs} errors are all 0\%. Therefore Stage 16N-R1 achieved its immediate purpose: FE-consistent native restart source files now exist and the restart-enabled no-jump runs reproduce the existing reference metrics at the endpoints.
+
+The next substage should be native restart continuation control with no UMAT overwrite: restart from cycle 100 and continue to 250, then restart from cycle 250 and continue to 500. Only after those native restart continuations pass should restart-preserved UMAT memory overwrite be implemented.
+
 \appendix
 \section{Key Repository Evidence Files}
 

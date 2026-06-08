@@ -246,7 +246,12 @@ fi
     fi
   fi
   echo "- Restart files:"
-  find . -maxdepth 1 -type f \\( -name "${JOB}.res" -o -name "${JOB}.stt" -o -name "${JOB}.mdl" -o -name "${JOB}.sim" \\) -printf "  - \`%f\`\\n" | sort
+  for ext in res stt mdl sim; do
+    file="${JOB}.${ext}"
+    if [[ -f "$file" ]]; then
+      echo "  - \`$file\`"
+    fi
+  done
 } > "STAGE16N_R1_RESTART_REFERENCE_STATUS.md"
 
 echo "[Stage16N-R1] end: $(date '+%Y-%m-%d %H:%M:%S')"
