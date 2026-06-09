@@ -1,2 +1,0 @@
-cycles,status,max_global_error_pct,max_primary_local_error_pct,details_file
-500,pass,0,0,stage16n_native_restart_comparison_details.csv

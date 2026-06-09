@@ -902,6 +902,35 @@ The restart debug traces show that the first safe overwrite hook is the restart 
 
 The next thesis-safe implementation step is Stage 16N-R3E exact no-op overwrite. The overwrite should target only independent material memory variables, namely \code{STATEV(1)}, \code{STATEV(2:19)}, and \code{STATEV(20:25)}. \code{STATEV(26)} and \code{STATEV(27)} should not be independently overwritten because they are derived or diagnostic state.
 
+\section{Stage 16N-R3E Exact Restart-Preserved Overwrite}
+
+Stage 16N-R3E is the first active implementation of the restart-preserved route. It is not yet a cycle-jump test. The objective is to prove that a UMAT can overwrite exact material memory inside a native Abaqus restart run without destroying the preserved displacement, strain, equilibrium, and solver state.
+
+The prepared controls are:
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R3E exact overwrite controls submitted on 2026-06-09.}
+\begin{tabular}{llllll}
+\toprule
+Case & PBS job & Restart & Target & Overwrite trigger & Variables \\
+\midrule
+\code{R3E1} & \code{1342248.mmaster02} & 250 & 500 & \code{JSTEP(1)=251}, \code{KINC=0} & \code{STATEV(1:25)} \\
+\code{R3E2} & \code{1342249.mmaster02} & 500 & 750 & \code{JSTEP(1)=501}, \code{KINC=0} & \code{STATEV(1:25)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The UMAT hook reads exact per-element/per-integration-point state from the restart-source \code{.odb}, converted to a direct-access binary table. It overwrites only independent material-memory variables, \code{STATEV(1:25)}. It does not table-overwrite \code{STATEV(26)} or \code{STATEV(27)}; \code{STATEV(26)} remains derived by the constitutive update and \code{STATEV(27)} remains increment-local diagnostic state.
+
+The first R3E submission attempt, \code{1342246.mmaster02} and \code{1342247.mmaster02}, failed before the solve because Abaqus could not resolve \code{scratch=.} from the long case directory. This was an infrastructure issue, not a UMAT or restart-state result. The runner was corrected to use the short PBS scratch directory \code{\$PBS\_JOBDIR}. Corrected submissions \code{1342248.mmaster02} and \code{1342249.mmaster02} started at Tue Jun 9 06:09:58 2026. Both request \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb}, \code{walltime=24:00:00}, and both datachecks compiled the overwrite UMAT successfully before entering the production solve. A later live PBS check showed both jobs still running: \code{1342248.mmaster02} at \code{walltime=00:07:22}, \code{cput=00:31:37}, \code{cpupercent=639}, \code{mem=6742616kb}, \code{vmem=5065784kb} on \code{mnode101}; and \code{1342249.mmaster02} at \code{walltime=00:07:23}, \code{cput=00:40:17}, \code{cpupercent=643}, \code{mem=8734044kb}, \code{vmem=5244024kb} on \code{mnode102}.
+
+The current thesis-safe conclusion is therefore:
+
+\begin{quote}
+Native Abaqus restart reproduced the reference exactly, proving that the inhomogeneous FE state is restartable when Abaqus preserves the displacement, strain, and equilibrium state. The next step is therefore to apply state changes inside the restarted analysis, rather than attempting scratch initialization through \code{SDVINI}/\code{SIGINI}.
+\end{quote}
+
 \appendix
 \section{Key Repository Evidence Files}
 
@@ -923,6 +952,8 @@ The next thesis-safe implementation step is Stage 16N-R3E exact no-op overwrite.
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/run\_stage16n\_native\_restart\_control\_hpc.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R3\_RESTART\_DEBUG\_RESULT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_exact\_overwrite\_cases/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r3\_exact\_overwrite\_cases.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_compare\_native\_restart\_against\_1000ref.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_PROFESSOR\_UPDATE\_2026\_06\_07.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/cases/B1D2\_100\_to\_102\_to\_250/}

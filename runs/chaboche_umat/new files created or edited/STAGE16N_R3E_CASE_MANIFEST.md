@@ -1,0 +1,12 @@
+# Stage 16N-R3E Exact Overwrite Case
+
+- Case: `R3E2_500_to_750_exact_overwrite`
+- Job: `stage16n_r3e2_exact_overwrite_500_to_750_a2`
+- Oldjob: `stage16n_r1a_restart_ref_500cycles`
+- Restart read: `STEP=500, INC=65`
+- Continuation: `500 -> 750`
+- Overwrite trigger: `JSTEP(1)=501`, `KINC=0`, `TIME(1)=0`, `TIME(2)~=500`
+- Exact state source: `stage16n_r1a_restart_ref_500cycles.odb`, cycle `500`
+- Overwritten variables: `STATEV(1:25)`
+- Not table-overwritten: `STATEV(26:27)`
+- Production resources: `select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb`, `walltime=24:00:00`

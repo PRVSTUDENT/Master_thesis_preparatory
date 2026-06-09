@@ -1,3 +1,0 @@
-case_id,job,oldjob,checkpoint_cycle,checkpoint_inc,target_cycle
-R3D1_250_to_251_debug,stage16n_r3d1_restart_debug_250_to_251,stage16n_r1b_restart_ref_250cycles,250,58,251
-R3D2_500_to_501_debug,stage16n_r3d2_restart_debug_500_to_501,stage16n_r1a_restart_ref_500cycles,500,65,501
