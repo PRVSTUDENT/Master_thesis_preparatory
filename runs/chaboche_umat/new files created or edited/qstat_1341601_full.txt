@@ -1,0 +1,66 @@
+Job Id: 1341601.mmaster02
+    Job_Name = stage16n_r3d1_restart_debug_250_to_251
+    Job_Owner = pr21vyci@mlogin01.cluster
+    resources_used.cpupercent = 422
+    resources_used.cput = 00:04:30
+    resources_used.mem = 1545812kb
+    resources_used.ncpus = 16
+    resources_used.vmem = 4859968kb
+    resources_used.walltime = 00:01:04
+    job_state = F
+    queue = teachingq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Mon Jun  8 12:35:10 2026
+    Error_Path = mlogin01.cluster:/home/pr21vyci/master_thesis/Abaqus_trial/run
+	s/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage
+	16n_restart_control/restart_jump_debug_cases/R3D1_250_to_251_debug/stag
+	e16n_r3d1_restart_debug_250_to_251.e1341601
+    exec_host = mnode100/0*0
+    exec_vnode = (mnode100[0]:mem=94371840kb:ncpus=8+mnode100[1]:ncpus=8)
+    Hold_Types = n
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = abe
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Mon Jun  8 12:36:22 2026
+    Output_Path = mlogin01.cluster:/home/pr21vyci/master_thesis/Abaqus_trial/ru
+	ns/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stag
+	e16n_restart_control/restart_jump_debug_cases/R3D1_250_to_251_debug/sta
+	ge16n_r3d1_restart_debug_250_to_251.o1341601
+    Priority = 0
+    qtime = Mon Jun  8 12:35:11 2026
+    Rerunable = True
+    Resource_List.mem = 90gb
+    Resource_List.mpiprocs = 1
+    Resource_List.ncpus = 16
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+    Resource_List.walltime = 24:00:00
+    stime = Mon Jun  8 12:35:12 2026
+    obittime = Mon Jun  8 12:36:21 2026
+    session_id = 595183
+    sandbox = PRIVATE
+    jobdir = /home/pr21vyci/pbs.1341601.mmaster02.x8z
+    substate = 92
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin
+	:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_
+	umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart
+	_control/restart_jump_debug_cases/R3D1_250_to_251_debug,
+	PBS_O_SYSTEM=Linux,PBS_O_QUEUE=entry_teachingq
+    comment = Job run at Mon Jun 08 at 12:35 on (mnode100[0]:mem=94371840kb:ncp
+	us=8+mnode100[1]:ncpus=8) and finished
+    etime = Mon Jun  8 12:35:11 2026
+    run_count = 1
+    eligible_time = 00:00:04
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = submit_stage16n_r3d1_restart_debug_250_to_251.pbs
+    history_timestamp = 1780914982
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+

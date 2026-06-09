@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N stage16n_r2c2_native_restart_250_to_500
+#PBS -N stage16n_r3d2_restart_debug_500_to_501
 #PBS -q entry_teachingq
 #PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
 #PBS -l walltime=24:00:00
@@ -14,7 +14,7 @@ export REPO_ROOT="$HOME/master_thesis/Abaqus_trial"
 export ABAQUS_CPUS=16
 export ABAQUS_MP_MODE=threads
 
-RUN_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/native_restart_cases/R2C2_250_to_500"
+RUN_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_debug_cases/R3D2_500_to_501_debug"
 cd "$RUN_DIR"
 bash link_restart_sources.sh
-bash run_stage16n_native_restart_continuation_hpc.sh stage16n_r2c2_native_restart_250_to_500 stage16n_r1a_restart_ref_500cycles 500
+bash run_stage16n_r3_restart_debug_hpc.sh stage16n_r3d2_restart_debug_500_to_501 stage16n_r1a_restart_ref_500cycles 501
