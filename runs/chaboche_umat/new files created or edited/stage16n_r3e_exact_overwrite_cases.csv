@@ -1,3 +1,0 @@
-case_id,job,oldjob,checkpoint_cycle,checkpoint_inc,target_cycle,target_step
-R3E1_250_to_500_exact_overwrite,stage16n_r3e1_exact_overwrite_250_to_500_a2,stage16n_r1a_restart_ref_500cycles,250,58,500,251
-R3E2_500_to_750_exact_overwrite,stage16n_r3e2_exact_overwrite_500_to_750_a2,stage16n_r1a_restart_ref_500cycles,500,65,750,501

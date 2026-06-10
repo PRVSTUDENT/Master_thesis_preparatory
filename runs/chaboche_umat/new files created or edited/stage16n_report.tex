@@ -923,7 +923,39 @@ Case & PBS job & Restart & Target & Overwrite trigger & Variables \\
 
 The UMAT hook reads exact per-element/per-integration-point state from the restart-source \code{.odb}, converted to a direct-access binary table. It overwrites only independent material-memory variables, \code{STATEV(1:25)}. It does not table-overwrite \code{STATEV(26)} or \code{STATEV(27)}; \code{STATEV(26)} remains derived by the constitutive update and \code{STATEV(27)} remains increment-local diagnostic state.
 
-The first R3E submission attempt, \code{1342246.mmaster02} and \code{1342247.mmaster02}, failed before the solve because Abaqus could not resolve \code{scratch=.} from the long case directory. This was an infrastructure issue, not a UMAT or restart-state result. The runner was corrected to use the short PBS scratch directory \code{\$PBS\_JOBDIR}. Corrected submissions \code{1342248.mmaster02} and \code{1342249.mmaster02} started at Tue Jun 9 06:09:58 2026. Both request \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb}, \code{walltime=24:00:00}, and both datachecks compiled the overwrite UMAT successfully before entering the production solve. A later live PBS check showed both jobs still running: \code{1342248.mmaster02} at \code{walltime=00:07:22}, \code{cput=00:31:37}, \code{cpupercent=639}, \code{mem=6742616kb}, \code{vmem=5065784kb} on \code{mnode101}; and \code{1342249.mmaster02} at \code{walltime=00:07:23}, \code{cput=00:40:17}, \code{cpupercent=643}, \code{mem=8734044kb}, \code{vmem=5244024kb} on \code{mnode102}.
+The first R3E submission attempt, \code{1342246.mmaster02} and \code{1342247.mmaster02}, failed before the solve because Abaqus could not resolve \code{scratch=.} from the long case directory. This was an infrastructure issue, not a UMAT or restart-state result. The runner was corrected to use the short PBS scratch directory \code{\$PBS\_JOBDIR}. Corrected submissions \code{1342248.mmaster02} and \code{1342249.mmaster02} started at Tue Jun 9 06:09:58 2026. Both request \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb}, \code{walltime=24:00:00}, and both datachecks compiled the overwrite UMAT successfully before entering the production solve.
+
+Both corrected jobs completed Abaqus successfully. PBS history reports \code{Exit\_status=1} and \code{Stageout\_status=1} for both jobs, but the solver files show \code{THE ANALYSIS HAS COMPLETED SUCCESSFULLY} in the \code{.sta} files and \code{THE ANALYSIS HAS BEEN COMPLETED} in the \code{.msg} files. The nonzero PBS status is therefore a stage-out or wrapper artifact, not a solver failure. Final accounting was:
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R3E final PBS accounting.}
+\begin{tabular}{lllllll}
+\toprule
+Job & Case & Walltime & CPU time & CPU \% & Memory & Host \\
+\midrule
+\code{1342248} & R3E1 & 04:06:17 & 22:36:56 & 639 & 94375880kb & \code{mnode101} \\
+\code{1342249} & R3E2 & 04:10:00 & 22:43:25 & 643 & 94375816kb & \code{mnode102} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The comparison against the reference was exact at the target cycles:
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R3E exact overwrite comparison results.}
+\begin{tabular}{lllll}
+\toprule
+Case & Target cycle & Status & Max global error & Max primary local error \\
+\midrule
+R3E1 & 500 & pass & 0\% & 0\% \\
+R3E2 & 750 & pass & 0\% & 0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+R3E1 was compared against the default Stage 16N 1000-cycle pilot reference at cycle 500. R3E2 was compared against the parallel 1000-cycle reference because the default pilot comparison table did not contain cycle 750. The exact zero-error result confirms that modifying only independent material-memory variables inside a native restart does not destroy the preserved finite-element equilibrium state.
 
 The current thesis-safe conclusion is therefore:
 

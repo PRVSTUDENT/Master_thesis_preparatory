@@ -2,12 +2,12 @@ Job Id: 1342249.mmaster02
     Job_Name = stage16n_r3e2_exact_overwrite_500_to_750_a2
     Job_Owner = pr21vyci@mlogin01.cluster
     resources_used.cpupercent = 643
-    resources_used.cput = 00:40:17
-    resources_used.mem = 8734044kb
+    resources_used.cput = 22:43:25
+    resources_used.mem = 94375816kb
     resources_used.ncpus = 16
-    resources_used.vmem = 5244024kb
-    resources_used.walltime = 00:07:23
-    job_state = R
+    resources_used.vmem = 5664888kb
+    resources_used.walltime = 04:10:00
+    job_state = F
     queue = teachingq
     server = mmaster02
     Checkpoint = u
@@ -23,7 +23,7 @@ Job Id: 1342249.mmaster02
     Keep_Files = n
     Mail_Points = abe
     Mail_Users = pr21vyci@mailserver.tu-freiberg.de
-    mtime = Tue Jun  9 06:17:23 2026
+    mtime = Tue Jun  9 10:20:03 2026
     Output_Path = mlogin01.cluster:/home/pr21vyci/master_thesis/Abaqus_trial/ru
 	ns/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stag
 	e16n_restart_control/restart_exact_overwrite_cases/R3E2_500_to_750_exac
@@ -39,10 +39,11 @@ Job Id: 1342249.mmaster02
     Resource_List.select = 1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
     Resource_List.walltime = 24:00:00
     stime = Tue Jun  9 06:09:58 2026
+    obittime = Tue Jun  9 10:20:03 2026
     session_id = 514717
     sandbox = PRIVATE
     jobdir = /home/pr21vyci/pbs.1342249.mmaster02.x8z
-    substate = 42
+    substate = 93
     Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
 	PBS_O_PATH=/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin
 	:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
@@ -52,11 +53,14 @@ Job Id: 1342249.mmaster02
 	_control/restart_exact_overwrite_cases/R3E2_500_to_750_exact_overwrite,
 	PBS_O_SYSTEM=Linux,PBS_O_QUEUE=entry_teachingq
     comment = Job run at Tue Jun 09 at 06:09 on (mnode102[0]:mem=94371840kb:ncp
-	us=8+mnode102[1]:ncpus=8)
+	us=8+mnode102[1]:ncpus=8) and failed
     etime = Tue Jun  9 06:09:55 2026
     run_count = 1
     eligible_time = 00:00:04
+    Stageout_status = 1
+    Exit_status = 1
     Submit_arguments = submit_stage16n_r3e2_exact_overwrite_500_to_750_a2.pbs
+    history_timestamp = 1780993203
     project = _pbs_project_default
     Submit_Host = mlogin01.cluster
 

@@ -53,23 +53,29 @@ The first attempt failed before the solve because Abaqus could not resolve `scra
 
 The runner was corrected to use `${PBS_JOBDIR}` as Abaqus scratch.
 
-| Case | PBS job | Status at early check | Start time | Host |
+| Case | PBS job | Final status | Start time | Host |
 |---|---|---|---|---|
-| `R3E1` | `1342248.mmaster02` | running; datacheck compiled and completed; checked at `mtime=Tue Jun 9 06:17:21 2026`, `walltime=00:07:22`, `cput=00:31:37`, `cpupercent=639`, `mem=6742616kb`, `vmem=5065784kb`, `ncpus=16` | Tue Jun 9 06:09:58 2026 | `mnode101` |
-| `R3E2` | `1342249.mmaster02` | running; datacheck compiled and completed; checked at `mtime=Tue Jun 9 06:17:23 2026`, `walltime=00:07:23`, `cput=00:40:17`, `cpupercent=643`, `mem=8734044kb`, `vmem=5244024kb`, `ncpus=16` | Tue Jun 9 06:09:58 2026 | `mnode102` |
+| `R3E1` | `1342248.mmaster02` | Abaqus completed successfully; PBS `Exit_status=1` from `Stageout_status=1`; comparison pass, zero error at cycle 500 | Tue Jun 9 06:09:58 2026 | `mnode101` |
+| `R3E2` | `1342249.mmaster02` | Abaqus completed successfully; PBS `Exit_status=1` from `Stageout_status=1`; comparison pass, zero error at cycle 750 | Tue Jun 9 06:09:58 2026 | `mnode102` |
 
-At the early `qstat -f` check, both jobs had `job_state=R`, `queue=teachingq`, `Resource_List.ncpus=16`, `Resource_List.mpiprocs=1`, `Resource_List.mem=90gb`, and `Resource_List.walltime=24:00:00`.
+Final PBS history retained the requested `queue=teachingq`, `Resource_List.ncpus=16`, `Resource_List.mpiprocs=1`, `Resource_List.mem=90gb`, and `Resource_List.walltime=24:00:00`. Job `1342248.mmaster02` used `walltime=04:06:17`, `cput=22:36:56`, `cpupercent=639`, `mem=94375880kb`, and `vmem=5530808kb`. Job `1342249.mmaster02` used `walltime=04:10:00`, `cput=22:43:25`, `cpupercent=643`, `mem=94375816kb`, and `vmem=5664888kb`.
 
-## Next Monitoring Step
+## Final Result
 
-Monitor `1342248.mmaster02` and `1342249.mmaster02` to completion. After completion, copy back lightweight outputs only:
+Both exact overwrite controls passed scientifically:
 
-- full PBS history with `qstat -x -f`
-- `.sta`
-- `STAGE16N_R3E_CASE_STATUS.md`
-- `stage16n_r3e_exact_overwrite_comparison_summary.csv`
-- `stage16n_r3e_exact_overwrite_comparison_details.csv`
-- cycle metrics and selected local-state/loop CSVs
-- `_logs/*overwrite_trace.txt`
+| Case | Compared cycle | Status | Max global error pct | Max primary local error pct |
+|---|---:|---|---:|---:|
+| `R3E1` | 500 | `pass` | 0 | 0 |
+| `R3E2` | 750 | `pass` | 0 | 0 |
+
+The lightweight evidence copied back locally includes final qstat histories, `.sta`, `.dat`, cycle metrics, selected local states/loops, and comparison summaries/details.
+
+## Next Step
+
+Proceed to small restart-preserved jump tests:
+
+- `R3J1`: restart from cycle 250, overwrite/extrapolate material memory to cycle 255, continue to cycle 500.
+- `R3J2`: restart from cycle 500, overwrite/extrapolate material memory to cycle 505, continue to cycle 750.
 
 Do not copy `.odb`, `.stt`, `.sim`, `.mdl`, `.prt`, `.msg`, `state.csv`, or `state.bin` unless explicitly requested.
