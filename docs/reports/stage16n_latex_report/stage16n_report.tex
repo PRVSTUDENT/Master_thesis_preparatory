@@ -963,6 +963,36 @@ The current thesis-safe conclusion is therefore:
 Native Abaqus restart reproduced the reference exactly, proving that the inhomogeneous FE state is restartable when Abaqus preserves the displacement, strain, and equilibrium state. The next step is therefore to apply state changes inside the restarted analysis, rather than attempting scratch initialization through \code{SDVINI}/\code{SIGINI}.
 \end{quote}
 
+\section{Stage 16N-R3J Restart-Preserved Jump Tests}
+
+Stage 16N-R3J is the first nonzero repaired cycle-jump workflow after the R3E exact-overwrite pass. The finite-element displacement, strain, equilibrium, and solver state are still preserved by native Abaqus restart. The UMAT modifies only independent material memory, \code{STATEV(1:25)}, at the restart continuation call with \code{KINC=0}. The state modification is a cycle-space extrapolation,
+\[
+\code{STATEV\_jump} = \code{STATEV\_base} + \Delta N \frac{d\code{STATEV}}{dN}.
+\]
+
+The active production submissions are:
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R3J active restart-preserved jump jobs submitted on 2026-06-10.}
+\begin{tabular}{llllll}
+\toprule
+Case & PBS job & Restart & Slope pair & Material jump & Target \\
+\midrule
+\code{R3J1} & \code{1342923.mmaster02} & 250 & 100 $\rightarrow$ 250 & 250 $\rightarrow$ 255 & 500 \\
+\code{R3J2} & \code{1342924.mmaster02} & 500 & 250 $\rightarrow$ 500 & 500 $\rightarrow$ 505 & 750 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The originally desired one-cycle slope pairs, 249 $\rightarrow$ 250 and 499 $\rightarrow$ 500, were not available in the R1A restart-source \code{.odb} as stress/SDV field-output frames. The active corrected jobs therefore use the nearest available endpoint field-output pairs ending at the restart checkpoints: 100 $\rightarrow$ 250 for R3J1 and 250 $\rightarrow$ 500 for R3J2. This slope choice is less local than the initial ideal one-cycle slope, so it must be reported with the R3J results.
+
+Several setup-only attempts were needed before the active production jobs. Jobs \code{1342915} and \code{1342916} failed because an upload quoting issue populated incorrect remote directories. Jobs \code{1342917} and \code{1342918} failed because cycles 249 and 499 had no stress/SDV field-output frames. Jobs \code{1342919} and \code{1342920} failed because the cluster Python rejected \code{from \_\_future\_\_ import annotations}. Jobs \code{1342921} and \code{1342922} failed because the older \code{pathlib.write\_text} implementation rejected the \code{newline} keyword. These were setup and compatibility failures before the production solve, not scientific R3J failures.
+
+The active corrected submissions, \code{1342923.mmaster02} and \code{1342924.mmaster02}, passed state extraction, extrapolated-state creation, UMAT compile/link, and Abaqus datacheck. At the first live resource check both were running under the standard production setup: \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb}, \code{walltime=24:00:00}, and Abaqus \code{cpus=16 mp\_mode=threads}. \code{1342923} ran on \code{mnode101/0*0}; \code{1342924} ran on \code{mnode102/0*0}.
+
+The R3J comparison classifies results using global RF/U/loop metrics, primary local metrics \code{HOLE\_RING\_MISES\_MAX}, \code{HOLE\_RING\_SDV1\_MAX}, \code{HOLE\_RING\_SDV8\_MAX}, and \code{HOLE\_RING\_SDV11\_MAX}, and diagnostic-only \code{HOLE\_RING\_S11\_MAX\_ABS}. The pass threshold is \code{max\_primary\_local\_error\_pct <= 5}; 5--10\% is review; larger than 10\% or solver instability is fail.
+
 \appendix
 \section{Key Repository Evidence Files}
 
