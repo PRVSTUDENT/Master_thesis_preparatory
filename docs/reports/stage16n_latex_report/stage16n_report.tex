@@ -1092,7 +1092,19 @@ R3J4 & 750 & pass & 0\% & 0\% & 0\% \\
 \end{tabular}
 \end{table}
 
-The +10 results preserve the same zero-error endpoint behavior observed in the +5 cases. Within the current comparison metrics, the restart-preserved method has now passed nonzero fixed jumps of +5 and +10 cycles at both restart checkpoints. The recommended progression is +20 next, and adaptive $\Delta N$ restart-preserved jumping only after the fixed-jump accuracy boundary is known.
+The +10 results preserve the same zero-error endpoint behavior observed in the +5 cases. Within the current comparison metrics, the restart-preserved method has now passed nonzero fixed jumps of +5 and +10 cycles at both restart checkpoints. This strengthens the Stage 16N-R conclusion: native Abaqus restart plus UMAT material-state overwrite solves the fragile scratch reinjection problem seen with \code{SDVINI}/\code{SIGINI}.
+
+A targeted +10 audit was performed because the error remains exactly zero. The audit checks passed:
+
+\begin{itemize}
+  \item The R3J3/R3J4 jump metrics are distinct from their reference metrics by inode, file size, and SHA-256 hash, so the jobs were not self-compared.
+  \item The extrapolated state differs from the checkpoint base state for all 25,184 integration-point records in both jobs. R3J3 changed 528,728 of 831,072 numeric state/stress values, with maximum absolute delta 1.0552190144856723. R3J4 changed 521,304 of 831,072 numeric values, with maximum absolute delta 0.5887457275390595.
+  \item The UMAT overwrite trace appears in the production \code{.dat} files at \code{KSTEP=251} for R3J3 and \code{KSTEP=501} for R3J4.
+  \item Continuation cycle accounting is correct: R3J3 contains cycles 251--500 and R3J4 contains cycles 501--750.
+  \item Endpoint comparisons target the intended reference cycles, 500 and 750.
+\end{itemize}
+
+The exact zero-error +10 result is therefore credible under the current audit. The scientific caution is that broad predictive acceleration should not be claimed until larger jumps reveal the accuracy boundary or continue to pass under increasingly aggressive skips. The recommended progression is +20 next, specifically R3J5: 250 $\rightarrow$ 270 $\rightarrow$ 500 and R3J6: 500 $\rightarrow$ 520 $\rightarrow$ 750. These jobs should not be submitted until the \code{/home} heavy-file cleanup has completed, R3J3/R3J4 heavy outputs have been moved to \code{/scratch}, and the next PBS scripts run Abaqus directly in \code{/scratch}.
 
 Lightweight R3J3/R3J4 evidence was copied into the repository. Heavy Abaqus result and restart files, including \code{.stt}, \code{.odb}, \code{.res}, \code{.sim}, \code{.mdl}, \code{.prt}, large \code{.msg}, and large \code{.dat} files, are intentionally excluded from GitHub and are being offloaded from \code{/home} to \code{/scratch}.
 
@@ -1121,6 +1133,7 @@ Lightweight R3J3/R3J4 evidence was copied into the repository. Heavy Abaqus resu
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r3\_exact\_overwrite\_cases.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_compare\_native\_restart\_against\_1000ref.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R3J\_ZERO\_ERROR\_AUDIT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R3J\_PLUS10\_AUDIT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J3\_250\_to\_260\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J4\_500\_to\_510\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_PROFESSOR\_UPDATE\_2026\_06\_07.md}
