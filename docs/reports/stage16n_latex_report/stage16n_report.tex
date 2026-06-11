@@ -993,15 +993,41 @@ The active corrected submissions, \code{1342923.mmaster02} and \code{1342924.mma
 
 The R3J comparison classifies results using global RF/U/loop metrics, primary local metrics \code{HOLE\_RING\_MISES\_MAX}, \code{HOLE\_RING\_SDV1\_MAX}, \code{HOLE\_RING\_SDV8\_MAX}, and \code{HOLE\_RING\_SDV11\_MAX}, and diagnostic-only \code{HOLE\_RING\_S11\_MAX\_ABS}. The pass threshold is \code{max\_primary\_local\_error\_pct <= 5}; 5--10\% is review; larger than 10\% or solver instability is fail.
 
-\subsection{R3J Job Check on 2026-06-11}
+\subsection{R3J Final Check on 2026-06-11}
 
-On 2026-06-11, an attempted PBS status check from the local workstation could not reach the TU Freiberg HPC login host. The command used the configured workspace SSH profile,
-\begin{verbatim}
-ssh -F $env:USERPROFILE\.ssh\codex_config tu_freiberg
-\end{verbatim}
-but DNS resolution failed for \code{mlogin01.hrz.tu-freiberg.de}. Therefore no new \code{qstat -f} or \code{qstat -x -f} accounting values could be collected during this check.
+On 2026-06-11, PBS history showed that both active R3J jobs had finished. PBS reported \code{Exit\_status=1} and \code{Stageout\_status=1} for both jobs, but the Abaqus solver runs completed successfully. In both cases, the \code{.sta} file ends with \code{THE ANALYSIS HAS COMPLETED SUCCESSFULLY}. The nonzero PBS status came from the wrapper comparison step using Windows-style reference paths during the original job, not from solver failure.
 
-The local R3J folders were inspected after the failed SSH attempt. They still contain only setup and submission artifacts for the active \code{a4} jobs; no returned lightweight solver outputs, \code{.sta} files, qstat dumps, extraction CSVs, or comparison CSVs for jobs \code{1342923.mmaster02} and \code{1342924.mmaster02} were present locally. The scientific status of R3J is therefore unchanged from the previous live check: both jobs had entered production solve, but final completion and comparison remain to be verified once HPC access is available again.
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R3J final PBS accounting.}
+\begin{tabular}{lllllll}
+\toprule
+Job & Case & Walltime & CPU time & CPU \% & Memory & Host \\
+\midrule
+\code{1342923} & R3J1 & 04:07:53 & 22:42:03 & 637 & 94375924kb & \code{mnode101} \\
+\code{1342924} & R3J2 & 04:10:06 & 22:44:30 & 646 & 94377920kb & \code{mnode102} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both jobs requested \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb} with \code{walltime=24:00:00}. R3J1 started at Wed Jun 10 16:58:01 2026 and finished at Wed Jun 10 21:05:59 2026. R3J2 started at Wed Jun 10 16:58:00 2026 and finished at Wed Jun 10 21:08:11 2026.
+
+The comparison was rerun manually on HPC with Linux reference paths. R3J1 was compared against the pilot 1000-cycle reference at cycle 500, and R3J2 was compared against the parallel 1000-cycle reference at cycle 750. Both restart-preserved jump tests passed exactly:
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R3J restart-preserved jump comparison results.}
+\begin{tabular}{llllll}
+\toprule
+Case & Target cycle & Status & Max global error & Max primary local error & Diagnostic S11 error \\
+\midrule
+R3J1 & 500 & pass & 0\% & 0\% & 0\% \\
+R3J2 & 750 & pass & 0\% & 0\% & 0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This is the first successful nonzero repaired cycle-jump gate for the inhomogeneous plate-with-hole benchmark. Within the checked metrics, native restart plus independent material-memory extrapolation preserved the FE state and reproduced the reference exactly after the +5 material-state jump.
 
 \appendix
 \section{Key Repository Evidence Files}
