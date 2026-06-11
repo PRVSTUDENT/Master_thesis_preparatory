@@ -993,6 +993,16 @@ The active corrected submissions, \code{1342923.mmaster02} and \code{1342924.mma
 
 The R3J comparison classifies results using global RF/U/loop metrics, primary local metrics \code{HOLE\_RING\_MISES\_MAX}, \code{HOLE\_RING\_SDV1\_MAX}, \code{HOLE\_RING\_SDV8\_MAX}, and \code{HOLE\_RING\_SDV11\_MAX}, and diagnostic-only \code{HOLE\_RING\_S11\_MAX\_ABS}. The pass threshold is \code{max\_primary\_local\_error\_pct <= 5}; 5--10\% is review; larger than 10\% or solver instability is fail.
 
+\subsection{R3J Job Check on 2026-06-11}
+
+On 2026-06-11, an attempted PBS status check from the local workstation could not reach the TU Freiberg HPC login host. The command used the configured workspace SSH profile,
+\begin{verbatim}
+ssh -F $env:USERPROFILE\.ssh\codex_config tu_freiberg
+\end{verbatim}
+but DNS resolution failed for \code{mlogin01.hrz.tu-freiberg.de}. Therefore no new \code{qstat -f} or \code{qstat -x -f} accounting values could be collected during this check.
+
+The local R3J folders were inspected after the failed SSH attempt. They still contain only setup and submission artifacts for the active \code{a4} jobs; no returned lightweight solver outputs, \code{.sta} files, qstat dumps, extraction CSVs, or comparison CSVs for jobs \code{1342923.mmaster02} and \code{1342924.mmaster02} were present locally. The scientific status of R3J is therefore unchanged from the previous live check: both jobs had entered production solve, but final completion and comparison remain to be verified once HPC access is available again.
+
 \appendix
 \section{Key Repository Evidence Files}
 
