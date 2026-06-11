@@ -22,7 +22,7 @@
 
 \title{\stage{} Inhomogeneous Plate-with-Hole Cycle-Jump Benchmark\\Living Technical Report}
 \author{Master Thesis Preparation}
-\date{Last updated: 2026-06-09}
+\date{Last updated: 2026-06-11}
 
 \begin{document}
 \maketitle
@@ -1029,6 +1029,41 @@ R3J2 & 750 & pass & 0\% & 0\% & 0\% \\
 
 This is the first successful nonzero repaired cycle-jump gate for the inhomogeneous plate-with-hole benchmark. Within the checked metrics, native restart plus independent material-memory extrapolation preserved the FE state and reproduced the reference exactly after the +5 material-state jump.
 
+\subsection{R3J Zero-Error Audit}
+
+Because the R3J result is exactly zero for a nonzero material-state extrapolation, a targeted audit was performed on 2026-06-11 before moving to larger jumps. The audit confirms that the comparison did not accidentally compare a reference file against itself. The R3J1 jump metrics CSV and pilot reference metrics CSV had different inode numbers, sizes, and SHA-256 hashes. The R3J2 jump metrics CSV and parallel reference metrics CSV were likewise distinct.
+
+The extrapolated state files also differ from the base restart states. For R3J1, all 25,184 integration-point records changed between cycle 250 and the extrapolated cycle-255 state; 478,496 state values changed, with maximum absolute delta 0.527609507243. For R3J2, all 25,184 records changed between cycle 500 and the extrapolated cycle-505 state; 478,496 state values changed, with maximum absolute delta 0.294372863770.
+
+The UMAT overwrite trace was present in the Abaqus \code{.dat} files, not the \code{.msg} files. R3J1 printed \code{STAGE16N\_R3J\_OVERWRITE} at \code{KSTEP=251}, \code{KINC=0}, and \code{TIME(2)=250.000000000019}. R3J2 printed the same marker at \code{KSTEP=501}, \code{KINC=0}, and \code{TIME(2)=499.999999999974}. This confirms that the jump was applied once at the intended native-restart continuation hook. The generator was corrected so future wrapper logs grep the \code{.dat} file for this marker.
+
+The endpoint cycle accounting was also correct. R3J1 produced 250 continuation rows, cycles 251--500, and compared against reference cycle 500. R3J2 produced 250 continuation rows, cycles 501--750, and compared against reference cycle 750. The comparison details for both cases report zero error in \code{U1}, \code{RF1}, loop area, \code{HOLE\_RING\_MISES\_MAX}, \code{HOLE\_RING\_SDV1\_MAX}, \code{HOLE\_RING\_SDV8\_MAX}, \code{HOLE\_RING\_SDV11\_MAX}, and diagnostic \code{HOLE\_RING\_S11\_MAX\_ABS}.
+
+The thesis-safe interpretation is therefore:
+
+\begin{quote}
+The restart-preserved cycle-jump strategy was successfully demonstrated for nonzero +5 cycle jumps. Both jumps, from cycle 250 to 255 and from cycle 500 to 505, completed successfully in Abaqus and reproduced the corresponding full reference endpoints with zero global and primary local error. This confirms that the previous reinjection problem was not a limitation of the material model or the inhomogeneous plate-with-hole geometry, but of the scratch \code{SDVINI}/\code{SIGINI} initialization strategy.
+\end{quote}
+
+\subsection{Prepared R3J +10 Cases}
+
+The next conservative fixed-jump cases were prepared locally but not submitted during this update:
+
+\begin{table}[H]
+\centering
+\caption{Prepared Stage 16N-R3J +10 restart-preserved jump cases.}
+\begin{tabular}{lllll}
+\toprule
+Case & Restart & Slope pair & Material jump & Target \\
+\midrule
+\code{R3J3} & 250 & 100 $\rightarrow$ 250 & 250 $\rightarrow$ 260 & 500 \\
+\code{R3J4} & 500 & 250 $\rightarrow$ 500 & 500 $\rightarrow$ 510 & 750 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both generated runners now use Linux repository-relative reference paths for the comparison step and search the Abaqus \code{.dat} file for the overwrite trace. The recommended progression is +10 next, +20 only if +10 passes, and adaptive $\Delta N$ restart-preserved jumping only after the fixed-jump accuracy boundary is known.
+
 \appendix
 \section{Key Repository Evidence Files}
 
@@ -1053,6 +1088,9 @@ This is the first successful nonzero repaired cycle-jump gate for the inhomogene
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_exact\_overwrite\_cases/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r3\_exact\_overwrite\_cases.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_compare\_native\_restart\_against\_1000ref.py}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R3J\_ZERO\_ERROR\_AUDIT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J3\_250\_to\_260\_to\_500/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J4\_500\_to\_510\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_PROFESSOR\_UPDATE\_2026\_06\_07.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/cases/B1D2\_100\_to\_102\_to\_250/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/cases/B1D2\_EQ\_100\_to\_102\_to\_250/}

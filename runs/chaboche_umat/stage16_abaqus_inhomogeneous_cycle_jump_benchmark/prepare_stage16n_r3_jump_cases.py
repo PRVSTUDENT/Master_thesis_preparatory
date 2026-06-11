@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare Stage 16N-R3J restart-preserved +5 cycle-jump controls."""
+"""Prepare Stage 16N-R3J restart-preserved fixed cycle-jump controls."""
 
 from __future__ import annotations
 
@@ -73,6 +73,34 @@ CASES = (
         previous_cycle=250,
         checkpoint_cycle=500,
         jump_cycles=5,
+        target_cycle=750,
+        ref_metrics=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv",
+        ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
+    ),
+    RestartJumpCase(
+        case_id="R3J3_250_to_260_to_500",
+        job="stage16n_r3j3_jump_250_to_260_to_500",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=100,
+        checkpoint_cycle=250,
+        jump_cycles=10,
+        target_cycle=500,
+        ref_metrics=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv",
+        ref_local_states=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv",
+    ),
+    RestartJumpCase(
+        case_id="R3J4_500_to_510_to_750",
+        job="stage16n_r3j4_jump_500_to_510_to_750",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=250,
+        checkpoint_cycle=500,
+        jump_cycles=10,
         target_cycle=750,
         ref_metrics=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv",
         ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
@@ -215,7 +243,7 @@ C ======================================================================
     )
     if needle not in base:
         raise RuntimeError("Could not locate UMAT insertion point")
-    path.write_text(base.replace(needle, call, 1) + hooks + "\n", encoding="utf-8", newline="\n")
+    path.write_text((base.replace(needle, call, 1) + hooks).rstrip() + "\n", encoding="utf-8", newline="\n")
 
 
 def write_restart_deck(path: Path, case: RestartJumpCase, checkpoint_inc: int) -> None:
@@ -275,6 +303,8 @@ done
 
 
 def write_runner(path: Path, case: RestartJumpCase) -> None:
+    ref_metrics = case.ref_metrics.relative_to(STAGE_DIR).as_posix()
+    ref_local_states = case.ref_local_states.relative_to(STAGE_DIR).as_posix()
     text = f"""#!/usr/bin/env bash
 set -euo pipefail
 
@@ -354,7 +384,7 @@ abaqus job="$JOB" input="${{JOB}}.inp" oldjob="${{OLDJOB}}" \\
   cpus="${{ABAQUS_CPUS}}" mp_mode="${{ABAQUS_MP_MODE}}" \\
   2>&1 | tee "$LOG_DIR/${{JOB}}.log"
 
-grep "STAGE16N_R3J_OVERWRITE" "${{JOB}}.msg" \\
+grep "STAGE16N_R3J_OVERWRITE" "${{JOB}}.dat" \\
   > "$LOG_DIR/${{JOB}}_overwrite_trace.txt" || true
 grep -m 5 -A3 "SPARSE SOLVER RUNNING ON" "${{JOB}}.msg" \\
   | tee "$LOG_DIR/${{JOB}}_parallelism_check.log" || true
@@ -367,8 +397,8 @@ CASE_DIR="runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/s
 python3 runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_compare_r3j_jump_against_reference.py \\
   --jump-metrics "$CASE_DIR/${{JOB}}_cycle_metrics.csv" \\
   --jump-local-states "$CASE_DIR/${{JOB}}_selected_cycle_local_states.csv" \\
-  --ref-metrics "{case.ref_metrics.as_posix()}" \\
-  --ref-local-states "{case.ref_local_states.as_posix()}" \\
+  --ref-metrics "runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/{ref_metrics}" \\
+  --ref-local-states "runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/{ref_local_states}" \\
   --cycles "$TARGET_CYCLE" \\
   --out-dir "$CASE_DIR" \\
   --prefix "$JOB" \\
@@ -624,13 +654,28 @@ if __name__ == "__main__":
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
+def case_index_row(case: RestartJumpCase) -> dict[str, object]:
+    checkpoint_inc = parse_checkpoint_increment(case.source_dir / f"{case.oldjob}.sta", case.checkpoint_cycle)
+    return {
+        "case_id": case.case_id,
+        "job": case.job,
+        "oldjob": case.oldjob,
+        "previous_cycle": case.previous_cycle,
+        "checkpoint_cycle": case.checkpoint_cycle,
+        "checkpoint_inc": checkpoint_inc,
+        "jump_cycles": case.jump_cycles,
+        "jump_cycle": case.jump_cycle,
+        "target_cycle": case.target_cycle,
+        "target_step": case.target_step,
+    }
+
+
 def prepare_cases(cases: tuple[RestartJumpCase, ...]) -> None:
     for required in (BASE_UMAT, EXTRACTOR, EXACT_STATE_EXTRACTOR, EXTRAPOLATOR):
         if not required.exists():
             raise FileNotFoundError(required)
     R3J_DIR.mkdir(parents=True, exist_ok=True)
     write_compare_script(STAGE_DIR / "stage16n_compare_r3j_jump_against_reference.py")
-    rows = []
     for case in cases:
         run_dir = case.run_dir
         run_dir.mkdir(parents=True, exist_ok=True)
@@ -642,21 +687,8 @@ def prepare_cases(cases: tuple[RestartJumpCase, ...]) -> None:
         write_pbs(run_dir / f"submit_{case.job}.pbs", case)
         write_manifest(run_dir / "STAGE16N_R3J_CASE_MANIFEST.md", case, checkpoint_inc)
         shutil.copy2(EXTRACTOR, run_dir / EXTRACTOR.name)
-        rows.append(
-            {
-                "case_id": case.case_id,
-                "job": case.job,
-                "oldjob": case.oldjob,
-                "previous_cycle": case.previous_cycle,
-                "checkpoint_cycle": case.checkpoint_cycle,
-                "checkpoint_inc": checkpoint_inc,
-                "jump_cycles": case.jump_cycles,
-                "jump_cycle": case.jump_cycle,
-                "target_cycle": case.target_cycle,
-                "target_step": case.target_step,
-            }
-        )
         print(f"Prepared {run_dir}")
+    rows = [case_index_row(case) for case in CASES]
     with (R3J_DIR / "stage16n_r3j_jump_cases.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(
             handle,
@@ -679,12 +711,16 @@ def prepare_cases(cases: tuple[RestartJumpCase, ...]) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--case", choices=["all", "R3J1", "R3J2"], default="all")
+    parser.add_argument("--case", choices=["all", "R3J1", "R3J2", "R3J3", "R3J4"], default="all")
     args = parser.parse_args()
     if args.case == "R3J1":
         selected = (CASES[0],)
     elif args.case == "R3J2":
         selected = (CASES[1],)
+    elif args.case == "R3J3":
+        selected = (CASES[2],)
+    elif args.case == "R3J4":
+        selected = (CASES[3],)
     else:
         selected = CASES
     prepare_cases(selected)
