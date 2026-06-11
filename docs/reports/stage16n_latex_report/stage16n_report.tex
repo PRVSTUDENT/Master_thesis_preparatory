@@ -1045,24 +1045,56 @@ The thesis-safe interpretation is therefore:
 The restart-preserved cycle-jump strategy was successfully demonstrated for nonzero +5 cycle jumps. Both jumps, from cycle 250 to 255 and from cycle 500 to 505, completed successfully in Abaqus and reproduced the corresponding full reference endpoints with zero global and primary local error. This confirms that the previous reinjection problem was not a limitation of the material model or the inhomogeneous plate-with-hole geometry, but of the scratch \code{SDVINI}/\code{SIGINI} initialization strategy.
 \end{quote}
 
-\subsection{Prepared R3J +10 Cases}
+\subsection{R3J +10 Cases Completed}
 
-The next conservative fixed-jump cases were prepared locally but not submitted during this update:
+The next conservative fixed-jump cases, R3J3 and R3J4, were submitted on 2026-06-11 and completed successfully. These jobs test whether the restart-preserved material-memory jump remains exact when the extrapolated material-state offset is doubled from +5 cycles to +10 cycles.
 
 \begin{table}[H]
 \centering
-\caption{Prepared Stage 16N-R3J +10 restart-preserved jump cases.}
-\begin{tabular}{lllll}
+\caption{Stage 16N-R3J +10 restart-preserved jump cases.}
+\begin{tabular}{llllll}
 \toprule
-Case & Restart & Slope pair & Material jump & Target \\
+Case & PBS job & Restart & Slope pair & Material jump & Target \\
 \midrule
-\code{R3J3} & 250 & 100 $\rightarrow$ 250 & 250 $\rightarrow$ 260 & 500 \\
-\code{R3J4} & 500 & 250 $\rightarrow$ 500 & 500 $\rightarrow$ 510 & 750 \\
+\code{R3J3} & \code{1344231.mmaster02} & 250 & 100 $\rightarrow$ 250 & 250 $\rightarrow$ 260 & 500 \\
+\code{R3J4} & \code{1344232.mmaster02} & 500 & 250 $\rightarrow$ 500 & 500 $\rightarrow$ 510 & 750 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Both generated runners now use Linux repository-relative reference paths for the comparison step and search the Abaqus \code{.dat} file for the overwrite trace. The recommended progression is +10 next, +20 only if +10 passes, and adaptive $\Delta N$ restart-preserved jumping only after the fixed-jump accuracy boundary is known.
+PBS history reported \code{Exit\_status=0} for both jobs, while \code{Stageout\_status=1} remained present. The Abaqus solver status is therefore successful, and the stage-out warning is treated as a file-transfer/accounting issue rather than a solver failure. The \code{.sta} files for both jobs end with \code{THE ANALYSIS HAS COMPLETED SUCCESSFULLY}.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R3J +10 final PBS accounting.}
+\begin{tabular}{lllllll}
+\toprule
+Job & Case & Walltime & CPU time & CPU \% & Memory & Host \\
+\midrule
+\code{1344231} & R3J3 & 04:08:42 & 22:51:08 & 646 & 94375928kb & \code{mnode101} \\
+\code{1344232} & R3J4 & 04:07:59 & 22:41:15 & 656 & 94377792kb & \code{mnode102} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both jobs requested \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb} with \code{walltime=24:00:00}. R3J3 started at Thu Jun 11 09:55:29 2026 and finished at Thu Jun 11 14:04:16 2026. R3J4 started at Thu Jun 11 09:55:29 2026 and finished at Thu Jun 11 14:03:34 2026.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R3J +10 comparison results.}
+\begin{tabular}{llllll}
+\toprule
+Case & Target cycle & Status & Max global error & Max primary local error & Diagnostic S11 error \\
+\midrule
+R3J3 & 500 & pass & 0\% & 0\% & 0\% \\
+R3J4 & 750 & pass & 0\% & 0\% & 0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The +10 results preserve the same zero-error endpoint behavior observed in the +5 cases. Within the current comparison metrics, the restart-preserved method has now passed nonzero fixed jumps of +5 and +10 cycles at both restart checkpoints. The recommended progression is +20 next, and adaptive $\Delta N$ restart-preserved jumping only after the fixed-jump accuracy boundary is known.
+
+Lightweight R3J3/R3J4 evidence was copied into the repository. Heavy Abaqus result and restart files, including \code{.stt}, \code{.odb}, \code{.res}, \code{.sim}, \code{.mdl}, \code{.prt}, large \code{.msg}, and large \code{.dat} files, are intentionally excluded from GitHub and are being offloaded from \code{/home} to \code{/scratch}.
 
 \appendix
 \section{Key Repository Evidence Files}
