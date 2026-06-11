@@ -105,6 +105,34 @@ CASES = (
         ref_metrics=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv",
         ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
     ),
+    RestartJumpCase(
+        case_id="R3J5_250_to_270_to_500",
+        job="stage16n_r3j5_jump_250_to_270_to_500",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=100,
+        checkpoint_cycle=250,
+        jump_cycles=20,
+        target_cycle=500,
+        ref_metrics=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv",
+        ref_local_states=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv",
+    ),
+    RestartJumpCase(
+        case_id="R3J6_500_to_520_to_750",
+        job="stage16n_r3j6_jump_500_to_520_to_750",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=250,
+        checkpoint_cycle=500,
+        jump_cycles=20,
+        target_cycle=750,
+        ref_metrics=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv",
+        ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
+    ),
 )
 
 
@@ -711,7 +739,11 @@ def prepare_cases(cases: tuple[RestartJumpCase, ...]) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--case", choices=["all", "R3J1", "R3J2", "R3J3", "R3J4"], default="all")
+    parser.add_argument(
+        "--case",
+        choices=["all", "R3J1", "R3J2", "R3J3", "R3J4", "R3J5", "R3J6"],
+        default="all",
+    )
     args = parser.parse_args()
     if args.case == "R3J1":
         selected = (CASES[0],)
@@ -721,6 +753,10 @@ def main() -> None:
         selected = (CASES[2],)
     elif args.case == "R3J4":
         selected = (CASES[3],)
+    elif args.case == "R3J5":
+        selected = (CASES[4],)
+    elif args.case == "R3J6":
+        selected = (CASES[5],)
     else:
         selected = CASES
     prepare_cases(selected)
