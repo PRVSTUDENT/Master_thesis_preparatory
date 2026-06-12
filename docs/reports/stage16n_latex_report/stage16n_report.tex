@@ -1127,6 +1127,38 @@ The case folders and PBS scripts were uploaded to the HPC repository, but the jo
 
 On 2026-06-12, the general storage gate had improved to \code{/home}=71\% and \code{/scratch}=74\%, but the watchdog still correctly blocked submission because three heavy \code{.stt} files larger than 10 GB remained in the \code{/home} project tree: the R2C1 native restart \code{.stt}, the R3J3 +10 \code{.stt}, and the R3J4 +10 \code{.stt}. A focused offload process, \code{/tmp/offload\_remaining\_heavy\_for\_r3j\_plus20.py}, was started as PID 1878791 to copy those blockers to \code{/scratch/pr21vyci/home\_offload/...}, verify file sizes, delete the \code{/home} originals, and replace them with symlinks. The cleanup-gated watchdog was restarted as PID 1877723 and remains responsible for submitting R3J5/R3J6 once this final blocker list is cleared.
 
+The focused offload completed successfully, reducing \code{/home} to 64\% at watchdog submission time. The watchdog then submitted R3J5 and R3J6 automatically at approximately Fri Jun 12 06:52 CEST 2026:
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R3J +20 final PBS accounting.}
+\begin{tabular}{lllllll}
+\toprule
+Job ID & Case & Walltime & CPU time & CPU percent & Memory & Host \\
+\midrule
+\code{1344614} & R3J5 & 04:13:13 & 22:48:35 & 621 & 94375888kb & \code{mnode100} \\
+\code{1344615} & R3J6 & 04:07:32 & 22:32:31 & 641 & 94375872kb & \code{mnode101} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both jobs completed with PBS \code{Exit\_status=0} and \code{Stageout\_status=1}. R3J5 started at Fri Jun 12 06:52:29 2026 and finished at 11:05:48. R3J6 started at Fri Jun 12 06:52:31 2026 and finished at 11:00:09. The \code{.sta} files for both jobs end with \code{THE ANALYSIS HAS COMPLETED SUCCESSFULLY}.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R3J +20 comparison results.}
+\begin{tabular}{llllll}
+\toprule
+Case & Target cycle & Status & Max global error & Max primary local error & Diagnostic S11 error \\
+\midrule
+R3J5 & 500 & pass & 0\% & 0\% & 0\% \\
+R3J6 & 750 & pass & 0\% & 0\% & 0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The UMAT overwrite trace confirms that the state overwrite fired at the intended restart continuation hook: \code{KSTEP=251} for R3J5 and \code{KSTEP=501} for R3J6, with 9 diagnostic trace lines in each case. The Stage 16N-R conclusion is therefore stronger again: the restart-preserved UMAT cycle-jump workflow has now passed nonzero +5, +10, and +20 jumps. The remaining scientific question is the jump-size boundary at which endpoint and local metric error becomes nonzero.
+
 Lightweight R3J3/R3J4 evidence was copied into the repository. Heavy Abaqus result and restart files, including \code{.stt}, \code{.odb}, \code{.res}, \code{.sim}, \code{.mdl}, \code{.prt}, large \code{.msg}, and large \code{.dat} files, are intentionally excluded from GitHub and are being offloaded from \code{/home} to \code{/scratch}.
 
 \appendix
@@ -1155,6 +1187,7 @@ Lightweight R3J3/R3J4 evidence was copied into the repository. Heavy Abaqus resu
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_compare\_native\_restart\_against\_1000ref.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R3J\_ZERO\_ERROR\_AUDIT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R3J\_PLUS10\_AUDIT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R3J\_PLUS20\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J3\_250\_to\_260\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J4\_500\_to\_510\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J5\_250\_to\_270\_to\_500/}
