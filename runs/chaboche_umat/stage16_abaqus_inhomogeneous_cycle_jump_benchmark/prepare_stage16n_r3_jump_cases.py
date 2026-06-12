@@ -133,6 +133,34 @@ CASES = (
         ref_metrics=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv",
         ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
     ),
+    RestartJumpCase(
+        case_id="R3J7_250_to_300_to_500",
+        job="stage16n_r3j7_jump_250_to_300_to_500",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=100,
+        checkpoint_cycle=250,
+        jump_cycles=50,
+        target_cycle=500,
+        ref_metrics=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv",
+        ref_local_states=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv",
+    ),
+    RestartJumpCase(
+        case_id="R3J8_500_to_550_to_750",
+        job="stage16n_r3j8_jump_500_to_550_to_750",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=250,
+        checkpoint_cycle=500,
+        jump_cycles=50,
+        target_cycle=750,
+        ref_metrics=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv",
+        ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
+    ),
 )
 
 
@@ -741,7 +769,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--case",
-        choices=["all", "R3J1", "R3J2", "R3J3", "R3J4", "R3J5", "R3J6"],
+        choices=["all", "R3J1", "R3J2", "R3J3", "R3J4", "R3J5", "R3J6", "R3J7", "R3J8"],
         default="all",
     )
     args = parser.parse_args()
@@ -757,6 +785,10 @@ def main() -> None:
         selected = (CASES[4],)
     elif args.case == "R3J6":
         selected = (CASES[5],)
+    elif args.case == "R3J7":
+        selected = (CASES[6],)
+    elif args.case == "R3J8":
+        selected = (CASES[7],)
     else:
         selected = CASES
     prepare_cases(selected)
