@@ -32,6 +32,7 @@ class RestartJumpCase:
     target_cycle: int
     ref_metrics: Path
     ref_local_states: Path
+    solve_start_cycle: int | None = None
 
     @property
     def run_dir(self) -> Path:
@@ -43,6 +44,12 @@ class RestartJumpCase:
 
     @property
     def target_step(self) -> int:
+        return self.checkpoint_cycle + 1
+
+    @property
+    def continuation_start_cycle(self) -> int:
+        if self.solve_start_cycle is not None:
+            return self.solve_start_cycle
         return self.checkpoint_cycle + 1
 
 
@@ -160,6 +167,36 @@ CASES = (
         target_cycle=750,
         ref_metrics=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv",
         ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
+    ),
+    RestartJumpCase(
+        case_id="R4J1_250_to_300_solve_301_to_500",
+        job="stage16n_r4j1_jump_250_to_300_solve_301_to_500",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=100,
+        checkpoint_cycle=250,
+        jump_cycles=50,
+        target_cycle=500,
+        ref_metrics=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv",
+        ref_local_states=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv",
+        solve_start_cycle=301,
+    ),
+    RestartJumpCase(
+        case_id="R4J2_500_to_550_solve_551_to_750",
+        job="stage16n_r4j2_jump_500_to_550_solve_551_to_750",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=250,
+        checkpoint_cycle=500,
+        jump_cycles=50,
+        target_cycle=750,
+        ref_metrics=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv",
+        ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
+        solve_start_cycle=551,
     ),
 )
 
@@ -311,7 +348,7 @@ def write_restart_deck(path: Path, case: RestartJumpCase, checkpoint_inc: int) -
         f"Stage 16N-R3J {case.checkpoint_cycle} to {case.jump_cycle} to {case.target_cycle}",
         f"*RESTART, READ, STEP={case.checkpoint_cycle}, INC={checkpoint_inc}",
     ]
-    for cycle in range(case.checkpoint_cycle + 1, case.target_cycle + 1):
+    for cycle in range(case.continuation_start_cycle, case.target_cycle + 1):
         lines.extend(
             [
                 "*STEP, NAME=CYCLE_%04d, NLGEOM=NO, INC=160" % cycle,
@@ -392,6 +429,7 @@ echo "[Stage16N-R3J] oldjob: $OLDJOB"
 echo "[Stage16N-R3J] restart checkpoint: $CHECKPOINT_CYCLE"
 echo "[Stage16N-R3J] slope pair: $PREVIOUS_CYCLE -> $CHECKPOINT_CYCLE"
 echo "[Stage16N-R3J] material jump: $CHECKPOINT_CYCLE -> $JUMP_CYCLE"
+echo "[Stage16N-R3J] solved continuation cycles: {case.continuation_start_cycle} -> $TARGET_CYCLE"
 echo "[Stage16N-R3J] target cycle: $TARGET_CYCLE"
 echo "[Stage16N-R3J] cpus=${{ABAQUS_CPUS}} mp_mode=${{ABAQUS_MP_MODE}}"
 echo "[Stage16N-R3J] scratch=$ABAQUS_SCRATCH"
@@ -526,6 +564,7 @@ def write_manifest(path: Path, case: RestartJumpCase, checkpoint_inc: int) -> No
 - Slope pair: `{case.previous_cycle} -> {case.checkpoint_cycle}`
 - Jump formula: `STATEV_jump = STATEV_base + {case.jump_cycles} * dSTATEV/dN`
 - Material-state jump: `{case.checkpoint_cycle} -> {case.jump_cycle}`
+- Solved continuation cycles: `{case.continuation_start_cycle} -> {case.target_cycle}`
 - Continuation target: `{case.target_cycle}`
 - Overwrite trigger: `JSTEP(1)={case.target_step}`, `KINC=0`, `TIME(1)=0`, `TIME(2)~={case.checkpoint_cycle}`
 - Overwritten variables: `STATEV(1:25)`
@@ -721,6 +760,7 @@ def case_index_row(case: RestartJumpCase) -> dict[str, object]:
         "checkpoint_inc": checkpoint_inc,
         "jump_cycles": case.jump_cycles,
         "jump_cycle": case.jump_cycle,
+        "continuation_start_cycle": case.continuation_start_cycle,
         "target_cycle": case.target_cycle,
         "target_step": case.target_step,
     }
@@ -757,6 +797,7 @@ def prepare_cases(cases: tuple[RestartJumpCase, ...]) -> None:
                 "checkpoint_inc",
                 "jump_cycles",
                 "jump_cycle",
+                "continuation_start_cycle",
                 "target_cycle",
                 "target_step",
             ],
@@ -769,7 +810,19 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--case",
-        choices=["all", "R3J1", "R3J2", "R3J3", "R3J4", "R3J5", "R3J6", "R3J7", "R3J8"],
+        choices=[
+            "all",
+            "R3J1",
+            "R3J2",
+            "R3J3",
+            "R3J4",
+            "R3J5",
+            "R3J6",
+            "R3J7",
+            "R3J8",
+            "R4J1",
+            "R4J2",
+        ],
         default="all",
     )
     args = parser.parse_args()
@@ -789,6 +842,10 @@ def main() -> None:
         selected = (CASES[6],)
     elif args.case == "R3J8":
         selected = (CASES[7],)
+    elif args.case == "R4J1":
+        selected = (CASES[8],)
+    elif args.case == "R4J2":
+        selected = (CASES[9],)
     else:
         selected = CASES
     prepare_cases(selected)
