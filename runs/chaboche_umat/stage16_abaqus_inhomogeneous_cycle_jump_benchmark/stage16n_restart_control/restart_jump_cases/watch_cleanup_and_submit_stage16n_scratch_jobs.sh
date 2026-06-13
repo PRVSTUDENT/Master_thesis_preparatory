@@ -20,7 +20,7 @@ CASE_ROOT_HOME="$PROJECT_ROOT/$CASE_ROOT_REL"
 CASE1_NAME="R4J1_250_to_300_solve_301_to_500"
 CASE2_NAME="R4J2_500_to_550_solve_551_to_750"
 
-SCRATCH_ROOT="/scratch/$USER_NAME/stage16n_scratch_runs"
+SCRATCH_ROOT="/scratch/$USER_NAME/stage16n_scratch_runs_r4j_v2"
 SCRATCH_REPO="$SCRATCH_ROOT/Abaqus_trial"
 
 MARKER="$CASE_ROOT_HOME/.scratch_auto_submit_${CASE1_NAME}_${CASE2_NAME}.done"
@@ -109,26 +109,53 @@ check_home_heavy_files() {
 
 stage_repo_to_scratch() {
     log ""
-    log "Staging lightweight repository tree to scratch..."
+    log "Staging minimal repository tree to scratch..."
     log "PROJECT_ROOT = $PROJECT_ROOT"
     log "SCRATCH_REPO = $SCRATCH_REPO"
 
-    mkdir -p "$SCRATCH_REPO"
+    rm -rf "$SCRATCH_REPO/$STAGE_REL/stage16n_restart_control/restart_jump_cases/$CASE1_NAME"
+    rm -rf "$SCRATCH_REPO/$STAGE_REL/stage16n_restart_control/restart_jump_cases/$CASE2_NAME"
+    mkdir -p "$SCRATCH_REPO/$STAGE_REL"
+    mkdir -p "$SCRATCH_REPO/$CASE_ROOT_REL"
+
+    rsync -a \
+        "$STAGE_DIR/stage16n_extract_exact_state_for_reinjection.py" \
+        "$STAGE_DIR/stage16n_make_extrapolated_state.py" \
+        "$STAGE_DIR/stage16n_extract_hysteresis_and_local_states.py" \
+        "$STAGE_DIR/stage16n_compare_r3j_jump_against_reference.py" \
+        "$SCRATCH_REPO/$STAGE_REL/"
+
+    mkdir -p "$SCRATCH_REPO/$STAGE_REL/stage16n_1000cycle_pilot"
+    rsync -a \
+        "$STAGE_DIR/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv" \
+        "$STAGE_DIR/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv" \
+        "$SCRATCH_REPO/$STAGE_REL/stage16n_1000cycle_pilot/"
+
+    mkdir -p "$SCRATCH_REPO/$STAGE_REL/stage16n_parallel_max_reference"
+    rsync -a \
+        "$STAGE_DIR/stage16n_parallel_max_reference/stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv" \
+        "$STAGE_DIR/stage16n_parallel_max_reference/stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv" \
+        "$SCRATCH_REPO/$STAGE_REL/stage16n_parallel_max_reference/"
 
     rsync -a --delete \
-        --exclude=".git/" \
-        --exclude="*.odb" \
-        --exclude="*.stt" \
-        --exclude="*.res" \
-        --exclude="*.sim" \
-        --exclude="*.mdl" \
-        --exclude="*.prt" \
-        --exclude="*.lck" \
-        --exclude="*.pac" \
-        --exclude="*.abq" \
-        --exclude="*.sel" \
-        --exclude="*.jnl" \
-        "$PROJECT_ROOT"/ "$SCRATCH_REPO"/
+        "$CASE_ROOT_HOME/$CASE1_NAME/" \
+        "$SCRATCH_REPO/$CASE_ROOT_REL/$CASE1_NAME/"
+
+    rsync -a --delete \
+        "$CASE_ROOT_HOME/$CASE2_NAME/" \
+        "$SCRATCH_REPO/$CASE_ROOT_REL/$CASE2_NAME/"
+
+    rsync -a \
+        "$CASE_ROOT_HOME/stage16n_r3j_jump_cases.csv" \
+        "$SCRATCH_REPO/$CASE_ROOT_REL/"
+
+    local HOME_R1A="$STAGE_DIR/stage16n_restart_control/R1A_restart_reference_500cycles"
+    local SCRATCH_R1A="$SCRATCH_REPO/$STAGE_REL/stage16n_restart_control/R1A_restart_reference_500cycles"
+    mkdir -p "$SCRATCH_R1A"
+    for ext in odb res stt mdl sim prt; do
+        ln -sfn "$HOME_R1A/stage16n_r1a_restart_ref_500cycles.$ext" \
+            "$SCRATCH_R1A/stage16n_r1a_restart_ref_500cycles.$ext"
+    done
 }
 
 find_case_runner() {
@@ -153,18 +180,21 @@ write_scratch_pbs() {
     local HOME_CASE="$CASE_ROOT_HOME/$CASE_NAME"
     local RUNNER="$3"
 
-    local PBS_FILE="$SCRATCH_CASE/submit_${CASE_NAME}_scratch.pbs"
+    local PBS_FILE="$HOME_CASE/submit_${CASE_NAME}_scratch.pbs"
     local RUNNER_BASE
     RUNNER_BASE=$(basename "$RUNNER")
 
     cat > "$PBS_FILE" <<EOF
 #!/bin/bash
 #PBS -N ${CASE_NAME}
+#PBS -q entry_teachingq
 #PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
 #PBS -l walltime=24:00:00
 #PBS -j oe
 #PBS -S /bin/bash
-#PBS -o ${SCRATCH_CASE}/${CASE_NAME}.pbs.out
+#PBS -o ${HOME_CASE}/${CASE_NAME}.pbs.out
+#PBS -m abe
+#PBS -M ${USER_NAME}@mailserver.tu-freiberg.de
 
 set -uo pipefail
 

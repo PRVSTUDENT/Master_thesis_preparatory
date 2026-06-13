@@ -58,4 +58,25 @@ Heavy Abaqus outputs are excluded from `/home` stage-back:
 
 ## Current Status
 
-No R4J jobs were active at watchdog installation time. The watchdog is waiting for cleanup, storage, and no-active-job gates before submitting the two scratch-based jobs.
+The first scratch-submission attempt failed because PBS rejected a script submitted directly from `/scratch`:
+
+```text
+qsub: Unauthorized Request
+```
+
+The watchdog was corrected so that PBS wrapper files are written and submitted from the `/home` case folders while the job itself changes directory to the scratch case folder before running Abaqus. A second staging correction narrowed scratch staging to only the required case folders, helper scripts, reference CSV files, and restart-source symlinks. The active scratch root is now:
+
+```text
+/scratch/pr21vyci/stage16n_scratch_runs_r4j_v2/Abaqus_trial
+```
+
+The final submission issue was a missing queue directive. Adding `#PBS -q entry_teachingq` matched the accepted Stage 16N PBS pattern and allowed submission.
+
+The corrected watchdog submitted both jobs on Sat Jun 13 06:01 CEST 2026:
+
+| Case | PBS job | State at check | Queue | Host | Start time |
+|---|---|---|---|---|---|
+| R4J1 | `1344946.mmaster02` | R | teachingq | mnode100 | Sat Jun 13 06:01:25 2026 |
+| R4J2 | `1344947.mmaster02` | R | teachingq | mnode101 | Sat Jun 13 06:01:26 2026 |
+
+Requested resources for each job are `select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb`, with `walltime=24:00:00`.
