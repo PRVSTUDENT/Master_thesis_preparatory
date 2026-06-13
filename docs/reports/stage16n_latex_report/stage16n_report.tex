@@ -1186,9 +1186,30 @@ R4J2 & 500 & 500 $\rightarrow$ 550 & 551--750 & 750 \\
 
 The generated R4J1 deck starts with \code{*STEP, NAME=CYCLE\_0301}; the generated R4J2 deck starts with \code{*STEP, NAME=CYCLE\_0551}. The UMAT overwrite trigger remains the first restart-continuation step, \code{JSTEP(1)=251} for R4J1 and \code{JSTEP(1)=501} for R4J2, because that is where Abaqus enters the first new step after reading the native checkpoint.
 
-To avoid repeating the HPC \code{/home} storage issue, the R4J pair is submitted through the scratch watchdog \code{watch\_cleanup\_and\_submit\_stage16n\_scratch\_jobs.sh}. This script waits for ongoing offload work to finish, verifies \code{/home} and \code{/scratch} usage, checks that no large Abaqus heavy files remain in the \code{/home} project tree, stages only the required case folders, helper scripts, reference CSV files, and restart-source symlinks to \code{/scratch/pr21vyci/stage16n\_scratch\_runs\_r4j\_v2/Abaqus\_trial}, submits PBS wrappers from the \code{/home} case folders, runs Abaqus in the scratch case directories, and copies back only lightweight evidence. The final submission required the same queue directive used by accepted Stage 16N jobs, \code{\#PBS -q entry\_teachingq}. With that fix, R4J1 and R4J2 were submitted on Sat Jun 13 06:01 CEST 2026 as jobs \code{1344946.mmaster02} and \code{1344947.mmaster02}; both were running at the status check on \code{mnode100} and \code{mnode101}, respectively.
+To avoid repeating the HPC \code{/home} storage issue, the R4J pair was submitted through the scratch watchdog \code{watch\_cleanup\_and\_submit\_stage16n\_scratch\_jobs.sh}. This script waits for ongoing offload work to finish, verifies \code{/home} and \code{/scratch} usage, checks that no large Abaqus heavy files remain in the \code{/home} project tree, stages only the required case folders, helper scripts, reference CSV files, and restart-source symlinks to \code{/scratch/pr21vyci/stage16n\_scratch\_runs\_r4j\_v2/Abaqus\_trial}, submits PBS wrappers from the \code{/home} case folders, runs Abaqus in the scratch case directories, and copies back only lightweight evidence. The final submission required the same queue directive used by accepted Stage 16N jobs, \code{\#PBS -q entry\_teachingq}. With that fix, R4J1 and R4J2 were submitted on Sat Jun 13 06:01 CEST 2026 as jobs \code{1344946.mmaster02} and \code{1344947.mmaster02}.
 
-Lightweight R3J5/R3J6 evidence was copied into the repository. Heavy Abaqus result and restart files, including \code{.stt}, \code{.odb}, \code{.res}, \code{.sim}, \code{.mdl}, \code{.prt}, large \code{.msg}, and large \code{.dat} files, are intentionally excluded from GitHub and are being offloaded from \code{/home} to \code{/scratch}.
+\subsection{R4J +50 True Cycle-Skip Result}
+
+Both R4J jobs completed successfully as Abaqus analyses. PBS reported \code{Exit\_status=0} for both jobs, and the \code{.sta} files end with \code{THE ANALYSIS HAS COMPLETED SUCCESSFULLY}. The R4J1 job ran on \code{mnode100} from Sat Jun 13 06:01:25 to 10:20:56 CEST 2026, using 04:19:28 walltime, 17:56:39 CPU time, 571 CPU percent, and \code{94377788kb} memory. The R4J2 job ran on \code{mnode101} from Sat Jun 13 06:01:26 to 10:12:41 CEST 2026, using 04:11:10 walltime, 17:28:03 CPU time, 568 CPU percent, and \code{94372048kb} memory.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4J true +50 cycle-skip comparison results.}
+\begin{tabular}{llllll}
+\toprule
+Case & Endpoint & Status & Max global error & Max primary local error & Diagnostic S11 error \\
+\midrule
+R4J1 & 500 & fail & 1.8127809\% & 14.384123\% & 9.4269674\% \\
+R4J2 & 750 & fail & 1.7938482\% & 14.426805\% & 11.71291\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The failed comparison status is an accuracy result, not a solver-stability result. In R4J1, the largest primary local error is \code{HOLE\_RING\_SDV8\_MAX} at 14.384123\%; \code{HOLE\_RING\_MISES\_MAX} and \code{HOLE\_RING\_SDV11\_MAX} also exceed 10\%. In R4J2, the largest primary local error is \code{HOLE\_RING\_MISES\_MAX} at 14.426805\%. The global force-displacement metrics remain below about 1.9\% in both cases, showing again that the local hole-ring metrics control the safe jump size.
+
+This result provides the first true cycle-skip accuracy boundary for the repaired restart route. R3J +5, +10, and +20 validated stable restart-preserved material-state overwrite, but R4J is the first deck family that also skips solved Abaqus load cycles after the material-state target. Therefore the thesis-safe conclusion is that native Abaqus restart plus UMAT-side material-memory overwrite solves the mechanical reinjection instability of the \code{SDVINI}/\code{SIGINI} scratch route, while a true +50 skipped-cycle acceleration is outside the current safe range for this inhomogeneous benchmark and linear state extrapolation. The next useful study should bracket the boundary with smaller true skips, for example +30 or +40, using the R4J continuation-step pattern.
+
+Lightweight R4J evidence was copied into the repository. Heavy Abaqus result and restart files, including \code{.stt}, \code{.odb}, \code{.res}, \code{.sim}, \code{.mdl}, \code{.prt}, large \code{.msg}, large \code{.dat}, \code{state.bin}, and large \code{state.csv} files, are intentionally excluded from GitHub and kept in scratch/offload storage.
 
 \appendix
 \section{Key Repository Evidence Files}
@@ -1219,6 +1240,7 @@ Lightweight R3J5/R3J6 evidence was copied into the repository. Heavy Abaqus resu
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R3J\_PLUS20\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R3J\_PLUS20\_AUDIT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_SCRATCH\_SUBMISSION.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_TRUE\_CYCLE\_SKIP\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J3\_250\_to\_260\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J4\_500\_to\_510\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J5\_250\_to\_270\_to\_500/}

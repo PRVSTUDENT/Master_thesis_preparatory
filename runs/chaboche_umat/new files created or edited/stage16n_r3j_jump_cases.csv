@@ -1,3 +1,0 @@
-case_id,job,oldjob,previous_cycle,checkpoint_cycle,checkpoint_inc,jump_cycles,jump_cycle,target_cycle,target_step
-R3J1_250_to_255_to_500,stage16n_r3j1_jump_250_to_255_to_500_a4,stage16n_r1a_restart_ref_500cycles,100,250,58,5,255,500,251
-R3J2_500_to_505_to_750,stage16n_r3j2_jump_500_to_505_to_750_a4,stage16n_r1a_restart_ref_500cycles,250,500,65,5,505,750,501
