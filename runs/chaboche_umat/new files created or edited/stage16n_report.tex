@@ -1211,6 +1211,25 @@ This result provides the first true cycle-skip accuracy boundary for the repaire
 
 Lightweight R4J evidence was copied into the repository. Heavy Abaqus result and restart files, including \code{.stt}, \code{.odb}, \code{.res}, \code{.sim}, \code{.mdl}, \code{.prt}, large \code{.msg}, large \code{.dat}, \code{state.bin}, and large \code{state.csv} files, are intentionally excluded from GitHub and kept in scratch/offload storage.
 
+\subsection{R4J +20 True-Skip Refinement Prepared}
+
+After the +50 accuracy failure, the next refinement pair was prepared as true-skip +20 rather than a larger jump. R4J3 restarts from cycle 250, overwrites material memory to cycle 270, and starts the solved continuation at \code{CYCLE\_0271}; R4J4 restarts from cycle 500, overwrites material memory to cycle 520, and starts the solved continuation at \code{CYCLE\_0521}. Thus these cases skip cycles 251--270 and 501--520, respectively, unlike the R3J overwrite-validation cases that still solved the intermediate cycles.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4J true-skip +20 refinement cases prepared on 2026-06-13.}
+\begin{tabular}{lllll}
+\toprule
+Case & Restart checkpoint & Material-state jump & Solved continuation cycles & Endpoint \\
+\midrule
+R4J3 & 250 & 250 $\rightarrow$ 270 & 271--500 & 500 \\
+R4J4 & 500 & 500 $\rightarrow$ 520 & 521--750 & 750 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The dedicated scratch watchdog \code{watch\_cleanup\_and\_submit\_stage16n\_r4j\_plus20\_scratch\_jobs.sh} was created to stage only the required files into \code{/scratch/pr21vyci/stage16n\_scratch\_runs\_r4j\_plus20/Abaqus\_trial}, submit PBS wrappers from \code{/home}, run Abaqus in \code{/scratch}, and copy back only lightweight evidence. The jobs were not submitted at preparation time because the local workstation could not resolve the HPC login hostname \code{mlogin01.hrz.tu-freiberg.de}. Before submission, the storage gate and heavy-file check should be rerun.
+
 \appendix
 \section{Key Repository Evidence Files}
 
@@ -1241,12 +1260,15 @@ Lightweight R4J evidence was copied into the repository. Heavy Abaqus result and
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R3J\_PLUS20\_AUDIT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_SCRATCH\_SUBMISSION.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_TRUE\_CYCLE\_SKIP\_RESULT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_PLUS20\_PREPARATION.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J3\_250\_to\_260\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J4\_500\_to\_510\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J5\_250\_to\_270\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J6\_500\_to\_520\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J1\_250\_to\_300\_solve\_301\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J2\_500\_to\_550\_solve\_551\_to\_750/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J3\_250\_to\_270\_solve\_271\_to\_500/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J4\_500\_to\_520\_solve\_521\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/watch\_cleanup\_and\_submit\_stage16n\_scratch\_jobs.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_PROFESSOR\_UPDATE\_2026\_06\_07.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/cases/B1D2\_100\_to\_102\_to\_250/}

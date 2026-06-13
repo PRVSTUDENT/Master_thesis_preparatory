@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-JOB="stage16n_r4j4_jump_500_to_520_solve_521_to_750"
+JOB="stage16n_r4j3_jump_250_to_270_solve_271_to_500"
 OLDJOB="stage16n_r1a_restart_ref_500cycles"
-PREVIOUS_CYCLE="250"
-CHECKPOINT_CYCLE="500"
+PREVIOUS_CYCLE="100"
+CHECKPOINT_CYCLE="250"
 JUMP_CYCLES="20"
-JUMP_CYCLE="520"
-TARGET_CYCLE="750"
-TARGET_STEP="501"
+JUMP_CYCLE="270"
+TARGET_CYCLE="500"
+TARGET_STEP="251"
 
 ABAQUS_CPUS="${ABAQUS_CPUS:-16}"
 ABAQUS_MP_MODE="${ABAQUS_MP_MODE:-threads}"
@@ -29,7 +29,7 @@ echo "[Stage16N-R3J] oldjob: $OLDJOB"
 echo "[Stage16N-R3J] restart checkpoint: $CHECKPOINT_CYCLE"
 echo "[Stage16N-R3J] slope pair: $PREVIOUS_CYCLE -> $CHECKPOINT_CYCLE"
 echo "[Stage16N-R3J] material jump: $CHECKPOINT_CYCLE -> $JUMP_CYCLE"
-echo "[Stage16N-R3J] solved continuation cycles: 521 -> $TARGET_CYCLE"
+echo "[Stage16N-R3J] solved continuation cycles: 271 -> $TARGET_CYCLE"
 echo "[Stage16N-R3J] target cycle: $TARGET_CYCLE"
 echo "[Stage16N-R3J] cpus=${ABAQUS_CPUS} mp_mode=${ABAQUS_MP_MODE}"
 echo "[Stage16N-R3J] scratch=$ABAQUS_SCRATCH"
@@ -87,12 +87,12 @@ abaqus python ../../../stage16n_extract_hysteresis_and_local_states.py --job "$J
   2>&1 | tee "$LOG_DIR/${JOB}_extract.log"
 
 cd "${REPO_ROOT:-$HOME/master_thesis/Abaqus_trial}"
-CASE_DIR="runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J4_500_to_520_solve_521_to_750"
+CASE_DIR="runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J3_250_to_270_solve_271_to_500"
 python3 runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_compare_r3j_jump_against_reference.py \
   --jump-metrics "$CASE_DIR/${JOB}_cycle_metrics.csv" \
   --jump-local-states "$CASE_DIR/${JOB}_selected_cycle_local_states.csv" \
-  --ref-metrics "runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_parallel_max_reference/stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv" \
-  --ref-local-states "runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_parallel_max_reference/stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv" \
+  --ref-metrics "runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv" \
+  --ref-local-states "runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv" \
   --cycles "$TARGET_CYCLE" \
   --out-dir "$CASE_DIR" \
   --prefix "$JOB" \

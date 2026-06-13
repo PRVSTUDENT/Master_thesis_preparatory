@@ -1,16 +1,16 @@
 # Stage 16N-R3J Restart-Preserved Jump Case
 
-- Case: `R4J4_500_to_520_solve_521_to_750`
-- Job: `stage16n_r4j4_jump_500_to_520_solve_521_to_750`
+- Case: `R4J3_250_to_270_solve_271_to_500`
+- Job: `stage16n_r4j3_jump_250_to_270_solve_271_to_500`
 - Oldjob: `stage16n_r1a_restart_ref_500cycles`
-- Restart read: `STEP=500, INC=65`
-- Native restart checkpoint: `500`
-- Slope pair: `250 -> 500`
+- Restart read: `STEP=250, INC=58`
+- Native restart checkpoint: `250`
+- Slope pair: `100 -> 250`
 - Jump formula: `STATEV_jump = STATEV_base + 20 * dSTATEV/dN`
-- Material-state jump: `500 -> 520`
-- Solved continuation cycles: `521 -> 750`
-- Continuation target: `750`
-- Overwrite trigger: `JSTEP(1)=501`, `KINC=0`, `TIME(1)=0`, `TIME(2)~=500`
+- Material-state jump: `250 -> 270`
+- Solved continuation cycles: `271 -> 500`
+- Continuation target: `500`
+- Overwrite trigger: `JSTEP(1)=251`, `KINC=0`, `TIME(1)=0`, `TIME(2)~=250`
 - Overwritten variables: `STATEV(1:25)`
 - Not table-overwritten: `STATEV(26:27)`
 - Pass criterion: `max_primary_local_error_pct <= 5`

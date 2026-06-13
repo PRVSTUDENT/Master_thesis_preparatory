@@ -1,9 +1,0 @@
- STAGE16N_R3J_OVERWRITE NOEL=           1  NPT=           1  KSTEP=         251 
- STAGE16N_R3J_OVERWRITE NOEL=           1  NPT=           2  KSTEP=         251 
- STAGE16N_R3J_OVERWRITE NOEL=           2  NPT=           1  KSTEP=         251 
- STAGE16N_R3J_OVERWRITE NOEL=           2  NPT=           2  KSTEP=         251 
- STAGE16N_R3J_OVERWRITE NOEL=           3  NPT=           1  KSTEP=         251 
- STAGE16N_R3J_OVERWRITE NOEL=           3  NPT=           2  KSTEP=         251 
- STAGE16N_R3J_OVERWRITE NOEL=           4  NPT=           1  KSTEP=         251 
- STAGE16N_R3J_OVERWRITE NOEL=           4  NPT=           2  KSTEP=         251 
- STAGE16N_R3J_OVERWRITE NOEL=         278  NPT=           1  KSTEP=         251 
