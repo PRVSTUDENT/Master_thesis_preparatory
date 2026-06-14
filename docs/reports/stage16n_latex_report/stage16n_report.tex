@@ -1281,6 +1281,14 @@ R4J6 & 500 & 500 $\rightarrow$ 510 & 511--750 & 750 \\
 
 The generated R4J5 deck starts with \code{*STEP, NAME=CYCLE\_0286}; the generated R4J6 deck starts with \code{*STEP, NAME=CYCLE\_0511}. After R4J5/R4J6 complete, the decision rule is branch-specific: if R4J5 passes, test +42 or +45 in the 250 branch; if R4J5 fails, test +27 or +30. If R4J6 passes, test +15 in the 500 branch; if R4J6 fails, test +5.
 
+\subsection{R4J Branch-Refinement Scratch Submission}
+
+The branch-refinement pair was submitted from the HPC Git clone after switching to the HPC-only workflow. The first two submission attempts, jobs \code{1345007}/\code{1345008} and \code{1345009}/\code{1345010}, exited before Abaqus because the scratch-staged cases did not link the native restart source \code{stage16n\_r1a\_restart\_ref\_500cycles.odb}. These are setup failures and are not interpreted as R4J accuracy results.
+
+The scratch workflow was then corrected in two small GitHub commits. Commit \code{df7facc} made the generated restart linker fall back to the canonical HPC restart-reference directory when the heavy restart files are intentionally not staged into scratch. Commit \code{ee5ddbe} made the scratch PBS wrapper run \code{link\_restart\_sources.sh} whenever the script is present, rather than only when the file has executable mode. After these fixes, R4J5 and R4J6 were relaunched as jobs \code{1345011.mmaster02} and \code{1345012.mmaster02}. Live scratch files show active Abaqus output, including \code{.sta}, \code{.dat}, \code{.msg}, \code{.odb}, \code{state.bin}, and \code{state.csv}, so the jobs passed the restart-link gate and are now true running analyses.
+
+The final pass/fail interpretation is intentionally left pending until the post-run extraction and comparison CSV files are produced. Heavy solver files remain in scratch storage; only lightweight evidence files and submission scripts are intended for GitHub.
+
 \appendix
 \section{Key Repository Evidence Files}
 
