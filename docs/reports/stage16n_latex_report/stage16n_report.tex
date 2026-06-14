@@ -1228,7 +1228,22 @@ R4J4 & 500 & 500 $\rightarrow$ 520 & 521--750 & 750 \\
 \end{tabular}
 \end{table}
 
-The dedicated scratch watchdog \code{watch\_cleanup\_and\_submit\_stage16n\_r4j\_plus20\_scratch\_jobs.sh} was created to stage only the required files into \code{/scratch/pr21vyci/stage16n\_scratch\_runs\_r4j\_plus20/Abaqus\_trial}, submit PBS wrappers from \code{/home}, run Abaqus in \code{/scratch}, and copy back only lightweight evidence. The jobs were not submitted at preparation time because the local workstation could not resolve the HPC login hostname \code{mlogin01.hrz.tu-freiberg.de}. Before submission, the storage gate and heavy-file check should be rerun.
+The dedicated scratch watchdog \code{watch\_cleanup\_and\_submit\_stage16n\_r4j\_plus20\_scratch\_jobs.sh} was created to stage only the required files into \code{/scratch/pr21vyci/stage16n\_scratch\_runs\_r4j\_plus20/Abaqus\_trial}, submit PBS wrappers from \code{/home}, run Abaqus in \code{/scratch}, and copy back only lightweight evidence. After eduVPN/DNS access was restored, the cases were submitted as PBS jobs \code{1344960.mmaster02} and \code{1344961.mmaster02}. Both Abaqus analyses completed successfully, and both \code{.sta} files end with \code{THE ANALYSIS HAS COMPLETED SUCCESSFULLY}.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4J true-skip +20 refinement results.}
+\begin{tabular}{llllll}
+\toprule
+Case & Endpoint & Status & Max global error & Max primary local error & Diagnostic S11 error \\
+\midrule
+R4J3 & 500 & pass & 0.39923577\% & 3.9830029\% & 0.1398007\% \\
+R4J4 & 750 & fail & 2.0853964\% & 14.147994\% & 13.256425\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The R4J3 earlier-window case passes the current primary-local 5\% gate. Its controlling primary-local metric is \code{HOLE\_RING\_SDV1\_MAX}. The R4J4 later-window case fails the same gate, controlled by \code{HOLE\_RING\_MISES\_MAX}; the diagnostic \code{HOLE\_RING\_S11\_MAX\_ABS} error also rises to 13.256425\%. This means the repaired restart route remains solver-stable for true +20 skipped-cycle acceleration, but +20 is not yet a uniform safe production jump across the full benchmark. The next bracketing step should reduce the later checkpoint jump, for example to +10 or +15 from cycle 500, before claiming a safe accelerated jump size beyond the earlier 250--500 window.
 
 \appendix
 \section{Key Repository Evidence Files}
