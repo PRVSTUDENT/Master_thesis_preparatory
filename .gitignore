@@ -49,3 +49,6 @@ state.csv
 
 # Abaqus simulation side directories can be huge and are reproducible.
 *.simdir/
+
+# Agent handoff mirror: local-only copies of recently edited files.
+runs/chaboche_umat/new files created or edited/

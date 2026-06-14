@@ -228,6 +228,36 @@ CASES = (
         ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
         solve_start_cycle=521,
     ),
+    RestartJumpCase(
+        case_id="R4J5_250_to_285_solve_286_to_500",
+        job="stage16n_r4j5_jump_250_to_285_solve_286_to_500",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=100,
+        checkpoint_cycle=250,
+        jump_cycles=35,
+        target_cycle=500,
+        ref_metrics=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv",
+        ref_local_states=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv",
+        solve_start_cycle=286,
+    ),
+    RestartJumpCase(
+        case_id="R4J6_500_to_510_solve_511_to_750",
+        job="stage16n_r4j6_jump_500_to_510_solve_511_to_750",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=250,
+        checkpoint_cycle=500,
+        jump_cycles=10,
+        target_cycle=750,
+        ref_metrics=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv",
+        ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
+        solve_start_cycle=511,
+    ),
 )
 
 
@@ -854,6 +884,8 @@ def main() -> None:
             "R4J2",
             "R4J3",
             "R4J4",
+            "R4J5",
+            "R4J6",
         ],
         default="all",
     )
@@ -882,6 +914,10 @@ def main() -> None:
         selected = (CASES[10],)
     elif args.case == "R4J4":
         selected = (CASES[11],)
+    elif args.case == "R4J5":
+        selected = (CASES[12],)
+    elif args.case == "R4J6":
+        selected = (CASES[13],)
     else:
         selected = CASES
     prepare_cases(selected)

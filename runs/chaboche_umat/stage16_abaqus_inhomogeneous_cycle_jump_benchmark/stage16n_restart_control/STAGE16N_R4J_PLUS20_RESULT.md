@@ -22,15 +22,18 @@ Both `.sta` files end with `THE ANALYSIS HAS COMPLETED SUCCESSFULLY`.
 
 R4J3 passes the current primary-local 5% gate. R4J4 fails, controlled by the later checkpoint hole-ring Mises maximum and mirrored by the diagnostic absolute S11 error.
 
-## Interpretation
+## Branch-Specific Interpretation
 
-The repaired restart route is solver-stable for true +20 skipped-cycle acceleration at both checkpoint windows, but +20 is not yet a globally safe production jump for the full Stage 16N benchmark because the later 500 -> 520 -> 750 window fails the local accuracy gate.
+The first true cycle-skip refinement showed branch-dependent behavior. A +20 skip from cycle 250 to 270 passed the accuracy criterion, whereas the corresponding +20 skip from cycle 500 to 520 failed due to local hole-ring error. Therefore, the restart-preserved true-skip machinery is functional, but the safe jump size must be chosen adaptively and locally rather than assumed constant across the simulation.
 
 The current thesis-safe boundary is therefore:
 
 - Stable restart-preserved material overwrite: passed through R3J +20.
-- True skipped-cycle acceleration: +50 fails both windows; +20 passes the earlier 250 -> 270 -> 500 window but fails the later 500 -> 520 -> 750 window.
-- Next bracketing step: test a smaller later-window true skip, such as +10 or +15 from cycle 500, before claiming a safe accelerated jump size beyond the earlier checkpoint.
+- Base cycle 250 true-skip branch: +20 passes and +50 fails; safe Delta N is somewhere between 20 and 50.
+- Base cycle 500 true-skip branch: +20 and +50 both fail; safe Delta N is below 20.
+- Next bracketing step: refine each branch separately instead of repeating one fixed jump size at both locations.
+
+This supports the main adaptive-cycle-jump argument: fixed jump sizes are not reliable; local state evolution near the hole controls the acceptable Delta N.
 
 ## Repository Evidence
 

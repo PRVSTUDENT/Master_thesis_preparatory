@@ -1,7 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-# Stage and submit the R4J true-skip +20 refinement pair from scratch.
+# Stage and submit a two-case R4J true-skip refinement pair from scratch.
+# Defaults are the original +20 pair; override CASE1_NAME, CASE2_NAME,
+# and SCRATCH_ROOT for later branch-specific refinement pairs.
 # Submit PBS wrappers from /home, but run Abaqus in /scratch.
 
 USER_NAME="${USER:-pr21vyci}"
@@ -16,10 +18,10 @@ STAGE_DIR="$PROJECT_ROOT/$STAGE_REL"
 CASE_ROOT_REL="$STAGE_REL/stage16n_restart_control/restart_jump_cases"
 CASE_ROOT_HOME="$PROJECT_ROOT/$CASE_ROOT_REL"
 
-CASE1_NAME="R4J3_250_to_270_solve_271_to_500"
-CASE2_NAME="R4J4_500_to_520_solve_521_to_750"
+CASE1_NAME="${CASE1_NAME:-R4J3_250_to_270_solve_271_to_500}"
+CASE2_NAME="${CASE2_NAME:-R4J4_500_to_520_solve_521_to_750}"
 
-SCRATCH_ROOT="/scratch/$USER_NAME/stage16n_scratch_runs_r4j_plus20"
+SCRATCH_ROOT="${SCRATCH_ROOT:-/scratch/$USER_NAME/stage16n_scratch_runs_r4j_plus20}"
 SCRATCH_REPO="$SCRATCH_ROOT/Abaqus_trial"
 
 MARKER="$CASE_ROOT_HOME/.scratch_auto_submit_${CASE1_NAME}_${CASE2_NAME}.done"

@@ -1243,7 +1243,43 @@ R4J4 & 750 & fail & 2.0853964\% & 14.147994\% & 13.256425\% \\
 \end{tabular}
 \end{table}
 
-The R4J3 earlier-window case passes the current primary-local 5\% gate. Its controlling primary-local metric is \code{HOLE\_RING\_SDV1\_MAX}. The R4J4 later-window case fails the same gate, controlled by \code{HOLE\_RING\_MISES\_MAX}; the diagnostic \code{HOLE\_RING\_S11\_MAX\_ABS} error also rises to 13.256425\%. This means the repaired restart route remains solver-stable for true +20 skipped-cycle acceleration, but +20 is not yet a uniform safe production jump across the full benchmark. The next bracketing step should reduce the later checkpoint jump, for example to +10 or +15 from cycle 500, before claiming a safe accelerated jump size beyond the earlier 250--500 window.
+The R4J3 earlier-window case passes the current primary-local 5\% gate. Its controlling primary-local metric is \code{HOLE\_RING\_SDV1\_MAX}. The R4J4 later-window case fails the same gate, controlled by \code{HOLE\_RING\_MISES\_MAX}; the diagnostic \code{HOLE\_RING\_S11\_MAX\_ABS} error also rises to 13.256425\%.
+
+The first true cycle-skip refinement therefore showed branch-dependent behavior. A +20 skip from cycle 250 to 270 passed the accuracy criterion, whereas the corresponding +20 skip from cycle 500 to 520 failed due to local hole-ring error. Therefore, the restart-preserved true-skip machinery is functional, but the safe jump size must be chosen adaptively and locally rather than assumed constant across the simulation. The current branch-specific bracket is:
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4J branch-specific true-skip bracket after +20 refinement.}
+\begin{tabular}{llll}
+\toprule
+Branch & Known pass & Known fail & Current bracket \\
+\midrule
+Base cycle 250 & +20 & +50 & Safe $\Delta N$ is between 20 and 50 \\
+Base cycle 500 & none yet & +20 and +50 & Safe $\Delta N$ is below 20 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This is scientifically useful because later cycles are not automatically safer in the inhomogeneous model; local hole-ring variables still control the acceptable jump size. The evidence types should be reported separately: R3J validates restart-preserved overwrite but not true skipping; R4J +50 proves the true-skip machinery runs but fails accuracy; R4J +20 reveals branch-dependent accuracy. This supports the main adaptive-cycle-jump argument that fixed jump sizes are not reliable and the acceptable $\Delta N$ must follow local state evolution near the hole.
+
+\subsection{R4J Branch-Specific Next Pair Prepared}
+
+The next pair refines the two branches separately. R4J5 tests a +35 skip in the 250 branch, between the known +20 pass and +50 fail. R4J6 tests a +10 skip in the 500 branch, below the known +20 fail.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4J branch-specific next jobs prepared after the +20 mixed result.}
+\begin{tabular}{lllll}
+\toprule
+Case & Restart checkpoint & Material-state jump & Solved continuation cycles & Endpoint \\
+\midrule
+R4J5 & 250 & 250 $\rightarrow$ 285 & 286--500 & 500 \\
+R4J6 & 500 & 500 $\rightarrow$ 510 & 511--750 & 750 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The generated R4J5 deck starts with \code{*STEP, NAME=CYCLE\_0286}; the generated R4J6 deck starts with \code{*STEP, NAME=CYCLE\_0511}. After R4J5/R4J6 complete, the decision rule is branch-specific: if R4J5 passes, test +42 or +45 in the 250 branch; if R4J5 fails, test +27 or +30. If R4J6 passes, test +15 in the 500 branch; if R4J6 fails, test +5.
 
 \appendix
 \section{Key Repository Evidence Files}
@@ -1276,6 +1312,8 @@ The R4J3 earlier-window case passes the current primary-local 5\% gate. Its cont
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_SCRATCH\_SUBMISSION.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_TRUE\_CYCLE\_SKIP\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_PLUS20\_PREPARATION.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_PLUS20\_RESULT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_BRANCH\_BRACKET\_AND\_NEXT\_JOBS.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J3\_250\_to\_260\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J4\_500\_to\_510\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J5\_250\_to\_270\_to\_500/}
@@ -1284,6 +1322,8 @@ The R4J3 earlier-window case passes the current primary-local 5\% gate. Its cont
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J2\_500\_to\_550\_solve\_551\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J3\_250\_to\_270\_solve\_271\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J4\_500\_to\_520\_solve\_521\_to\_750/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J5\_250\_to\_285\_solve\_286\_to\_500/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J6\_500\_to\_510\_solve\_511\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/watch\_cleanup\_and\_submit\_stage16n\_scratch\_jobs.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_PROFESSOR\_UPDATE\_2026\_06\_07.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/cases/B1D2\_100\_to\_102\_to\_250/}
