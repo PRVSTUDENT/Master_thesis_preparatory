@@ -179,7 +179,7 @@ mkdir -p "\$TMPDIR"
 
 df -h /home /scratch || true
 
-if [ -x ./link_restart_sources.sh ]; then
+if [ -f ./link_restart_sources.sh ]; then
   bash ./link_restart_sources.sh
 fi
 
