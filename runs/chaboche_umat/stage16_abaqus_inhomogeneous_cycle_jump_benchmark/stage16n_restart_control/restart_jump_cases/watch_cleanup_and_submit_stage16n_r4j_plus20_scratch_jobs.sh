@@ -4,7 +4,7 @@ set -euo pipefail
 # Stage and submit a two-case R4J true-skip refinement pair from scratch.
 # Defaults are the original +20 pair; override CASE1_NAME, CASE2_NAME,
 # and SCRATCH_ROOT for later branch-specific refinement pairs.
-# Submit PBS wrappers from /home, but run Abaqus in /scratch.
+# Submit PBS wrappers from PROJECT_ROOT, but run Abaqus in /scratch.
 
 USER_NAME="${USER:-pr21vyci}"
 
@@ -12,7 +12,7 @@ HOME_MAX_USED_PCT=75
 SCRATCH_MAX_USED_PCT=90
 SLEEP_SECONDS=300
 
-PROJECT_ROOT="$HOME/master_thesis/Abaqus_trial"
+PROJECT_ROOT="${PROJECT_ROOT:-$HOME/master_thesis/Abaqus_trial}"
 STAGE_REL="runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark"
 STAGE_DIR="$PROJECT_ROOT/$STAGE_REL"
 CASE_ROOT_REL="$STAGE_REL/stage16n_restart_control/restart_jump_cases"
