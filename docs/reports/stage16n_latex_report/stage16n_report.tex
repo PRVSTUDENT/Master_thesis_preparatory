@@ -1323,6 +1323,12 @@ The branch-refinement jobs therefore solved robustly but did not pass the curren
 The updated branch-specific bracket is: for the cycle-250 branch, +20 passed, +35 is review/fail against the 5\% gate, and +50 failed; for the cycle-500 branch, +10, +20, and +50 all exceeded the local gate. The next useful tests are therefore below +35 for the 250 branch, specifically +30, and below +10 for the 500 branch, specifically +5.
 
 
+\subsection{R4J Next Refinement Pair Submitted}
+
+The next true-skip refinement pair was prepared from the merged HPC branch and submitted from scratch after verifying the first solved continuation steps. R4J7 tests the cycle-250 branch with a +30 skip, \code{250 -> 280 -> 500}, solving cycles 281--500. R4J8 tests the cycle-500 branch with a +5 skip, \code{500 -> 505 -> 750}, solving cycles 506--750. The generated decks begin with \code{*STEP, NAME=CYCLE\_0281} and \code{*STEP, NAME=CYCLE\_0506}, respectively.
+
+The report interpretation remains: R3J is overwrite validation only, R4J is true cycle skipping, +50 was computationally stable but inaccurate, +20 was branch-dependent, and +35/+10 both exceeded the 5\% local-state tolerance. The current submitted pair therefore tests +30 on the 250 branch and +5 on the 500 branch.
+
 \appendix
 \section{Key Repository Evidence Files}
 
