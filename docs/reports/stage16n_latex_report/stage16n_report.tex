@@ -1281,13 +1281,47 @@ R4J6 & 500 & 500 $\rightarrow$ 510 & 511--750 & 750 \\
 
 The generated R4J5 deck starts with \code{*STEP, NAME=CYCLE\_0286}; the generated R4J6 deck starts with \code{*STEP, NAME=CYCLE\_0511}. After R4J5/R4J6 complete, the decision rule is branch-specific: if R4J5 passes, test +42 or +45 in the 250 branch; if R4J5 fails, test +27 or +30. If R4J6 passes, test +15 in the 500 branch; if R4J6 fails, test +5.
 
+
 \subsection{R4J Branch-Refinement Scratch Submission}
 
-The branch-refinement pair was submitted from the HPC Git clone after switching to the HPC-only workflow. The first two submission attempts, jobs \code{1345007}/\code{1345008} and \code{1345009}/\code{1345010}, exited before Abaqus because the scratch-staged cases did not link the native restart source \code{stage16n\_r1a\_restart\_ref\_500cycles.odb}. These are setup failures and are not interpreted as R4J accuracy results.
+The branch-refinement pair was submitted from the HPC Git clone after switching to the HPC-first workflow. The first two submission attempts, jobs \code{1345007}/\code{1345008} and \code{1345009}/\code{1345010}, exited before Abaqus because the scratch-staged cases did not link the native restart source \code{stage16n\_r1a\_restart\_ref\_500cycles.odb}. These are setup failures and are not interpreted as R4J accuracy results.
 
-The scratch workflow was then corrected in two small GitHub commits. Commit \code{df7facc} made the generated restart linker fall back to the canonical HPC restart-reference directory when the heavy restart files are intentionally not staged into scratch. Commit \code{ee5ddbe} made the scratch PBS wrapper run \code{link\_restart\_sources.sh} whenever the script is present, rather than only when the file has executable mode. After these fixes, R4J5 and R4J6 were relaunched as jobs \code{1345011.mmaster02} and \code{1345012.mmaster02}. Live scratch files show active Abaqus output, including \code{.sta}, \code{.dat}, \code{.msg}, \code{.odb}, \code{state.bin}, and \code{state.csv}, so the jobs passed the restart-link gate and are now true running analyses.
+The scratch workflow was then corrected in two small GitHub commits. Commit \code{df7facc} made the generated restart linker fall back to the canonical HPC restart-reference directory when the heavy restart files are intentionally not staged into scratch. Commit \code{ee5ddbe} made the scratch PBS wrapper run \code{link\_restart\_sources.sh} whenever the script is present, rather than only when the file has executable mode. After these fixes, R4J5 and R4J6 were relaunched as jobs \code{1345011.mmaster02} and \code{1345012.mmaster02}.
 
-The final pass/fail interpretation is intentionally left pending until the post-run extraction and comparison CSV files are produced. Heavy solver files remain in scratch storage; only lightweight evidence files and submission scripts are intended for GitHub.
+\subsection{R4J Branch-Specific Refinement Result}
+
+The branch-specific R4J5/R4J6 pair was checked from PBS history and scratch evidence on 2026-06-15. Both production solver jobs completed successfully with \code{Exit\_status=0}; the completed production jobs were \code{1345011.mmaster02} and \code{1345012.mmaster02}.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4J branch-refinement job resource history.}
+\begin{tabular}{lllllll}
+\toprule
+Case & PBS job & Node & Walltime & CPU time & CPU percent & Memory \\
+\midrule
+R4J5 & 1345011 & mnode100 & 04:41:47 & 19:26:19 & 574 & 94375932 kb \\
+R4J6 & 1345012 & mnode101 & 05:13:59 & 21:45:58 & 563 & 94371840 kb \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4J branch-refinement comparison results.}
+\begin{tabular}{llllll}
+\toprule
+Case & Endpoint & Status & Max global error & Max primary local error & Diagnostic S11 error \\
+\midrule
+R4J5 & 500 & review & 0.00016982914\% & 6.9643175\% & 0.00027322599\% \\
+R4J6 & 750 & review & 0.31107055\% & 7.2880782\% & 1.323401\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The branch-refinement jobs therefore solved robustly but did not pass the current 5\% primary-local accuracy gate. R4J5, the +35 jump from the cycle-250 branch, is close to the gate and has nearly exact global and diagnostic S11 response; its controlling local metric is \code{HOLE\_RING\_SDV1\_MAX}. R4J6, the +10 jump from the cycle-500 branch, still exceeds the local gate with \code{HOLE\_RING\_SDV8\_MAX} controlling.
+
+The updated branch-specific bracket is: for the cycle-250 branch, +20 passed, +35 is review/fail against the 5\% gate, and +50 failed; for the cycle-500 branch, +10, +20, and +50 all exceeded the local gate. The next useful tests are therefore below +35 for the 250 branch, specifically +30, and below +10 for the 500 branch, specifically +5.
+
 
 \appendix
 \section{Key Repository Evidence Files}
@@ -1322,6 +1356,7 @@ The final pass/fail interpretation is intentionally left pending until the post-
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_PLUS20\_PREPARATION.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_PLUS20\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_BRANCH\_BRACKET\_AND\_NEXT\_JOBS.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_BRANCH\_REFINE\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J3\_250\_to\_260\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J4\_500\_to\_510\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J5\_250\_to\_270\_to\_500/}

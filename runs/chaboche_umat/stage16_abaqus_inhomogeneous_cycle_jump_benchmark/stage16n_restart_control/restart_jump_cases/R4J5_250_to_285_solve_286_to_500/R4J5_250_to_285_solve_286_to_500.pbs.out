@@ -1,0 +1,27 @@
+PBS job started: So 14. Jun 07:30:49 CEST 2026
+Case: R4J5_250_to_285_solve_286_to_500
+Scratch case: /scratch/pr21vyci/stage16n_scratch_runs_r4j_branch_refine/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J5_250_to_285_solve_286_to_500
+Dateisystem            Größe Benutzt Verf. Verw% Eingehängt auf
+mnfs:/home               17T     11T  5,9T   64% /home
+panfs://mpanfs/scratch  110T     81T   29T   75% /scratch
+[Stage16N-R3J] start: 2026-06-14 07:30:52
+[Stage16N-R3J] PBS job: 1345009.mmaster02
+[Stage16N-R3J] Abaqus job: stage16n_r4j5_jump_250_to_285_solve_286_to_500
+[Stage16N-R3J] oldjob: stage16n_r1a_restart_ref_500cycles
+[Stage16N-R3J] restart checkpoint: 250
+[Stage16N-R3J] slope pair: 100 -> 250
+[Stage16N-R3J] material jump: 250 -> 285
+[Stage16N-R3J] solved continuation cycles: 286 -> 500
+[Stage16N-R3J] target cycle: 500
+[Stage16N-R3J] cpus=16 mp_mode=threads
+[Stage16N-R3J] scratch=/home/pr21vyci/pbs.1345009.mmaster02.x8z
+Missing native restart source: stage16n_r1a_restart_ref_500cycles.odb
+sending incremental file list
+tmp/
+
+sent 233 bytes  received 17 bytes  500.00 bytes/sec
+total size is 2,403  speedup is 9.61
+Dateisystem            Größe Benutzt Verf. Verw% Eingehängt auf
+mnfs:/home               17T     11T  5,9T   64% /home
+panfs://mpanfs/scratch  110T     81T   29T   75% /scratch
+PBS job finished: So 14. Jun 07:30:52 CEST 2026
