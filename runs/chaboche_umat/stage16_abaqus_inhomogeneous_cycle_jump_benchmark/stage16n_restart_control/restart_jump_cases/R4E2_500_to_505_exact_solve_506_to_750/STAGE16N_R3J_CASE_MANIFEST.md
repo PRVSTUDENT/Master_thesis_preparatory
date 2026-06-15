@@ -9,6 +9,7 @@
 - State mode: `exact_target`
 - Jump formula: `exact target state from reference cycle`
 - Material-state jump: `500 -> 505`
+- Exact-target source solve: `501 -> 505`
 - Solved continuation cycles: `506 -> 750`
 - Continuation target: `750`
 - Overwrite trigger: `JSTEP(1)=501`, `KINC=0`, `TIME(1)=0`, `TIME(2)~=500`

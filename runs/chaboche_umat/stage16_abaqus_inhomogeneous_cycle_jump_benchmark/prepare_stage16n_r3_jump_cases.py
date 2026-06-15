@@ -498,6 +498,41 @@ def write_restart_deck(path: Path, case: RestartJumpCase, checkpoint_inc: int) -
     path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
 
 
+def write_exact_target_source_deck(path: Path, case: RestartJumpCase, checkpoint_inc: int) -> None:
+    lines = [
+        f"** Stage 16N-R4E exact-target source continuation: {case.case_id}",
+        "** Native restart solve to the exact target cycle used only to extract STATEV payload.",
+        "*HEADING",
+        f"Stage 16N-R4E exact target source {case.checkpoint_cycle} to {case.jump_cycle}",
+        f"*RESTART, READ, STEP={case.checkpoint_cycle}, INC={checkpoint_inc}",
+    ]
+    for cycle in range(case.checkpoint_cycle + 1, case.jump_cycle + 1):
+        lines.extend(
+            [
+                "*STEP, NAME=CYCLE_%04d, NLGEOM=NO, INC=160" % cycle,
+                "*STATIC",
+                "0.005, 1.0, 1.0E-08, 0.025",
+                "*BOUNDARY, AMPLITUDE=AMP_ONE_CYCLE",
+                "RIGHT_EDGE, 1, 1, 0.10",
+                "*OUTPUT, HISTORY, FREQUENCY=1",
+                "*NODE OUTPUT, NSET=RIGHT_EDGE",
+                "U1, RF1",
+            ]
+        )
+        if cycle == case.jump_cycle:
+            lines.extend(
+                [
+                    "*OUTPUT, FIELD, NUMBER INTERVAL=4",
+                    "*NODE OUTPUT",
+                    "U, RF",
+                    "*ELEMENT OUTPUT",
+                    "S, SDV",
+                ]
+            )
+        lines.append("*END STEP")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+
+
 def write_link_script(path: Path, case: RestartJumpCase) -> None:
     rel_source = Path("..") / ".." / case.source_dir.name
     text = f"""#!/usr/bin/env bash
@@ -583,8 +618,18 @@ if [[ ! -f state.bin || ! -f "$STATE_SUMMARY" ]]; then
   rm -f state.bin state.csv STAGE16N_R3J_EXTRAPOLATED_STATE.md STAGE16N_R4E_EXACT_TARGET_STATE.md
   mkdir -p _jump_state
   if [[ "$STATE_MODE" = "exact_target" ]]; then
+    SOURCE_JOB="${{JOB}}_exact_target_source"
+    SOURCE_INP="${{JOB}}_exact_target_source.inp"
+    if [[ ! -f "${{SOURCE_JOB}}.odb" ]]; then
+      unset STAGE16N_JUMP_STATE_BIN STAGE16N_JUMP_TARGET_STEP STAGE16N_JUMP_CHECK_TIME || true
+      abaqus job="$SOURCE_JOB" input="$SOURCE_INP" oldjob="${{OLDJOB}}" \\
+        user=stage16n_r3_jump_umat.for \\
+        interactive ask_delete=OFF scratch="$ABAQUS_SCRATCH" \\
+        cpus="${{ABAQUS_CPUS}}" mp_mode="${{ABAQUS_MP_MODE}}" \\
+        2>&1 | tee "$LOG_DIR/${{JOB}}_exact_target_source.log"
+    fi
     abaqus python ../../../stage16n_extract_exact_state_for_reinjection.py \\
-      --odb "${{OLDJOB}}.odb" \\
+      --odb "${{SOURCE_JOB}}.odb" \\
       --cycles "$JUMP_CYCLE" \\
       --outdir _jump_state \\
       2>&1 | tee "$LOG_DIR/${{JOB}}_extract_exact_target_state.log"
@@ -596,7 +641,7 @@ if [[ ! -f state.bin || ! -f "$STATE_SUMMARY" ]]; then
       echo "- Restart checkpoint: \`$CHECKPOINT_CYCLE\`"
       echo "- Exact material-state cycle: \`$JUMP_CYCLE\`"
       echo "- Solved continuation cycles: \`{case.continuation_start_cycle} -> $TARGET_CYCLE\`"
-      echo "- Source: native restart reference ODB \`${{OLDJOB}}.odb\`"
+      echo "- Source: short native-restart exact-target ODB \`${{SOURCE_JOB}}.odb\`"
       echo "- State CSV: \`state.csv\`"
       echo "- State binary: \`state.bin\`"
       echo "- Purpose: distinguish extrapolation error from true-skip/restart/comparison machinery error."
@@ -725,6 +770,7 @@ def write_manifest(path: Path, case: RestartJumpCase, checkpoint_inc: int) -> No
 - State mode: `{case.state_mode}`
 - Jump formula: `{"exact target state from reference cycle" if case.state_mode == "exact_target" else f"STATEV_jump = STATEV_base + {case.jump_cycles} * dSTATEV/dN"}`
 - Material-state jump: `{case.checkpoint_cycle} -> {case.jump_cycle}`
+- Exact-target source solve: `{"%d -> %d" % (case.checkpoint_cycle + 1, case.jump_cycle) if case.state_mode == "exact_target" else "not used"}`
 - Solved continuation cycles: `{case.continuation_start_cycle} -> {case.target_cycle}`
 - Continuation target: `{case.target_cycle}`
 - Overwrite trigger: `JSTEP(1)={case.target_step}`, `KINC=0`, `TIME(1)=0`, `TIME(2)~={case.checkpoint_cycle}`
@@ -938,6 +984,12 @@ def prepare_cases(cases: tuple[RestartJumpCase, ...]) -> None:
         run_dir.mkdir(parents=True, exist_ok=True)
         checkpoint_inc = parse_checkpoint_increment(case.source_dir / f"{case.oldjob}.sta", case.checkpoint_cycle)
         write_restart_deck(run_dir / f"{case.job}.inp", case, checkpoint_inc)
+        if case.state_mode == "exact_target":
+            write_exact_target_source_deck(
+                run_dir / f"{case.job}_exact_target_source.inp",
+                case,
+                checkpoint_inc,
+            )
         write_jump_umat(run_dir / "stage16n_r3_jump_umat.for")
         write_link_script(run_dir / "link_restart_sources.sh", case)
         write_runner(run_dir / "run_stage16n_r3j_jump_hpc.sh", case)

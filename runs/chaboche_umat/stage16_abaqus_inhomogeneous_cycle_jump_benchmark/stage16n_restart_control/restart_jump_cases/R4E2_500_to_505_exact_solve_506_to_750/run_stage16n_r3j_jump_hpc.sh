@@ -52,8 +52,18 @@ if [[ ! -f state.bin || ! -f "$STATE_SUMMARY" ]]; then
   rm -f state.bin state.csv STAGE16N_R3J_EXTRAPOLATED_STATE.md STAGE16N_R4E_EXACT_TARGET_STATE.md
   mkdir -p _jump_state
   if [[ "$STATE_MODE" = "exact_target" ]]; then
+    SOURCE_JOB="${JOB}_exact_target_source"
+    SOURCE_INP="${JOB}_exact_target_source.inp"
+    if [[ ! -f "${SOURCE_JOB}.odb" ]]; then
+      unset STAGE16N_JUMP_STATE_BIN STAGE16N_JUMP_TARGET_STEP STAGE16N_JUMP_CHECK_TIME || true
+      abaqus job="$SOURCE_JOB" input="$SOURCE_INP" oldjob="${OLDJOB}" \
+        user=stage16n_r3_jump_umat.for \
+        interactive ask_delete=OFF scratch="$ABAQUS_SCRATCH" \
+        cpus="${ABAQUS_CPUS}" mp_mode="${ABAQUS_MP_MODE}" \
+        2>&1 | tee "$LOG_DIR/${JOB}_exact_target_source.log"
+    fi
     abaqus python ../../../stage16n_extract_exact_state_for_reinjection.py \
-      --odb "${OLDJOB}.odb" \
+      --odb "${SOURCE_JOB}.odb" \
       --cycles "$JUMP_CYCLE" \
       --outdir _jump_state \
       2>&1 | tee "$LOG_DIR/${JOB}_extract_exact_target_state.log"
@@ -65,7 +75,7 @@ if [[ ! -f state.bin || ! -f "$STATE_SUMMARY" ]]; then
       echo "- Restart checkpoint: \`$CHECKPOINT_CYCLE\`"
       echo "- Exact material-state cycle: \`$JUMP_CYCLE\`"
       echo "- Solved continuation cycles: \`506 -> $TARGET_CYCLE\`"
-      echo "- Source: native restart reference ODB \`${OLDJOB}.odb\`"
+      echo "- Source: short native-restart exact-target ODB \`${SOURCE_JOB}.odb\`"
       echo "- State CSV: \`state.csv\`"
       echo "- State binary: \`state.bin\`"
       echo "- Purpose: distinguish extrapolation error from true-skip/restart/comparison machinery error."
