@@ -33,6 +33,7 @@ class RestartJumpCase:
     ref_metrics: Path
     ref_local_states: Path
     solve_start_cycle: int | None = None
+    state_mode: str = "extrapolated"
 
     @property
     def run_dir(self) -> Path:
@@ -288,6 +289,38 @@ CASES = (
         ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
         solve_start_cycle=506,
     ),
+    RestartJumpCase(
+        case_id="R4E1_250_to_280_exact_solve_281_to_500",
+        job="stage16n_r4e1_exact_250_to_280_solve_281_to_500",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=100,
+        checkpoint_cycle=250,
+        jump_cycles=30,
+        target_cycle=500,
+        ref_metrics=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv",
+        ref_local_states=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv",
+        solve_start_cycle=281,
+        state_mode="exact_target",
+    ),
+    RestartJumpCase(
+        case_id="R4E2_500_to_505_exact_solve_506_to_750",
+        job="stage16n_r4e2_exact_500_to_505_solve_506_to_750",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=250,
+        checkpoint_cycle=500,
+        jump_cycles=5,
+        target_cycle=750,
+        ref_metrics=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv",
+        ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
+        solve_start_cycle=506,
+        state_mode="exact_target",
+    ),
 )
 
 
@@ -507,6 +540,7 @@ JUMP_CYCLES="{case.jump_cycles}"
 JUMP_CYCLE="{case.jump_cycle}"
 TARGET_CYCLE="{case.target_cycle}"
 TARGET_STEP="{case.target_step}"
+STATE_MODE="{case.state_mode}"
 
 ABAQUS_CPUS="${{ABAQUS_CPUS:-16}}"
 ABAQUS_MP_MODE="${{ABAQUS_MP_MODE:-threads}}"
@@ -527,6 +561,7 @@ echo "[Stage16N-R3J] oldjob: $OLDJOB"
 echo "[Stage16N-R3J] restart checkpoint: $CHECKPOINT_CYCLE"
 echo "[Stage16N-R3J] slope pair: $PREVIOUS_CYCLE -> $CHECKPOINT_CYCLE"
 echo "[Stage16N-R3J] material jump: $CHECKPOINT_CYCLE -> $JUMP_CYCLE"
+echo "[Stage16N-R3J] state mode: $STATE_MODE"
 echo "[Stage16N-R3J] solved continuation cycles: {case.continuation_start_cycle} -> $TARGET_CYCLE"
 echo "[Stage16N-R3J] target cycle: $TARGET_CYCLE"
 echo "[Stage16N-R3J] cpus=${{ABAQUS_CPUS}} mp_mode=${{ABAQUS_MP_MODE}}"
@@ -539,25 +574,51 @@ for ext in odb res stt mdl sim prt; do
   fi
 done
 
-if [[ ! -f state.bin || ! -f STAGE16N_R3J_EXTRAPOLATED_STATE.md ]]; then
-  rm -f state.bin state.csv STAGE16N_R3J_EXTRAPOLATED_STATE.md
+STATE_SUMMARY="STAGE16N_R3J_EXTRAPOLATED_STATE.md"
+if [[ "$STATE_MODE" = "exact_target" ]]; then
+  STATE_SUMMARY="STAGE16N_R4E_EXACT_TARGET_STATE.md"
+fi
+
+if [[ ! -f state.bin || ! -f "$STATE_SUMMARY" ]]; then
+  rm -f state.bin state.csv STAGE16N_R3J_EXTRAPOLATED_STATE.md STAGE16N_R4E_EXACT_TARGET_STATE.md
   mkdir -p _jump_state
-  abaqus python ../../../stage16n_extract_exact_state_for_reinjection.py \\
-    --odb "${{OLDJOB}}.odb" \\
-    --cycles "$PREVIOUS_CYCLE,$CHECKPOINT_CYCLE" \\
-    --outdir _jump_state \\
-    2>&1 | tee "$LOG_DIR/${{JOB}}_extract_slope_states.log"
-  python3 ../../../stage16n_make_extrapolated_state.py \\
-    --previous-csv "_jump_state/stage16n_exact_state_cycle$(printf '%04d' "$PREVIOUS_CYCLE").csv" \\
-    --base-csv "_jump_state/stage16n_exact_state_cycle$(printf '%04d' "$CHECKPOINT_CYCLE").csv" \\
-    --previous-cycle "$PREVIOUS_CYCLE" \\
-    --base-cycle "$CHECKPOINT_CYCLE" \\
-    --jump-cycles "$JUMP_CYCLES" \\
-    --output-cycle "$JUMP_CYCLE" \\
-    --output-csv state.csv \\
-    --output-bin state.bin \\
-    --output-summary STAGE16N_R3J_EXTRAPOLATED_STATE.md \\
-    2>&1 | tee "$LOG_DIR/${{JOB}}_make_extrapolated_state.log"
+  if [[ "$STATE_MODE" = "exact_target" ]]; then
+    abaqus python ../../../stage16n_extract_exact_state_for_reinjection.py \\
+      --odb "${{OLDJOB}}.odb" \\
+      --cycles "$JUMP_CYCLE" \\
+      --outdir _jump_state \\
+      2>&1 | tee "$LOG_DIR/${{JOB}}_extract_exact_target_state.log"
+    cp "_jump_state/stage16n_exact_state_cycle$(printf '%04d' "$JUMP_CYCLE").csv" state.csv
+    cp "_jump_state/stage16n_exact_state_cycle$(printf '%04d' "$JUMP_CYCLE").bin" state.bin
+    {{
+      echo "# Stage 16N-R4E Exact Target State"
+      echo
+      echo "- Restart checkpoint: \`$CHECKPOINT_CYCLE\`"
+      echo "- Exact material-state cycle: \`$JUMP_CYCLE\`"
+      echo "- Solved continuation cycles: \`{case.continuation_start_cycle} -> $TARGET_CYCLE\`"
+      echo "- Source: native restart reference ODB \`${{OLDJOB}}.odb\`"
+      echo "- State CSV: \`state.csv\`"
+      echo "- State binary: \`state.bin\`"
+      echo "- Purpose: distinguish extrapolation error from true-skip/restart/comparison machinery error."
+    }} > STAGE16N_R4E_EXACT_TARGET_STATE.md
+  else
+    abaqus python ../../../stage16n_extract_exact_state_for_reinjection.py \\
+      --odb "${{OLDJOB}}.odb" \\
+      --cycles "$PREVIOUS_CYCLE,$CHECKPOINT_CYCLE" \\
+      --outdir _jump_state \\
+      2>&1 | tee "$LOG_DIR/${{JOB}}_extract_slope_states.log"
+    python3 ../../../stage16n_make_extrapolated_state.py \\
+      --previous-csv "_jump_state/stage16n_exact_state_cycle$(printf '%04d' "$PREVIOUS_CYCLE").csv" \\
+      --base-csv "_jump_state/stage16n_exact_state_cycle$(printf '%04d' "$CHECKPOINT_CYCLE").csv" \\
+      --previous-cycle "$PREVIOUS_CYCLE" \\
+      --base-cycle "$CHECKPOINT_CYCLE" \\
+      --jump-cycles "$JUMP_CYCLES" \\
+      --output-cycle "$JUMP_CYCLE" \\
+      --output-csv state.csv \\
+      --output-bin state.bin \\
+      --output-summary STAGE16N_R3J_EXTRAPOLATED_STATE.md \\
+      2>&1 | tee "$LOG_DIR/${{JOB}}_make_extrapolated_state.log"
+  fi
 fi
 
 export STAGE16N_JUMP_STATE_BIN="$PWD/state.bin"
@@ -605,6 +666,7 @@ cd "$CASE_DIR"
   echo "- Oldjob: \\`$OLDJOB\\`"
   echo "- Restart checkpoint: \\`$CHECKPOINT_CYCLE\\`"
   echo "- Slope pair: \\`$PREVIOUS_CYCLE -> $CHECKPOINT_CYCLE\\`"
+  echo "- State mode: \\`$STATE_MODE\\`"
   echo "- Material-state jump: \\`$CHECKPOINT_CYCLE -> $JUMP_CYCLE\\`"
   echo "- Continuation target: \\`$TARGET_CYCLE\\`"
   echo "- Overwrite trigger: \\`JSTEP(1)=$TARGET_STEP, KINC=0, TIME(2)~=$CHECKPOINT_CYCLE\\`"
@@ -660,7 +722,8 @@ def write_manifest(path: Path, case: RestartJumpCase, checkpoint_inc: int) -> No
 - Restart read: `STEP={case.checkpoint_cycle}, INC={checkpoint_inc}`
 - Native restart checkpoint: `{case.checkpoint_cycle}`
 - Slope pair: `{case.previous_cycle} -> {case.checkpoint_cycle}`
-- Jump formula: `STATEV_jump = STATEV_base + {case.jump_cycles} * dSTATEV/dN`
+- State mode: `{case.state_mode}`
+- Jump formula: `{"exact target state from reference cycle" if case.state_mode == "exact_target" else f"STATEV_jump = STATEV_base + {case.jump_cycles} * dSTATEV/dN"}`
 - Material-state jump: `{case.checkpoint_cycle} -> {case.jump_cycle}`
 - Solved continuation cycles: `{case.continuation_start_cycle} -> {case.target_cycle}`
 - Continuation target: `{case.target_cycle}`
@@ -926,6 +989,8 @@ def main() -> None:
             "R4J6",
             "R4J7",
             "R4J8",
+            "R4E1",
+            "R4E2",
         ],
         default="all",
     )
@@ -962,6 +1027,10 @@ def main() -> None:
         selected = (CASES[14],)
     elif args.case == "R4J8":
         selected = (CASES[15],)
+    elif args.case == "R4E1":
+        selected = (CASES[16],)
+    elif args.case == "R4E2":
+        selected = (CASES[17],)
     else:
         selected = CASES
     prepare_cases(selected)

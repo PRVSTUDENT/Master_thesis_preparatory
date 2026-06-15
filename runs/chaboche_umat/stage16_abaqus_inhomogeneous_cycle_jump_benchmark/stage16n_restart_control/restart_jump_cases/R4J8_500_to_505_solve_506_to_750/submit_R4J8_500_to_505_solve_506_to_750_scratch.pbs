@@ -1,0 +1,37 @@
+#!/bin/bash
+#PBS -N R4J8_500_to_505_solve_506_to_750
+#PBS -q entry_teachingq
+#PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+#PBS -l walltime=24:00:00
+#PBS -j oe
+#PBS -S /bin/bash
+#PBS -o /scratch/pr21vyci/git_work/Master_thesis_preparatory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J8_500_to_505_solve_506_to_750/R4J8_500_to_505_solve_506_to_750.pbs.out
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
+
+set -uo pipefail
+
+echo "PBS job started: $(date)"
+echo "Case: R4J8_500_to_505_solve_506_to_750"
+echo "Scratch case: /scratch/pr21vyci/stage16n_scratch_runs_r4j_next_refine/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J8_500_to_505_solve_506_to_750"
+cd "/scratch/pr21vyci/stage16n_scratch_runs_r4j_next_refine/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J8_500_to_505_solve_506_to_750"
+
+export REPO_ROOT="/scratch/pr21vyci/stage16n_scratch_runs_r4j_next_refine/Abaqus_trial"
+export TMPDIR="/scratch/pr21vyci/stage16n_scratch_runs_r4j_next_refine/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J8_500_to_505_solve_506_to_750/tmp"
+mkdir -p "$TMPDIR"
+
+df -h /home /scratch || true
+
+if [ -f ./link_restart_sources.sh ]; then
+  bash ./link_restart_sources.sh
+fi
+
+bash "./run_stage16n_r3j_jump_hpc.sh"
+RUN_RC=$?
+
+mkdir -p "/scratch/pr21vyci/git_work/Master_thesis_preparatory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J8_500_to_505_solve_506_to_750"
+rsync -av   --include="*/"   --include="*.sta"   --include="*.log"   --include="*.txt"   --include="*.csv"   --include="*.md"   --include="*.out"   --include="*.o[0-9]*"   --include="_logs/***"   --exclude="*.odb"   --exclude="*.stt"   --exclude="*.res"   --exclude="*.sim"   --exclude="*.mdl"   --exclude="*.prt"   --exclude="state.bin"   --exclude="state.csv"   --exclude="*"   "/scratch/pr21vyci/stage16n_scratch_runs_r4j_next_refine/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J8_500_to_505_solve_506_to_750/" "/scratch/pr21vyci/git_work/Master_thesis_preparatory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J8_500_to_505_solve_506_to_750/"
+
+df -h /home /scratch || true
+echo "PBS job finished: $(date)"
+exit "$RUN_RC"
