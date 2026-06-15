@@ -470,8 +470,16 @@ def write_link_script(path: Path, case: RestartJumpCase) -> None:
     text = f"""#!/usr/bin/env bash
 set -euo pipefail
 
-SOURCE_DIR="{rel_source.as_posix()}"
+DEFAULT_SOURCE_DIR="{rel_source.as_posix()}"
+HPC_SOURCE_DIR="/home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/R1A_restart_reference_500cycles"
 OLDJOB="{case.oldjob}"
+
+SOURCE_DIR="${{RESTART_SOURCE_DIR:-$DEFAULT_SOURCE_DIR}}"
+if [[ ! -e "${{SOURCE_DIR}}/${{OLDJOB}}.odb" && -e "${{HPC_SOURCE_DIR}}/${{OLDJOB}}.odb" ]]; then
+  SOURCE_DIR="$HPC_SOURCE_DIR"
+fi
+
+echo "Linking restart sources from: $SOURCE_DIR"
 for ext in odb res stt mdl sim prt; do
   src="${{SOURCE_DIR}}/${{OLDJOB}}.${{ext}}"
   dst="${{OLDJOB}}.${{ext}}"
