@@ -14,7 +14,7 @@ STAGE_DIR = Path(__file__).resolve().parent
 CONTROL_DIR = STAGE_DIR / "stage16n_restart_control"
 R3J_DIR = CONTROL_DIR / "restart_jump_cases"
 SOURCE_R1A = CONTROL_DIR / "R1A_restart_reference_500cycles"
-BASE_UMAT = STAGE_DIR / "stage16n_neml_equivalent_chaboche_umat.for"
+BASE_UMAT = SOURCE_R1A / "stage16n_neml_equivalent_chaboche_umat.for"
 EXTRACTOR = STAGE_DIR / "stage16n_extract_hysteresis_and_local_states.py"
 EXACT_STATE_EXTRACTOR = STAGE_DIR / "stage16n_extract_exact_state_for_reinjection.py"
 EXTRAPOLATOR = STAGE_DIR / "stage16n_make_extrapolated_state.py"
@@ -258,6 +258,36 @@ CASES = (
         ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
         solve_start_cycle=511,
     ),
+    RestartJumpCase(
+        case_id="R4J7_250_to_280_solve_281_to_500",
+        job="stage16n_r4j7_jump_250_to_280_solve_281_to_500",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=100,
+        checkpoint_cycle=250,
+        jump_cycles=30,
+        target_cycle=500,
+        ref_metrics=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv",
+        ref_local_states=STAGE_DIR
+        / "stage16n_1000cycle_pilot"
+        / "stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv",
+        solve_start_cycle=281,
+    ),
+    RestartJumpCase(
+        case_id="R4J8_500_to_505_solve_506_to_750",
+        job="stage16n_r4j8_jump_500_to_505_solve_506_to_750",
+        oldjob="stage16n_r1a_restart_ref_500cycles",
+        source_dir=SOURCE_R1A,
+        previous_cycle=250,
+        checkpoint_cycle=500,
+        jump_cycles=5,
+        target_cycle=750,
+        ref_metrics=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv",
+        ref_local_states=PARALLEL_REF / "stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv",
+        solve_start_cycle=506,
+    ),
 )
 
 
@@ -440,16 +470,8 @@ def write_link_script(path: Path, case: RestartJumpCase) -> None:
     text = f"""#!/usr/bin/env bash
 set -euo pipefail
 
-DEFAULT_SOURCE_DIR="{rel_source.as_posix()}"
-HPC_SOURCE_DIR="/home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/R1A_restart_reference_500cycles"
+SOURCE_DIR="{rel_source.as_posix()}"
 OLDJOB="{case.oldjob}"
-
-SOURCE_DIR="${{RESTART_SOURCE_DIR:-$DEFAULT_SOURCE_DIR}}"
-if [[ ! -e "${{SOURCE_DIR}}/${{OLDJOB}}.odb" && -e "${{HPC_SOURCE_DIR}}/${{OLDJOB}}.odb" ]]; then
-  SOURCE_DIR="$HPC_SOURCE_DIR"
-fi
-
-echo "Linking restart sources from: $SOURCE_DIR"
 for ext in odb res stt mdl sim prt; do
   src="${{SOURCE_DIR}}/${{OLDJOB}}.${{ext}}"
   dst="${{OLDJOB}}.${{ext}}"
@@ -894,6 +916,8 @@ def main() -> None:
             "R4J4",
             "R4J5",
             "R4J6",
+            "R4J7",
+            "R4J8",
         ],
         default="all",
     )
@@ -926,6 +950,10 @@ def main() -> None:
         selected = (CASES[12],)
     elif args.case == "R4J6":
         selected = (CASES[13],)
+    elif args.case == "R4J7":
+        selected = (CASES[14],)
+    elif args.case == "R4J8":
+        selected = (CASES[15],)
     else:
         selected = CASES
     prepare_cases(selected)
