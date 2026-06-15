@@ -1377,6 +1377,8 @@ R4E2 & 500 & 505 & 506--750 & \code{CYCLE\_0506} \\
 \end{tabular}
 \end{table}
 
+The first R4E setup attempt showed that the exact target state cannot be extracted directly from the original restart-source ODBs: cycle 280 had no usable field-output frame in the cycle-250 source, and cycle 505 is beyond the cycle-500 source. The R4E generator was therefore corrected to create a short native-restart exact-target source solve before the true-skip deck. For R4E1 this auxiliary source solve covers cycles 251--280; for R4E2 it covers cycles 501--505. The extracted exact target state is then reinjected into the main true-skip deck, which still starts at \code{CYCLE\_0281} for R4E1 and \code{CYCLE\_0506} for R4E2. The corrected controls were submitted from scratch on 2026-06-15 as PBS jobs \code{1345655.mmaster02} and \code{1345656.mmaster02}; both were running after setup with the exact-target source \code{.sta} files being written.
+
 The current thesis conclusion is therefore intentionally cautious: the R4J true-skip refinement shows that the admissible jump size is strongly branch dependent and controlled by local hole-ring state variables. The cycle-250 branch has at least one accepted true skip at +20, while the cycle-500 branch failed even at +5 using the current linear extrapolation. Since the +30 and +5 tests produced larger local errors than some larger previous jumps, exact-target true-skip diagnostics are required before finalising the practical safe-jump bracket.
 
 \appendix
