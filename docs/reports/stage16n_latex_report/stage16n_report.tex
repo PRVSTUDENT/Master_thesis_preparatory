@@ -22,7 +22,7 @@
 
 \title{\stage{} Inhomogeneous Plate-with-Hole Cycle-Jump Benchmark\\Living Technical Report}
 \author{Master Thesis Preparation}
-\date{Last updated: 2026-06-11}
+\date{Last updated: 2026-06-16}
 
 \begin{document}
 \maketitle
@@ -1315,6 +1315,104 @@ The branch-refinement jobs therefore solved robustly but did not pass the curren
 
 The updated branch-specific bracket is: for the cycle-250 branch, +20 passed, +35 is review/fail against the 5\% gate, and +50 failed; for the cycle-500 branch, +10, +20, and +50 all exceeded the local gate. The next useful tests are therefore below +35 for the 250 branch, for example +27 or +30, and below +10 for the 500 branch, for example +5.
 
+\subsection{R4J Next Refinement Pair Submitted}
+
+The next true-skip refinement pair was prepared from the merged HPC branch and submitted from scratch after verifying the first solved continuation steps. R4J7 tests the cycle-250 branch with a +30 skip, \code{250 -> 280 -> 500}, solving cycles 281--500. R4J8 tests the cycle-500 branch with a +5 skip, \code{500 -> 505 -> 750}, solving cycles 506--750. The generated decks begin with \code{*STEP, NAME=CYCLE\_0281} and \code{*STEP, NAME=CYCLE\_0506}, respectively.
+
+The report interpretation remains: R3J is overwrite validation only, R4J is true cycle skipping, +50 was computationally stable but inaccurate, +20 was branch-dependent, and +35/+10 both exceeded the 5\% local-state tolerance. The current submitted pair therefore tests +30 on the 250 branch and +5 on the 500 branch.
+
+\subsection{R4J Submitted Pair Completed}
+
+The submitted R4J7/R4J8 pair finished on 2026-06-15 with \code{Exit\_status=0} for both jobs. The run evidence was copied into the repository under the corresponding restart-jump case directories:
+
+\begin{itemize}
+  \item \path{runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J7_250_to_280_solve_281_to_500/}
+  \item \path{runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J8_500_to_505_solve_506_to_750/}
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4J submitted-pair PBS history.}
+\begin{tabular}{lllllll}
+\toprule
+Case & PBS job & Node & Walltime & CPU time & CPU percent & Memory \\
+\midrule
+R4J7 & 1345562 & mnode100 & 04:41:23 & 19:50:24 & 557 & 94375932 kb \\
+R4J8 & 1345563 & mnode101 & 05:11:31 & 21:49:48 & 592 & 94371840 kb \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4J submitted-pair comparison results.}
+\begin{tabular}{llllll}
+\toprule
+Case & Endpoint & Status & Max global error & Max primary local error & Diagnostic S11 error \\
+\midrule
+R4J7 & 500 & fail & 1.1886389\% & 11.829104\% & 0.92936729\% \\
+R4J8 & 750 & fail & 1.4217578\% & 13.598377\% & 13.011616\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both submitted jumps solved robustly but still exceed the current 5\% primary-local gate. However, the result should not yet be interpreted as a clean monotonic safe-jump bracket. R4J7 uses a smaller true skip than R4J5, but its local error is larger: R4J5 (+35) gave 6.9643175\%, while R4J7 (+30) gave 11.829104\%. Likewise, R4J8 (+5) is worse than R4J6 (+10): 13.598377\% versus 7.2880782\%. This can occur when the acceptance metric is a maximum over highly local hole-ring state variables, but it is also a setup-audit warning.
+
+The worst-row audit shows that the controlling quantity changes across the branch tests. R4J5 was controlled by \code{HOLE\_RING\_SDV1\_MAX}, whereas R4J7 is controlled by \code{HOLE\_RING\_SDV8\_MAX}. R4J6 was controlled by \code{HOLE\_RING\_SDV8\_MAX}, whereas R4J8 is controlled by \code{HOLE\_RING\_MISES\_MAX}, with a diagnostic \code{HOLE\_RING\_S11\_MAX\_ABS} error of 13.011616\%. The generated decks and overwrite traces remain consistent with the intended true-skip phase: R4J7 starts at \code{CYCLE\_0281} and overwrites at \code{JSTEP(1)=251}; R4J8 starts at \code{CYCLE\_0506} and overwrites at \code{JSTEP(1)=501}. The exported comparison details confirm endpoint comparisons against cycle 500 and cycle 750, respectively, but they do not preserve the element/integration-point identity of each local maximum.
+
+\subsection{R4E Exact-Target True-Skip Diagnostics Prepared}
+
+Before running another extrapolated refinement pair, exact-target true-skip controls were prepared to separate extrapolation error from restart/deck/comparison error. R4E1 restarts from cycle 250, overwrites the exact reference material state at cycle 280, and solves cycles 281--500. R4E2 restarts from cycle 500, overwrites the exact reference material state at cycle 505, and solves cycles 506--750. These controls keep the R4 true-skip solved-step accounting, but remove the linear extrapolation approximation.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4E exact-target true-skip diagnostics prepared.}
+\begin{tabular}{lllll}
+\toprule
+Case & Restart & Exact overwrite target & Solved continuation & Expected first step \\
+\midrule
+R4E1 & 250 & 280 & 281--500 & \code{CYCLE\_0281} \\
+R4E2 & 500 & 505 & 506--750 & \code{CYCLE\_0506} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The first R4E setup attempt showed that the exact target state cannot be extracted directly from the original restart-source ODBs: cycle 280 had no usable field-output frame in the cycle-250 source, and cycle 505 is beyond the cycle-500 source. The R4E generator was therefore corrected to create a short native-restart exact-target source solve before the true-skip deck. For R4E1 this auxiliary source solve covers cycles 251--280; for R4E2 it covers cycles 501--505. The extracted exact target state is then reinjected into the main true-skip deck, which still starts at \code{CYCLE\_0281} for R4E1 and \code{CYCLE\_0506} for R4E2. The corrected controls were submitted from scratch on 2026-06-15 as PBS jobs \code{1345655.mmaster02} and \code{1345656.mmaster02}.
+
+\subsection{R4E Exact-Target True-Skip Diagnostics Completed}
+
+The corrected R4E jobs finished with \code{Exit\_status=0}. PBS history and copied lightweight evidence confirm that both the exact-target source solve and the main true-skip solve completed successfully. However, both cases still fail the primary-local acceptance gate.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4E completed job resource history.}
+\begin{tabular}{llllrrr}
+\toprule
+Case & PBS job & Host & Walltime & CPU time & CPU percent & Memory \\
+\midrule
+R4E1 & 1345655 & mnode100 & 05:08:21 & 22:15:38 & 593 & 94375852 kb \\
+R4E2 & 1345656 & mnode101 & 05:17:40 & 22:34:55 & 598 & 94371840 kb \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4E exact-target comparison results.}
+\begin{tabular}{lllrrrl}
+\toprule
+Case & Endpoint & Status & Max global error & Max primary local error & Diagnostic S11 error & Controlling primary metric \\
+\midrule
+R4E1 & 500 & fail & 1.1886389\% & 11.829104\% & 0.92936729\% & \code{HOLE\_RING\_SDV8\_MAX} \\
+R4E2 & 750 & fail & 1.4217578\% & 13.598377\% & 13.011616\% & \code{HOLE\_RING\_MISES\_MAX} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The R4E errors are identical to the preceding R4J7/R4J8 comparison summaries, even though R4E was meant to replace the extrapolated jump state with an exact target state. This is a decisive audit signal. The current evidence does not support continuing directly to R4J9/R4J10. Before any additional extrapolated refinement is submitted, the exact-state extraction, state-file handoff, overwrite activation/timing, and comparison mapping must be audited.
+
+The current thesis conclusion is therefore intentionally cautious: the R4J true-skip refinement shows branch-dependent local error, but the exact-target controls did not pass. The safe-jump bracket cannot be finalised until the R4E failure mechanism is understood. Heavy Abaqus files remain in scratch; only lightweight evidence, comparison CSVs, status notes, selected-cycle CSVs, \code{.sta} files, PBS stdout, and small logs were copied into the repository.
+
 \appendix
 \section{Key Repository Evidence Files}
 
@@ -1349,6 +1447,8 @@ The updated branch-specific bracket is: for the cycle-250 branch, +20 passed, +3
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_PLUS20\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_BRANCH\_BRACKET\_AND\_NEXT\_JOBS.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_BRANCH\_REFINE\_RESULT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_NONMONOTONIC\_AUDIT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4E\_EXACT\_TARGET\_CONTROL\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J3\_250\_to\_260\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J4\_500\_to\_510\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J5\_250\_to\_270\_to\_500/}
@@ -1359,6 +1459,10 @@ The updated branch-specific bracket is: for the cycle-250 branch, +20 passed, +3
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J4\_500\_to\_520\_solve\_521\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J5\_250\_to\_285\_solve\_286\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J6\_500\_to\_510\_solve\_511\_to\_750/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J7\_250\_to\_280\_solve\_281\_to\_500/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4J8\_500\_to\_505\_solve\_506\_to\_750/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4E1\_250\_to\_280\_exact\_solve\_281\_to\_500/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R4E2\_500\_to\_505\_exact\_solve\_506\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/watch\_cleanup\_and\_submit\_stage16n\_scratch\_jobs.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_PROFESSOR\_UPDATE\_2026\_06\_07.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/cases/B1D2\_100\_to\_102\_to\_250/}
