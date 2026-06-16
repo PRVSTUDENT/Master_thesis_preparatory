@@ -1434,6 +1434,8 @@ R4F2 & 500--505 & 506--750 & none \\
 
 If R4F passes while R4E fails, the failure mechanism is consistent with material-only overwrite being incomplete: the full Abaqus target restart state is needed. If R4F also fails, the remaining suspect becomes the native-restart continuation, comparison mapping, or another setup-level inconsistency. Heavy Abaqus files remain in scratch; only lightweight evidence, comparison CSVs, status notes, selected-cycle CSVs, \code{.sta} files, PBS stdout, and small logs should be copied into the repository.
 
+The R4F controls were submitted on 2026-06-16 after merging the prepared files into \code{copilot/curved-cephalopod}. R4F1 is PBS job \code{1347842.mmaster02}, running on \code{mnode101}; R4F2 is PBS job \code{1347843.mmaster02}, running on \code{mnode102}. These jobs should be classified before R4J9/R4J10 are considered.
+
 \appendix
 \section{Key Repository Evidence Files}
 
