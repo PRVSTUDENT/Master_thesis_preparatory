@@ -22,7 +22,7 @@
 
 \title{\stage{} Inhomogeneous Plate-with-Hole Cycle-Jump Benchmark\\Living Technical Report}
 \author{Master Thesis Preparation}
-\date{Last updated: 2026-06-11}
+\date{Last updated: 2026-06-16}
 
 \begin{document}
 \maketitle
@@ -1377,9 +1377,41 @@ R4E2 & 500 & 505 & 506--750 & \code{CYCLE\_0506} \\
 \end{tabular}
 \end{table}
 
-The first R4E setup attempt showed that the exact target state cannot be extracted directly from the original restart-source ODBs: cycle 280 had no usable field-output frame in the cycle-250 source, and cycle 505 is beyond the cycle-500 source. The R4E generator was therefore corrected to create a short native-restart exact-target source solve before the true-skip deck. For R4E1 this auxiliary source solve covers cycles 251--280; for R4E2 it covers cycles 501--505. The extracted exact target state is then reinjected into the main true-skip deck, which still starts at \code{CYCLE\_0281} for R4E1 and \code{CYCLE\_0506} for R4E2. The corrected controls were submitted from scratch on 2026-06-15 as PBS jobs \code{1345655.mmaster02} and \code{1345656.mmaster02}; both were running after setup with the exact-target source \code{.sta} files being written.
+The first R4E setup attempt showed that the exact target state cannot be extracted directly from the original restart-source ODBs: cycle 280 had no usable field-output frame in the cycle-250 source, and cycle 505 is beyond the cycle-500 source. The R4E generator was therefore corrected to create a short native-restart exact-target source solve before the true-skip deck. For R4E1 this auxiliary source solve covers cycles 251--280; for R4E2 it covers cycles 501--505. The extracted exact target state is then reinjected into the main true-skip deck, which still starts at \code{CYCLE\_0281} for R4E1 and \code{CYCLE\_0506} for R4E2. The corrected controls were submitted from scratch on 2026-06-15 as PBS jobs \code{1345655.mmaster02} and \code{1345656.mmaster02}.
 
-The current thesis conclusion is therefore intentionally cautious: the R4J true-skip refinement shows that the admissible jump size is strongly branch dependent and controlled by local hole-ring state variables. The cycle-250 branch has at least one accepted true skip at +20, while the cycle-500 branch failed even at +5 using the current linear extrapolation. Since the +30 and +5 tests produced larger local errors than some larger previous jumps, exact-target true-skip diagnostics are required before finalising the practical safe-jump bracket.
+\subsection{R4E Exact-Target True-Skip Diagnostics Completed}
+
+The corrected R4E jobs finished with \code{Exit\_status=0}. PBS history and copied lightweight evidence confirm that both the exact-target source solve and the main true-skip solve completed successfully. However, both cases still fail the primary-local acceptance gate.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4E completed job resource history.}
+\begin{tabular}{llllrrr}
+\toprule
+Case & PBS job & Host & Walltime & CPU time & CPU percent & Memory \\
+\midrule
+R4E1 & 1345655 & mnode100 & 05:08:21 & 22:15:38 & 593 & 94375852 kb \\
+R4E2 & 1345656 & mnode101 & 05:17:40 & 22:34:55 & 598 & 94371840 kb \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4E exact-target comparison results.}
+\begin{tabular}{lllrrrl}
+\toprule
+Case & Endpoint & Status & Max global error & Max primary local error & Diagnostic S11 error & Controlling primary metric \\
+\midrule
+R4E1 & 500 & fail & 1.1886389\% & 11.829104\% & 0.92936729\% & \code{HOLE\_RING\_SDV8\_MAX} \\
+R4E2 & 750 & fail & 1.4217578\% & 13.598377\% & 13.011616\% & \code{HOLE\_RING\_MISES\_MAX} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The R4E errors are identical to the preceding R4J7/R4J8 comparison summaries, even though R4E was meant to replace the extrapolated jump state with an exact target state. This is a decisive audit signal. The current evidence does not support continuing directly to R4J9/R4J10. Before any additional extrapolated refinement is submitted, the exact-state extraction, state-file handoff, overwrite activation/timing, and comparison mapping must be audited.
+
+The current thesis conclusion is therefore intentionally cautious: the R4J true-skip refinement shows branch-dependent local error, but the exact-target controls did not pass. The safe-jump bracket cannot be finalised until the R4E failure mechanism is understood. Heavy Abaqus files remain in scratch; only lightweight evidence, comparison CSVs, status notes, selected-cycle CSVs, \code{.sta} files, PBS stdout, and small logs were copied into the repository.
 
 \appendix
 \section{Key Repository Evidence Files}
@@ -1416,6 +1448,7 @@ The current thesis conclusion is therefore intentionally cautious: the R4J true-
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_BRANCH\_BRACKET\_AND\_NEXT\_JOBS.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_BRANCH\_REFINE\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_NONMONOTONIC\_AUDIT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4E\_EXACT\_TARGET\_CONTROL\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J3\_250\_to\_260\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J4\_500\_to\_510\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J5\_250\_to\_270\_to\_500/}
