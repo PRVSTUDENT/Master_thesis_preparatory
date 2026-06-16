@@ -1409,9 +1409,30 @@ R4E2 & 750 & fail & 1.4217578\% & 13.598377\% & 13.011616\% & \code{HOLE\_RING\_
 \end{tabular}
 \end{table}
 
-The R4E errors are identical to the preceding R4J7/R4J8 comparison summaries, even though R4E was meant to replace the extrapolated jump state with an exact target state. This is a decisive audit signal. The current evidence does not support continuing directly to R4J9/R4J10. Before any additional extrapolated refinement is submitted, the exact-state extraction, state-file handoff, overwrite activation/timing, and comparison mapping must be audited.
+The R4E errors are identical to the preceding R4J7/R4J8 comparison summaries, even though R4E was meant to replace the extrapolated jump state with an exact target state. A follow-up audit showed that the retained R4E exact-target CSV files are byte-identical to the \code{state.csv} files handed to the main true-skip decks. R4E1 used a 25184-row exact cycle-280 CSV with SHA-256 \code{4facbc0e87caf9c63febb31e51db819308cd496244ec33dabe79ff9a6ed2d3ff}; R4E2 used a 25184-row exact cycle-505 CSV with SHA-256 \code{b9254d54f41612772a55ee103b42db30734dcc8115d35800b61858d6b50a8948}. These exact-target CSVs are not the same as the earlier R4J extrapolated states: the R4E1--R4J7 maximum absolute state difference is 70.03573608398443 in \code{S1}, and the R4E2--R4J8 maximum absolute state difference is 30.373046875 in \code{S1}. This rules out the simple explanation that R4E accidentally consumed the old extrapolated state file.
 
-The current thesis conclusion is therefore intentionally cautious: the R4J true-skip refinement shows branch-dependent local error, but the exact-target controls did not pass. The safe-jump bracket cannot be finalised until the R4E failure mechanism is understood. Heavy Abaqus files remain in scratch; only lightweight evidence, comparison CSVs, status notes, selected-cycle CSVs, \code{.sta} files, PBS stdout, and small logs were copied into the repository.
+The overwrite traces are also phase-consistent at the diagnostic level: R4E1 prints overwrite records at \code{KSTEP=251}, and R4E2 prints overwrite records at \code{KSTEP=501}. The trace output is intentionally sparse diagnostic output rather than a complete count of every integration point. The heavy binary \code{state.bin} files were not retained in the lightweight result directories after cleanup, so the durable repository audit is CSV-based.
+
+The current interpretation is therefore stronger and more specific than the initial R4E setup warning. The evidence suggests that material-only overwrite may be insufficient for a true skipped-cycle restart, because Abaqus' native restart still carries the checkpoint-cycle mechanical/internal restart state. In other words, an exact material state at cycle 280 or 505 may not be enough if the global displacement-equilibrium path, solver history, and other native restart data still come from cycle 250 or 500. The current evidence does not support continuing directly to R4J9/R4J10.
+
+\subsection{R4F Full-Target Native Restart Controls Prepared}
+
+To test the material-only overwrite hypothesis directly, R4F full-target restart controls were prepared. Each case first creates the target-cycle state with a short native restart source solve, then restarts Abaqus from that newly generated target-cycle restart file set and solves the remaining cycles without SDVINI/SIGINI and without the R4J overwrite UMAT.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4F full-target native restart controls prepared.}
+\begin{tabular}{llll}
+\toprule
+Case & Source solve & Continuation solve & UMAT overwrite \\
+\midrule
+R4F1 & 250--280 & 281--500 & none \\
+R4F2 & 500--505 & 506--750 & none \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+If R4F passes while R4E fails, the failure mechanism is consistent with material-only overwrite being incomplete: the full Abaqus target restart state is needed. If R4F also fails, the remaining suspect becomes the native-restart continuation, comparison mapping, or another setup-level inconsistency. Heavy Abaqus files remain in scratch; only lightweight evidence, comparison CSVs, status notes, selected-cycle CSVs, \code{.sta} files, PBS stdout, and small logs should be copied into the repository.
 
 \appendix
 \section{Key Repository Evidence Files}
@@ -1449,6 +1470,10 @@ The current thesis conclusion is therefore intentionally cautious: the R4J true-
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_BRANCH\_REFINE\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_NONMONOTONIC\_AUDIT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4E\_EXACT\_TARGET\_CONTROL\_RESULT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4E\_AUDIT\_AND\_R4F\_FULL\_RESTART\_PLAN.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r4f\_full\_target\_restart\_controls.py}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/submit\_stage16n\_r4f\_full\_target\_restart\_case.sh}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/full\_target\_restart\_cases/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J3\_250\_to\_260\_to\_500/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J4\_500\_to\_510\_to\_750/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/R3J5\_250\_to\_270\_to\_500/}
