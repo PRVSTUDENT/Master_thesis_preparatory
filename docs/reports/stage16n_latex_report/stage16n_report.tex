@@ -1466,6 +1466,29 @@ The R4F result is mixed. R4F2 improves strongly relative to R4E2/R4J8: the maxim
 
 The current decision is therefore to keep R4J9/R4J10 on hold. Material-only overwrite is a contributor, most clearly shown by the R4F2 improvement, but R4F1 remains evidence of an additional restart, comparison, extraction, or branch-specific issue. The next audit should focus on the 250--280--500 branch: native restart phase, reference/comparison mapping, selected-cycle local-state extraction, and the local maximum identity controlling \code{HOLE\_RING\_SDV8\_MAX}.
 
+\subsection{R4G Native Restart and Source-Split Replay Controls Prepared}
+
+Because the R4F result is mixed, a two-day unattended R4G diagnostic batch was prepared before any R4J9/R4J10 extrapolated refinement. R4G separates direct native restart behavior from source-split replay behavior and checks both the 250-branch and 500-branch baselines.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4G unattended native restart/replay controls prepared.}
+\begin{tabular}{lllll}
+\toprule
+Case & Mode & Restart chain & First solved cycle & Endpoint \\
+\midrule
+R4G1 & direct original & 250--500 & 251 & 500 \\
+R4G2 & direct original & 270--500 & 271 & 500 \\
+R4G3 & direct original & 280--500 & 281 & 500 \\
+R4G4 & source split & 250--270--500 & 271 & 500 \\
+R4G5 & source split & 250--280--500 & 281 & 500 \\
+R4G6 & direct original & 500--750 & 501 & 750 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The original R1A restart deck explicitly requested restart writes at cycles 100, 250, and 500. Therefore, R4G2 and R4G3 also serve as practical availability checks for direct restart records at cycles 270 and 280 in the retained native restart files. If these cases fail at datacheck before solving, that should be classified as restart-record/setup evidence rather than a physical comparison failure. R4G4/R4G5 then test the corresponding source-split replay path.
+
 \appendix
 \section{Key Repository Evidence Files}
 
@@ -1504,6 +1527,10 @@ The current decision is therefore to keep R4J9/R4J10 on hold. Material-only over
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4E\_EXACT\_TARGET\_CONTROL\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4E\_AUDIT\_AND\_R4F\_FULL\_RESTART\_PLAN.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4F\_FULL\_TARGET\_RESTART\_RESULT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4G\_UNATTENDED\_NATIVE\_REPLAY\_PLAN.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r4g\_native\_replay\_controls.py}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/submit\_stage16n\_r4g\_native\_replay\_case.sh}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4g\_native\_replay\_cases/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r4f\_full\_target\_restart\_controls.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/submit\_stage16n\_r4f\_full\_target\_restart\_case.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/full\_target\_restart\_cases/}
