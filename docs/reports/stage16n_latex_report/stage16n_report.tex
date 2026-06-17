@@ -1550,6 +1550,31 @@ This resolves the main ambiguity from R4F. Direct native restart and comparison 
 
 The current thesis conclusion should therefore not blame the direct native restart machinery or endpoint comparison procedure. The evidence points to source-split restart generation, source-split restart-file selection, or source-split phase history. R4J9/R4J10 remain on hold until the direct-original cycle-270/280 restart files are compared against the source-split cycle-270/280 restart files.
 
+\subsection{R4H Restart-Source Diagnostics Submitted}
+
+The R4G diagnostics show that direct native restart from the original reference is exact at cycles 250, 270, 280, and 500. However, source-split replay from 250 to 270 or 280 followed by a second restart introduces significant local hole-ring error. Therefore, the active issue is not endpoint comparison or direct Abaqus restart, but the generation or selection of source-split restart states. The next diagnostic stage, R4H, tests whether the inconsistency is caused by second-generation restart files, restart from the final step of short source jobs, or source-split phase/history effects.
+
+A no-new-job audit was attempted on the retained R4G source jobs, but the source ODB extraction reported no selected field-output frames for the R4G4/R4G5 source jobs. The R4H source decks therefore explicitly request restart writes throughout the short source solve and field output at the interior restart target and source end cycles.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4H restart-source diagnostics submitted.}
+\begin{tabular}{lllll}
+\toprule
+Case & Mode & Restart source & First solved cycle & PBS job \\
+\midrule
+R4H1 & long replay & R4G1 cycle 280 & \code{CYCLE\_0281} & 1349085 \\
+R4H2 & interior source split & 250--281, restart 280 & \code{CYCLE\_0281} & 1349086 \\
+R4H3 & long replay & R4G1 cycle 270 & \code{CYCLE\_0271} & 1349087 \\
+R4H4 & interior source split & 250--271, restart 270 & \code{CYCLE\_0271} & 1349088 \\
+R4H5 & long replay & R4G6 cycle 505 & \code{CYCLE\_0506} & 1349089 \\
+R4H6 & interior source split & 500--506, restart 505 & \code{CYCLE\_0506} & 1349090 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The safety gate before submission showed no pre-existing PBS jobs, \code{/home} at 14T used out of 17T with 2.9T available, \code{/scratch} at 82T used out of 110T with 29T available, and \code{/home/pr21vyci} at 3.6T. All six jobs use \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb}, \code{walltime=24:00:00}, and \code{teachingq}. R4H1 and R4H2 started immediately on mnode100 and mnode101 at 2026-06-17 16:55:59 CEST; R4H3--R4H6 remained queued behind the teachingq two-running-job limit. R4J9/R4J10 remain blocked until R4H is classified.
+
 \appendix
 \section{Key Repository Evidence Files}
 
@@ -1590,6 +1615,10 @@ The current thesis conclusion should therefore not blame the direct native resta
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4F\_FULL\_TARGET\_RESTART\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4G\_UNATTENDED\_NATIVE\_REPLAY\_PLAN.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4G\_NATIVE\_REPLAY\_RESULT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4H\_RESTART\_SOURCE\_DIAGNOSTIC\_SUBMISSION.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r4h\_restart\_source\_diagnostics.py}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/submit\_stage16n\_r4h\_restart\_source\_diagnostic\_case.sh}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4h\_restart\_source\_diagnostics/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r4g\_native\_replay\_controls.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/submit\_stage16n\_r4g\_native\_replay\_case.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4g\_native\_replay\_cases/}
