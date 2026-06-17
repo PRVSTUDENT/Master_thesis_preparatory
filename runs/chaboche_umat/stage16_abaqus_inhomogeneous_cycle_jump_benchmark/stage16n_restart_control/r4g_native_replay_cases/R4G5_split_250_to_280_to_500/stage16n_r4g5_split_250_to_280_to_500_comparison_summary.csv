@@ -1,0 +1,2 @@
+cycles,status,max_global_error_pct,max_primary_local_error_pct,diagnostic_s11_error_pct,details_file
+500,fail,1.1887403,11.83033,0.92936729,stage16n_r4g5_split_250_to_280_to_500_comparison_details.csv

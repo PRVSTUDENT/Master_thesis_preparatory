@@ -1508,6 +1508,48 @@ R4G5 & 1348013 & queued & teachingq running-job limit \\
 \end{tabular}
 \end{table}
 
+\subsection{R4G Native Restart and Source-Split Replay Controls Completed}
+
+All six R4G controls completed with \code{Exit\_status=0}. The direct original native-restart controls pass exactly, while the source-split replay controls reproduce the branch error.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4G completed job resource history.}
+\begin{tabular}{llllrrr}
+\toprule
+Case & PBS job & Host & Walltime & CPU time & CPU percent & Memory \\
+\midrule
+R4G1 & 1348008 & mnode101 & 03:44:18 & 20:33:11 & 651 & 94371840 kb \\
+R4G2 & 1348010 & mnode100 & 03:29:21 & 18:58:14 & 645 & 94375908 kb \\
+R4G3 & 1348009 & mnode102 & 03:16:19 & 18:04:31 & 644 & 94373888 kb \\
+R4G4 & 1348012 & mnode102 & 03:34:51 & 19:55:01 & 644 & 94377452 kb \\
+R4G5 & 1348013 & mnode101 & 03:34:57 & 20:06:26 & 653 & 94373888 kb \\
+R4G6 & 1348011 & mnode101 & 03:45:57 & 20:32:09 & 642 & 94377848 kb \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4G comparison classification.}
+\begin{tabular}{lllrrrl}
+\toprule
+Case & Mode & Status & Max global error & Max primary local error & Diagnostic S11 error & Controlling metric \\
+\midrule
+R4G1 & direct 250--500 & pass & 0\% & 0\% & 0\% & none \\
+R4G2 & direct 270--500 & pass & 0\% & 0\% & 0\% & none \\
+R4G3 & direct 280--500 & pass & 0\% & 0\% & 0\% & none \\
+R4G4 & split 250--270--500 & review & 2.5314199\% & 9.3860617\% & 1.2392968\% & \code{HOLE\_RING\_SDV8\_MAX} \\
+R4G5 & split 250--280--500 & fail & 1.1887403\% & 11.83033\% & 0.92936729\% & \code{HOLE\_RING\_SDV8\_MAX} \\
+R4G6 & direct 500--750 & pass & 0\% & 0\% & 0\% & none \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This resolves the main ambiguity from R4F. Direct native restart and comparison mapping are clean: direct restarts from cycles 250, 270, 280, and 500 all pass exactly. The source-split replay path is the failure mechanism. R4G4 already drifts to review after source 250--270, and R4G5 reproduces the R4F1 failure after source 250--280 with the identical summary \code{500,fail,1.1887403,11.83033,0.92936729}. The controlling metric in both source-split cases is \code{HOLE\_RING\_SDV8\_MAX}.
+
+The current thesis conclusion should therefore not blame the direct native restart machinery or endpoint comparison procedure. The evidence points to source-split restart generation, source-split restart-file selection, or source-split phase history. R4J9/R4J10 remain on hold until the direct-original cycle-270/280 restart files are compared against the source-split cycle-270/280 restart files.
+
 \appendix
 \section{Key Repository Evidence Files}
 
@@ -1547,6 +1589,7 @@ R4G5 & 1348013 & queued & teachingq running-job limit \\
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4E\_AUDIT\_AND\_R4F\_FULL\_RESTART\_PLAN.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4F\_FULL\_TARGET\_RESTART\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4G\_UNATTENDED\_NATIVE\_REPLAY\_PLAN.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4G\_NATIVE\_REPLAY\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r4g\_native\_replay\_controls.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/submit\_stage16n\_r4g\_native\_replay\_case.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4g\_native\_replay\_cases/}
