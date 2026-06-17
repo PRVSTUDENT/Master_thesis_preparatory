@@ -1434,7 +1434,37 @@ R4F2 & 500--505 & 506--750 & none \\
 
 If R4F passes while R4E fails, the failure mechanism is consistent with material-only overwrite being incomplete: the full Abaqus target restart state is needed. If R4F also fails, the remaining suspect becomes the native-restart continuation, comparison mapping, or another setup-level inconsistency. Heavy Abaqus files remain in scratch; only lightweight evidence, comparison CSVs, status notes, selected-cycle CSVs, \code{.sta} files, PBS stdout, and small logs should be copied into the repository.
 
-The R4F controls were submitted on 2026-06-16 after merging the prepared files into \code{copilot/curved-cephalopod}. R4F1 is PBS job \code{1347842.mmaster02}, running on \code{mnode101}; R4F2 is PBS job \code{1347843.mmaster02}, running on \code{mnode102}. These jobs should be classified before R4J9/R4J10 are considered.
+The R4F controls were submitted on 2026-06-16 after merging the prepared files into \code{copilot/curved-cephalopod}. R4F1 was PBS job \code{1347842.mmaster02} on \code{mnode101}; R4F2 was PBS job \code{1347843.mmaster02} on \code{mnode102}. Both jobs completed with \code{Exit\_status=0}.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4F completed job resource history.}
+\begin{tabular}{llllrrr}
+\toprule
+Case & PBS job & Host & Walltime & CPU time & CPU percent & Memory \\
+\midrule
+R4F1 & 1347842 & mnode101 & 03:31:18 & 19:57:42 & 649 & 94371840 kb \\
+R4F2 & 1347843 & mnode102 & 03:30:05 & 19:05:48 & 635 & 94375936 kb \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4F full-target native restart comparison results.}
+\begin{tabular}{lllrrrl}
+\toprule
+Case & Endpoint & Status & Max global error & Max primary local error & Diagnostic S11 error & Controlling primary metric \\
+\midrule
+R4F1 & 500 & fail & 1.1887403\% & 11.83033\% & 0.92936729\% & \code{HOLE\_RING\_SDV8\_MAX} \\
+R4F2 & 750 & review & 0.31896796\% & 8.0369449\% & 1.5702038\% & \code{HOLE\_RING\_SDV8\_MAX} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The R4F result is mixed. R4F2 improves strongly relative to R4E2/R4J8: the maximum primary local error falls from 13.598377\% to 8.0369449\%, and the diagnostic \code{HOLE\_RING\_S11\_MAX\_ABS} error falls from 13.011616\% to 1.5702038\%. This supports the hypothesis that material-only overwrite is incomplete on the 500--505--750 branch. R4F1, however, does not improve relative to R4E1/R4J7: the primary local error remains approximately 11.83\%, controlled by \code{HOLE\_RING\_SDV8\_MAX}. Because R4F1 uses a full native target restart at cycle 280 and no overwrite, this points away from material-only overwrite as the sole explanation.
+
+The current decision is therefore to keep R4J9/R4J10 on hold. Material-only overwrite is a contributor, most clearly shown by the R4F2 improvement, but R4F1 remains evidence of an additional restart, comparison, extraction, or branch-specific issue. The next audit should focus on the 250--280--500 branch: native restart phase, reference/comparison mapping, selected-cycle local-state extraction, and the local maximum identity controlling \code{HOLE\_RING\_SDV8\_MAX}.
 
 \appendix
 \section{Key Repository Evidence Files}
@@ -1473,6 +1503,7 @@ The R4F controls were submitted on 2026-06-16 after merging the prepared files i
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4J\_NONMONOTONIC\_AUDIT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4E\_EXACT\_TARGET\_CONTROL\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4E\_AUDIT\_AND\_R4F\_FULL\_RESTART\_PLAN.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4F\_FULL\_TARGET\_RESTART\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r4f\_full\_target\_restart\_controls.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/submit\_stage16n\_r4f\_full\_target\_restart\_case.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/full\_target\_restart\_cases/}

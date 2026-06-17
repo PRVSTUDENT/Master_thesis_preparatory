@@ -1,0 +1,159 @@
+Linking base restart sources from: ../../R1A_restart_reference_500cycles
+[Stage16N-R4F] start: 2026-06-16 17:02:26
+[Stage16N-R4F] PBS job: 1347842.mmaster02
+[Stage16N-R4F] source solve: stage16n_r4f1_source_250_to_280 (250 -> 280)
+[Stage16N-R4F] continuation: stage16n_r4f1_fullrestart_280_solve_281_to_500 (281 -> 500)
+[Stage16N-R4F] no UMAT overwrite; full Abaqus target restart is used
+[Stage16N-R4F] scratch=/home/pr21vyci/pbs.1347842.mmaster02.x8z
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r4f1_source_250_to_280
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 16 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<150 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Tue 16 Jun 2026 05:02:30 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_neml_equivalent_chaboche_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Tue 16 Jun 2026 05:02:35 PM CEST
+Begin Analysis Input File Processor
+Tue 16 Jun 2026 05:02:35 PM CEST
+Run pre
+Tue 16 Jun 2026 05:02:41 PM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+Tue 16 Jun 2026 05:02:41 PM CEST
+Run standard
+Tue 16 Jun 2026 05:24:28 PM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Tue 16 Jun 2026 05:24:29 PM CEST
+Run SMASimUtility
+Tue 16 Jun 2026 05:24:29 PM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_r4f1_source_250_to_280 COMPLETED
+[Stage16N-R4F] restart read target: STEP=280 INC=56
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r4f1_fullrestart_280_solve_281_to_500_datacheck
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 16 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<150 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Tue 16 Jun 2026 05:24:31 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_neml_equivalent_chaboche_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Tue 16 Jun 2026 05:24:37 PM CEST
+Begin Analysis Input File Processor
+Tue 16 Jun 2026 05:24:37 PM CEST
+Run pre
+Tue 16 Jun 2026 05:24:47 PM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Datacheck
+Begin Abaqus/Standard Analysis
+Tue 16 Jun 2026 05:24:47 PM CEST
+Run standard
+Tue 16 Jun 2026 05:24:48 PM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Tue 16 Jun 2026 05:24:48 PM CEST
+Run SMASimUtility
+Tue 16 Jun 2026 05:24:48 PM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_r4f1_fullrestart_280_solve_281_to_500_datacheck COMPLETED
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r4f1_fullrestart_280_solve_281_to_500
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 16 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<150 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Tue 16 Jun 2026 05:24:50 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_neml_equivalent_chaboche_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Tue 16 Jun 2026 05:24:56 PM CEST
+Begin Analysis Input File Processor
+Tue 16 Jun 2026 05:24:56 PM CEST
+Run pre
+Tue 16 Jun 2026 05:25:03 PM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+Tue 16 Jun 2026 05:25:03 PM CEST
+Run standard
+Tue 16 Jun 2026 08:33:21 PM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Tue 16 Jun 2026 08:33:21 PM CEST
+Run SMASimUtility
+Tue 16 Jun 2026 08:33:22 PM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_r4f1_fullrestart_280_solve_281_to_500 COMPLETED
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+Wrote: stage16n_r4f1_fullrestart_280_solve_281_to_500_cycle_metrics.csv
+Wrote: stage16n_r4f1_fullrestart_280_solve_281_to_500_selected_cycle_loops.csv
+Wrote: stage16n_r4f1_fullrestart_280_solve_281_to_500_selected_cycle_local_states.csv
+Wrote runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/full_target_restart_cases/R4F1_250_to_280_fullrestart_solve_281_to_500/stage16n_r4f1_fullrestart_280_solve_281_to_500_comparison_summary.csv
+Wrote runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/full_target_restart_cases/R4F1_250_to_280_fullrestart_solve_281_to_500/stage16n_r4f1_fullrestart_280_solve_281_to_500_comparison_details.csv
+[Stage16N-R4F] end: 2026-06-16 20:33:40
