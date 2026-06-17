@@ -1489,6 +1489,25 @@ R4G6 & direct original & 500--750 & 501 & 750 \\
 
 The original R1A restart deck explicitly requested restart writes at cycles 100, 250, and 500. Therefore, R4G2 and R4G3 also serve as practical availability checks for direct restart records at cycles 270 and 280 in the retained native restart files. If these cases fail at datacheck before solving, that should be classified as restart-record/setup evidence rather than a physical comparison failure. R4G4/R4G5 then test the corresponding source-split replay path.
 
+Safety checks before submission showed no already-running PBS jobs for the user, \code{/home} at 12T used out of 17T, \code{/scratch} at 82T used out of 110T, and \code{/home/pr21vyci} at 930G. Three existing R4F \code{.stt} files larger than 10G were found in \code{/home}; they were left untouched because available capacity remained sufficient. The deployed R4G decks were checked before submission and the first solved steps matched the intended cycles.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4G unattended submission queue.}
+\begin{tabular}{llll}
+\toprule
+Case & PBS job & Initial state & Initial node/comment \\
+\midrule
+R4G1 & 1348008 & running & mnode101 \\
+R4G3 & 1348009 & running & mnode102 \\
+R4G2 & 1348010 & queued & teachingq running-job limit \\
+R4G6 & 1348011 & queued & teachingq running-job limit \\
+R4G4 & 1348012 & queued & teachingq running-job limit \\
+R4G5 & 1348013 & queued & teachingq running-job limit \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \appendix
 \section{Key Repository Evidence Files}
 
