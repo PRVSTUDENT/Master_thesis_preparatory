@@ -21,7 +21,9 @@ mkdir -p /scratch/$USER/stage16n_r4i_pbs
 cd "$CASE_DIR"
 if command -v qsub_abq >/dev/null 2>&1; then
   qsub_abq "$pbs_script"
+elif [[ -x "$HOME/bin/qsub_abq_guarded" ]]; then
+  "$HOME/bin/qsub_abq_guarded" "$pbs_script"
 else
-  echo "qsub_abq not found; refusing raw qsub for Abaqus job" >&2
+  echo "qsub_abq guarded wrapper not found; refusing raw qsub for Abaqus job" >&2
   exit 2
 fi
