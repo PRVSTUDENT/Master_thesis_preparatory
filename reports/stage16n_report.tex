@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,booktabs,hyperref}
+\usepackage{longtable}
+\title{Stage 16N Report}
+\author{}
+\date{Updated 2026-06-19}
+\begin{document}
+\maketitle
+
+\section{Overview}
+Stage 16N investigates restart-preserved cycle-jump behavior for the Chaboche UMAT Abaqus benchmark. The R4H diagnostic tested whether source-split restart files differ from restart records produced by long restarted replay runs.
+
+\section{Results}
+R4H completed six PBS/Abaqus jobs successfully with \texttt{Exit\_status=0}. Long-replay restart records passed exactly: R4H1 at cycle 500, R4H3 at cycle 500, and R4H5 at cycle 750 all had zero global, local, and diagnostic S11 error. Short source-split restart cases remained inconsistent: R4H2 failed at cycle 500 with 11.83033\% max primary local error, R4H4 was review-level at cycle 500 with 9.3860617\%, and R4H6 was review-level at cycle 750 with 8.0369449\%.
+
+\small
+\setlength{\tabcolsep}{2pt}
+\begin{longtable}{p{0.08\textwidth}p{0.28\textwidth}p{0.10\textwidth}p{0.10\textwidth}p{0.10\textwidth}p{0.14\textwidth}p{0.10\textwidth}}
+\toprule
+Case & Mode & Endpoint & Status & Global \% & Primary local \% & S11 \% \\
+\midrule
+R4H1 & Long replay 280--500 & 500 & pass & 0 & 0 & 0 \\
+R4H2 & Source 250--281, restart 280--500 & 500 & fail & 1.1887403 & 11.83033 & 0.92936729 \\
+R4H3 & Long replay 270--500 & 500 & pass & 0 & 0 & 0 \\
+R4H4 & Source 250--271, restart 270--500 & 500 & review & 2.5314199 & 9.3860617 & 1.2392968 \\
+R4H5 & Long replay 505--750 & 750 & pass & 0 & 0 & 0 \\
+R4H6 & Source 500--506, restart 505--750 & 750 & review & 0.31896796 & 8.0369449 & 1.5702038 \\
+\bottomrule
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+\section{Images}
+No R4H images were generated in this update.
+
+\section{Tables}
+The key R4H comparison table is included in the Results section. Lightweight CSV evidence is stored under the R4H restart-source diagnostics case tree:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4h\_restart\_source\_diagnostics/
+\end{quote}
+
+\section{Failures and Debugging}
+No R4H job failed at PBS/Abaqus level. The scientific failure remains source-split consistency: short source cases reproduce the earlier review/fail signatures even with an interior restart target and one extra source cycle.
+
+\section{Conclusion and Next Steps}
+R4H shows that long-replay restart records are clean, while short source-split restart generation or source-split phase history is still inconsistent. Do not submit R4J9/R4J10 yet. Next, audit source-split phase/history and first continuation step identity against the long-replay cases.
+
+\end{document}
