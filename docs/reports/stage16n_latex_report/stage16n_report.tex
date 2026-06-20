@@ -1575,6 +1575,31 @@ R4H6 & interior source split & 500--506, restart 505 & \code{CYCLE\_0506} & 1349
 
 The safety gate before submission showed no pre-existing PBS jobs, \code{/home} at 14T used out of 17T with 2.9T available, \code{/scratch} at 82T used out of 110T with 29T available, and \code{/home/pr21vyci} at 3.6T. All six jobs use \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb}, \code{walltime=24:00:00}, and \code{teachingq}. R4H1 and R4H2 started immediately on mnode100 and mnode101 at 2026-06-17 16:55:59 CEST; R4H3--R4H6 remained queued behind the teachingq two-running-job limit. R4J9/R4J10 remain blocked until R4H is classified.
 
+\subsection{R4I Buffer Diagnostic Attempt Check}
+
+The R4I buffer diagnostic batch was checked on 2026-06-20. \code{qstat -u pr21vyci} returned no active jobs, so the four R4I jobs and the scratch archive inventory job were inspected through PBS history. All four R4I jobs reached \code{job\_state=F} with \code{Exit\_status=1} and \code{Stageout\_status=1}, while the archive inventory job \code{1350236.mmaster02} finished with \code{Exit\_status=0}. The R4I PBS failure is not an Abaqus solve failure: retained stdout shows that each source solve completed, each datacheck completed, each continuation solve completed, and the extraction step wrote cycle metrics plus selected-cycle loop/local-state CSVs.
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4I PBS history after the 2026-06-20 check.}
+\begin{tabular}{llllrrr}
+\toprule
+Case & PBS job & Host & Status & Walltime & CPU time & Memory \\
+\midrule
+R4I1 & 1350232 & mnode101 & post-solve workflow fail & 05:13:15 & 20:07:50 & 94379784 kb \\
+R4I2 & 1350233 & mnode102 & post-solve workflow fail & 05:43:35 & 21:39:22 & 94377932 kb \\
+R4I3 & 1350234 & mnode101 & post-solve workflow fail & 05:56:36 & 22:10:57 & 94375908 kb \\
+R4I4 & 1350235 & mnode104 & post-solve workflow fail & 05:26:16 & 20:27:07 & 94375908 kb \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The workflow failed at the comparison step because the expected reference CSV files were missing on the remote mirror. R4I1--R4I3 tried to open \code{../../../stage16n\_1000cycle\_pilot/stage16n\_plate\_hole\_neml\_equiv\_1000cycles\_cycle\_metrics.csv}; R4I4 tried to open \code{../../../stage16n\_parallel\_max\_reference/stage16n\_parallel\_max\_reference\_1000cycles\_cycle\_metrics.csv}. The post-solve exception caused the PBS failure state and prevented durable copy-back of the generated R4I comparison evidence.
+
+The retained stdout still records the intended restart reads: R4I1 read source step 280 increment 54, R4I2 read source step 280 increment 56, R4I3 read source step 270 increment 60, and R4I4 read source step 505 increment 54. However, the generated R4I metrics and selected-cycle CSVs were not preserved in the \code{/home} mirror, and the follow-up inventory showed \code{/scratch/pr21vyci} at only 48K, so the scratch run directories were no longer available for recovery.
+
+R4I therefore cannot yet be classified with the R4H/R4I decision table. The only safe conclusion is that the submitted solver jobs completed their Abaqus portions, but the diagnostic comparison evidence was lost due to a missing-reference postprocessing failure plus scratch cleanup. R4J9/R4J10 remain blocked until R4I is rerun or otherwise reconstructed with durable reference CSV access and durable lightweight copy-back.
+
 \appendix
 \section{Key Repository Evidence Files}
 
@@ -1616,9 +1641,12 @@ The safety gate before submission showed no pre-existing PBS jobs, \code{/home} 
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4G\_UNATTENDED\_NATIVE\_REPLAY\_PLAN.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4G\_NATIVE\_REPLAY\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4H\_RESTART\_SOURCE\_DIAGNOSTIC\_SUBMISSION.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4I\_BUFFER\_DIAGNOSTIC\_ATTEMPT\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r4h\_restart\_source\_diagnostics.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/submit\_stage16n\_r4h\_restart\_source\_diagnostic\_case.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4h\_restart\_source\_diagnostics/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4i\_restart\_source\_buffer\_diagnostics/}
+  \item \code{hpc\_lightweight\_stage\_archive/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r4g\_native\_replay\_controls.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/submit\_stage16n\_r4g\_native\_replay\_case.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4g\_native\_replay\_cases/}
