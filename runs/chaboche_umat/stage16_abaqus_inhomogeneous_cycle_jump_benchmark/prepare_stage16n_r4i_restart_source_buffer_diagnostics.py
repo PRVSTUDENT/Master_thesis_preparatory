@@ -364,7 +364,8 @@ def write_pbs(path: Path, case: R4ICase) -> None:
 
 set -euo pipefail
 
-export REPO_ROOT="$HOME/master_thesis/Abaqus_trial"
+SUBMIT_DIR="${{PBS_O_WORKDIR:-$PWD}}"
+export REPO_ROOT="$(cd "$SUBMIT_DIR/../../.." && pwd -P)"
 export HOME_CASE_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4ir_restart_source_buffer_recovery/{case.case_id}"
 export SCRATCH_CASE_DIR="/scratch/$USER/stage16n_r4ir/{case.case_id}/${{PBS_JOBID:-manual}}"
 export TMPDIR="$SCRATCH_CASE_DIR/tmp"
