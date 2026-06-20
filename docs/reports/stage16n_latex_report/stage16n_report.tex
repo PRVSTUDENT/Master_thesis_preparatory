@@ -1600,6 +1600,33 @@ The retained stdout still records the intended restart reads: R4I1 read source s
 
 R4I therefore cannot yet be classified with the R4H/R4I decision table. The only safe conclusion is that the submitted solver jobs completed their Abaqus portions, but the diagnostic comparison evidence was lost due to a missing-reference postprocessing failure plus scratch cleanup. R4J9/R4J10 remain blocked until R4I is rerun or otherwise reconstructed with durable reference CSV access and durable lightweight copy-back.
 
+\subsection{R4I-R Recovery Rerun Prepared}
+
+The next action is an R4I recovery rerun, not R4J9/R4J10 and not scratch deletion. The cleanup inventory showed that the user scratch tree was already effectively empty: \code{/scratch/pr21vyci} used only 48K, the heavy-file inventory contained only the header row, and the delete-candidate list was empty. The cluster-wide \code{/scratch} usage therefore is not a current Stage 16N cleanup target.
+
+R4I-R repeats the four R4I diagnostic branches with hardened postprocessing:
+
+\begin{table}[H]
+\centering
+\caption{Stage 16N-R4I-R recovery rerun cases.}
+\begin{tabular}{lllll}
+\toprule
+Case & Source solve & Restart & Continuation & First solved cycle \\
+\midrule
+R4I-R1 & 250--281 deck clone & 280 & 281--500 & \code{CYCLE\_0281} \\
+R4I-R2 & 250--300 buffered & 280 & 281--500 & \code{CYCLE\_0281} \\
+R4I-R3 & 250--300 buffered & 270 & 271--500 & \code{CYCLE\_0271} \\
+R4I-R4 & 500--525 buffered & 505 & 506--750 & \code{CYCLE\_0506} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The generated recovery workflow uses a separate case root, \code{r4ir\_restart\_source\_buffer\_recovery}, and a separate dispatcher, \code{submit\_stage16n\_r4ir\_restart\_source\_buffer\_recovery\_case.sh}. The PBS scripts follow the updated Stage 16N resource policy: queue \code{entryq}, \code{select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb}, and \code{walltime=24:00:00}, with the maximum intended active usage still limited to two simultaneous 16-core jobs.
+
+The important repair is evidence durability. Each PBS script copies the absolute reference CSVs into the scratch case directory before comparison. The runner then copies lightweight evidence back immediately after extraction, before any comparison command can abort. The copy-back includes CSV, markdown, text, status, log, and \code{.sta} files while excluding heavy Abaqus artifacts such as \code{.odb}, \code{.stt}, \code{.res}, \code{.sim}, \code{.mdl}, \code{.prt}, \code{.dat}, and \code{.msg}. The rerun also sets \code{KEEP\_SCRATCH=1}; scratch directories should be deleted only after comparison summaries are copied, classified, and committed.
+
+The R4I-R decision remains the same as the planned R4I decision table. If R4I-R1 passes, the cloned/truncated clean deck shape repairs the R4H2 branch. If R4I-R2, R4I-R3, or R4I-R4 pass, the larger post-target buffer repairs the corresponding restart branch. If all remain fail/review, short source-split restart should stop being used as a cycle-jump foundation.
+
 \appendix
 \section{Key Repository Evidence Files}
 
@@ -1642,10 +1669,12 @@ R4I therefore cannot yet be classified with the R4H/R4I decision table. The only
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4G\_NATIVE\_REPLAY\_RESULT.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4H\_RESTART\_SOURCE\_DIAGNOSTIC\_SUBMISSION.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4I\_BUFFER\_DIAGNOSTIC\_ATTEMPT\_RESULT.md}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/STAGE16N\_R4IR\_RECOVERY\_RERUN\_PLAN.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r4h\_restart\_source\_diagnostics.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/submit\_stage16n\_r4h\_restart\_source\_diagnostic\_case.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4h\_restart\_source\_diagnostics/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4i\_restart\_source\_buffer\_diagnostics/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4ir\_restart\_source\_buffer\_recovery/}
   \item \code{hpc\_lightweight\_stage\_archive/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/prepare\_stage16n\_r4g\_native\_replay\_controls.py}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/submit\_stage16n\_r4g\_native\_replay\_case.sh}

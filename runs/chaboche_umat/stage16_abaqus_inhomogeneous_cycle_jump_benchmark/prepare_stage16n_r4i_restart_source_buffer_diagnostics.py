@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare Stage 16N-R4I restart-source buffer diagnostics."""
+"""Prepare Stage 16N-R4I-R restart-source buffer recovery diagnostics."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from pathlib import Path
 
 STAGE_DIR = Path(__file__).resolve().parent
 CONTROL_DIR = STAGE_DIR / "stage16n_restart_control"
-R4I_DIR = CONTROL_DIR / "r4i_restart_source_buffer_diagnostics"
+R4I_DIR = CONTROL_DIR / "r4ir_restart_source_buffer_recovery"
 R1A_DIR = CONTROL_DIR / "R1A_restart_reference_500cycles"
 UMAT = STAGE_DIR / "stage16n_neml_equivalent_chaboche_umat.for"
 EXTRACTOR = STAGE_DIR / "stage16n_extract_hysteresis_and_local_states.py"
@@ -51,8 +51,8 @@ class R4ICase:
 
 CASES = (
     R4ICase(
-        case_id="R4I1_deck_clone_250_to_281_restart_280_to_500",
-        job="stage16n_r4i1_deck_clone_250_to_281_restart_280_to_500",
+        case_id="R4I-R1_deck_clone_250_to_281_restart_280_to_500",
+        job="stage16n_r4ir1_deck_clone_250_to_281_restart_280_to_500",
         source_style="deck_clone",
         checkpoint_cycle=250,
         source_end_cycle=281,
@@ -60,11 +60,11 @@ CASES = (
         final_cycle=500,
         ref_metrics=REF500_METRICS,
         ref_local_states=REF500_LOCAL,
-        purpose="clone/truncate the clean direct replay deck shape, solve 250--281, restart interior 280, continue 281--500",
+        purpose="R4I-R1 recovery rerun: clone/truncate the clean direct replay deck shape, solve 250--281, restart interior 280, continue 281--500",
     ),
     R4ICase(
-        case_id="R4I2_buffer_250_to_300_restart_280_to_500",
-        job="stage16n_r4i2_buffer_250_to_300_restart_280_to_500",
+        case_id="R4I-R2_buffer_250_to_300_restart_280_to_500",
+        job="stage16n_r4ir2_buffer_250_to_300_restart_280_to_500",
         source_style="buffered_generated",
         checkpoint_cycle=250,
         source_end_cycle=300,
@@ -72,11 +72,11 @@ CASES = (
         final_cycle=500,
         ref_metrics=REF500_METRICS,
         ref_local_states=REF500_LOCAL,
-        purpose="generated source solve 250--300, restart interior 280, continue 281--500",
+        purpose="R4I-R2 recovery rerun: generated source solve 250--300, restart interior 280, continue 281--500",
     ),
     R4ICase(
-        case_id="R4I3_buffer_250_to_300_restart_270_to_500",
-        job="stage16n_r4i3_buffer_250_to_300_restart_270_to_500",
+        case_id="R4I-R3_buffer_250_to_300_restart_270_to_500",
+        job="stage16n_r4ir3_buffer_250_to_300_restart_270_to_500",
         source_style="buffered_generated",
         checkpoint_cycle=250,
         source_end_cycle=300,
@@ -84,11 +84,11 @@ CASES = (
         final_cycle=500,
         ref_metrics=REF500_METRICS,
         ref_local_states=REF500_LOCAL,
-        purpose="generated source solve 250--300, restart interior 270, continue 271--500",
+        purpose="R4I-R3 recovery rerun: generated source solve 250--300, restart interior 270, continue 271--500",
     ),
     R4ICase(
-        case_id="R4I4_buffer_500_to_525_restart_505_to_750",
-        job="stage16n_r4i4_buffer_500_to_525_restart_505_to_750",
+        case_id="R4I-R4_buffer_500_to_525_restart_505_to_750",
+        job="stage16n_r4ir4_buffer_500_to_525_restart_505_to_750",
         source_style="buffered_generated",
         checkpoint_cycle=500,
         source_end_cycle=525,
@@ -96,7 +96,7 @@ CASES = (
         final_cycle=750,
         ref_metrics=REF750_METRICS,
         ref_local_states=REF750_LOCAL,
-        purpose="generated source solve 500--525, restart interior 505, continue 506--750",
+        purpose="R4I-R4 recovery rerun: generated source solve 500--525, restart interior 505, continue 506--750",
     ),
 )
 
@@ -150,11 +150,11 @@ def add_cycle_step(lines: list[str], cycle: int, *, write_restart: bool, write_f
 
 def write_source_deck(path: Path, case: R4ICase, checkpoint_inc: int) -> None:
     lines = [
-        f"** Stage 16N-R4I source solve: {case.case_id}",
+        f"** Stage 16N-R4I-R source solve: {case.case_id}",
         f"** Source style: {case.source_style}",
         f"** Purpose: {case.purpose}",
         "*HEADING",
-        f"Stage 16N-R4I source {case.checkpoint_cycle} to {case.source_end_cycle}",
+        f"Stage 16N-R4I-R source {case.checkpoint_cycle} to {case.source_end_cycle}",
         f"*RESTART, READ, STEP={case.checkpoint_cycle}, INC={checkpoint_inc}",
     ]
     for cycle in range(case.checkpoint_cycle + 1, case.source_end_cycle + 1):
@@ -168,10 +168,10 @@ def write_source_deck(path: Path, case: R4ICase, checkpoint_inc: int) -> None:
 
 def write_continuation_deck(path: Path, case: R4ICase) -> None:
     lines = [
-        f"** Stage 16N-R4I continuation: {case.case_id}",
+        f"** Stage 16N-R4I-R continuation: {case.case_id}",
         f"** Purpose: {case.purpose}",
         "*HEADING",
-        f"Stage 16N-R4I {case.restart_cycle} to {case.final_cycle}",
+        f"Stage 16N-R4I-R {case.restart_cycle} to {case.final_cycle}",
         f"*RESTART, READ, STEP={case.restart_cycle}, INC=__R4I_RESTART_INC__",
     ]
     for cycle in range(case.first_solved_cycle, case.final_cycle + 1):
@@ -201,8 +201,9 @@ done
 
 
 def write_runner(path: Path, case: R4ICase) -> None:
-    ref_metrics = case.ref_metrics.relative_to(STAGE_DIR).as_posix()
-    ref_local = case.ref_local_states.relative_to(STAGE_DIR).as_posix()
+    is_parallel_ref = "stage16n_parallel_max_reference" in case.ref_metrics.parts
+    ref_metrics_name = "reference_parallel_cycle_metrics.csv" if is_parallel_ref else "reference_1000_cycle_metrics.csv"
+    ref_local_name = "reference_parallel_selected_cycle_local_states.csv" if is_parallel_ref else "reference_1000_selected_cycle_local_states.csv"
     text = f"""#!/usr/bin/env bash
 set -euo pipefail
 
@@ -221,6 +222,7 @@ ABAQUS_CPUS="${{ABAQUS_CPUS:-16}}"
 ABAQUS_MP_MODE="${{ABAQUS_MP_MODE:-threads}}"
 LOG_DIR="${{LOG_DIR:-_logs}}"
 ABAQUS_SCRATCH="${{TMPDIR:-$PWD/tmp}}"
+KEEP_SCRATCH="${{KEEP_SCRATCH:-1}}"
 mkdir -p "$LOG_DIR" "$ABAQUS_SCRATCH"
 
 module purge
@@ -234,6 +236,30 @@ echo "[Stage16N-R4I] job: $JOB"
 echo "[Stage16N-R4I] source style: $SOURCE_STYLE"
 echo "[Stage16N-R4I] first solved cycle: $FIRST_SOLVED_CYCLE"
 echo "[Stage16N-R4I] purpose: $PURPOSE"
+
+copy_lightweight_evidence() {{
+  if [[ -n "${{HOME_CASE_DIR:-}}" && -d "${{SCRATCH_CASE_DIR:-}}" ]]; then
+    mkdir -p "$HOME_CASE_DIR"
+    rsync -av \\
+      --include='*/' \\
+      --include='*.csv' \\
+      --include='*.md' \\
+      --include='*.txt' \\
+      --include='*.sta' \\
+      --include='*.log' \\
+      --include='*.pbs.out' \\
+      --exclude='*.odb' \\
+      --exclude='*.stt' \\
+      --exclude='*.res' \\
+      --exclude='*.sim' \\
+      --exclude='*.mdl' \\
+      --exclude='*.prt' \\
+      --exclude='*.dat' \\
+      --exclude='*.msg' \\
+      --exclude='*' \\
+      "$SCRATCH_CASE_DIR/" "$HOME_CASE_DIR/"
+  fi
+}}
 
 bash link_restart_sources.sh
 
@@ -282,11 +308,13 @@ abaqus job="$JOB" input="${{JOB}}.inp" oldjob="$SOURCE_JOB" \\
 abaqus python stage16n_extract_hysteresis_and_local_states.py --job "$JOB" \\
   2>&1 | tee "$LOG_DIR/${{JOB}}_extract.log"
 
+copy_lightweight_evidence
+
 python3 stage16n_compare_r3j_jump_against_reference.py \\
   --jump-metrics "${{JOB}}_cycle_metrics.csv" \\
   --jump-local-states "${{JOB}}_selected_cycle_local_states.csv" \\
-  --ref-metrics "../../../{ref_metrics}" \\
-  --ref-local-states "../../../{ref_local}" \\
+  --ref-metrics "{ref_metrics_name}" \\
+  --ref-local-states "{ref_local_name}" \\
   --cycles "$FINAL_CYCLE" \\
   --out-dir "." \\
   --prefix "$JOB" \\
@@ -309,16 +337,24 @@ python3 stage16n_compare_r3j_jump_against_reference.py \\
   echo "- Finished: \\`$(date '+%Y-%m-%d %H:%M:%S')\\`"
 }} > STAGE16N_R4I_CASE_STATUS.md
 
+copy_lightweight_evidence
+
+if [[ "$KEEP_SCRATCH" == "1" ]]; then
+  echo "[Stage16N-R4I] keeping scratch directory: ${{SCRATCH_CASE_DIR:-$PWD}}"
+fi
 echo "[Stage16N-R4I] end: $(date '+%Y-%m-%d %H:%M:%S')"
 """
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
 def write_pbs(path: Path, case: R4ICase) -> None:
-    pbs_out = f"/scratch/pr21vyci/stage16n_r4i_pbs/{case.job}.pbs.out"
+    pbs_out = f"/scratch/pr21vyci/stage16n_r4ir_pbs/{case.job}.pbs.out"
+    is_parallel_ref = "stage16n_parallel_max_reference" in case.ref_metrics.parts
+    ref_metrics_name = "reference_parallel_cycle_metrics.csv" if is_parallel_ref else "reference_1000_cycle_metrics.csv"
+    ref_local_name = "reference_parallel_selected_cycle_local_states.csv" if is_parallel_ref else "reference_1000_selected_cycle_local_states.csv"
     text = f"""#!/bin/bash
 #PBS -N {case.job}
-#PBS -q teachingq
+#PBS -q entryq
 #PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
 #PBS -l walltime=24:00:00
 #PBS -j oe
@@ -329,19 +365,32 @@ def write_pbs(path: Path, case: R4ICase) -> None:
 set -euo pipefail
 
 export REPO_ROOT="$HOME/master_thesis/Abaqus_trial"
-export HOME_CASE_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4i_restart_source_buffer_diagnostics/{case.case_id}"
-export SCRATCH_CASE_DIR="/scratch/$USER/stage16n_r4i/{case.case_id}/${{PBS_JOBID:-manual}}"
+export HOME_CASE_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4ir_restart_source_buffer_recovery/{case.case_id}"
+export SCRATCH_CASE_DIR="/scratch/$USER/stage16n_r4ir/{case.case_id}/${{PBS_JOBID:-manual}}"
 export TMPDIR="$SCRATCH_CASE_DIR/tmp"
 export ABAQUS_CPUS=16
 export ABAQUS_MP_MODE=threads
+export KEEP_SCRATCH=1
+REF_1000="$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv"
+REF_1000_LOCAL="$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv"
+REF_PARALLEL="$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_parallel_max_reference/stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv"
+REF_PARALLEL_LOCAL="$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_parallel_max_reference/stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv"
 
-mkdir -p "$SCRATCH_CASE_DIR" "$TMPDIR" /scratch/pr21vyci/stage16n_r4i_pbs
+mkdir -p "$SCRATCH_CASE_DIR" "$TMPDIR" /scratch/pr21vyci/stage16n_r4ir_pbs
 rsync -a --delete \\
   --exclude='*.odb' --exclude='*.stt' --exclude='*.res' --exclude='*.sim' \\
   --exclude='*.mdl' --exclude='*.prt' --exclude='*.dat' --exclude='*.msg' \\
   --exclude='*.023' --exclude='*.cax' --exclude='*.abq' --exclude='*.pac' \\
   --exclude='*.sel' --exclude='*.lck' --exclude='state.bin' --exclude='state.csv' \\
   "$HOME_CASE_DIR/" "$SCRATCH_CASE_DIR/"
+
+cp "$REF_1000" "$SCRATCH_CASE_DIR/reference_1000_cycle_metrics.csv"
+cp "$REF_1000_LOCAL" "$SCRATCH_CASE_DIR/reference_1000_selected_cycle_local_states.csv"
+cp "$REF_PARALLEL" "$SCRATCH_CASE_DIR/reference_parallel_cycle_metrics.csv"
+cp "$REF_PARALLEL_LOCAL" "$SCRATCH_CASE_DIR/reference_parallel_selected_cycle_local_states.csv"
+
+test -s "$SCRATCH_CASE_DIR/{ref_metrics_name}"
+test -s "$SCRATCH_CASE_DIR/{ref_local_name}"
 
 cd "$SCRATCH_CASE_DIR"
 bash run_stage16n_r4i_restart_source_buffer_hpc.sh
@@ -360,21 +409,21 @@ set -euo pipefail
 
 CASE_ID="${1:-}"
 if [[ -z "$CASE_ID" ]]; then
-  echo "Usage: $0 <R4I case id>" >&2
+  echo "Usage: $0 <R4I-R case id>" >&2
   exit 2
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CASE_DIR="${SCRIPT_DIR}/stage16n_restart_control/r4i_restart_source_buffer_diagnostics/${CASE_ID}"
-MANIFEST="${SCRIPT_DIR}/stage16n_restart_control/r4i_restart_source_buffer_diagnostics/stage16n_r4i_restart_source_buffer_diagnostics.csv"
+CASE_DIR="${SCRIPT_DIR}/stage16n_restart_control/r4ir_restart_source_buffer_recovery/${CASE_ID}"
+MANIFEST="${SCRIPT_DIR}/stage16n_restart_control/r4ir_restart_source_buffer_recovery/stage16n_r4ir_restart_source_buffer_recovery.csv"
 pbs_script="$(awk -F, -v id="$CASE_ID" 'NR > 1 && $1 == id {print $12}' "$MANIFEST")"
 
 if [[ -z "$pbs_script" || ! -d "$CASE_DIR" ]]; then
-  echo "Unknown R4I case: $CASE_ID" >&2
+  echo "Unknown R4I-R case: $CASE_ID" >&2
   exit 2
 fi
 
-mkdir -p /scratch/$USER/stage16n_r4i_pbs
+mkdir -p /scratch/$USER/stage16n_r4ir_pbs
 cd "$CASE_DIR"
 if command -v qsub_abq >/dev/null 2>&1; then
   qsub_abq "$pbs_script"
@@ -390,7 +439,7 @@ fi
 
 def prepare_cases(cases: tuple[R4ICase, ...]) -> None:
     R4I_DIR.mkdir(parents=True, exist_ok=True)
-    dispatcher = STAGE_DIR / "submit_stage16n_r4i_restart_source_buffer_case.sh"
+    dispatcher = STAGE_DIR / "submit_stage16n_r4ir_restart_source_buffer_recovery_case.sh"
     write_dispatcher(dispatcher)
     dispatcher.chmod(0o755)
     rows: list[dict[str, str]] = []
@@ -442,7 +491,7 @@ def prepare_cases(cases: tuple[R4ICase, ...]) -> None:
         "pbs",
         "purpose",
     ]
-    with (R4I_DIR / "stage16n_r4i_restart_source_buffer_diagnostics.csv").open("w", newline="", encoding="utf-8") as handle:
+    with (R4I_DIR / "stage16n_r4ir_restart_source_buffer_recovery.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         writer.writerows(rows)
