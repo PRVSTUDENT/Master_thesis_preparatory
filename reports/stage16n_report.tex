@@ -49,11 +49,16 @@ R4I-R2 & Buffered 250--300 & 280--500 & 500 & fail & 1.1887403 & 11.83033 & 0.92
 
 R4I-R1 shows that cloning/truncating the clean direct replay deck shape repairs the cycle-280 branch. R4I-R2 shows that a longer buffered generated source alone does not repair that branch; the dominant mismatch remains \texttt{HOLE\_RING\_SDV8\_MAX}.
 
+\subsection*{R4I-R second wave and deck-clone confirmations}
+After the first-wave classification, R4I-R3 and R4I-R4 were submitted on 2026-06-21 through the guarded storage-gated scratch workflow. Both jobs request one node with 16 cores, one MPI rank, 16 OpenMP threads, 90 GB memory, and 24 h walltime. R4I-R3 tests the generated buffered source at restart 270; R4I-R4 tests the generated buffered source at restart 505.
+
+Two deck-clone confirmation cases were prepared but not submitted. R4I-R5 clones/truncates the clean replay source from 250--271 and restarts at cycle 270 for continuation to 500. R4I-R6 clones/truncates the clean replay source from 500--506 and restarts at cycle 505 for continuation to 750. These cases should run only after R4I-R3/R4I-R4 finish or no longer consume the two active Stage 16N job slots.
+
 \section{Images}
 No R4H images were generated in this update.
 
 \section{Tables}
-The key R4H and R4I-R comparison tables are included in the Results section. Lightweight R4I-R first-wave evidence is stored under:
+The key R4H and R4I-R comparison tables are included in the Results section. Lightweight R4I-R first-wave evidence and the prepared R4I-R5/R4I-R6 decks are stored under:
 \begin{quote}\footnotesize\ttfamily
 runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
 stage16n\_restart\_control/r4ir\_restart\_source\_buffer\_recovery/
@@ -68,6 +73,6 @@ stage16n\_restart\_control/r4h\_restart\_source\_diagnostics/
 No R4H job failed at PBS/Abaqus level. The original R4I comparison failed because remote reference CSV paths were missing after extraction, and its scratch outputs were not recoverable. R4I-R fixed that workflow by staging absolute reference CSVs and copying lightweight evidence before comparison. The scientific failure now narrows to generated source-split consistency: R4I-R2 reproduces the R4H2 error even with a larger 250--300 source buffer.
 
 \section{Conclusion and Next Steps}
-R4H shows that long-replay restart records are clean, while short source-split restart generation or source-split phase history is still inconsistent. R4I-R1 proves that a deck-clone source can pass exactly at cycle 500, while R4I-R2 proves that a larger buffered generated source is still insufficient at restart 280. Do not submit R4J9/R4J10 yet. Next, submit and classify R4I-R3/R4I-R4 to test restart 270 and restart 505 under the same hardened copy-back workflow.
+R4H shows that long-replay restart records are clean, while short source-split restart generation or source-split phase history is still inconsistent. R4I-R1 proves that a deck-clone source can pass exactly at cycle 500, while R4I-R2 proves that a larger buffered generated source is still insufficient at restart 280. R4I-R3/R4I-R4 are now the active second-wave generated-buffer tests. Do not submit R4J9/R4J10 yet. After R4I-R3/R4I-R4 are classified, run R4I-R5/R4I-R6 as deck-clone confirmations; if those pass, rerun exact controls with the deck-clone source workflow before any new extrapolated true jump.
 
 \end{document}

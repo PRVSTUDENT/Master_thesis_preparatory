@@ -32,6 +32,24 @@ Lightweight evidence was copied from `/scratch/pr21vyci/stage16n_r4ir/...` into 
 
 No heavy Abaqus files were copied into the repository.
 
-## Next gate
+## Second-wave gate
 
-R4I-R3 and R4I-R4 may now be submitted as the second R4I-R wave, still respecting the two simultaneous 16-core Stage 16N policy. R4J9/R4J10 remain blocked until R4I-R3/R4I-R4 are classified.
+R4I-R3 and R4I-R4 were submitted on 2026-06-21 through the guarded storage-gated workflow:
+
+| Case | PBS job | Source solve | Restart | Purpose |
+|---|---:|---|---|---|
+| R4I-R3 | 1350673.mmaster02 | generated buffered 250--300 | 270 -> 271--500 | Test whether generated-buffer mismatch also appears at restart 270. |
+| R4I-R4 | 1350674.mmaster02 | generated buffered 500--525 | 505 -> 506--750 | Test whether generated-buffer mismatch also appears on the 500 -> 505 branch. |
+
+Both were running by `Sun Jun 21 05:59 CEST` with 16 cores, 90 GB memory, and 24 h walltime. PBS stdout is under `/scratch/pr21vyci/stage16n_r4ir_pbs/`.
+
+## Prepared deck-clone confirmations
+
+R4I-R5 and R4I-R6 are prepared but not submitted:
+
+| Case | Source solve | Restart | Expected first solved cycle | Purpose |
+|---|---|---|---|---|
+| R4I-R5 | deck-clone 250--271 | 270 -> 271--500 | `CYCLE_0271` | Confirm deck-clone/truncate fixes the cycle-270 branch. |
+| R4I-R6 | deck-clone 500--506 | 505 -> 506--750 | `CYCLE_0506` | Confirm deck-clone/truncate fixes the 500 -> 505 branch. |
+
+R4J9/R4J10 remain blocked. If R4I-R5/R4I-R6 pass, the next implementation step is to refactor future source generation to deck-clone/truncate and then rerun exact controls before any new extrapolated true jump.

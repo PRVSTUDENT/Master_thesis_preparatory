@@ -98,6 +98,30 @@ CASES = (
         ref_local_states=REF750_LOCAL,
         purpose="R4I-R4 recovery rerun: generated source solve 500--525, restart interior 505, continue 506--750",
     ),
+    R4ICase(
+        case_id="R4I-R5_deck_clone_250_to_271_restart_270_to_500",
+        job="stage16n_r4ir5_deck_clone_250_to_271_restart_270_to_500",
+        source_style="deck_clone",
+        checkpoint_cycle=250,
+        source_end_cycle=271,
+        restart_cycle=270,
+        final_cycle=500,
+        ref_metrics=REF500_METRICS,
+        ref_local_states=REF500_LOCAL,
+        purpose="R4I-R5 deck-clone confirmation: clone/truncate the clean direct replay deck shape, solve 250--271, restart interior 270, continue 271--500",
+    ),
+    R4ICase(
+        case_id="R4I-R6_deck_clone_500_to_506_restart_505_to_750",
+        job="stage16n_r4ir6_deck_clone_500_to_506_restart_505_to_750",
+        source_style="deck_clone",
+        checkpoint_cycle=500,
+        source_end_cycle=506,
+        restart_cycle=505,
+        final_cycle=750,
+        ref_metrics=REF750_METRICS,
+        ref_local_states=REF750_LOCAL,
+        purpose="R4I-R6 deck-clone confirmation: clone/truncate the clean direct replay deck shape, solve 500--506, restart interior 505, continue 506--750",
+    ),
 )
 
 

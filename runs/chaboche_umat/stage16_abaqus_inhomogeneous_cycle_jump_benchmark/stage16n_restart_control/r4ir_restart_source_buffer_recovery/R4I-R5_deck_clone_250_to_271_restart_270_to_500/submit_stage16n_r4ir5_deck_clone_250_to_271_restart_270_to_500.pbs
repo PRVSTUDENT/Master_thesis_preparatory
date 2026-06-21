@@ -1,0 +1,56 @@
+#!/bin/bash
+#PBS -N stage16n_r4ir5_deck_clone_250_to_271_restart_270_to_500
+#PBS -q entryq
+#PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+#PBS -l walltime=24:00:00
+#PBS -j oe
+#PBS -o /scratch/pr21vyci/stage16n_r4ir_pbs/stage16n_r4ir5_deck_clone_250_to_271_restart_270_to_500.pbs.out
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
+
+set -euo pipefail
+
+SUBMIT_DIR="${PBS_O_WORKDIR:-$PWD}"
+REPO_ROOT="$SUBMIT_DIR"
+while [[ "$REPO_ROOT" != "/" && ! -d "$REPO_ROOT/.git" ]]; do
+  REPO_ROOT="$(dirname "$REPO_ROOT")"
+done
+if [[ ! -d "$REPO_ROOT/.git" ]]; then
+  echo "Could not find Git repo root above submit directory: $SUBMIT_DIR" >&2
+  exit 24
+fi
+export REPO_ROOT
+export HOME_CASE_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4ir_restart_source_buffer_recovery/R4I-R5_deck_clone_250_to_271_restart_270_to_500"
+export SCRATCH_CASE_DIR="/scratch/$USER/stage16n_r4ir/R4I-R5_deck_clone_250_to_271_restart_270_to_500/${PBS_JOBID:-manual}"
+export TMPDIR="$SCRATCH_CASE_DIR/tmp"
+export ABAQUS_CPUS=16
+export ABAQUS_MP_MODE=threads
+export KEEP_SCRATCH=1
+REF_1000="$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv"
+REF_1000_LOCAL="$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv"
+REF_PARALLEL="$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_parallel_max_reference/stage16n_parallel_max_reference_1000cycles_cycle_metrics.csv"
+REF_PARALLEL_LOCAL="$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_parallel_max_reference/stage16n_parallel_max_reference_1000cycles_selected_cycle_local_states.csv"
+
+mkdir -p "$SCRATCH_CASE_DIR" "$TMPDIR" /scratch/pr21vyci/stage16n_r4ir_pbs
+rsync -a --delete \
+  --exclude='*.odb' --exclude='*.stt' --exclude='*.res' --exclude='*.sim' \
+  --exclude='*.mdl' --exclude='*.prt' --exclude='*.dat' --exclude='*.msg' \
+  --exclude='*.023' --exclude='*.cax' --exclude='*.abq' --exclude='*.pac' \
+  --exclude='*.sel' --exclude='*.lck' --exclude='state.bin' --exclude='state.csv' \
+  "$HOME_CASE_DIR/" "$SCRATCH_CASE_DIR/"
+
+cp "$REF_1000" "$SCRATCH_CASE_DIR/reference_1000_cycle_metrics.csv"
+cp "$REF_1000_LOCAL" "$SCRATCH_CASE_DIR/reference_1000_selected_cycle_local_states.csv"
+cp "$REF_PARALLEL" "$SCRATCH_CASE_DIR/reference_parallel_cycle_metrics.csv"
+cp "$REF_PARALLEL_LOCAL" "$SCRATCH_CASE_DIR/reference_parallel_selected_cycle_local_states.csv"
+
+test -s "$SCRATCH_CASE_DIR/reference_1000_cycle_metrics.csv"
+test -s "$SCRATCH_CASE_DIR/reference_1000_selected_cycle_local_states.csv"
+
+cd "$SCRATCH_CASE_DIR"
+bash run_stage16n_r4i_restart_source_buffer_hpc.sh
+
+rsync -a \
+  --include='*/' --include='*.md' --include='*.csv' --include='*.txt' --include='*.log' \
+  --include='*.sta' --include='*.pbs.out' --exclude='*' \
+  "$SCRATCH_CASE_DIR/" "$HOME_CASE_DIR/"
