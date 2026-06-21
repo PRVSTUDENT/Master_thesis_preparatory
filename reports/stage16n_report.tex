@@ -4,15 +4,17 @@
 \usepackage{longtable}
 \title{Stage 16N Report}
 \author{}
-\date{Updated 2026-06-19}
+\date{Updated 2026-06-21}
 \begin{document}
 \maketitle
 
 \section{Overview}
-Stage 16N investigates restart-preserved cycle-jump behavior for the Chaboche UMAT Abaqus benchmark. The R4H diagnostic tested whether source-split restart files differ from restart records produced by long restarted replay runs.
+Stage 16N investigates restart-preserved cycle-jump behavior for the Chaboche UMAT Abaqus benchmark. The R4H diagnostic tested whether source-split restart files differ from restart records produced by long restarted replay runs. The R4I-R recovery rerun then repeated the cycle-280 source-split branch with durable lightweight copy-back and absolute reference CSVs.
 
 \section{Results}
 R4H completed six PBS/Abaqus jobs successfully with \texttt{Exit\_status=0}. Long-replay restart records passed exactly: R4H1 at cycle 500, R4H3 at cycle 500, and R4H5 at cycle 750 all had zero global, local, and diagnostic S11 error. Short source-split restart cases remained inconsistent: R4H2 failed at cycle 500 with 11.83033\% max primary local error, R4H4 was review-level at cycle 500 with 9.3860617\%, and R4H6 was review-level at cycle 750 with 8.0369449\%.
+
+The R4I-R first wave finished by 2026-06-20 13:28 CEST and was absent from the live PBS queue on 2026-06-21 05:47 CEST. PBS history no longer returned records for jobs \texttt{1350601} and \texttt{1350602}, so the current classification uses scratch case status files, PBS stdout, Abaqus completion messages, and copied comparison CSVs. R4I-R1 passed exactly at cycle 500; R4I-R2 failed with the same source-split signature as R4H2.
 
 \small
 \setlength{\tabcolsep}{2pt}
@@ -31,20 +33,41 @@ R4H6 & Source 500--506, restart 505--750 & 750 & review & 0.31896796 & 8.0369449
 \setlength{\tabcolsep}{6pt}
 \normalsize
 
+\subsection*{R4I-R first-wave recovery}
+\small
+\setlength{\tabcolsep}{2pt}
+\begin{longtable}{p{0.13\textwidth}p{0.17\textwidth}p{0.14\textwidth}p{0.09\textwidth}p{0.09\textwidth}p{0.10\textwidth}p{0.13\textwidth}p{0.10\textwidth}}
+\toprule
+Case & Source solve & Restart & Endpoint & Status & Global \% & Primary local \% & S11 \% \\
+\midrule
+R4I-R1 & Deck-clone 250--281 & 280--500 & 500 & pass & 0 & 0 & 0 \\
+R4I-R2 & Buffered 250--300 & 280--500 & 500 & fail & 1.1887403 & 11.83033 & 0.92936729 \\
+\bottomrule
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+R4I-R1 shows that cloning/truncating the clean direct replay deck shape repairs the cycle-280 branch. R4I-R2 shows that a longer buffered generated source alone does not repair that branch; the dominant mismatch remains \texttt{HOLE\_RING\_SDV8\_MAX}.
+
 \section{Images}
 No R4H images were generated in this update.
 
 \section{Tables}
-The key R4H comparison table is included in the Results section. Lightweight CSV evidence is stored under the R4H restart-source diagnostics case tree:
+The key R4H and R4I-R comparison tables are included in the Results section. Lightweight R4I-R first-wave evidence is stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4ir\_restart\_source\_buffer\_recovery/
+\end{quote}
+The earlier R4H CSV evidence is stored under:
 \begin{quote}\footnotesize\ttfamily
 runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
 stage16n\_restart\_control/r4h\_restart\_source\_diagnostics/
 \end{quote}
 
 \section{Failures and Debugging}
-No R4H job failed at PBS/Abaqus level. The scientific failure remains source-split consistency: short source cases reproduce the earlier review/fail signatures even with an interior restart target and one extra source cycle.
+No R4H job failed at PBS/Abaqus level. The original R4I comparison failed because remote reference CSV paths were missing after extraction, and its scratch outputs were not recoverable. R4I-R fixed that workflow by staging absolute reference CSVs and copying lightweight evidence before comparison. The scientific failure now narrows to generated source-split consistency: R4I-R2 reproduces the R4H2 error even with a larger 250--300 source buffer.
 
 \section{Conclusion and Next Steps}
-R4H shows that long-replay restart records are clean, while short source-split restart generation or source-split phase history is still inconsistent. Do not submit R4J9/R4J10 yet. Next, audit source-split phase/history and first continuation step identity against the long-replay cases.
+R4H shows that long-replay restart records are clean, while short source-split restart generation or source-split phase history is still inconsistent. R4I-R1 proves that a deck-clone source can pass exactly at cycle 500, while R4I-R2 proves that a larger buffered generated source is still insufficient at restart 280. Do not submit R4J9/R4J10 yet. Next, submit and classify R4I-R3/R4I-R4 to test restart 270 and restart 505 under the same hardened copy-back workflow.
 
 \end{document}
