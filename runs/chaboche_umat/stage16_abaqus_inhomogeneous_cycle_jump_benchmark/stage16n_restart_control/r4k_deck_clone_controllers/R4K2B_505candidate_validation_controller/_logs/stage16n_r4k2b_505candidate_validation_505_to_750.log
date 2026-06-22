@@ -1,0 +1,73 @@
+
+============================================================
+PHASE START: R4K2B continuation solve
+TIME: Mo 22. Jun 13:42:01 CEST 2026
+============================================================
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r4k2b_505candidate_validation_505_to_750
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 16 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<146 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Mon 22 Jun 2026 01:42:02 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_neml_equivalent_chaboche_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Mon 22 Jun 2026 01:42:13 PM CEST
+Begin Analysis Input File Processor
+Mon 22 Jun 2026 01:42:13 PM CEST
+Run pre
+Mon 22 Jun 2026 01:42:37 PM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+Mon 22 Jun 2026 01:42:37 PM CEST
+Run standard
+Mon 22 Jun 2026 07:21:35 PM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Mon 22 Jun 2026 07:21:35 PM CEST
+Run SMASimUtility
+Mon 22 Jun 2026 07:21:35 PM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_r4k2b_505candidate_validation_505_to_750 COMPLETED
+	Command being timed: "abaqus job=stage16n_r4k2b_505candidate_validation_505_to_750 input=stage16n_r4k2b_505candidate_validation_505_to_750.inp oldjob=stage16n_r4k2b_r4e2_candidate_cycle505_source user=stage16n_neml_equivalent_chaboche_umat.for interactive ask_delete=OFF scratch=/scratch/pr21vyci/stage16n_r4k/R4K2B_505candidate_validation_controller/1352353.mmaster02/tmp cpus=16 mp_mode=threads"
+	User time (seconds): 56905.56
+	System time (seconds): 12434.38
+	Percent of CPU this job got: 340%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 5:39:34
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1327976
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 639
+	Minor (reclaiming a frame) page faults: 1085809678
+	Voluntary context switches: 1067570758
+	Involuntary context switches: 109605
+	Swaps: 0
+	File system inputs: 52200
+	File system outputs: 1142586224
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: R4K2B continuation solve
+TIME: Mo 22. Jun 19:21:35 CEST 2026
+EXIT: 0
+============================================================
