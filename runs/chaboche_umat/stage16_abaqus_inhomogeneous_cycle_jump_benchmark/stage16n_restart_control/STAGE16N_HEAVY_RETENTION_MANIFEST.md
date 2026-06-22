@@ -1,0 +1,32 @@
+# Stage 16N Heavy Retention Manifest
+
+Updated: 2026-06-22
+
+Purpose: list the only intentionally retained heavy Stage 16N restart/source data after the `/scratch9/pr21vyci` cleanup. These files remain on scratch because they are provenance-critical for the next no-solver review or a specifically gated validation controller. They must not be copied to Git or `/home`.
+
+## Retention Rule
+
+- Keep only meaningful lightweight evidence in Git/home.
+- Use scratch only for active/provenance-critical heavy restart data.
+- Delete classified heavy scratch outputs after extraction and upload.
+- Before any new solver job, re-check direct `/scratch9/pr21vyci` usage and this manifest.
+
+## Retained Heavy Sources
+
+| ID | Path | Current size | Reason for keeping | Scientific use | Deletion condition |
+| --- | --- | ---: | --- | --- | --- |
+| R4E2-505-candidate | `/scratch9/pr21vyci/stage16n_scratch_runs_r4e_exact_controls/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4E2_500_to_505_exact_solve_506_to_750/stage16n_r4e2_exact_500_to_505_solve_506_to_750_exact_target_source.*` | `.stt` 4.9G; `.res` 1.2M; `.mdl` 13M; `.prt` 2.0K; support `.odb/.dat/.msg/.sta/.sim/.inp` small relative to `.stt` | Candidate existing cycle-505 restart source found by R4K2 preflight. It avoids creating a new source `.stt` for the 505 branch. | Candidate input for `R4K2B_505candidate_validation_controller`: run `505 -> 750` continuation with no continuation restart writes, then extract/compare and clean heavy outputs. | Delete after R4K2B either passes/fails with lightweight evidence uploaded, or if provenance review rejects it as unsuitable. |
+| R1A-reference | `/scratch9/pr21vyci/home_offload/home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/R1A_restart_reference_500cycles/` | 1.3T | Canonical long reference restart/output folder retained after `/home` offload cleanup. Many historical restart workflows refer to `stage16n_r1a_restart_ref_500cycles`. | Source/reference for restart reads at cycles 100, 250, and 500; provenance fallback for Stage 16N restart controls. | Delete only after all future workflows reference a smaller validated canonical source or after the user explicitly retires R1A dependency. |
+| R1B-reference | `/scratch9/pr21vyci/home_offload/home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/R1B_restart_reference_250cycles/` | 276G | Canonical 250-cycle reference restart/output folder retained after `/home` offload cleanup. | Fallback/reference for lower-cycle Stage 16N restart controls. | Delete only after confirming no remaining workflow requires the 250-cycle restart reference, or after replacement by a smaller validated canonical source. |
+
+## Not Automatically Retained
+
+The rest of `/scratch9/pr21vyci/stage16n_scratch_runs_r4e_exact_controls` is not automatically retention-approved. It remains present only because the R4E2 candidate lives inside that tree and has not yet been isolated. After the R4E2 candidate is validated or retired, audit this tree again and delete nonessential heavy outputs.
+
+## Current Scratch State
+
+Last verified after cleanup:
+
+- `/scratch9`: 33T total, 20T used, 13T free, 61% used.
+- `/scratch9/pr21vyci`: about 2.7T.
+
