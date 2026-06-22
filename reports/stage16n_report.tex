@@ -68,6 +68,8 @@ The next prepared production controller is \texttt{stage16n\_r4l\_250branch\_sto
 
 After confirming no active jobs and \texttt{/scratch9/pr21vyci} at about 2.7 TB, R4L was submitted twice. Job \texttt{1353907.mmaster02} stopped before Abaqus solve because the first source linker expected a retained R1A \texttt{.odb}. The corrected job \texttt{1353908.mmaster02} used a cached 270 jump state but still stopped before the R4L1 source solve because Abaqus/Standard restart requires \texttt{res}, \texttt{prt}, \texttt{mdl}, \texttt{stt}, and \texttt{sim}, and the retained R1A \texttt{.mdl} is missing. Therefore R4L is not scientifically classified; the current blocker is incomplete retained R1A restart provenance after storage cleanup.
 
+A restart-source inventory was then run without submitting any solver job. It found no complete retained heavy source set for R4I-R1, R4I-R5, or R4K1. R1A remains incomplete because its \texttt{.mdl} is missing or broken. R1B is the only viable 250-branch restart candidate found: \texttt{.stt}, \texttt{.res}, \texttt{.mdl}, \texttt{.prt}, \texttt{.sim}, and \texttt{.sta} are accessible, and the \texttt{.sta} completed cleanly at cycle 250. Its \texttt{.odb} is missing or broken, so an R4L redesign using R1B must avoid ODB-dependent state extraction and use cached validated jump-state files or another lightweight state source.
+
 \small
 \setlength{\tabcolsep}{3pt}
 \begin{longtable}{p{0.14\textwidth}p{0.13\textwidth}p{0.12\textwidth}p{0.10\textwidth}p{0.12\textwidth}p{0.13\textwidth}p{0.12\textwidth}}
@@ -118,6 +120,11 @@ The R4L setup-failure result note is stored at:
 runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
 stage16n\_restart\_control/r4l\_250branch\_storage\_light\_controller/\\
 STAGE16N\_R4L\_RESULT.md
+\end{quote}
+The restart-source inventory is stored at:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/STAGE16N\_RESTART\_SOURCE\_INVENTORY\_2026\_06\_22.md
 \end{quote}
 The earlier R4H CSV evidence is stored under:
 \begin{quote}\footnotesize\ttfamily
