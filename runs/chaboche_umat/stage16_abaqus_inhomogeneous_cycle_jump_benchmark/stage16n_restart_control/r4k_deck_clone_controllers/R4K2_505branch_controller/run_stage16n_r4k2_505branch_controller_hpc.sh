@@ -67,6 +67,7 @@ phase_time "R4K2 505 restart-source preflight" bash -lc '
     echo "- Time: $(date "+%Y-%m-%d %H:%M:%S")"
     echo "- Search roots: /scratch9/pr21vyci, /scratch/pr21vyci, /home/pr21vyci/master_thesis/Abaqus_trial"
     echo "- Minimum accepted .stt size: '"$MIN_STT_BYTES"' bytes"
+    echo "- Excluded families: generated-buffer/source-split R4I and R4I-R branches"
     echo
     echo "## Storage"
     df -h /home /scratch /scratch9 2>/dev/null || df -h /home /scratch
@@ -87,6 +88,11 @@ phase_time "R4K2 505 restart-source preflight" bash -lc '
   valid=""
   for stt in "${stt_candidates[@]}"; do
     base="${stt%.stt}"
+    case "$base" in
+      *stage16n_r4i/*|*stage16n_r4ir/*|*r4i_restart_source_buffer_diagnostics/*|*r4ir_restart_source_buffer_recovery/*|*buffer_*|*source_500_to_525*|*R4H6_source_500_to_506*)
+        continue
+        ;;
+    esac
     stt_size="$(stat -c%s "$stt" 2>/dev/null || echo 0)"
     if (( stt_size >= '"$MIN_STT_BYTES"' )) && [[ -s "${base}.res" && -s "${base}.prt" && -s "${base}.mdl" ]]; then
       sta="${base}.sta"
