@@ -1,0 +1,106 @@
+[Stage16N-R4K2] start: 2026-06-22 06:27:53
+[Stage16N-R4K2] PBS job: 1350767.mmaster02
+[Stage16N-R4K2] purpose: locate existing clean 505 restart source before any Abaqus solve
+
+============================================================
+PHASE START: R4K2 505 restart-source preflight
+TIME: Mo 22. Jun 06:27:53 CEST 2026
+============================================================
+	Command being timed: "bash -lc 
+  set -euo pipefail
+  {
+    echo "# Stage 16N-R4K2 505 Restart Source Preflight"
+    echo
+    echo "- PBS job: 1350767.mmaster02"
+    echo "- Time: $(date "+%Y-%m-%d %H:%M:%S")"
+    echo "- Search roots: /scratch9/pr21vyci, /scratch/pr21vyci, /home/pr21vyci/master_thesis/Abaqus_trial"
+    echo "- Minimum accepted .stt size: 1073741824 bytes"
+    echo "- Excluded families: generated-buffer/source-split R4I and R4I-R branches"
+    echo
+    echo "## Storage"
+    df -h /home /scratch /scratch9 2>/dev/null || df -h /home /scratch
+    echo
+    echo "## Candidate files containing 505 in path"
+    find /scratch9/pr21vyci /scratch/pr21vyci /home/pr21vyci/master_thesis/Abaqus_trial \
+      \( -name "*.stt" -o -name "*.res" -o -name "*.prt" -o -name "*.mdl" \) \
+      -path "*505*" -printf "%s %p\n" 2>/dev/null | sort -nr | head -120 || true
+    echo
+    echo "## Validation"
+  } > R4K2_505_RESTART_SOURCE_PREFLIGHT.md
+
+  mapfile -t stt_candidates < <(
+    find /scratch9/pr21vyci /scratch/pr21vyci /home/pr21vyci/master_thesis/Abaqus_trial \
+      -name "*.stt" -path "*505*" -printf "%p\n" 2>/dev/null | sort
+  )
+
+  valid=""
+  for stt in "${stt_candidates[@]}"; do
+    base="${stt%.stt}"
+    case "$base" in
+      *stage16n_r4i/*|*stage16n_r4ir/*|*r4i_restart_source_buffer_diagnostics/*|*r4ir_restart_source_buffer_recovery/*|*buffer_*|*source_500_to_525*|*R4H6_source_500_to_506*)
+        continue
+        ;;
+    esac
+    stt_size="$(stat -c%s "$stt" 2>/dev/null || echo 0)"
+    if (( stt_size >= 1073741824 )) && [[ -s "${base}.res" && -s "${base}.prt" && -s "${base}.mdl" ]]; then
+      sta="${base}.sta"
+      if [[ -s "$sta" ]] && grep -q "THE ANALYSIS HAS COMPLETED SUCCESSFULLY" "$sta"; then
+        valid="$base"
+        break
+      fi
+    fi
+  done
+
+  if [[ -z "$valid" ]]; then
+    {
+      echo "- Classification: no_valid_existing_505_restart_source_found"
+      echo "- Action: stop before Abaqus solve; do not recreate the failing source .stt in this controller."
+      echo "- Required next decision: free/relocate scratch or design a source-light 505 restart strategy before rerunning."
+    } >> R4K2_505_RESTART_SOURCE_PREFLIGHT.md
+    exit 20
+  fi
+
+  {
+    echo "- Classification: valid_existing_505_restart_source_found"
+    echo "- Valid source base: $valid"
+    echo "- Note: R4K2 solve execution is intentionally not armed in this preflight-first controller until the validated source is reviewed."
+  } >> R4K2_505_RESTART_SOURCE_PREFLIGHT.md
+"
+	User time (seconds): 0.54
+	System time (seconds): 0.46
+	Percent of CPU this job got: 34%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.93
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9036
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 19241
+	Voluntary context switches: 33845
+	Involuntary context switches: 10
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 104
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: R4K2 505 restart-source preflight
+TIME: Mo 22. Jun 06:27:56 CEST 2026
+EXIT: 0
+============================================================
+sending incremental file list
+R4K2_505_RESTART_SOURCE_PREFLIGHT.md
+STAGE16N_R4K_CASE_STATUS.md
+
+sent 30,303 bytes  received 55 bytes  60,716.00 bytes/sec
+total size is 30,021  speedup is 0.99
+[Stage16N-R4K2] end: 2026-06-22 06:27:56
+sending incremental file list
+
+sent 192 bytes  received 13 bytes  410.00 bytes/sec
+total size is 30,021  speedup is 146.44

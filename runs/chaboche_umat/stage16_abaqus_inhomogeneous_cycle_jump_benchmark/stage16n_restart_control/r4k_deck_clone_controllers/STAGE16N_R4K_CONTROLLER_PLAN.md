@@ -53,3 +53,13 @@ Locate and validate an existing clean cycle-505 restart source before any Abaqus
 - If R4K1 passes, the `250 -> 280 -> 500` exact deck-clone control remains confirmed under the controller workflow.
 - If R4K2 reports no valid 505 source, postpone or redesign the 500-branch source strategy instead of recreating the failing `.stt`.
 - Keep R4J9/R4J10 blocked until R4K exact controls are resolved.
+
+## Submission update
+
+- `1350764.mmaster02`: R4K1 submitted through the guarded wrapper on 2026-06-22. It was still running at the latest inspection; the source solve had reached cycle 255.
+- `1350767.mmaster02`: corrected R4K2 preflight submitted through the guarded wrapper on 2026-06-22 and finished with `Exit_status=0`.
+- R4K2 found one large candidate source after excluding generated-buffer/source-split R4I and R4I-R families:
+
+`/scratch9/pr21vyci/stage16n_scratch_runs_r4e_exact_controls/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4E2_500_to_505_exact_solve_506_to_750/stage16n_r4e2_exact_500_to_505_solve_506_to_750_exact_target_source`
+
+The candidate has a 4.9 GB `.stt` and a successful source `.sta` at cycle 505. Treat it as a review candidate, not yet as a validated deck-clone/truncate source.

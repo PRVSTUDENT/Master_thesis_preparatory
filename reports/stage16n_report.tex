@@ -57,6 +57,8 @@ R4I-R5 then confirmed the deck-clone/truncate strategy for the 270--500 branch: 
 \subsection*{R4K controller preparation}
 A 2026-06-22 storage/source audit showed \texttt{/scratch9} at 99\% use and found no visible clean cycle-505 restart source under \texttt{/scratch9/pr21vyci}, \texttt{/scratch/pr21vyci}, or the home project clone. The next prepared work is therefore split into two controllers: R4K1 runs the confirmed 250-branch exact deck-clone control \texttt{250 -> exact 280 -> 500}; R4K2 performs a 505-branch restart-source preflight and stops before Abaqus solve if no valid source is found. Both controllers include phase timing and lightweight evidence copy-back.
 
+The controllers were submitted on 2026-06-22 through the guarded wrapper. R4K1 is job \texttt{1350764.mmaster02} and was still running during the latest inspection, with its source solve progressing through cycle 255. The corrected R4K2 preflight is job \texttt{1350767.mmaster02}; it finished successfully in 6 s walltime and found one large non-R4I candidate from the earlier R4E exact-target scratch area, \texttt{stage16n\_r4e2\_exact\_500\_to\_505\_solve\_506\_to\_750\_exact\_target\_source}, with a 4.9 GB \texttt{.stt} and successful cycle-505 source \texttt{.sta}. This candidate requires provenance review before it is used as a 505 continuation source.
+
 \section{Images}
 No R4H images were generated in this update.
 
