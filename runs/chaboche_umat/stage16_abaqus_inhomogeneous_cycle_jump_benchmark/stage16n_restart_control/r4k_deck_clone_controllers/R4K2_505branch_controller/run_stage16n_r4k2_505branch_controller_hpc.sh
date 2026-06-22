@@ -5,6 +5,7 @@ JOB="stage16n_r4k2_deck_clone_exact_505_to_750"
 RESTART_CYCLE="505"
 FIRST_SOLVED_CYCLE="506"
 FINAL_CYCLE="750"
+MIN_STT_BYTES="${MIN_STT_BYTES:-1073741824}"
 LOG_DIR="${LOG_DIR:-_logs}"
 mkdir -p "$LOG_DIR"
 
@@ -62,9 +63,10 @@ phase_time "R4K2 505 restart-source preflight" bash -lc '
   {
     echo "# Stage 16N-R4K2 505 Restart Source Preflight"
     echo
-    echo "- PBS job: `'"${PBS_JOBID:-manual}"'`"
-    echo "- Time: `$(date "+%Y-%m-%d %H:%M:%S")`"
-    echo "- Search roots: `/scratch9/pr21vyci`, `/scratch/pr21vyci`, `/home/pr21vyci/master_thesis/Abaqus_trial`"
+    echo "- PBS job: '"${PBS_JOBID:-manual}"'"
+    echo "- Time: $(date "+%Y-%m-%d %H:%M:%S")"
+    echo "- Search roots: /scratch9/pr21vyci, /scratch/pr21vyci, /home/pr21vyci/master_thesis/Abaqus_trial"
+    echo "- Minimum accepted .stt size: '"$MIN_STT_BYTES"' bytes"
     echo
     echo "## Storage"
     df -h /home /scratch /scratch9 2>/dev/null || df -h /home /scratch
@@ -85,7 +87,8 @@ phase_time "R4K2 505 restart-source preflight" bash -lc '
   valid=""
   for stt in "${stt_candidates[@]}"; do
     base="${stt%.stt}"
-    if [[ -s "${base}.res" && -s "${base}.prt" && -s "${base}.mdl" ]]; then
+    stt_size="$(stat -c%s "$stt" 2>/dev/null || echo 0)"
+    if (( stt_size >= '"$MIN_STT_BYTES"' )) && [[ -s "${base}.res" && -s "${base}.prt" && -s "${base}.mdl" ]]; then
       sta="${base}.sta"
       if [[ -s "$sta" ]] && grep -q "THE ANALYSIS HAS COMPLETED SUCCESSFULLY" "$sta"; then
         valid="$base"
@@ -96,16 +99,16 @@ phase_time "R4K2 505 restart-source preflight" bash -lc '
 
   if [[ -z "$valid" ]]; then
     {
-      echo "- Classification: `no_valid_existing_505_restart_source_found`"
-      echo "- Action: stop before Abaqus solve; do not recreate the failing source `.stt` in this controller."
+      echo "- Classification: no_valid_existing_505_restart_source_found"
+      echo "- Action: stop before Abaqus solve; do not recreate the failing source .stt in this controller."
       echo "- Required next decision: free/relocate scratch or design a source-light 505 restart strategy before rerunning."
     } >> R4K2_505_RESTART_SOURCE_PREFLIGHT.md
     exit 20
   fi
 
   {
-    echo "- Classification: `valid_existing_505_restart_source_found`"
-    echo "- Valid source base: `$valid`"
+    echo "- Classification: valid_existing_505_restart_source_found"
+    echo "- Valid source base: $valid"
     echo "- Note: R4K2 solve execution is intentionally not armed in this preflight-first controller until the validated source is reviewed."
   } >> R4K2_505_RESTART_SOURCE_PREFLIGHT.md
 '
