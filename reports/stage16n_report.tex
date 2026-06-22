@@ -57,7 +57,19 @@ R4I-R5 then confirmed the deck-clone/truncate strategy for the 270--500 branch: 
 \subsection*{R4K controller preparation}
 A 2026-06-22 storage/source audit showed \texttt{/scratch9} at 99\% use and found no visible clean cycle-505 restart source under \texttt{/scratch9/pr21vyci}, \texttt{/scratch/pr21vyci}, or the home project clone. The next prepared work is therefore split into two controllers: R4K1 runs the confirmed 250-branch exact deck-clone control \texttt{250 -> exact 280 -> 500}; R4K2 performs a 505-branch restart-source preflight and stops before Abaqus solve if no valid source is found. Both controllers include phase timing and lightweight evidence copy-back.
 
-The controllers were submitted on 2026-06-22 through the guarded wrapper. R4K1 is job \texttt{1350764.mmaster02} and was still running during the latest inspection, with its source solve progressing through cycle 255. The corrected R4K2 preflight is job \texttt{1350767.mmaster02}; it finished successfully in 6 s walltime and found one large non-R4I candidate from the earlier R4E exact-target scratch area, \texttt{stage16n\_r4e2\_exact\_500\_to\_505\_solve\_506\_to\_750\_exact\_target\_source}, with a 4.9 GB \texttt{.stt} and successful cycle-505 source \texttt{.sta}. This candidate requires provenance review before it is used as a 505 continuation source.
+The controllers were submitted on 2026-06-22 through the guarded wrapper. R4K1, job \texttt{1350764.mmaster02}, finished with \texttt{Exit\_status=0} after 06:01:15 walltime and 20:39:54 CPU time. Abaqus completed successfully, and the exact-control comparison at cycle 500 passed with zero maximum global error, zero maximum primary-local error, and zero diagnostic S11 error. This confirms the 250-branch deck-clone exact control \texttt{250 -> exact 280 -> 500}. The corrected R4K2 preflight is job \texttt{1350767.mmaster02}; it finished successfully in 6 s walltime and found one large non-R4I candidate from the earlier R4E exact-target scratch area, \texttt{stage16n\_r4e2\_exact\_500\_to\_505\_solve\_506\_to\_750\_exact\_target\_source}, with a 4.9 GB \texttt{.stt} and successful cycle-505 source \texttt{.sta}. This candidate requires provenance review before it is used as a 505 continuation source.
+
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{p{0.14\textwidth}p{0.13\textwidth}p{0.12\textwidth}p{0.10\textwidth}p{0.12\textwidth}p{0.13\textwidth}p{0.12\textwidth}}
+\toprule
+Case & PBS job & Endpoint & Status & Global \% & Primary local \% & S11 \% \\
+\midrule
+R4K1 & 1350764 & 500 & pass & 0 & 0 & 0 \\
+\bottomrule
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
 
 \section{Images}
 No R4H images were generated in this update.
@@ -73,6 +85,12 @@ Prepared R4K controller files are stored under:
 runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
 stage16n\_restart\_control/r4k\_deck\_clone\_controllers/
 \end{quote}
+R4K1 lightweight result evidence is stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4k\_deck\_clone\_controllers/\\
+R4K1\_250branch\_controller/
+\end{quote}
 The earlier R4H CSV evidence is stored under:
 \begin{quote}\footnotesize\ttfamily
 runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
@@ -83,6 +101,6 @@ stage16n\_restart\_control/r4h\_restart\_source\_diagnostics/
 No R4H job failed at PBS/Abaqus level. The original R4I comparison failed because remote reference CSV paths were missing after extraction, and its scratch outputs were not recoverable. R4I-R fixed that workflow by staging absolute reference CSVs and copying lightweight evidence before comparison. The scientific failure now narrows to generated source-split consistency: R4I-R2 reproduces the R4H2 error even with a larger 250--300 source buffer, and R4I-R3/R4I-R4 show that generated post-target buffering does not repair the 270 or 505 branches. R4I-R6/R4I-R6B additionally exposed scratch \texttt{.stt} write failures on the 505 branch.
 
 \section{Conclusion and Next Steps}
-R4H and R4I-R show that long-replay/deck-clone restart records are clean on the confirmed 250 branch, while generated short-source decks remain non-equivalent even with post-target buffering. Deck-clone/truncate is confirmed for 250--270--500 and 250--280--500. The 505--750 branch remains scientifically unclassified because the available attempts failed during scratch restart-file writing. Do not submit R4J9/R4J10 yet. Run R4K1 on the confirmed 250 branch and use R4K2 preflight to decide whether the 505 branch can proceed or must be redesigned.
+R4H, R4I-R, and R4K1 show that long-replay/deck-clone restart records are clean on the confirmed 250 branch, while generated short-source decks remain non-equivalent even with post-target buffering. Deck-clone/truncate is confirmed for 250--270--500 and for the exact-control path 250--280--500. The 505--750 branch remains scientifically unclassified because the available attempts failed during scratch restart-file writing; R4K2 only found a provenance candidate, not a validated 505 deck-clone source. Do not submit R4J9/R4J10 yet. The next non-solver step should be cleanup/review of the 24 TB \texttt{/scratch9/pr21vyci} footprint and provenance review of the R4E2 cycle-505 candidate.
 
 \end{document}
