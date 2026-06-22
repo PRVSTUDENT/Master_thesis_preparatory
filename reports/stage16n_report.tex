@@ -61,6 +61,11 @@ The controllers were submitted on 2026-06-22 through the guarded wrapper. R4K1, 
 
 The follow-up storage-light validation controller R4K2B, job \texttt{1352353.mmaster02}, used that preserved R4E2 cycle-505 candidate directly. It did not generate a new source \texttt{.stt}; the scratch case linked the preserved source files, read \texttt{STEP=505, INC=54}, and continued cycles 506--750 with no continuation restart-write request. PBS recorded \texttt{Exit\_status=0}, \texttt{Stageout\_status=1}, 05:41:43 walltime, 19:16:27 CPU time, and about 3.38 average active cores out of 16. Abaqus completed through cycle 750, but the comparison was nonzero: 0.31896796\% maximum global error, 8.0369449\% maximum primary-local error, and 1.5702038\% diagnostic S11 error. Therefore R4K2B is a scientific validation failure of the R4E2 505 candidate, not an infrastructure failure. The stage-out warning is recorded separately because lightweight evidence was recovered and committed.
 
+The 250-cycle restart branch is now validated for deck-clone/truncate source construction, including the exact-control case R4K1 with zero global and local comparison error. In contrast, the 505-cycle branch remains unresolved. The preserved R4E2 cycle-505 restart candidate completed the R4K2B continuation but reproduced the previous review signature, with 8.0369449\% maximum primary-local error. Therefore, the R4E2 candidate is not accepted as a validated 505 -> 750 continuation source, and further 505-branch work is postponed to avoid additional large restart-file generation. The next work should focus on storage-light true-jump candidates on the validated 250 branch.
+
+\subsection*{R4L prepared storage-light true-jump controller}
+The next prepared production controller is \texttt{stage16n\_r4l\_250branch\_storage\_light\_controller}. It uses the validated 250-branch deck-clone/truncate source construction and keeps the continuation decks restart-read-only. The controller runs R4L1 first, targeting the conservative 250 -> 270 -> 500 true-jump case, then runs R4L2 around 250 -> 280 -> 500 only if R4L1 passes. If R4L1 reviews or fails, R4L2 is not run; instead the controller writes diagnostic summaries for source-cycle state, first solved continuation cycle, comparison details, and local hole-ring metric ranking. R4L copies only lightweight evidence and deletes case-local heavy Abaqus files after classification.
+
 \small
 \setlength{\tabcolsep}{3pt}
 \begin{longtable}{p{0.14\textwidth}p{0.13\textwidth}p{0.12\textwidth}p{0.10\textwidth}p{0.12\textwidth}p{0.13\textwidth}p{0.12\textwidth}}
@@ -100,6 +105,12 @@ runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
 stage16n\_restart\_control/r4k\_deck\_clone\_controllers/\\
 R4K2B\_505candidate\_validation\_controller/
 \end{quote}
+Prepared R4L controller files are stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4l\_250branch\_storage\_light\_controller/\\
+R4L\_250branch\_storage\_light\_controller/
+\end{quote}
 The earlier R4H CSV evidence is stored under:
 \begin{quote}\footnotesize\ttfamily
 runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
@@ -110,6 +121,6 @@ stage16n\_restart\_control/r4h\_restart\_source\_diagnostics/
 No R4H job failed at PBS/Abaqus level. The original R4I comparison failed because remote reference CSV paths were missing after extraction, and its scratch outputs were not recoverable. R4I-R fixed that workflow by staging absolute reference CSVs and copying lightweight evidence before comparison. The scientific failure now narrows to generated source-split consistency: R4I-R2 reproduces the R4H2 error even with a larger 250--300 source buffer, and R4I-R3/R4I-R4 show that generated post-target buffering does not repair the 270 or 505 branches. R4I-R6/R4I-R6B additionally exposed scratch \texttt{.stt} write failures on the 505 branch.
 
 \section{Conclusion and Next Steps}
-R4H, R4I-R, and R4K1 show that long-replay/deck-clone restart records are clean on the confirmed 250 branch, while generated short-source decks remain non-equivalent even with post-target buffering. Deck-clone/truncate is confirmed for 250--270--500 and for the exact-control path 250--280--500. The 505--750 branch now has a completed R4K2B validation of the preserved R4E2 cycle-505 candidate, and that candidate failed scientifically with the same nonzero 750-cycle signature observed in earlier source-split/review cases. Do not submit R4J9/R4J10 yet. The next useful solver path is the storage-light 250-branch true-jump controller after a fresh storage audit and resource-calibration decision; the 505 branch needs audit/redesign before further solver work.
+R4H, R4I-R, and R4K1 show that long-replay/deck-clone restart records are clean on the confirmed 250 branch, while generated short-source decks remain non-equivalent even with post-target buffering. Deck-clone/truncate is confirmed for 250--270--500 and for the exact-control path 250--280--500. The 505--750 branch now has a completed R4K2B validation of the preserved R4E2 cycle-505 candidate, and that candidate failed scientifically with the same nonzero 750-cycle signature observed in earlier source-split/review cases. R4J9/R4J10 remain blocked. The next useful solver path is the prepared R4L storage-light 250-branch true-jump controller; the 505 branch is parked until a new exact-control gate or redesign is defined.
 
 \end{document}
