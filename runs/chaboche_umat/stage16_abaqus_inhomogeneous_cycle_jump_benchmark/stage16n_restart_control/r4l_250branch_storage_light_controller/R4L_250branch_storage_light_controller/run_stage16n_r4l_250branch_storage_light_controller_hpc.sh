@@ -37,6 +37,8 @@ copy_lightweight_evidence() {
     mkdir -p "$HOME_CASE_DIR"
     rsync -av \
       --include='*/' \
+      --exclude='state.bin' \
+      --exclude='state.csv' \
       --include='*.md' \
       --include='*.csv' \
       --include='*.txt' \
@@ -58,8 +60,6 @@ copy_lightweight_evidence() {
       --exclude='*.pac' \
       --exclude='*.sel' \
       --exclude='*.lck' \
-      --exclude='state.bin' \
-      --exclude='state.csv' \
       --exclude='*' \
       "$SCRATCH_CASE_DIR/" "$HOME_CASE_DIR/"
   fi

@@ -64,7 +64,9 @@ The follow-up storage-light validation controller R4K2B, job \texttt{1352353.mma
 The 250-cycle restart branch is now validated for deck-clone/truncate source construction, including the exact-control case R4K1 with zero global and local comparison error. In contrast, the 505-cycle branch remains unresolved. The preserved R4E2 cycle-505 restart candidate completed the R4K2B continuation but reproduced the previous review signature, with 8.0369449\% maximum primary-local error. Therefore, the R4E2 candidate is not accepted as a validated 505 -> 750 continuation source, and further 505-branch work is postponed to avoid additional large restart-file generation. The next work should focus on storage-light true-jump candidates on the validated 250 branch.
 
 \subsection*{R4L prepared storage-light true-jump controller}
-The next prepared production controller is \texttt{stage16n\_r4l\_250branch\_storage\_light\_controller}. It uses the validated 250-branch deck-clone/truncate source construction and keeps the continuation decks restart-read-only. The controller runs R4L1 first, targeting the conservative 250 -> 270 -> 500 true-jump case, then runs R4L2 around 250 -> 280 -> 500 only if R4L1 passes. If R4L1 reviews or fails, R4L2 is not run; instead the controller writes diagnostic summaries for source-cycle state, first solved continuation cycle, comparison details, and local hole-ring metric ranking. R4L copies only lightweight evidence and deletes case-local heavy Abaqus files after classification. After confirming no active jobs and \texttt{/scratch9/pr21vyci} at about 2.7 TB, the controller was submitted as PBS job \texttt{1353907.mmaster02} on 2026-06-22 and started on \texttt{mnode079}.
+The next prepared production controller is \texttt{stage16n\_r4l\_250branch\_storage\_light\_controller}. It uses the validated 250-branch deck-clone/truncate source construction and keeps the continuation decks restart-read-only. The controller runs R4L1 first, targeting the conservative 250 -> 270 -> 500 true-jump case, then runs R4L2 around 250 -> 280 -> 500 only if R4L1 passes. If R4L1 reviews or fails, R4L2 is not run; instead the controller writes diagnostic summaries for source-cycle state, first solved continuation cycle, comparison details, and local hole-ring metric ranking. R4L copies only lightweight evidence and deletes case-local heavy Abaqus files after classification.
+
+After confirming no active jobs and \texttt{/scratch9/pr21vyci} at about 2.7 TB, R4L was submitted twice. Job \texttt{1353907.mmaster02} stopped before Abaqus solve because the first source linker expected a retained R1A \texttt{.odb}. The corrected job \texttt{1353908.mmaster02} used a cached 270 jump state but still stopped before the R4L1 source solve because Abaqus/Standard restart requires \texttt{res}, \texttt{prt}, \texttt{mdl}, \texttt{stt}, and \texttt{sim}, and the retained R1A \texttt{.mdl} is missing. Therefore R4L is not scientifically classified; the current blocker is incomplete retained R1A restart provenance after storage cleanup.
 
 \small
 \setlength{\tabcolsep}{3pt}
@@ -110,6 +112,12 @@ Prepared R4L controller files are stored under:
 runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
 stage16n\_restart\_control/r4l\_250branch\_storage\_light\_controller/\\
 R4L\_250branch\_storage\_light\_controller/
+\end{quote}
+The R4L setup-failure result note is stored at:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4l\_250branch\_storage\_light\_controller/\\
+STAGE16N\_R4L\_RESULT.md
 \end{quote}
 The earlier R4H CSV evidence is stored under:
 \begin{quote}\footnotesize\ttfamily
