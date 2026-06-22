@@ -4,7 +4,7 @@
 \usepackage{longtable}
 \title{Stage 16N Report}
 \author{}
-\date{Updated 2026-06-21}
+\date{Updated 2026-06-22}
 \begin{document}
 \maketitle
 
@@ -50,18 +50,26 @@ R4I-R2 & Buffered 250--300 & 280--500 & 500 & fail & 1.1887403 & 11.83033 & 0.92
 R4I-R1 shows that cloning/truncating the clean direct replay deck shape repairs the cycle-280 branch. R4I-R2 shows that a longer buffered generated source alone does not repair that branch; the dominant mismatch remains \texttt{HOLE\_RING\_SDV8\_MAX}.
 
 \subsection*{R4I-R second wave and deck-clone confirmations}
-After the first-wave classification, R4I-R3 and R4I-R4 were submitted on 2026-06-21 through the guarded storage-gated scratch workflow. Both jobs request one node with 16 cores, one MPI rank, 16 OpenMP threads, 90 GB memory, and 24 h walltime. R4I-R3 tests the generated buffered source at restart 270; R4I-R4 tests the generated buffered source at restart 505.
+R4I-R3 and R4I-R4 were submitted on 2026-06-21 through the guarded storage-gated scratch workflow. Both jobs requested one node with 16 cores, one MPI rank, 16 OpenMP threads, 90 GB memory, and 24 h walltime. R4I-R3 reproduced the generated-buffer review signature at restart 270 with 9.3860617\% maximum primary local error. R4I-R4 reproduced the generated-buffer review signature at restart 505 with 8.0369449\% maximum primary local error.
 
-Two deck-clone confirmation cases were prepared but not submitted. R4I-R5 clones/truncates the clean replay source from 250--271 and restarts at cycle 270 for continuation to 500. R4I-R6 clones/truncates the clean replay source from 500--506 and restarts at cycle 505 for continuation to 750. These cases should run only after R4I-R3/R4I-R4 finish or no longer consume the two active Stage 16N job slots.
+R4I-R5 then confirmed the deck-clone/truncate strategy for the 270--500 branch: deck-clone source 250--271, restart 270--500, zero global, primary-local, and S11 error at cycle 500. R4I-R6 and R4I-R6B did not classify the 505--750 branch scientifically. R4I-R6 failed during continuation \texttt{.stt} writing near cycle 731, and R4I-R6B failed earlier during source \texttt{.stt} writing near cycle 503. These are infrastructure/output-writing failures, not numerical method failures.
+
+\subsection*{R4K controller preparation}
+A 2026-06-22 storage/source audit showed \texttt{/scratch9} at 99\% use and found no visible clean cycle-505 restart source under \texttt{/scratch9/pr21vyci}, \texttt{/scratch/pr21vyci}, or the home project clone. The next prepared work is therefore split into two controllers: R4K1 runs the confirmed 250-branch exact deck-clone control \texttt{250 -> exact 280 -> 500}; R4K2 performs a 505-branch restart-source preflight and stops before Abaqus solve if no valid source is found. Both controllers include phase timing and lightweight evidence copy-back.
 
 \section{Images}
 No R4H images were generated in this update.
 
 \section{Tables}
-The key R4H and R4I-R comparison tables are included in the Results section. Lightweight R4I-R first-wave evidence and the prepared R4I-R5/R4I-R6 decks are stored under:
+The key R4H and R4I-R comparison tables are included in the Results section. Lightweight R4I-R evidence is stored under:
 \begin{quote}\footnotesize\ttfamily
 runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
 stage16n\_restart\_control/r4ir\_restart\_source\_buffer\_recovery/
+\end{quote}
+Prepared R4K controller files are stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4k\_deck\_clone\_controllers/
 \end{quote}
 The earlier R4H CSV evidence is stored under:
 \begin{quote}\footnotesize\ttfamily
@@ -70,9 +78,9 @@ stage16n\_restart\_control/r4h\_restart\_source\_diagnostics/
 \end{quote}
 
 \section{Failures and Debugging}
-No R4H job failed at PBS/Abaqus level. The original R4I comparison failed because remote reference CSV paths were missing after extraction, and its scratch outputs were not recoverable. R4I-R fixed that workflow by staging absolute reference CSVs and copying lightweight evidence before comparison. The scientific failure now narrows to generated source-split consistency: R4I-R2 reproduces the R4H2 error even with a larger 250--300 source buffer.
+No R4H job failed at PBS/Abaqus level. The original R4I comparison failed because remote reference CSV paths were missing after extraction, and its scratch outputs were not recoverable. R4I-R fixed that workflow by staging absolute reference CSVs and copying lightweight evidence before comparison. The scientific failure now narrows to generated source-split consistency: R4I-R2 reproduces the R4H2 error even with a larger 250--300 source buffer, and R4I-R3/R4I-R4 show that generated post-target buffering does not repair the 270 or 505 branches. R4I-R6/R4I-R6B additionally exposed scratch \texttt{.stt} write failures on the 505 branch.
 
 \section{Conclusion and Next Steps}
-R4H shows that long-replay restart records are clean, while short source-split restart generation or source-split phase history is still inconsistent. R4I-R1 proves that a deck-clone source can pass exactly at cycle 500, while R4I-R2 proves that a larger buffered generated source is still insufficient at restart 280. R4I-R3/R4I-R4 are now the active second-wave generated-buffer tests. Do not submit R4J9/R4J10 yet. After R4I-R3/R4I-R4 are classified, run R4I-R5/R4I-R6 as deck-clone confirmations; if those pass, rerun exact controls with the deck-clone source workflow before any new extrapolated true jump.
+R4H and R4I-R show that long-replay/deck-clone restart records are clean on the confirmed 250 branch, while generated short-source decks remain non-equivalent even with post-target buffering. Deck-clone/truncate is confirmed for 250--270--500 and 250--280--500. The 505--750 branch remains scientifically unclassified because the available attempts failed during scratch restart-file writing. Do not submit R4J9/R4J10 yet. Run R4K1 on the confirmed 250 branch and use R4K2 preflight to decide whether the 505 branch can proceed or must be redesigned.
 
 \end{document}
