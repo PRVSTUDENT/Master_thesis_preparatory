@@ -31,6 +31,17 @@ phase_time() {
   return "$rc"
 }
 
+run_logged_phase() {
+  local label="$1"
+  local logfile="$2"
+  shift 2
+  set +e
+  phase_time "$label" "$@" 2>&1 | tee "$logfile"
+  local rc=${PIPESTATUS[0]}
+  set -e
+  return "$rc"
+}
+
 copy_lightweight_evidence() {
   if [[ -n "${HOME_CASE_DIR:-}" && -d "${SCRATCH_CASE_DIR:-}" ]]; then
     mkdir -p "$HOME_CASE_DIR"
@@ -77,6 +88,17 @@ cleanup_case_heavy() {
     -name "${job}*.sel" -o -name "${job}*.lck" \) \
     -printf "%p\n" -delete 2>/dev/null || true
   rm -f state.bin state.csv
+}
+
+write_dat_tail() {
+  local job="$1"
+  local suffix
+  for suffix in "" "_datacheck"; do
+    local dat="${job}${suffix}.dat"
+    if [[ -f "$dat" ]]; then
+      tail -n 160 "$dat" > "${job}${suffix}_dat_tail.txt" || true
+    fi
+  done
 }
 
 write_controller_failure() {
@@ -217,12 +239,16 @@ write_diagnostics() {
   local label="$1"
   local job="$2"
   local solved_cycle="$3"
-  python3 - <<PY
+  export R4L2_DIAG_LABEL="$label"
+  export R4L2_DIAG_JOB="$job"
+  export R4L2_DIAG_SOLVED_CYCLE="$solved_cycle"
+  python3 - <<'PY'
 import csv
+import os
 from pathlib import Path
-label = "$label"
-job = "$job"
-solved_cycle = "$solved_cycle"
+label = os.environ["R4L2_DIAG_LABEL"]
+job = os.environ["R4L2_DIAG_JOB"]
+solved_cycle = os.environ["R4L2_DIAG_SOLVED_CYCLE"]
 out = Path(f"STAGE16N_R4L2_{label}_DIAGNOSTIC_SUMMARY.md")
 lines = [
     f"# Stage 16N-R4L2 {label} Diagnostic Summary",
@@ -253,6 +279,37 @@ else:
     lines.append("- Comparison details file was not available.")
 out.write_text("\n".join(lines) + "\n")
 PY
+}
+
+write_solver_failure_status() {
+  local label="$1"
+  local job="$2"
+  local phase="$3"
+  local jump_cycle="$4"
+  local trigger_step="$5"
+  local solved_cycle="$6"
+  {
+    echo "# Stage 16N-R4L2 ${label} Case Status"
+    echo
+    echo "- PBS job: \`${PBS_JOBID:-manual}\`"
+    echo "- Case: \`$label\`"
+    echo "- Job: \`$job\`"
+    echo "- Oldjob: \`$OLDJOB\`"
+    echo "- Source construction: \`R1B direct cycle-250 Abaqus restart source\`"
+    echo "- Restart read: \`STEP=$CHECKPOINT_CYCLE, INC=$R1B_RESTART_INC\`"
+    echo "- True-jump target: \`$jump_cycle\`"
+    echo "- Overwrite trigger step: \`$trigger_step\`"
+    echo "- First solved cycle: \`$solved_cycle\`"
+    echo "- R1A usage: \`disabled\`"
+    echo "- Source ODB dependency: \`disabled\`"
+    echo "- Continuation restart writing: \`disabled\`"
+    echo "- Classification: \`infrastructure_input_processor_failure\`"
+    echo "- Failed phase: \`$phase\`"
+    echo "- Scientific result: \`none\`"
+    echo "- Diagnostic evidence: \`${job}_datacheck_dat_tail.txt\` or \`${job}_dat_tail.txt\` if present"
+    echo "- Heavy cleanup after classification: \`enabled\`"
+    echo "- Finished: \`$(date '+%Y-%m-%d %H:%M:%S')\`"
+  } > "STAGE16N_R4L2_${label}_CASE_STATUS.md"
 }
 
 run_case() {
@@ -293,26 +350,49 @@ run_case() {
   echo "[Stage16N-R4L2] $label restart read: oldjob=$OLDJOB STEP=$CHECKPOINT_CYCLE INC=$R1B_RESTART_INC"
   echo "[Stage16N-R4L2] $label overwrite trigger: JSTEP(1)=$trigger_step KINC=0 TIME(2)=$CHECKPOINT_CYCLE"
 
-  phase_time "$label continuation datacheck" \
+  if ! run_logged_phase "$label continuation datacheck" "$LOG_DIR/${job}_datacheck.log" \
     abaqus job="${job}_datacheck" input="$input" oldjob="$OLDJOB" \
       user=stage16n_r3_jump_umat.for \
       datacheck interactive ask_delete=OFF scratch="$ABAQUS_SCRATCH" \
-      cpus="$ABAQUS_CPUS" mp_mode="$ABAQUS_MP_MODE" \
-    2>&1 | tee "$LOG_DIR/${job}_datacheck.log"
+      cpus="$ABAQUS_CPUS" mp_mode="$ABAQUS_MP_MODE"; then
+    write_dat_tail "$job"
+    write_solver_failure_status "$label" "$job" "continuation_datacheck" "$jump_cycle" "$trigger_step" "$solved_cycle"
+    write_diagnostics "$label" "$job" "$solved_cycle"
+    copy_lightweight_evidence
+    cleanup_case_heavy "$job"
+    copy_lightweight_evidence
+    echo "infrastructure_input_processor_failure"
+    return 0
+  fi
 
-  phase_time "$label continuation solve" \
+  if ! run_logged_phase "$label continuation solve" "$LOG_DIR/${job}.log" \
     abaqus job="$job" input="$input" oldjob="$OLDJOB" \
       user=stage16n_r3_jump_umat.for \
       interactive ask_delete=OFF scratch="$ABAQUS_SCRATCH" \
-      cpus="$ABAQUS_CPUS" mp_mode="$ABAQUS_MP_MODE" \
-    2>&1 | tee "$LOG_DIR/${job}.log"
+      cpus="$ABAQUS_CPUS" mp_mode="$ABAQUS_MP_MODE"; then
+    write_dat_tail "$job"
+    write_solver_failure_status "$label" "$job" "continuation_solve" "$jump_cycle" "$trigger_step" "$solved_cycle"
+    write_diagnostics "$label" "$job" "$solved_cycle"
+    copy_lightweight_evidence
+    cleanup_case_heavy "$job"
+    copy_lightweight_evidence
+    echo "infrastructure_input_processor_failure"
+    return 0
+  fi
 
   grep "STAGE16N_R3J_OVERWRITE" "${job}.dat" > "$LOG_DIR/${job}_overwrite_trace.txt" || true
   grep -m 5 -A3 "SPARSE SOLVER RUNNING ON" "${job}.msg" | tee "$LOG_DIR/${job}_parallelism_check.log" || true
 
-  phase_time "$label ODB extraction" \
+  run_logged_phase "$label ODB extraction" "$LOG_DIR/${job}_extract.log" \
     abaqus python stage16n_extract_hysteresis_and_local_states.py --job "$job" \
-    2>&1 | tee "$LOG_DIR/${job}_extract.log"
+    || {
+      write_solver_failure_status "$label" "$job" "odb_extraction" "$jump_cycle" "$trigger_step" "$solved_cycle"
+      copy_lightweight_evidence
+      cleanup_case_heavy "$job"
+      copy_lightweight_evidence
+      echo "infrastructure_extraction_failure"
+      return 0
+    }
 
   copy_lightweight_evidence
 

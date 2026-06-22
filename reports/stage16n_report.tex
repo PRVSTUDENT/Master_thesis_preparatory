@@ -72,6 +72,8 @@ A restart-source inventory was then run without submitting any solver job. It fo
 
 The R4L redesign has therefore been prepared as \texttt{stage16n\_r4l2\_250branch\_r1b\_restart\_storage\_light\_controller}. The controller uses R1B directly as \texttt{oldjob=stage16n\_r1b\_restart\_ref\_250cycles}, avoids R1A completely, and does not require the broken/missing R1B \texttt{.odb}. The 2026-06-22 pre-submit gate found no active jobs, \texttt{/scratch9/pr21vyci} at about 2.7 TB, and readable R1B \texttt{.stt/.res/.mdl/.prt/.sim/.sta} companions; the R1B \texttt{.sta} completed successfully at cycle 250 with restart row \texttt{STEP=250, INC=58}. R4L2-1 tests the target-270 true jump and solves 271--500. R4L2-2 tests target 280 and solves 281--500 only if R4L2-1 passes. If cached jump-state files are absent, the controller records \texttt{blocked\_missing\_cached\_jump\_state} and stops before Abaqus.
 
+The first R4L2 submission, job \texttt{1353909.mmaster02}, is not a scientific true-jump result. PBS finished with \texttt{Exit\_status=0} and \texttt{Stageout\_status=1} after 00:01:17 walltime and 00:00:17 CPU time. R1B preflight passed and cached target-270 jump state was found, but R4L2-1 failed in the Abaqus input file processor during datacheck and again during solve before a valid continuation/comparison. R4L2-2 was not run. The runner has been patched after this attempt to stop immediately on datacheck/solve failure and retain small \texttt{.dat} tail diagnostics before heavy cleanup.
+
 \small
 \setlength{\tabcolsep}{3pt}
 \begin{longtable}{p{0.14\textwidth}p{0.13\textwidth}p{0.12\textwidth}p{0.10\textwidth}p{0.12\textwidth}p{0.13\textwidth}p{0.12\textwidth}}
@@ -128,6 +130,12 @@ Prepared R4L2 R1B restart controller files are stored under:
 runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
 stage16n\_restart\_control/r4l2\_250branch\_r1b\_restart\_storage\_light\_controller/\\
 R4L2\_250branch\_R1B\_restart\_storage\_light\_controller/
+\end{quote}
+The R4L2 result note is stored at:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4l2\_250branch\_r1b\_restart\_storage\_light\_controller/\\
+STAGE16N\_R4L2\_RESULT.md
 \end{quote}
 The restart-source inventory is stored at:
 \begin{quote}\footnotesize\ttfamily

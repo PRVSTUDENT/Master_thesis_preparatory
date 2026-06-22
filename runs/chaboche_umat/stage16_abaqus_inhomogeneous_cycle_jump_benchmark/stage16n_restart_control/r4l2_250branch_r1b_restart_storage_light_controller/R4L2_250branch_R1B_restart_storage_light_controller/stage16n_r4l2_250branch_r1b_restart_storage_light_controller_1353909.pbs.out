@@ -1,0 +1,37 @@
+[Stage16N-R4L2] start: 2026-06-22 22:00:27
+[Stage16N-R4L2] PBS job: 1353909.mmaster02
+[Stage16N-R4L2] controller: stage16n_r4l2_250branch_r1b_restart_storage_light_controller
+[Stage16N-R4L2] oldjob: stage16n_r1b_restart_ref_250cycles
+[Stage16N-R4L2] R1A usage disabled
+[Stage16N-R4L2] source ODB dependency disabled
+[Stage16N-R4L2] cpus=16 mp_mode=threads
+[Stage16N-R4L2] storage-light cleanup=1
+[R4L2] Linking R1B restart source files for oldjob=stage16n_r1b_restart_ref_250cycles
+lrwxrwxrwx 1 pr21vyci t2-dg-role_student 206 22. Jun 22:00 stage16n_r1b_restart_ref_250cycles.stt -> /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/R1B_restart_reference_250cycles/stage16n_r1b_restart_ref_250cycles.stt
+lrwxrwxrwx 1 pr21vyci t2-dg-role_student 206 22. Jun 22:00 stage16n_r1b_restart_ref_250cycles.res -> /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/R1B_restart_reference_250cycles/stage16n_r1b_restart_ref_250cycles.res
+lrwxrwxrwx 1 pr21vyci t2-dg-role_student 206 22. Jun 22:00 stage16n_r1b_restart_ref_250cycles.mdl -> /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/R1B_restart_reference_250cycles/stage16n_r1b_restart_ref_250cycles.mdl
+lrwxrwxrwx 1 pr21vyci t2-dg-role_student 206 22. Jun 22:00 stage16n_r1b_restart_ref_250cycles.prt -> /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/R1B_restart_reference_250cycles/stage16n_r1b_restart_ref_250cycles.prt
+lrwxrwxrwx 1 pr21vyci t2-dg-role_student 206 22. Jun 22:00 stage16n_r1b_restart_ref_250cycles.sim -> /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/R1B_restart_reference_250cycles/stage16n_r1b_restart_ref_250cycles.sim
+lrwxrwxrwx 1 pr21vyci t2-dg-role_student 206 22. Jun 22:00 stage16n_r1b_restart_ref_250cycles.sta -> /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/R1B_restart_reference_250cycles/stage16n_r1b_restart_ref_250cycles.sta
+[R4L2] Optional R1B ODB not available; continuing because R4L2 has no source-ODB dependency.
+[R4L2] R1B preflight passed: required restart companions are linked and .sta completed cycle 250.
+[Stage16N-R4L2] R1B restart row: STEP=250 INC=58
+grep: stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500.msg: Datei oder Verzeichnis nicht gefunden
+run_stage16n_r4l2_250branch_r1b_restart_storage_light_controller_hpc.sh: Zeile 220: .odb: Kommando nicht gefunden.
+run_stage16n_r4l2_250branch_r1b_restart_storage_light_controller_hpc.sh: Zeile 220: {job}_cycle_metrics.csv: Kommando nicht gefunden.
+run_stage16n_r4l2_250branch_r1b_restart_storage_light_controller_hpc.sh: Zeile 220: {job}_selected_cycle_local_states.csv: Kommando nicht gefunden.
+run_stage16n_r4l2_250branch_r1b_restart_storage_light_controller_hpc.sh: Zeile 220: {solved_cycle}: Kommando nicht gefunden.
+run_stage16n_r4l2_250branch_r1b_restart_storage_light_controller_hpc.sh: Zeile 220: {job}_comparison_details.csv: Kommando nicht gefunden.
+sending incremental file list
+STAGE16N_R4L2_CONTROLLER_STATUS.md
+_logs/stage16n_r4l2_1_case.log
+
+sent 16,542 bytes  received 64 bytes  33,212.00 bytes/sec
+total size is 93,632  speedup is 5.64
+[Stage16N-R4L2] R4L2-1 classification: review_or_fail
+[Stage16N-R4L2] R4L2-2 classification: not_run_r4l2_1_review_or_fail
+[Stage16N-R4L2] end: 2026-06-22 22:01:39
+sending incremental file list
+
+sent 1,085 bytes  received 14 bytes  2,198.00 bytes/sec
+total size is 93,632  speedup is 85.20

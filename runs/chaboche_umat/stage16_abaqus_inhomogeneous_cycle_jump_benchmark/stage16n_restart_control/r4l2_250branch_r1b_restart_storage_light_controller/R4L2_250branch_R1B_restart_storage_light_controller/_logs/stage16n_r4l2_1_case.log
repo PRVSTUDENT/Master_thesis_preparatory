@@ -1,0 +1,272 @@
+
+[Stage16N-R4L2] R4L2_1: oldjob=stage16n_r1b_restart_ref_250cycles continuation=stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500 target=270
+[Stage16N-R4L2] using cached jump state for target 270 from /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J3_250_to_270_solve_271_to_500
+[Stage16N-R4L2] R4L2_1 restart read: oldjob=stage16n_r1b_restart_ref_250cycles STEP=250 INC=58
+[Stage16N-R4L2] R4L2_1 overwrite trigger: JSTEP(1)=251 KINC=0 TIME(2)=250
+
+============================================================
+PHASE START: R4L2_1 continuation datacheck
+TIME: Mo 22. Jun 22:00:33 CEST 2026
+============================================================
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_datacheck
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 16 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<232 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Mon 22 Jun 2026 10:00:43 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_r3_jump_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+stage16n_r3_jump_umat.for(248): remark #15009: stage16n_r3j_jump_overwrite_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Mon 22 Jun 2026 10:01:22 PM CEST
+Begin Analysis Input File Processor
+Mon 22 Jun 2026 10:01:22 PM CEST
+Run pre
+Mon 22 Jun 2026 10:01:24 PM CEST
+Abaqus Error: Analysis Input File Processor exited with an error - Please see the 
+stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_datacheck.dat file for possible error messages if the file exists.
+Begin SIM Wrap-up
+Mon 22 Jun 2026 10:01:24 PM CEST
+Run SMASimUtility
+Mon 22 Jun 2026 10:01:24 PM CEST
+End SIM Wrap-up
+Abaqus/Analysis exited with errors
+Command exited with non-zero status 1
+	Command being timed: "abaqus job=stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_datacheck input=stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500.inp oldjob=stage16n_r1b_restart_ref_250cycles user=stage16n_r3_jump_umat.for datacheck interactive ask_delete=OFF scratch=/scratch/pr21vyci/stage16n_r4l2/R4L2_250branch_R1B_restart_storage_light_controller/1353909.mmaster02/tmp cpus=16 mp_mode=threads"
+	User time (seconds): 6.43
+	System time (seconds): 0.82
+	Percent of CPU this job got: 14%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:51.27
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 246732
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 3048
+	Minor (reclaiming a frame) page faults: 114363
+	Voluntary context switches: 11898
+	Involuntary context switches: 89
+	Swaps: 0
+	File system inputs: 538104
+	File system outputs: 8616
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+============================================================
+PHASE END: R4L2_1 continuation datacheck
+TIME: Mo 22. Jun 22:01:24 CEST 2026
+EXIT: 1
+============================================================
+
+============================================================
+PHASE START: R4L2_1 continuation solve
+TIME: Mo 22. Jun 22:01:24 CEST 2026
+============================================================
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 16 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<232 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Mon 22 Jun 2026 10:01:27 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_r3_jump_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+stage16n_r3_jump_umat.for(248): remark #15009: stage16n_r3j_jump_overwrite_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Mon 22 Jun 2026 10:01:35 PM CEST
+Begin Analysis Input File Processor
+Mon 22 Jun 2026 10:01:35 PM CEST
+Run pre
+Mon 22 Jun 2026 10:01:36 PM CEST
+Abaqus Error: Analysis Input File Processor exited with an error - Please see the 
+stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500.dat file for possible error messages if the file exists.
+Begin SIM Wrap-up
+Mon 22 Jun 2026 10:01:36 PM CEST
+Run SMASimUtility
+Mon 22 Jun 2026 10:01:36 PM CEST
+End SIM Wrap-up
+Abaqus/Analysis exited with errors
+Command exited with non-zero status 1
+	Command being timed: "abaqus job=stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500 input=stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500.inp oldjob=stage16n_r1b_restart_ref_250cycles user=stage16n_r3_jump_umat.for interactive ask_delete=OFF scratch=/scratch/pr21vyci/stage16n_r4l2/R4L2_250branch_R1B_restart_storage_light_controller/1353909.mmaster02/tmp cpus=16 mp_mode=threads"
+	User time (seconds): 6.20
+	System time (seconds): 0.50
+	Percent of CPU this job got: 55%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:12.13
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 247772
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 115147
+	Voluntary context switches: 2719
+	Involuntary context switches: 96
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 8616
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+============================================================
+PHASE END: R4L2_1 continuation solve
+TIME: Mo 22. Jun 22:01:36 CEST 2026
+EXIT: 1
+============================================================
+
+============================================================
+PHASE START: R4L2_1 ODB extraction
+TIME: Mo 22. Jun 22:01:37 CEST 2026
+============================================================
+Wrote: stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_cycle_metrics.csv
+Wrote: stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_selected_cycle_loops.csv
+Wrote: stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_selected_cycle_local_states.csv
+	Command being timed: "abaqus python stage16n_extract_hysteresis_and_local_states.py --job stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500"
+	User time (seconds): 0.28
+	System time (seconds): 0.06
+	Percent of CPU this job got: 77%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.44
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 110744
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 97
+	Minor (reclaiming a frame) page faults: 12657
+	Voluntary context switches: 1003
+	Involuntary context switches: 6
+	Swaps: 0
+	File system inputs: 14880
+	File system outputs: 24
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: R4L2_1 ODB extraction
+TIME: Mo 22. Jun 22:01:37 CEST 2026
+EXIT: 0
+============================================================
+sending incremental file list
+./
+STAGE16N_R3J_EXTRAPOLATED_STATE.md
+reference_1000_cycle_metrics.csv
+reference_1000_selected_cycle_local_states.csv
+stage16n_r1b_restart_ref_250cycles.sta -> /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/R1B_restart_reference_250cycles/stage16n_r1b_restart_ref_250cycles.sta
+stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_cycle_metrics.csv
+stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_selected_cycle_local_states.csv
+stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_selected_cycle_loops.csv
+_logs/
+_logs/stage16n_r4l2_1_case.log
+_logs/stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500.log
+_logs/stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_datacheck.log
+_logs/stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_extract.log
+_logs/stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_overwrite_trace.txt
+_logs/stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_parallelism_check.log
+tmp/
+
+sent 86,343 bytes  received 266 bytes  57,739.33 bytes/sec
+total size is 85,488  speedup is 0.99
+
+============================================================
+PHASE START: R4L2_1 comparison
+TIME: Mo 22. Jun 22:01:38 CEST 2026
+============================================================
+Traceback (most recent call last):
+  File "stage16n_compare_r3j_jump_against_reference.py", line 166, in <module>
+    main()
+  File "stage16n_compare_r3j_jump_against_reference.py", line 87, in main
+    jump_local_fields, jump_local = read_by_cycle(args.jump_local_states)
+  File "stage16n_compare_r3j_jump_against_reference.py", line 25, in read_by_cycle
+    rows = {int(float(row["cycle"])): row for row in reader}
+  File "stage16n_compare_r3j_jump_against_reference.py", line 25, in <dictcomp>
+    rows = {int(float(row["cycle"])): row for row in reader}
+ValueError: could not convert string to float: 
+Command exited with non-zero status 1
+	Command being timed: "python3 stage16n_compare_r3j_jump_against_reference.py --jump-metrics stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_cycle_metrics.csv --jump-local-states stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_selected_cycle_local_states.csv --ref-metrics reference_1000_cycle_metrics.csv --ref-local-states reference_1000_selected_cycle_local_states.csv --cycles 500 --out-dir . --prefix stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500"
+	User time (seconds): 0.02
+	System time (seconds): 0.00
+	Percent of CPU this job got: 94%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.03
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 12744
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1832
+	Voluntary context switches: 3
+	Involuntary context switches: 2
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+============================================================
+PHASE END: R4L2_1 comparison
+TIME: Mo 22. Jun 22:01:38 CEST 2026
+EXIT: 1
+============================================================
+sending incremental file list
+./
+STAGE16N_R4L2_R4L2_1_CASE_STATUS.md
+STAGE16N_R4L2_R4L2_1_DIAGNOSTIC_SUMMARY.md
+_logs/
+_logs/stage16n_r4l2_1_case.log
+_logs/stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_compare.log
+tmp/
+
+sent 18,150 bytes  received 111 bytes  36,522.00 bytes/sec
+total size is 91,959  speedup is 5.04
+./stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_datacheck.dat
+./stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_datacheck.odb
+./stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_datacheck.prt
+./stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_datacheck.sim
+./stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500.dat
+./stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500.odb
+./stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500.prt
+./stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500.sim
+sending incremental file list
+_logs/stage16n_r4l2_1_case.log
+
+sent 15,615 bytes  received 37 bytes  31,304.00 bytes/sec
+total size is 92,795  speedup is 5.93
+review_or_fail
