@@ -121,38 +121,93 @@ echo "[Stage16N-R4L] storage-light cleanup=${CLEAN_HEAVY_AFTER_CLASSIFICATION}"
 
 bash link_r1a_restart_sources.sh
 
-for ext in odb res stt mdl sim prt; do
+for ext in stt res sim prt; do
   if [[ ! -e "${BASE_OLDJOB}.${ext}" ]]; then
     echo "Missing linked R1A restart source: ${BASE_OLDJOB}.${ext}" >&2
     exit 2
   fi
 done
 
-make_jump_state() {
+csv_to_state_bin() {
+  local csv_path="$1"
+  local bin_path="$2"
+  python3 - <<PY
+import csv
+import struct
+from pathlib import Path
+csv_path = Path("$csv_path")
+bin_path = Path("$bin_path")
+rows = []
+with csv_path.open(newline="", encoding="utf-8") as handle:
+    reader = csv.DictReader(handle)
+    for row in reader:
+        noel = int(row["NOEL"])
+        npt = int(row["NPT"])
+        values = [float(row.get(f"S{i}") or 0.0) for i in range(1, 7)]
+        values.extend(float(row[f"SDV{i}"]) for i in range(1, 28))
+        rows.append((noel, npt, values))
+max_record = max((noel - 1) * 8 + npt for noel, npt, _ in rows)
+with bin_path.open("wb") as handle:
+    handle.truncate(max_record * 33 * 8)
+    for noel, npt, values in rows:
+        recno = (noel - 1) * 8 + npt
+        handle.seek((recno - 1) * 33 * 8)
+        handle.write(struct.pack("<33d", *values))
+PY
+}
+
+use_cached_jump_state() {
   local job="$1"
-  local jump_cycles="$2"
-  local jump_cycle="$3"
+  local jump_cycle="$2"
+  local cache_dir=""
+
+  case "$jump_cycle" in
+    270)
+      for candidate in \
+        "$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J3_250_to_270_solve_271_to_500" \
+        "$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R3J5_250_to_270_to_500"; do
+        if [[ -f "$candidate/state.csv" ]]; then
+          cache_dir="$candidate"
+          break
+        fi
+      done
+      ;;
+    280)
+      for candidate in \
+        "$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/restart_jump_cases/R4J7_250_to_280_solve_281_to_500"; do
+        if [[ -f "$candidate/state.csv" ]]; then
+          cache_dir="$candidate"
+          break
+        fi
+      done
+      ;;
+  esac
+
+  if [[ -z "$cache_dir" ]]; then
+    echo "[Stage16N-R4L] no cached jump state available for $job target $jump_cycle" >&2
+    return 10
+  fi
+
   rm -f state.bin state.csv STAGE16N_R3J_EXTRAPOLATED_STATE.md
-  rm -rf _jump_state
-  mkdir -p _jump_state
-  phase_time "$job extract slope states" \
-    abaqus python stage16n_extract_exact_state_for_reinjection.py \
-      --odb "${BASE_OLDJOB}.odb" \
-      --cycles "${PREVIOUS_CYCLE},${CHECKPOINT_CYCLE}" \
-      --outdir _jump_state \
-    2>&1 | tee "$LOG_DIR/${job}_extract_slope_states.log"
-  phase_time "$job make extrapolated state" \
-    python3 stage16n_make_extrapolated_state.py \
-      --previous-csv "_jump_state/stage16n_exact_state_cycle$(printf '%04d' "$PREVIOUS_CYCLE").csv" \
-      --base-csv "_jump_state/stage16n_exact_state_cycle$(printf '%04d' "$CHECKPOINT_CYCLE").csv" \
-      --previous-cycle "$PREVIOUS_CYCLE" \
-      --base-cycle "$CHECKPOINT_CYCLE" \
-      --jump-cycles "$jump_cycles" \
-      --output-cycle "$jump_cycle" \
-      --output-csv state.csv \
-      --output-bin state.bin \
-      --output-summary STAGE16N_R3J_EXTRAPOLATED_STATE.md \
-    2>&1 | tee "$LOG_DIR/${job}_make_extrapolated_state.log"
+  cp "$cache_dir/state.csv" state.csv
+  if [[ -f "$cache_dir/state.bin" ]]; then
+    cp "$cache_dir/state.bin" state.bin
+  else
+    csv_to_state_bin state.csv state.bin
+  fi
+  if [[ -f "$cache_dir/STAGE16N_R3J_EXTRAPOLATED_STATE.md" ]]; then
+    cp "$cache_dir/STAGE16N_R3J_EXTRAPOLATED_STATE.md" STAGE16N_R3J_EXTRAPOLATED_STATE.md
+  else
+    {
+      echo "# Stage 16N-R4L Cached Jump State"
+      echo
+      echo "- Cached source: \`$cache_dir\`"
+      echo "- Extrapolated material-state cycle: \`$jump_cycle\`"
+      echo "- State CSV: \`state.csv\`"
+      echo "- State binary: \`state.bin\`"
+    } > STAGE16N_R3J_EXTRAPOLATED_STATE.md
+  fi
+  echo "[Stage16N-R4L] using cached jump state for $job: $cache_dir"
 }
 
 run_case() {
@@ -168,7 +223,23 @@ run_case() {
 
   echo
   echo "[Stage16N-R4L] ${label}: source=$source_job continuation=$job"
-  make_jump_state "$job" "$jump_cycles" "$jump_cycle"
+  if ! use_cached_jump_state "$job" "$jump_cycle"; then
+    {
+      echo "# Stage 16N-R4L ${label} Case Status"
+      echo
+      echo "- PBS job: \`${PBS_JOBID:-manual}\`"
+      echo "- Case: \`$label\`"
+      echo "- Job: \`$job\`"
+      echo "- Classification: \`blocked_missing_cached_jump_state\`"
+      echo "- Missing true-jump state target: \`$jump_cycle\`"
+      echo "- Solver status: \`not_submitted_for_case\`"
+      echo "- Heavy cleanup after classification: \`enabled\`"
+      echo "- Finished: \`$(date '+%Y-%m-%d %H:%M:%S')\`"
+    } > "STAGE16N_R4L_${label}_CASE_STATUS.md"
+    copy_lightweight_evidence
+    echo "blocked_missing_cached_jump_state"
+    return 0
+  fi
 
   phase_time "$label source solve" \
     abaqus job="$source_job" input="$source_input" oldjob="$BASE_OLDJOB" \
