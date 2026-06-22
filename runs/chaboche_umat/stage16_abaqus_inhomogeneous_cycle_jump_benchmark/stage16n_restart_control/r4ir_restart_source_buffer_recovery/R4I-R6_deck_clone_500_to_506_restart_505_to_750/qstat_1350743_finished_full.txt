@@ -1,0 +1,69 @@
+Job Id: 1350743.mmaster02
+    Job_Name = stage16n_r4ir6_deck_clone_500_to_506_restart_505_to_750
+    Job_Owner = pr21vyci@mlogin01.cluster
+    resources_used.cpupercent = 634
+    resources_used.cput = 23:30:31
+    resources_used.mem = 87668576kb
+    resources_used.ncpus = 16
+    resources_used.vmem = 8402908kb
+    resources_used.walltime = 05:36:52
+    job_state = F
+    queue = mediumq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Sun Jun 21 18:23:46 2026
+    Error_Path = mlogin01.cluster:/scratch/pr21vyci/git_work/Master_thesis_prep
+	aratory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benc
+	hmark/stage16n_restart_control/r4ir_restart_source_buffer_recovery/R4I-
+	R6_deck_clone_500_to_506_restart_505_to_750/stage16n_r4ir6_deck_clone_5
+	00_to_506_restart_505_to_750.e1350743
+    exec_host = mnode051/0*0
+    exec_vnode = (mnode051[0]:mem=84867072kb:ncpus=11+mnode051[1]:mem=9504768kb
+	:ncpus=5)
+    Hold_Types = n
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = abe
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Mon Jun 22 00:01:21 2026
+    Output_Path = mlogin01.cluster:/scratch/pr21vyci/stage16n_r4ir_pbs/stage16n
+	_r4ir6_deck_clone_500_to_506_restart_505_to_750.pbs.out
+    Priority = 0
+    qtime = Sun Jun 21 18:23:46 2026
+    Rerunable = True
+    Resource_List.mem = 90gb
+    Resource_List.mpiprocs = 1
+    Resource_List.ncpus = 16
+    Resource_List.ngpus = 0
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+    Resource_List.walltime = 24:00:00
+    stime = Sun Jun 21 18:23:49 2026
+    obittime = Mon Jun 22 00:01:21 2026
+    session_id = 2123319
+    sandbox = PRIVATE
+    jobdir = /home/pr21vyci/pbs.1350743.mmaster02.x8z
+    substate = 93
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/bin:/home/pr21vyci/texlive/2026/bin/x86_64-l
+	inux:/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin:/usr/b
+	in:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/scratch/pr21vyci/git_work/Master_thesis_preparatory/run
+	s/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage
+	16n_restart_control/r4ir_restart_source_buffer_recovery/R4I-R6_deck_clo
+	ne_500_to_506_restart_505_to_750,PBS_O_SYSTEM=Linux,PBS_O_QUEUE=entryq
+    comment = Job run at Sun Jun 21 at 18:23 on (mnode051[0]:mem=84867072kb:ncp
+	us=11+mnode051[1]:mem=9504768kb:ncpus=5) and failed
+    etime = Sun Jun 21 18:23:46 2026
+    run_count = 1
+    eligible_time = 00:00:06
+    Stageout_status = 0
+    Exit_status = 1
+    Submit_arguments = submit_stage16n_r4ir6_deck_clone_500_to_506_restart_505_
+	to_750.pbs
+    history_timestamp = 1782079281
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+
