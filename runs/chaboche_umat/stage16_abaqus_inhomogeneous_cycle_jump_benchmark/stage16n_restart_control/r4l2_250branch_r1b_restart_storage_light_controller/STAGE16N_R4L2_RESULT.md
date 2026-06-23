@@ -90,7 +90,12 @@ The corrected status is:
 - R1B is restart-companion-complete for `.stt/.res/.mdl/.prt/.sim/.sta`.
 - R1B is incomplete for the current R4L2 Abaqus restart/datacheck path because the exact `.odb` is missing or unreadable.
 - R4L2-D2 must not be submitted until the ODB dependency is resolved.
+- Do not use `stage16n_r1b_restart_ref_250cycles_datacheck.odb`; it is only a datacheck ODB, not a solved source ODB.
 
 Report-safe statement:
 
 The R4L2-D1 diagnostic resolved the previous ambiguity in the R1B restart-source setup. Although the retained R1B source contains the standard restart companion files and completed cycle 250, Abaqus input processing for the R4L2 continuation still requires the corresponding R1B output database, `stage16n_r1b_restart_ref_250cycles.odb`. Since this file is missing or unreadable, R4L2 remains blocked before any valid continuation solve or scientific comparison. Therefore, no conclusion can be drawn yet about the true-jump method from R4L2.
+
+## Next storage-light path
+
+Do not keep trying to patch old retained R1A/R1B sources. The next planned stage is `R4M_250branch_compact_restart_source_controller`: rebuild one compact, complete cycle-250 restart-source package with `.odb/.stt/.res/.mdl/.prt/.sim/.sta`, use it immediately for the target-270 continuation gate, copy lightweight evidence only, and delete heavy scratch files after classification.

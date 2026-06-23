@@ -47,7 +47,7 @@ The retained R1B source folder contains readable standard restart companions:
 
 The `.sta` tail still shows `THE ANALYSIS HAS COMPLETED SUCCESSFULLY` at cycle 250.
 
-However, the exact `stage16n_r1b_restart_ref_250cycles.odb` is not readable. The only found ODB-like candidate is `stage16n_r1b_restart_ref_250cycles_datacheck.odb`, which is not the required exact continuation oldjob ODB and should not be treated as a validated substitute without a separate datacheck proof.
+However, the exact `stage16n_r1b_restart_ref_250cycles.odb` is not readable. The only found ODB-like candidate is `stage16n_r1b_restart_ref_250cycles_datacheck.odb`, which is not the required exact continuation oldjob ODB and must not be used as a solved restart-source ODB.
 
 ## Classification
 
@@ -65,4 +65,4 @@ Safe options:
 - Option B: redesign the continuation path so Abaqus does not require oldjob `.odb`, then prove that with a short datacheck-only job before production.
 - Option C: postpone true-jump testing and document that cleanup removed the required `.odb` for R1B-based continuation.
 
-Given the storage constraints, Option B is only acceptable as a cheap datacheck experiment. If it still asks for `.odb`, use Option A once with strict cleanup and retention rules.
+Given the D1/E0 result, do not keep patching old retained R1A/R1B sources. The next planned path is `R4M_250branch_compact_restart_source_controller`: regenerate one compact, complete cycle-250 source package, use it immediately for the first 250-branch true-jump candidate, and clean heavy files after classification.
