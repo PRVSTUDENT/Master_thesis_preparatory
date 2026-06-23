@@ -74,7 +74,7 @@ The R4L redesign was then prepared as \texttt{stage16n\_r4l2\_250branch\_r1b\_re
 
 The follow-up R4L2-D1/E0 diagnostics showed that the retained R1B source is incomplete for the current Abaqus restart path. Although the restart companion files \texttt{.stt}, \texttt{.res}, \texttt{.mdl}, \texttt{.prt}, \texttt{.sim}, and \texttt{.sta} are available, Abaqus input processing also requires the exact solved output database \texttt{stage16n\_r1b\_restart\_ref\_250cycles.odb}. Only a datacheck ODB was found, and the exact solved ODB is a broken symlink. Therefore, R4L2 remains blocked before any valid continuation solve or scientific comparison. No conclusion can be drawn yet about the true-jump method from R4L2.
 
-The next storage-light path is \texttt{R4M\_250branch\_compact\_restart\_source\_controller}: regenerate one compact, complete cycle-250 restart source package and use it immediately within a self-contained controller, followed by lightweight evidence extraction and heavy-file cleanup. The datacheck ODB must not be used as a solved restart-source ODB.
+The R4M storage-light recovery controller, job \texttt{1353942.mmaster02}, then regenerated the missing complete cycle-250 source package with the exact basename \texttt{stage16n\_r1b\_restart\_ref\_250cycles}. The scratch-only package included \texttt{.odb}, \texttt{.stt}, \texttt{.res}, \texttt{.mdl}, \texttt{.prt}, \texttt{.sim}, and \texttt{.sta}; the key heavy files were a 523 MB \texttt{.odb} and a 276 GB \texttt{.stt}. The controller then ran a target-270 datacheck and continuation for 271 -> 500 with continuation restart writing disabled. The comparison passed at cycle 500 with 0.39923577\% maximum global error, 3.9830029\% maximum primary-local error, and 0.1398007\% diagnostic S11 error. PBS recorded \texttt{Exit\_status=0}, \texttt{Stageout\_status=1}, 11:05:25 walltime, 48:19:32 CPU time, \texttt{resources\_used.cpupercent=654}, and about 4.36 average active cores from \texttt{cput}/walltime. The scratch case was cleaned after classification and checked at about 3.4 MB, with no top-level heavy Abaqus outputs remaining. R4M therefore resolves the missing-source-package blocker for the validated 250-branch target-270 gate; R4J9/R4J10, the 505 branch, and broad true-jump batches remain blocked.
 
 \small
 \setlength{\tabcolsep}{3pt}
@@ -84,6 +84,7 @@ Case & PBS job & Endpoint & Status & Global \% & Primary local \% & S11 \% \\
 \midrule
 R4K1 & 1350764 & 500 & pass & 0 & 0 & 0 \\
 R4K2B & 1352353 & 750 & review & 0.31896796 & 8.0369449 & 1.5702038 \\
+R4M & 1353942 & 500 & pass & 0.39923577 & 3.9830029 & 0.1398007 \\
 \bottomrule
 \end{longtable}
 \setlength{\tabcolsep}{6pt}
