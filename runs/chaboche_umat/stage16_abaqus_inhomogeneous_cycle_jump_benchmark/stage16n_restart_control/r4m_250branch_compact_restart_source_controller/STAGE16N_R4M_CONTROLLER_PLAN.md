@@ -75,11 +75,16 @@ Recommended practical first gate:
 
 - one job only
 - `entryq`
-- 8 cores
-- 50 GB
-- 12-24 h
+- 16 cores
+- 90 GB
+- 24 h
 
-Use 16 cores / 90 GB / 24 h only if strict comparability with previous Stage 16N exact controls is more important than allocation efficiency. Recent accounting suggests 16-core jobs often averaged only about 3-4 active cores.
+This keeps strict comparability with previous Stage 16N exact controls. Recent accounting suggests 16-core jobs often averaged only about 3-4 active cores, so an 8-core calibration can be considered later.
+
+Prepared submission files:
+
+- `run_stage16n_r4m_250branch_compact_restart_source_controller_hpc.sh`
+- `submit_stage16n_r4m_250branch_compact_restart_source_controller.pbs`
 
 ## Storage rules
 
