@@ -1,0 +1,22 @@
+# Stage 16N-R4L2-D1 Datacheck Diagnostic Status
+
+- PBS job: `1353941.mmaster02`
+- Controller: `stage16n_r4l2_d1_r1b_datacheck`
+- Case: `R4L2_D1`
+- Job: `stage16n_r4l2_d1_r1b_jump_250_to_270_datacheck`
+- Oldjob: `stage16n_r1b_restart_ref_250cycles`
+- Purpose: `R1B preflight plus target-270 input-processor datacheck only`
+- Restart read: `STEP=250, INC=58`
+- True-jump target: `270`
+- Overwrite trigger step: `251`
+- First solved cycle if later allowed: `271`
+- Continuation solve: `not_allowed_in_D1`
+- R1A usage: `disabled`
+- Source ODB dependency: `disabled`
+- Classification: `infrastructure_input_processor_failure`
+- Failed phase: `continuation_datacheck`
+- Exit code: `1`
+- Scientific result: `none`
+- Evidence tails: `stage16n_r4l2_d1_r1b_jump_250_to_270_datacheck_dat_tail.txt`, `stage16n_r4l2_d1_r1b_jump_250_to_270_datacheck_msg_tail.txt`, logs if present
+- Heavy cleanup after classification: `enabled`
+- Finished: `2026-06-23 05:36:58`
