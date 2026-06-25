@@ -1,0 +1,75 @@
+#!/bin/bash
+#PBS -N R4O_A1_target271
+#PBS -q entryq
+#PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+#PBS -l walltime=24:00:00
+#PBS -j oe
+#PBS -o /scratch/pr21vyci/stage16n_r4o_pbs/R4O_A1_target271.pbs.out
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
+
+set -euo pipefail
+
+# Abaqus storage-light job. All solver work happens in /scratch; only lightweight evidence is copied home.
+SUBMIT_DIR="${PBS_O_WORKDIR:-$PWD}"
+REPO_ROOT="$SUBMIT_DIR"
+while [[ "$REPO_ROOT" != "/" && ! -d "$REPO_ROOT/.git" ]]; do
+  REPO_ROOT="$(dirname "$REPO_ROOT")"
+done
+if [[ ! -d "$REPO_ROOT/.git" ]]; then
+  FALLBACK_ROOT="$HOME/master_thesis/Abaqus_trial"
+  if [[ -d "$FALLBACK_ROOT/runs/chaboche_umat" ]]; then
+    echo "No .git root above submit directory; using fallback repo mirror: $FALLBACK_ROOT" >&2
+    REPO_ROOT="$FALLBACK_ROOT"
+  else
+    echo "Could not find Git repo root above submit directory: $SUBMIT_DIR" >&2
+    exit 24
+  fi
+fi
+
+export REPO_ROOT
+export HOME_CASE_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4o_250branch_boundary_refinement_queue"
+export HOME_RESULT_DIR="$HOME_CASE_DIR/R4O_A1_target271"
+export SCRATCH_CASE_DIR="/scratch/$USER/stage16n_r4o/R4O_A1_target271/${PBS_JOBID:-manual}"
+export TMPDIR="$SCRATCH_CASE_DIR/tmp"
+export ABAQUS_CPUS=16
+export ABAQUS_MP_MODE=threads
+export CLEAN_HEAVY_AFTER_CLASSIFICATION=1
+export R4O_CASE_ID="R4O_A1_target271"
+export R4O_TARGET="271"
+export R4O_SOLVED_START="272"
+export R4O_PREV_CASE=""
+
+REF_1000="$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv"
+REF_1000_LOCAL="$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv"
+
+mkdir -p "$SCRATCH_CASE_DIR" "$TMPDIR" "$HOME_RESULT_DIR" /scratch/pr21vyci/stage16n_r4o_pbs
+rsync -a --delete \
+  --exclude='R4O_*' \
+  --exclude='*.odb' --exclude='*.stt' --exclude='*.res' --exclude='*.sim' \
+  --exclude='*.mdl' --exclude='*.prt' --exclude='*.dat' --exclude='*.msg' \
+  --exclude='*.sta' --exclude='*.023' --exclude='*.cax' --exclude='*.abq' \
+  --exclude='*.pac' --exclude='*.sel' --exclude='*.lck' --exclude='state.bin' \
+  --exclude='state.csv' \
+  "$HOME_CASE_DIR/" "$SCRATCH_CASE_DIR/"
+
+cp "$REF_1000" "$SCRATCH_CASE_DIR/reference_1000_cycle_metrics.csv"
+cp "$REF_1000_LOCAL" "$SCRATCH_CASE_DIR/reference_1000_selected_cycle_local_states.csv"
+
+for required in \
+  reference_1000_cycle_metrics.csv \
+  reference_1000_selected_cycle_local_states.csv \
+  stage16n_r1b_restart_ref_250cycles.inp \
+  stage16n_r4o_target271_jump_250_to_271_solve_272_to_500.inp \
+  stage16n_neml_equivalent_chaboche_umat.for \
+  stage16n_r3_jump_umat.for \
+  stage16n_extract_hysteresis_and_local_states.py \
+  stage16n_extract_exact_state_for_reinjection.py \
+  stage16n_make_extrapolated_state.py \
+  stage16n_compare_r3j_jump_against_reference.py \
+  run_stage16n_r4o_boundary_refinement_job_hpc.sh; do
+  test -s "$SCRATCH_CASE_DIR/$required"
+done
+
+cd "$SCRATCH_CASE_DIR"
+bash run_stage16n_r4o_boundary_refinement_job_hpc.sh
