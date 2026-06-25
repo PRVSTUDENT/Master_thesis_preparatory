@@ -76,6 +76,8 @@ The follow-up R4L2-D1/E0 diagnostics showed that the retained R1B source is inco
 
 The R4M storage-light recovery controller, job \texttt{1353942.mmaster02}, then regenerated the missing complete cycle-250 source package with the exact basename \texttt{stage16n\_r1b\_restart\_ref\_250cycles}. The scratch-only package included \texttt{.odb}, \texttt{.stt}, \texttt{.res}, \texttt{.mdl}, \texttt{.prt}, \texttt{.sim}, and \texttt{.sta}; the key heavy files were a 523 MB \texttt{.odb} and a 276 GB \texttt{.stt}. The controller then ran a target-270 datacheck and continuation for 271 -> 500 with continuation restart writing disabled. The comparison passed at cycle 500 with 0.39923577\% maximum global error, 3.9830029\% maximum primary-local error, and 0.1398007\% diagnostic S11 error. PBS recorded \texttt{Exit\_status=0}, \texttt{Stageout\_status=1}, 11:05:25 walltime, 48:19:32 CPU time, \texttt{resources\_used.cpupercent=654}, and about 4.36 average active cores from \texttt{cput}/walltime. The scratch case was cleaned after classification and checked at about 3.4 MB, with no top-level heavy Abaqus outputs remaining. R4M therefore resolves the missing-source-package blocker for the validated 250-branch target-270 gate; R4J9/R4J10, the 505 branch, and broad true-jump batches remain blocked.
 
+The next refinement controller, R4N job \texttt{1355855.mmaster02}, regenerated the same complete cycle-250 source package in scratch and advanced to the first refinement target, 250 -> 275 -> 500, with continuation restart writing disabled. PBS recorded \texttt{Exit\_status=0}, \texttt{Stageout\_status=1}, 08:34:00 walltime, 38:44:20 CPU time, \texttt{resources\_used.cpupercent=675}, and about 4.52 average active cores out of 16. The target-275 comparison completed but reviewed rather than passed: 2.5313106\% maximum global error, 9.3841268\% maximum primary-local error dominated by \texttt{HOLE\_RING\_SDV8\_MAX}, and 1.2393651\% diagnostic S11 error. Because target 275 reviewed, R4N did not proceed to target 280 or optional target 285. This is a scientific refinement result for the 250-branch true-jump path, while \texttt{Stageout\_status=1} is recorded separately as an infrastructure warning because lightweight evidence was recovered.
+
 \small
 \setlength{\tabcolsep}{3pt}
 \begin{longtable}{p{0.14\textwidth}p{0.13\textwidth}p{0.12\textwidth}p{0.10\textwidth}p{0.12\textwidth}p{0.13\textwidth}p{0.12\textwidth}}
@@ -85,6 +87,7 @@ Case & PBS job & Endpoint & Status & Global \% & Primary local \% & S11 \% \\
 R4K1 & 1350764 & 500 & pass & 0 & 0 & 0 \\
 R4K2B & 1352353 & 750 & review & 0.31896796 & 8.0369449 & 1.5702038 \\
 R4M & 1353942 & 500 & pass & 0.39923577 & 3.9830029 & 0.1398007 \\
+R4N & 1355855 & 500 & review & 2.5313106 & 9.3841268 & 1.2393651 \\
 \bottomrule
 \end{longtable}
 \setlength{\tabcolsep}{6pt}
@@ -140,6 +143,11 @@ runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
 stage16n\_restart\_control/r4l2\_250branch\_r1b\_restart\_storage\_light\_controller/\\
 STAGE16N\_R4L2\_RESULT.md
 \end{quote}
+R4N target-275 refinement evidence is stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4n\_250branch\_refinement\_storage\_light\_controller/
+\end{quote}
 The restart-source inventory is stored at:
 \begin{quote}\footnotesize\ttfamily
 runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
@@ -155,6 +163,6 @@ stage16n\_restart\_control/r4h\_restart\_source\_diagnostics/
 No R4H job failed at PBS/Abaqus level. The original R4I comparison failed because remote reference CSV paths were missing after extraction, and its scratch outputs were not recoverable. R4I-R fixed that workflow by staging absolute reference CSVs and copying lightweight evidence before comparison. The scientific failure now narrows to generated source-split consistency: R4I-R2 reproduces the R4H2 error even with a larger 250--300 source buffer, and R4I-R3/R4I-R4 show that generated post-target buffering does not repair the 270 or 505 branches. R4I-R6/R4I-R6B additionally exposed scratch \texttt{.stt} write failures on the 505 branch.
 
 \section{Conclusion and Next Steps}
-R4H, R4I-R, and R4K1 show that long-replay/deck-clone restart records are clean on the confirmed 250 branch, while generated short-source decks remain non-equivalent even with post-target buffering. Deck-clone/truncate is confirmed for 250--270--500 and for the exact-control path 250--280--500. The 505--750 branch now has a completed R4K2B validation of the preserved R4E2 cycle-505 candidate, and that candidate failed scientifically with the same nonzero 750-cycle signature observed in earlier source-split/review cases. R4J9/R4J10 remain blocked. The next useful solver path is the prepared R4L storage-light 250-branch true-jump controller; the 505 branch is parked until a new exact-control gate or redesign is defined.
+R4H, R4I-R, and R4K1 show that long-replay/deck-clone restart records are clean on the confirmed 250 branch, while generated short-source decks remain non-equivalent even with post-target buffering. Deck-clone/truncate is confirmed for 250--270--500 and for the exact-control path 250--280--500. R4M established a storage-light source-regeneration path and passed the 250 -> 270 -> 500 true-jump gate, but R4N reviewed at the next refinement target, 250 -> 275 -> 500, with a 9.3841268\% primary-local error. The 505--750 branch has a completed R4K2B validation of the preserved R4E2 cycle-505 candidate, and that candidate failed scientifically with the same nonzero 750-cycle signature observed in earlier source-split/review cases. R4J9/R4J10, target 280/285 progression, broad true-jump batches, and the 505 branch remain blocked until the target-275 review signature is diagnosed or a new gated controller is explicitly defined.
 
 \end{document}

@@ -1,0 +1,200 @@
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+--
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 16 THREADS
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+
+============================================================
+PHASE START: target-275 ODB extraction
+TIME: Mi 24. Jun 02:31:45 CEST 2026
+============================================================
+Wrote: stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_cycle_metrics.csv
+Wrote: stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_selected_cycle_loops.csv
+Wrote: stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_selected_cycle_local_states.csv
+	Command being timed: "abaqus python stage16n_extract_hysteresis_and_local_states.py --job stage16n_r4n_target275_jump_250_to_275_solve_276_to_500"
+	User time (seconds): 16.34
+	System time (seconds): 1.48
+	Percent of CPU this job got: 67%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:26.50
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 904428
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 141
+	Minor (reclaiming a frame) page faults: 212069
+	Voluntary context switches: 1576
+	Involuntary context switches: 34
+	Swaps: 0
+	File system inputs: 19544
+	File system outputs: 64
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: target-275 ODB extraction
+TIME: Mi 24. Jun 02:32:12 CEST 2026
+EXIT: 0
+============================================================
+
+============================================================
+PHASE START: target-275 comparison
+TIME: Mi 24. Jun 02:32:12 CEST 2026
+============================================================
+Wrote stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_comparison_summary.csv
+Wrote stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_comparison_details.csv
+	Command being timed: "python3 stage16n_compare_r3j_jump_against_reference.py --jump-metrics stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_cycle_metrics.csv --jump-local-states stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_selected_cycle_local_states.csv --ref-metrics reference_1000_cycle_metrics.csv --ref-local-states reference_1000_selected_cycle_local_states.csv --cycles 500 --out-dir . --prefix stage16n_r4n_target275_jump_250_to_275_solve_276_to_500"
+	User time (seconds): 0.03
+	System time (seconds): 0.00
+	Percent of CPU this job got: 55%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.06
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 12960
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1929
+	Voluntary context switches: 24
+	Involuntary context switches: 1
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 16
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: target-275 comparison
+TIME: Mi 24. Jun 02:32:12 CEST 2026
+EXIT: 0
+============================================================
+sending incremental file list
+./
+STAGE16N_R4N_CASE_TABLE.csv
+STAGE16N_R4N_CONTROLLER_STATUS.md
+STAGE16N_R4N_SOURCE_PACKAGE_MANIFEST.md
+STAGE16N_R4N_TARGET275_COMPARISON_SUMMARY.txt
+STAGE16N_R4N_TARGET275_EXTRAPOLATED_STATE.md
+reference_1000_cycle_metrics.csv
+reference_1000_selected_cycle_local_states.csv
+stage16n_r1b_restart_ref_250cycles_dat_tail.txt
+stage16n_r1b_restart_ref_250cycles_datacheck_dat_tail.txt
+stage16n_r1b_restart_ref_250cycles_datacheck_msg_tail.txt
+stage16n_r1b_restart_ref_250cycles_msg_tail.txt
+stage16n_r1b_restart_ref_250cycles_sta_tail.txt
+stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_comparison_details.csv
+stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_comparison_summary.csv
+stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_cycle_metrics.csv
+stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_dat_tail.txt
+stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck_dat_tail.txt
+stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck_msg_tail.txt
+stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_msg_tail.txt
+stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_selected_cycle_local_states.csv
+stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_selected_cycle_loops.csv
+stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_sta_tail.txt
+_logs/
+_logs/r4n_storage_start_df.txt
+_logs/r4n_storage_start_scratch9_user.txt
+_logs/stage16n_r1b_restart_ref_250cycles.log
+_logs/stage16n_r1b_restart_ref_250cycles_datacheck.log
+_logs/stage16n_r1b_restart_ref_250cycles_extract_state_100_250.log
+_logs/stage16n_r4n_target275_jump_250_to_275_solve_276_to_500.log
+_logs/stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_compare.log
+_logs/stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck.log
+_logs/stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_extract.log
+_logs/stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_overwrite_trace.txt
+_logs/stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_parallelism_check.log
+_source_state/
+_source_state/stage16n_exact_state_cycle0100.csv
+_source_state/stage16n_exact_state_cycle0100_summary.md
+_source_state/stage16n_exact_state_cycle0250.csv
+_source_state/stage16n_exact_state_cycle0250_summary.md
+tmp/
+
+sent 27,983,373 bytes  received 746 bytes  5,088,021.64 bytes/sec
+total size is 27,975,426  speedup is 1.00
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck.sim
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500.sim
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck.dat
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck.odb
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck.msg
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck.stt
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck.mdl
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck.res
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck.023
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500_datacheck.prt
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500.dat
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500.odb
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500.msg
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500.stt
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500.mdl
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500.res
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500.prt
+./stage16n_r4n_target275_jump_250_to_275_solve_276_to_500.sta
+sending incremental file list
+./
+
+sent 1,635 bytes  received 22 bytes  1,104.67 bytes/sec
+total size is 27,975,426  speedup is 16,883.18
+[Stage16N-R4N] target275 did not pass; stopping escalation.
+Dateisystem             Gr??e Benutzt Verf. Verw% Eingeh?ngt auf
+panfs://mpanfs/scratch9   33T    7,8T   25T   24% /scratch9
+panfs://mpanfs/scratch   101T     82T   19T   82% /scratch
+mnfs:/home                17T     13T  3,4T   80% /home
+2,9T	/scratch9/pr21vyci
+./stage16n_r1b_restart_ref_250cycles_datacheck.sim
+./stage16n_r1b_restart_ref_250cycles.sim
+./stage16n_r1b_restart_ref_250cycles_datacheck.dat
+./stage16n_r1b_restart_ref_250cycles_datacheck.odb
+./stage16n_r1b_restart_ref_250cycles_datacheck.msg
+./stage16n_r1b_restart_ref_250cycles_datacheck.stt
+./stage16n_r1b_restart_ref_250cycles_datacheck.mdl
+./stage16n_r1b_restart_ref_250cycles_datacheck.res
+./stage16n_r1b_restart_ref_250cycles_datacheck.023
+./stage16n_r1b_restart_ref_250cycles_datacheck.cax
+./stage16n_r1b_restart_ref_250cycles_datacheck.prt
+./stage16n_r1b_restart_ref_250cycles.dat
+./stage16n_r1b_restart_ref_250cycles.odb
+./stage16n_r1b_restart_ref_250cycles.msg
+./stage16n_r1b_restart_ref_250cycles.stt
+./stage16n_r1b_restart_ref_250cycles.mdl
+./stage16n_r1b_restart_ref_250cycles.res
+./stage16n_r1b_restart_ref_250cycles.prt
+./stage16n_r1b_restart_ref_250cycles.sta
+sending incremental file list
+./
+_logs/
+_logs/r4n_storage_end_df.txt
+_logs/r4n_storage_end_scratch9_user.txt
+
+sent 2,068 bytes  received 67 bytes  4,270.00 bytes/sec
+total size is 27,975,693  speedup is 13,103.37
+sending incremental file list
+
+sent 1,701 bytes  received 15 bytes  3,432.00 bytes/sec
+total size is 27,975,693  speedup is 16,302.85
