@@ -1839,6 +1839,7 @@ The current operational conclusion after R4O is that the 250 branch has a storag
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4l\_250branch\_storage\_light\_controller/R4L\_250branch\_storage\_light\_controller/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4l2\_250branch\_r1b\_restart\_storage\_light\_controller/R4L2\_250branch\_R1B\_restart\_storage\_light\_controller/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4n\_250branch\_refinement\_storage\_light\_controller/}
+  \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/r4p\_boundary\_reproducibility\_and\_diagnostics/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_restart\_control/restart\_jump\_cases/watch\_cleanup\_and\_submit\_stage16n\_scratch\_jobs.sh}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_PROFESSOR\_UPDATE\_2026\_06\_07.md}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_fixed\_jump\_validation/cases/B1D2\_100\_to\_102\_to\_250/}
@@ -1863,5 +1864,31 @@ The current operational conclusion after R4O is that the 250 branch has a storag
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/stage16n\_exact\_reinjection/}
   \item \code{runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/STAGE16N\_HPC\_MAIL\_POLICY.md}
 \end{itemize}
+
+\section{Stage 16N-R4P Boundary Reproducibility and Diagnostics}
+
+R4P was prepared on 2026-06-28 as the next storage-light queued batch after R4O tightened the 250-branch boundary. The scientific basis is: R4M target270 passed, R4O target271 passed, R4O target272 failed, and R4O target274 failed. Therefore the active boundary is between target271 and target272. The work intentionally does not unlock R4J9/R4J10, any 505-branch job, or broader target273/275/276/280/285 progression.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lllll}
+\toprule
+Chain & Case & Target & Mode & Dependency \\
+\midrule
+A & R4P-A1 & 271 & Repeat true-jump & none \\
+A & R4P-A2 & 272 & Repeat true-jump & afterany A1 \\
+A & R4P-A3 & 272 & Exact/native control & afterany A2 \\
+A & R4P-A4 & 272 & Failure diagnostics & afterany A3 \\
+B & R4P-B1 & 270 & Repeat true-jump & none \\
+B & R4P-B2 & 271 & Diagnostics & afterany B1 \\
+B & R4P-B3 & 271 & 8-core calibration & afterany B2 \\
+B & R4P-B4 & 272 & 8-core calibration & afterany B3 \\
+\bottomrule
+\end{tabular}
+\caption{Stage 16N-R4P prepared two-chain queue. Only A1 and B1 are initially runnable, so at most two jobs should be active.}
+\end{table}
+
+All R4P jobs regenerate the compact complete cycle-250 source package inside scratch, validate \code{.odb/.stt/.res/.mdl/.prt/.sim/.sta}, run with continuation restart writing disabled, copy back only lightweight evidence, and remove heavy Abaqus files after classification. A2 and later jobs record predecessor status but use PBS \code{afterany} rather than pass-only self-gating. The A3 exact/native control writes an intermediate native cycle272 source restart, resolves the restart increment from the generated \code{.sta}, and then continues 273--500 natively to separate true-jump prediction error from an Abaqus restart-path effect.
 
 \end{document}

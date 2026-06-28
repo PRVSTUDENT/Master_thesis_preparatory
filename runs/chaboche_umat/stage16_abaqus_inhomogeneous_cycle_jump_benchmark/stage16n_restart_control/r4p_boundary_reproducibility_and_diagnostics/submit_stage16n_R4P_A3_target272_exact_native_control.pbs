@@ -1,0 +1,50 @@
+#!/bin/bash
+#PBS -N stage16n_r4p_A3_target272_exact_native_control
+#PBS -q entryq
+#PBS -l select=1:ncpus=16:mem=90gb
+#PBS -l walltime=24:00:00
+#PBS -j oe
+#PBS -o /scratch/pr21vyci/stage16n_r4p_pbs/stage16n_r4p_A3_target272_exact_native_control.pbs.out
+
+set -euo pipefail
+
+REPO_ROOT="${PBS_O_WORKDIR:-$PWD}"
+if [[ ! -d "$REPO_ROOT/runs/chaboche_umat" ]]; then
+  REPO_ROOT="$HOME/master_thesis/Abaqus_trial"
+fi
+if [[ ! -d "$REPO_ROOT/runs/chaboche_umat" && -d "/scratch/pr21vyci/git_work/Master_thesis_preparatory/runs/chaboche_umat" ]]; then
+  REPO_ROOT="/scratch/pr21vyci/git_work/Master_thesis_preparatory"
+fi
+
+export HOME_CASE_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4p_boundary_reproducibility_and_diagnostics"
+export HOME_RESULT_DIR="$HOME_CASE_DIR/R4P_A3_target272_exact_native_control"
+export SCRATCH_CASE_DIR="/scratch/$USER/stage16n_r4p/R4P_A3_target272_exact_native_control/${PBS_JOBID:-manual}"
+export TMPDIR="$SCRATCH_CASE_DIR/tmp"
+export LOG_DIR="_logs"
+export ABAQUS_CPUS="16"
+export ABAQUS_MP_MODE="threads"
+export OMP_NUM_THREADS="16"
+export MKL_NUM_THREADS="16"
+export SCRATCH9_USER_LIMIT_TB="5"
+export CLEAN_HEAVY_AFTER_CLASSIFICATION="1"
+export R4P_CASE_ID="R4P_A3_target272_exact_native_control"
+export R4P_TARGET="272"
+export R4P_SOLVED_START="273"
+export R4P_MODE="exact_native_control"
+export R4P_PREV_CASE="R4P_A2_repeat_target272"
+
+mkdir -p "$SCRATCH_CASE_DIR" "$TMPDIR" "$HOME_RESULT_DIR" /scratch/pr21vyci/stage16n_r4p_pbs
+cd "$SCRATCH_CASE_DIR"
+
+rsync -a --delete \
+  --exclude='R4P_*' \
+  --exclude='stage16n_r4p_A*' \
+  --exclude='stage16n_r4p_B*' \
+  --exclude='*.odb' --exclude='*.stt' --exclude='*.res' --exclude='*.sim' --exclude='*.mdl' --exclude='*.prt' \
+  --exclude='*.dat' --exclude='*.msg' --exclude='*.sta' --exclude='*.023' --exclude='*.cax' --exclude='*.abq' --exclude='*.pac' --exclude='*.sel' --exclude='*.lck' \
+  "$HOME_CASE_DIR/" "$SCRATCH_CASE_DIR/"
+
+cp "$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv" reference_1000_cycle_metrics.csv
+cp "$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv" reference_1000_selected_cycle_local_states.csv
+
+bash run_stage16n_r4p_boundary_reproducibility_and_diagnostics_job_hpc.sh
