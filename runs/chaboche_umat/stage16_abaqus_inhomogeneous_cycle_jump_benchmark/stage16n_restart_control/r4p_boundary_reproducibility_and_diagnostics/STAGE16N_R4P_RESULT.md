@@ -1,12 +1,14 @@
 # Stage 16N-R4P Result
 
-Status: first guarded submission failed at launch; PBS wrapper staging fix prepared.
+Status: corrected guarded resubmission active.
 
 Batch: `R4P_boundary_reproducibility_and_diagnostics`
 
 Prepared on: 2026-06-28 Europe/Berlin
 
 First submitted on: 2026-06-28 06:13:35 CEST
+
+Corrected resubmission: 2026-06-28 06:21:04 CEST
 
 Storage gate: `/scratch9/pr21vyci` was 2.862T, below the 5T abort threshold.
 
@@ -29,14 +31,14 @@ Eight PBS jobs were prepared in two afterany dependency chains. Only A1 and B1 s
 
 | chain | order | case | target | mode | cores | PBS job | dependency |
 | --- | ---: | --- | ---: | --- | ---: | --- | --- |
-| A | 1 | `R4P_A1_repeat_target271` | 271 | repeat true-jump | 16 | `1358943.mmaster02` | none |
-| A | 2 | `R4P_A2_repeat_target272` | 272 | repeat true-jump | 16 | `1358945.mmaster02` | afterany `1358943.mmaster02` |
-| A | 3 | `R4P_A3_target272_exact_native_control` | 272 | exact/native control | 16 | `1358947.mmaster02` | afterany `1358945.mmaster02` |
-| A | 4 | `R4P_A4_target272_failure_diagnostics` | 272 | diagnostic rerun | 16 | `1358949.mmaster02` | afterany `1358947.mmaster02` |
-| B | 1 | `R4P_B1_repeat_target270` | 270 | repeat true-jump | 16 | `1358944.mmaster02` | none |
-| B | 2 | `R4P_B2_target271_diagnostics` | 271 | diagnostic rerun | 16 | `1358946.mmaster02` | afterany `1358944.mmaster02` |
-| B | 3 | `R4P_B3_8core_target271_calibration` | 271 | 8-core calibration | 8 | `1358948.mmaster02` | afterany `1358946.mmaster02` |
-| B | 4 | `R4P_B4_8core_target272_calibration` | 272 | 8-core calibration | 8 | `1358950.mmaster02` | afterany `1358948.mmaster02` |
+| A | 1 | `R4P_A1_repeat_target271` | 271 | repeat true-jump | 16 | `1358951.mmaster02` | none |
+| A | 2 | `R4P_A2_repeat_target272` | 272 | repeat true-jump | 16 | `1358953.mmaster02` | afterany `1358951.mmaster02` |
+| A | 3 | `R4P_A3_target272_exact_native_control` | 272 | exact/native control | 16 | `1358955.mmaster02` | afterany `1358953.mmaster02` |
+| A | 4 | `R4P_A4_target272_failure_diagnostics` | 272 | diagnostic rerun | 16 | `1358957.mmaster02` | afterany `1358955.mmaster02` |
+| B | 1 | `R4P_B1_repeat_target270` | 270 | repeat true-jump | 16 | `1358952.mmaster02` | none |
+| B | 2 | `R4P_B2_target271_diagnostics` | 271 | diagnostic rerun | 16 | `1358954.mmaster02` | afterany `1358952.mmaster02` |
+| B | 3 | `R4P_B3_8core_target271_calibration` | 271 | 8-core calibration | 8 | `1358956.mmaster02` | afterany `1358954.mmaster02` |
+| B | 4 | `R4P_B4_8core_target272_calibration` | 272 | 8-core calibration | 8 | `1358958.mmaster02` | afterany `1358956.mmaster02` |
 
 ## Submission Status
 
@@ -48,11 +50,15 @@ The PBS stdout files reported:
 
 Diagnosis: the PBS wrappers resolved `REPO_ROOT` incorrectly when `PBS_O_WORKDIR` was the R4P case directory. That created an empty home-side R4P directory and rsynced no controller scripts into scratch. The wrappers have been patched to climb from `PBS_O_WORKDIR` to the real repository root, prefer the clean scratch clone when needed, and fail explicitly if `HOME_CASE_DIR` is missing before scratch staging.
 
-Corrected guarded resubmission is required.
+Corrected guarded resubmission was completed after the wrapper fix. The corrected qstat snapshot showed A1 (`1358951.mmaster02`) and B1 (`1358952.mmaster02`) queued, with A2/B2/A3/B3/A4/B4 held by dependencies. No corrected R4P scientific result is available yet.
 
 Submitted-jobs record:
 
 `runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4p_boundary_reproducibility_and_diagnostics/STAGE16N_R4P_SUBMITTED_JOBS.txt`
+
+Corrected resubmission record:
+
+`runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4p_boundary_reproducibility_and_diagnostics/STAGE16N_R4P_RESUBMITTED_JOBS.txt`
 
 Storage/submission evidence:
 
@@ -60,3 +66,4 @@ Storage/submission evidence:
 - `runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4p_boundary_reproducibility_and_diagnostics/_submission_logs/r4p_storage_gate_scratch9_user.txt`
 - `runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4p_boundary_reproducibility_and_diagnostics/_submission_logs/*_qsub_guarded.log`
 - `runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4p_boundary_reproducibility_and_diagnostics/qstat_r4p_after_submission_verify.txt`
+- `runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4p_boundary_reproducibility_and_diagnostics/qstat_r4p_after_corrected_resubmission.txt`

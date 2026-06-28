@@ -1889,6 +1889,10 @@ B & R4P-B4 & 272 & 8-core calibration & afterany B3 \\
 \caption{Stage 16N-R4P prepared two-chain queue. Only A1 and B1 are initially runnable, so at most two jobs should be active.}
 \end{table}
 
+R4P was first submitted through \code{/home/pr21vyci/bin/qsub\_abq\_guarded} on 2026-06-28 06:13:35 CEST after the storage gate reported \code{/scratch9/pr21vyci = 2.862T}, below the 5T abort threshold. The first jobs, \code{1358943}--\code{1358950}, failed immediately with \code{Exit\_status=127} because the PBS wrappers did not stage the runner into scratch. This is an infrastructure launch failure, not an Abaqus scientific result.
+
+After fixing PBS repository-root detection, R4P was resubmitted at 06:21:04 CEST. The active corrected jobs are A1 \code{1358951.mmaster02}, A2 \code{1358953.mmaster02}, A3 \code{1358955.mmaster02}, A4 \code{1358957.mmaster02}, B1 \code{1358952.mmaster02}, B2 \code{1358954.mmaster02}, B3 \code{1358956.mmaster02}, and B4 \code{1358958.mmaster02}. Initial corrected qstat verification showed A1/B1 queued and downstream jobs held by dependencies.
+
 All R4P jobs regenerate the compact complete cycle-250 source package inside scratch, validate \code{.odb/.stt/.res/.mdl/.prt/.sim/.sta}, run with continuation restart writing disabled, copy back only lightweight evidence, and remove heavy Abaqus files after classification. A2 and later jobs record predecessor status but use PBS \code{afterany} rather than pass-only self-gating. The A3 exact/native control writes an intermediate native cycle272 source restart, resolves the restart increment from the generated \code{.sta}, and then continues 273--500 natively to separate true-jump prediction error from an Abaqus restart-path effect.
 
 \end{document}
