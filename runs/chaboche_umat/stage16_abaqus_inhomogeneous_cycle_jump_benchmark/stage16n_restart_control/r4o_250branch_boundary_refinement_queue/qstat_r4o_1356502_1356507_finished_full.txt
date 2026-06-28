@@ -1,0 +1,412 @@
+Job Id: 1356502.mmaster02
+    Job_Name = R4O_A1_target271
+    Job_Owner = pr21vyci@mlogin01.cluster
+    resources_used.cpupercent = 677
+    resources_used.cput = 50:40:50
+    resources_used.mem = 94375780kb
+    resources_used.ncpus = 16
+    resources_used.vmem = 8189212kb
+    resources_used.walltime = 11:18:58
+    job_state = F
+    queue = mediumq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Thu Jun 25 11:04:31 2026
+    depend = beforeany:1356504.mmaster02@mmaster02
+    Error_Path = mlogin01.cluster:/scratch/pr21vyci/git_work/Master_thesis_prep
+	aratory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benc
+	hmark/stage16n_restart_control/r4o_250branch_boundary_refinement_queue/
+	R4O_A1_target271.e1356502
+    exec_host = mnode071/0*0
+    exec_vnode = (mnode071[0]:mem=79667200kb:ncpus=13+mnode071[1]:mem=14704640k
+	b:ncpus=3)
+    Hold_Types = n
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = abe
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Thu Jun 25 22:23:40 2026
+    Output_Path = mlogin01.cluster:/scratch/pr21vyci/stage16n_r4o_pbs/R4O_A1_ta
+	rget271.pbs.out
+    Priority = 0
+    qtime = Thu Jun 25 11:04:31 2026
+    Rerunable = True
+    Resource_List.mem = 90gb
+    Resource_List.mpiprocs = 1
+    Resource_List.ncpus = 16
+    Resource_List.ngpus = 0
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+    Resource_List.walltime = 24:00:00
+    stime = Thu Jun 25 11:04:33 2026
+    obittime = Thu Jun 25 22:23:40 2026
+    session_id = 3595069
+    sandbox = PRIVATE
+    jobdir = /home/pr21vyci/pbs.1356502.mmaster02.x8z
+    substate = 92
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/bin:/home/pr21vyci/texlive/2026/bin/x86_64-l
+	inux:/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin:/usr/b
+	in:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/scratch/pr21vyci/git_work/Master_thesis_preparatory/run
+	s/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage
+	16n_restart_control/r4o_250branch_boundary_refinement_queue,
+	PBS_O_SYSTEM=Linux,PBS_O_QUEUE=entryq
+    comment = Job run at Thu Jun 25 at 11:04 on (mnode071[0]:mem=79667200kb:ncp
+	us=13+mnode071[1]:mem=14704640kb:ncpus=3) and finished
+    etime = Thu Jun 25 11:04:31 2026
+    run_count = 1
+    eligible_time = 00:00:06
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = submit_stage16n_R4O_A1_target271.pbs
+    history_timestamp = 1782419020
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+
+Job Id: 1356503.mmaster02
+    Job_Name = R4O_B1_target274
+    Job_Owner = pr21vyci@mlogin01.cluster
+    resources_used.cpupercent = 676
+    resources_used.cput = 50:11:39
+    resources_used.mem = 94375704kb
+    resources_used.ncpus = 16
+    resources_used.vmem = 8359624kb
+    resources_used.walltime = 10:53:52
+    job_state = F
+    queue = mediumq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Thu Jun 25 11:04:31 2026
+    depend = beforeany:1356506.mmaster02@mmaster02
+    Error_Path = mlogin01.cluster:/scratch/pr21vyci/git_work/Master_thesis_prep
+	aratory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benc
+	hmark/stage16n_restart_control/r4o_250branch_boundary_refinement_queue/
+	R4O_B1_target274.e1356503
+    exec_host = mnode072/0*0
+    exec_vnode = (mnode072[0]:mem=79667200kb:ncpus=13+mnode072[1]:mem=14704640k
+	b:ncpus=3)
+    Hold_Types = n
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = abe
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Thu Jun 25 21:58:34 2026
+    Output_Path = mlogin01.cluster:/scratch/pr21vyci/stage16n_r4o_pbs/R4O_B1_ta
+	rget274.pbs.out
+    Priority = 0
+    qtime = Thu Jun 25 11:04:31 2026
+    Rerunable = True
+    Resource_List.mem = 90gb
+    Resource_List.mpiprocs = 1
+    Resource_List.ncpus = 16
+    Resource_List.ngpus = 0
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+    Resource_List.walltime = 24:00:00
+    stime = Thu Jun 25 11:04:35 2026
+    obittime = Thu Jun 25 21:58:34 2026
+    session_id = 1758486
+    sandbox = PRIVATE
+    jobdir = /home/pr21vyci/pbs.1356503.mmaster02.x8z
+    substate = 92
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/bin:/home/pr21vyci/texlive/2026/bin/x86_64-l
+	inux:/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin:/usr/b
+	in:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/scratch/pr21vyci/git_work/Master_thesis_preparatory/run
+	s/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage
+	16n_restart_control/r4o_250branch_boundary_refinement_queue,
+	PBS_O_SYSTEM=Linux,PBS_O_QUEUE=entryq
+    comment = Job run at Thu Jun 25 at 11:04 on (mnode072[0]:mem=79667200kb:ncp
+	us=13+mnode072[1]:mem=14704640kb:ncpus=3) and finished
+    etime = Thu Jun 25 11:04:31 2026
+    run_count = 1
+    eligible_time = 00:00:06
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = submit_stage16n_R4O_B1_target274.pbs
+    history_timestamp = 1782417514
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+
+Job Id: 1356504.mmaster02
+    Job_Name = R4O_A2_target272
+    Job_Owner = pr21vyci@mlogin01.cluster
+    resources_used.cpupercent = 668
+    resources_used.cput = 50:32:43
+    resources_used.mem = 94373888kb
+    resources_used.ncpus = 16
+    resources_used.vmem = 8154828kb
+    resources_used.walltime = 09:43:31
+    job_state = F
+    queue = mediumq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Thu Jun 25 11:04:47 2026
+    depend = beforeany:1356505.mmaster02@mmaster02
+    Error_Path = mlogin01.cluster:/scratch/pr21vyci/git_work/Master_thesis_prep
+	aratory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benc
+	hmark/stage16n_restart_control/r4o_250branch_boundary_refinement_queue/
+	R4O_A2_target272.e1356504
+    exec_host = mnode071/0*0
+    exec_vnode = (mnode071[0]:mem=79667200kb:ncpus=13+mnode071[1]:mem=14704640k
+	b:ncpus=3)
+    Hold_Types = n
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = abe
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Fri Jun 26 08:07:35 2026
+    Output_Path = mlogin01.cluster:/scratch/pr21vyci/stage16n_r4o_pbs/R4O_A2_ta
+	rget272.pbs.out
+    Priority = 0
+    qtime = Thu Jun 25 11:04:47 2026
+    Rerunable = True
+    Resource_List.mem = 90gb
+    Resource_List.mpiprocs = 1
+    Resource_List.ncpus = 16
+    Resource_List.ngpus = 0
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+    Resource_List.walltime = 24:00:00
+    stime = Thu Jun 25 22:23:44 2026
+    obittime = Fri Jun 26 08:07:33 2026
+    session_id = 3623196
+    sandbox = PRIVATE
+    jobdir = /home/pr21vyci/pbs.1356504.mmaster02.x8z
+    substate = 92
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/bin:/home/pr21vyci/texlive/2026/bin/x86_64-l
+	inux:/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin:/usr/b
+	in:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/scratch/pr21vyci/git_work/Master_thesis_preparatory/run
+	s/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage
+	16n_restart_control/r4o_250branch_boundary_refinement_queue,
+	PBS_O_SYSTEM=Linux,PBS_O_QUEUE=entryq
+    comment = Job run at Thu Jun 25 at 22:23 on (mnode071[0]:mem=79667200kb:ncp
+	us=13+mnode071[1]:mem=14704640kb:ncpus=3) and finished
+    etime = Thu Jun 25 11:04:47 2026
+    run_count = 1
+    eligible_time = 00:00:09
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = -W depend=afterany:1356502.mmaster02 submit_stage16n_R4O
+	_A2_target272.pbs
+    history_timestamp = 1782454055
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+
+Job Id: 1356505.mmaster02
+    Job_Name = R4O_A3_target273
+    Job_Owner = pr21vyci@mlogin01.cluster
+    resources_used.cpupercent = 34
+    resources_used.cput = 00:00:01
+    resources_used.mem = 14392kb
+    resources_used.ncpus = 16
+    resources_used.vmem = 0kb
+    resources_used.walltime = 00:00:04
+    job_state = F
+    queue = mediumq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Thu Jun 25 11:04:47 2026
+    Error_Path = mlogin01.cluster:/scratch/pr21vyci/git_work/Master_thesis_prep
+	aratory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benc
+	hmark/stage16n_restart_control/r4o_250branch_boundary_refinement_queue/
+	R4O_A3_target273.e1356505
+    exec_host = mnode071/0*0
+    exec_vnode = (mnode071[0]:mem=79667200kb:ncpus=13+mnode071[1]:mem=14704640k
+	b:ncpus=3)
+    Hold_Types = n
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = abe
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Fri Jun 26 08:07:50 2026
+    Output_Path = mlogin01.cluster:/scratch/pr21vyci/stage16n_r4o_pbs/R4O_A3_ta
+	rget273.pbs.out
+    Priority = 0
+    qtime = Thu Jun 25 11:04:47 2026
+    Rerunable = True
+    Resource_List.mem = 90gb
+    Resource_List.mpiprocs = 1
+    Resource_List.ncpus = 16
+    Resource_List.ngpus = 0
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+    Resource_List.walltime = 24:00:00
+    stime = Fri Jun 26 08:07:39 2026
+    obittime = Fri Jun 26 08:07:49 2026
+    session_id = 3649274
+    sandbox = PRIVATE
+    jobdir = /home/pr21vyci/pbs.1356505.mmaster02.x8z
+    substate = 92
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/bin:/home/pr21vyci/texlive/2026/bin/x86_64-l
+	inux:/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin:/usr/b
+	in:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/scratch/pr21vyci/git_work/Master_thesis_preparatory/run
+	s/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage
+	16n_restart_control/r4o_250branch_boundary_refinement_queue,
+	PBS_O_SYSTEM=Linux,PBS_O_QUEUE=entryq
+    comment = Job run at Fri Jun 26 at 08:07 on (mnode071[0]:mem=79667200kb:ncp
+	us=13+mnode071[1]:mem=14704640kb:ncpus=3) and finished
+    etime = Thu Jun 25 11:04:47 2026
+    run_count = 1
+    eligible_time = 00:00:21
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = -W depend=afterany:1356504.mmaster02 submit_stage16n_R4O
+	_A3_target273.pbs
+    estimated.exec_vnode = (mnode071[0]:mem=79667200kb:ncpus=13)+(mnode071[1]:m
+	em=14704640kb:ncpus=3)
+    estimated.start_time = Fri Jun 26 08:07:19 2026
+    history_timestamp = 1782454070
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+
+Job Id: 1356506.mmaster02
+    Job_Name = R4O_B2_repeat275
+    Job_Owner = pr21vyci@mlogin01.cluster
+    resources_used.cpupercent = 38
+    resources_used.cput = 00:00:01
+    resources_used.mem = 16464kb
+    resources_used.ncpus = 16
+    resources_used.vmem = 0kb
+    resources_used.walltime = 00:00:04
+    job_state = F
+    queue = mediumq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Thu Jun 25 11:04:47 2026
+    Error_Path = mlogin01.cluster:/scratch/pr21vyci/git_work/Master_thesis_prep
+	aratory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benc
+	hmark/stage16n_restart_control/r4o_250branch_boundary_refinement_queue/
+	R4O_B2_repeat275.e1356506
+    exec_host = mnode072/0*0
+    exec_vnode = (mnode072[0]:mem=79667200kb:ncpus=13+mnode072[1]:mem=14704640k
+	b:ncpus=3)
+    Hold_Types = n
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = abe
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Thu Jun 25 21:58:49 2026
+    Output_Path = mlogin01.cluster:/scratch/pr21vyci/stage16n_r4o_pbs/R4O_B2_re
+	peat275.pbs.out
+    Priority = 0
+    qtime = Thu Jun 25 11:04:47 2026
+    Rerunable = True
+    Resource_List.mem = 90gb
+    Resource_List.mpiprocs = 1
+    Resource_List.ncpus = 16
+    Resource_List.ngpus = 0
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+    Resource_List.walltime = 24:00:00
+    stime = Thu Jun 25 21:58:38 2026
+    obittime = Thu Jun 25 21:58:48 2026
+    session_id = 1785608
+    sandbox = PRIVATE
+    jobdir = /home/pr21vyci/pbs.1356506.mmaster02.x8z
+    substate = 92
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/bin:/home/pr21vyci/texlive/2026/bin/x86_64-l
+	inux:/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin:/usr/b
+	in:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/scratch/pr21vyci/git_work/Master_thesis_preparatory/run
+	s/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage
+	16n_restart_control/r4o_250branch_boundary_refinement_queue,
+	PBS_O_SYSTEM=Linux,PBS_O_QUEUE=entryq
+    comment = Job run at Thu Jun 25 at 21:58 on (mnode072[0]:mem=79667200kb:ncp
+	us=13+mnode072[1]:mem=14704640kb:ncpus=3) and finished
+    etime = Thu Jun 25 11:04:47 2026
+    run_count = 1
+    eligible_time = 00:00:09
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = -W depend=afterany:1356503.mmaster02 submit_stage16n_R4O
+	_B2_repeat275.pbs
+    history_timestamp = 1782417529
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+
+Job Id: 1356507.mmaster02
+    Job_Name = R4O_B3_target276_guarded
+    Job_Owner = pr21vyci@mlogin01.cluster
+    resources_used.cpupercent = 10
+    resources_used.cput = 00:00:01
+    resources_used.mem = 13132kb
+    resources_used.ncpus = 16
+    resources_used.vmem = 67860kb
+    resources_used.walltime = 00:00:13
+    job_state = F
+    queue = mediumq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Thu Jun 25 11:04:47 2026
+    Error_Path = mlogin01.cluster:/scratch/pr21vyci/git_work/Master_thesis_prep
+	aratory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benc
+	hmark/stage16n_restart_control/r4o_250branch_boundary_refinement_queue/
+	R4O_B3_target276_guarded.e1356507
+    exec_host = mnode072/0*0
+    exec_vnode = (mnode072[0]:mem=79667200kb:ncpus=13+mnode072[1]:mem=14704640k
+	b:ncpus=3)
+    Hold_Types = n
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = abe
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Thu Jun 25 21:59:13 2026
+    Output_Path = mlogin01.cluster:/scratch/pr21vyci/stage16n_r4o_pbs/R4O_B3_ta
+	rget276_guarded.pbs.out
+    Priority = 0
+    qtime = Thu Jun 25 11:04:47 2026
+    Rerunable = True
+    Resource_List.mem = 90gb
+    Resource_List.mpiprocs = 1
+    Resource_List.ncpus = 16
+    Resource_List.ngpus = 0
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+    Resource_List.walltime = 24:00:00
+    stime = Thu Jun 25 21:58:53 2026
+    obittime = Thu Jun 25 21:59:13 2026
+    session_id = 1786016
+    sandbox = PRIVATE
+    jobdir = /home/pr21vyci/pbs.1356507.mmaster02.x8z
+    substate = 92
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/bin:/home/pr21vyci/texlive/2026/bin/x86_64-l
+	inux:/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin:/usr/b
+	in:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/scratch/pr21vyci/git_work/Master_thesis_preparatory/run
+	s/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage
+	16n_restart_control/r4o_250branch_boundary_refinement_queue,
+	PBS_O_SYSTEM=Linux,PBS_O_QUEUE=entryq
+    comment = Job run at Thu Jun 25 at 21:58 on (mnode072[0]:mem=79667200kb:ncp
+	us=13+mnode072[1]:mem=14704640kb:ncpus=3) and finished
+    etime = Thu Jun 25 11:04:47 2026
+    run_count = 1
+    eligible_time = 00:00:10
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = -W depend=afterany:1356506.mmaster02 submit_stage16n_R4O
+	_B3_target276_guarded.pbs
+    history_timestamp = 1782417553
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+

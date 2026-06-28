@@ -1,0 +1,21 @@
+# Stage 16N-R4O Job Status
+
+- PBS job: 1356504.mmaster02
+- Controller: R4O_250branch_boundary_refinement_queue
+- Case: R4O_A2_target272
+- Target: 272
+- Continuation range: 273-500
+- Previous case gate: R4O_A1_target271
+- Source job: stage16n_r1b_restart_ref_250cycles
+- Source package required files: .odb .stt .res .mdl .prt .sim .sta
+- Continuation restart writing: disabled
+- R4J9/R4J10: blocked
+- 505 branch: parked
+- Classification: target272_fail
+- Phase: target272_comparison
+- Detail: comparison completed with status fail
+- Heavy copy-back: disabled
+- Heavy cleanup after classification: enabled
+- Scratch case dir: /scratch/pr21vyci/stage16n_r4o/R4O_A2_target272/1356504.mmaster02
+- Result dir: /scratch/pr21vyci/git_work/Master_thesis_preparatory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4o_250branch_boundary_refinement_queue/R4O_A2_target272
+- Finished: 2026-06-26 08:06:50

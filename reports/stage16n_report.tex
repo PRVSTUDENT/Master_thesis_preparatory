@@ -78,6 +78,8 @@ The R4M storage-light recovery controller, job \texttt{1353942.mmaster02}, then 
 
 The next refinement controller, R4N job \texttt{1355855.mmaster02}, regenerated the same complete cycle-250 source package in scratch and advanced to the first refinement target, 250 -> 275 -> 500, with continuation restart writing disabled. PBS recorded \texttt{Exit\_status=0}, \texttt{Stageout\_status=1}, 08:34:00 walltime, 38:44:20 CPU time, \texttt{resources\_used.cpupercent=675}, and about 4.52 average active cores out of 16. The target-275 comparison completed but reviewed rather than passed: 2.5313106\% maximum global error, 9.3841268\% maximum primary-local error dominated by \texttt{HOLE\_RING\_SDV8\_MAX}, and 1.2393651\% diagnostic S11 error. Because target 275 reviewed, R4N did not proceed to target 280 or optional target 285. This is a scientific refinement result for the 250-branch true-jump path, while \texttt{Stageout\_status=1} is recorded separately as an infrastructure warning because lightweight evidence was recovered.
 
+R4O then refined the 250-branch true-jump boundary with two dependency chains. All six jobs finished with \texttt{Exit\_status=0} and \texttt{Stageout\_status=1}; the stage-out flag is recorded as an infrastructure warning because the lightweight evidence was recovered. The long-running solved cases were R4O-A1 target 271, R4O-A2 target 272, and R4O-B1 target 274. Target 271 passed at cycle 500 with 0.00016431012\% maximum global error, 4.1785861\% maximum primary-local error, and 0.00022768842\% diagnostic S11 error. Target 272 failed with 1.8126719\% maximum global error, 14.385057\% maximum primary-local error, and 9.4271837\% diagnostic S11 error. Target 274 independently failed with 0.46378221\% maximum global error, 13.495934\% maximum primary-local error, and 1.0204996\% diagnostic S11 error. Therefore the validated 250-branch true-jump boundary is now target 271: target 270 and target 271 pass, while target 272 and target 274 fail. R4O-A3, R4O-B2, and R4O-B3 were skipped by their self-gates after predecessor failures or missing predecessor comparison evidence.
+
 \small
 \setlength{\tabcolsep}{3pt}
 \begin{longtable}{p{0.14\textwidth}p{0.13\textwidth}p{0.12\textwidth}p{0.10\textwidth}p{0.12\textwidth}p{0.13\textwidth}p{0.12\textwidth}}
@@ -88,6 +90,9 @@ R4K1 & 1350764 & 500 & pass & 0 & 0 & 0 \\
 R4K2B & 1352353 & 750 & review & 0.31896796 & 8.0369449 & 1.5702038 \\
 R4M & 1353942 & 500 & pass & 0.39923577 & 3.9830029 & 0.1398007 \\
 R4N & 1355855 & 500 & review & 2.5313106 & 9.3841268 & 1.2393651 \\
+R4O-A1 & 1356502 & 500 & pass & 0.00016431012 & 4.1785861 & 0.00022768842 \\
+R4O-A2 & 1356504 & 500 & fail & 1.8126719 & 14.385057 & 9.4271837 \\
+R4O-B1 & 1356503 & 500 & fail & 0.46378221 & 13.495934 & 1.0204996 \\
 \bottomrule
 \end{longtable}
 \setlength{\tabcolsep}{6pt}

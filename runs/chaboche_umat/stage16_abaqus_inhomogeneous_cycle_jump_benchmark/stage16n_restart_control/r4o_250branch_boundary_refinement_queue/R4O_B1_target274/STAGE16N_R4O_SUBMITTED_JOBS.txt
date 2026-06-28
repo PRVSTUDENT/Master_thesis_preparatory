@@ -1,0 +1,166 @@
+A1=Guard check: Abaqus job detected in submit_stage16n_R4O_A1_target271.pbs
+Guard passed. Submitting with qsub:
+  submit_stage16n_R4O_A1_target271.pbs
+1356502.mmaster02
+1356502.mmaster02
+A2=Guard check: Abaqus job detected in submit_stage16n_R4O_A2_target272.pbs
+Guard passed. Submitting with qsub:
+  -W
+  depend=afterany:Guard
+  check:
+  Abaqus
+  job
+  detected
+  in
+  submit_stage16n_R4O_A1_target271.pbs
+  Guard
+  passed.
+  Submitting
+  with
+  qsub:
+  submit_stage16n_R4O_A1_target271.pbs
+  1356502.mmaster02
+  1356502.mmaster02
+  submit_stage16n_R4O_A2_target272.pbs
+submit_stage16n_R4O_A2_target272.pbs depends_afterany=Guard check: Abaqus job detected in submit_stage16n_R4O_A1_target271.pbs
+Guard passed. Submitting with qsub:
+  submit_stage16n_R4O_A1_target271.pbs
+1356502.mmaster02
+1356502.mmaster02
+A3=Guard check: Abaqus job detected in submit_stage16n_R4O_A3_target273.pbs
+Guard passed. Submitting with qsub:
+  -W
+  depend=afterany:Guard
+  check:
+  Abaqus
+  job
+  detected
+  in
+  submit_stage16n_R4O_A2_target272.pbs
+  Guard
+  passed.
+  Submitting
+  with
+  qsub:
+  -W
+  depend=afterany:Guard
+  check:
+  Abaqus
+  job
+  detected
+  in
+  submit_stage16n_R4O_A1_target271.pbs
+  Guard
+  passed.
+  Submitting
+  with
+  qsub:
+  submit_stage16n_R4O_A1_target271.pbs
+  1356502.mmaster02
+  1356502.mmaster02
+  submit_stage16n_R4O_A2_target272.pbs
+  submit_stage16n_R4O_A2_target272.pbs
+  submit_stage16n_R4O_A3_target273.pbs
+submit_stage16n_R4O_A3_target273.pbs depends_afterany=Guard check: Abaqus job detected in submit_stage16n_R4O_A2_target272.pbs
+Guard passed. Submitting with qsub:
+  -W
+  depend=afterany:Guard
+  check:
+  Abaqus
+  job
+  detected
+  in
+  submit_stage16n_R4O_A1_target271.pbs
+  Guard
+  passed.
+  Submitting
+  with
+  qsub:
+  submit_stage16n_R4O_A1_target271.pbs
+  1356502.mmaster02
+  1356502.mmaster02
+  submit_stage16n_R4O_A2_target272.pbs
+submit_stage16n_R4O_A2_target272.pbs
+B1=Guard check: Abaqus job detected in submit_stage16n_R4O_B1_target274.pbs
+Guard passed. Submitting with qsub:
+  submit_stage16n_R4O_B1_target274.pbs
+1356503.mmaster02
+1356503.mmaster02
+B2=Guard check: Abaqus job detected in submit_stage16n_R4O_B2_repeat275.pbs
+Guard passed. Submitting with qsub:
+  -W
+  depend=afterany:Guard
+  check:
+  Abaqus
+  job
+  detected
+  in
+  submit_stage16n_R4O_B1_target274.pbs
+  Guard
+  passed.
+  Submitting
+  with
+  qsub:
+  submit_stage16n_R4O_B1_target274.pbs
+  1356503.mmaster02
+  1356503.mmaster02
+  submit_stage16n_R4O_B2_repeat275.pbs
+submit_stage16n_R4O_B2_repeat275.pbs depends_afterany=Guard check: Abaqus job detected in submit_stage16n_R4O_B1_target274.pbs
+Guard passed. Submitting with qsub:
+  submit_stage16n_R4O_B1_target274.pbs
+1356503.mmaster02
+1356503.mmaster02
+B3=Guard check: Abaqus job detected in submit_stage16n_R4O_B3_target276_guarded.pbs
+Guard passed. Submitting with qsub:
+  -W
+  depend=afterany:Guard
+  check:
+  Abaqus
+  job
+  detected
+  in
+  submit_stage16n_R4O_B2_repeat275.pbs
+  Guard
+  passed.
+  Submitting
+  with
+  qsub:
+  -W
+  depend=afterany:Guard
+  check:
+  Abaqus
+  job
+  detected
+  in
+  submit_stage16n_R4O_B1_target274.pbs
+  Guard
+  passed.
+  Submitting
+  with
+  qsub:
+  submit_stage16n_R4O_B1_target274.pbs
+  1356503.mmaster02
+  1356503.mmaster02
+  submit_stage16n_R4O_B2_repeat275.pbs
+  submit_stage16n_R4O_B2_repeat275.pbs
+  submit_stage16n_R4O_B3_target276_guarded.pbs
+submit_stage16n_R4O_B3_target276_guarded.pbs depends_afterany=Guard check: Abaqus job detected in submit_stage16n_R4O_B2_repeat275.pbs
+Guard passed. Submitting with qsub:
+  -W
+  depend=afterany:Guard
+  check:
+  Abaqus
+  job
+  detected
+  in
+  submit_stage16n_R4O_B1_target274.pbs
+  Guard
+  passed.
+  Submitting
+  with
+  qsub:
+  submit_stage16n_R4O_B1_target274.pbs
+  1356503.mmaster02
+  1356503.mmaster02
+  submit_stage16n_R4O_B2_repeat275.pbs
+submit_stage16n_R4O_B2_repeat275.pbs
