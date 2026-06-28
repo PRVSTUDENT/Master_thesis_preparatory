@@ -9,11 +9,15 @@
 set -euo pipefail
 
 REPO_ROOT="${PBS_O_WORKDIR:-$PWD}"
-if [[ ! -d "$REPO_ROOT/runs/chaboche_umat" ]]; then
-  REPO_ROOT="$HOME/master_thesis/Abaqus_trial"
-fi
+while [[ "$REPO_ROOT" != "/" && ! -d "$REPO_ROOT/runs/chaboche_umat" ]]; do
+  REPO_ROOT="$(dirname "$REPO_ROOT")"
+done
 if [[ ! -d "$REPO_ROOT/runs/chaboche_umat" && -d "/scratch/pr21vyci/git_work/Master_thesis_preparatory/runs/chaboche_umat" ]]; then
   REPO_ROOT="/scratch/pr21vyci/git_work/Master_thesis_preparatory"
+fi
+if [[ ! -d "$REPO_ROOT/runs/chaboche_umat" ]]; then
+  echo "Could not resolve repository root from PBS_O_WORKDIR=${PBS_O_WORKDIR:-unset}" >&2
+  exit 2
 fi
 
 export HOME_CASE_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4p_boundary_reproducibility_and_diagnostics"
@@ -33,6 +37,7 @@ export R4P_SOLVED_START="271"
 export R4P_MODE="jump"
 export R4P_PREV_CASE=""
 
+test -d "$HOME_CASE_DIR"
 mkdir -p "$SCRATCH_CASE_DIR" "$TMPDIR" "$HOME_RESULT_DIR" /scratch/pr21vyci/stage16n_r4p_pbs
 cd "$SCRATCH_CASE_DIR"
 

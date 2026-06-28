@@ -1,0 +1,4 @@
+Filesystem               Size  Used Avail Use% Mounted on
+panfs://mpanfs/scratch9   33T  7.1T   26T  22% /scratch9
+panfs://mpanfs/scratch   101T   83T   18T  83% /scratch
+mnfs:/home                17T   13T  3.3T  80% /home
