@@ -1,0 +1,9 @@
+case,target,mode,status,max_global_error,max_primary_local_error,s11_error,meaning
+R4P_B1,270,repeat_true_jump,pass,0.39923577,3.9830029,0.1398007,target270 safe repeat
+R4P_A1,271,repeat_true_jump,pass,0.00016431012,4.1785861,0.00022768842,target271 accepted
+R4P_B2,271,diagnostic_repeat,pass,0.00016431012,4.1785861,0.00022768842,target271 reproducible
+R4P_B3,271,8core_calibration,pass,0.00016431012,4.1785861,0.00022768842,target271 CPU-count insensitive
+R4P_A2,272,repeat_true_jump,fail,1.8126719,14.385057,9.4271837,target272 rejected
+R4P_A4,272,diagnostic_repeat,fail,1.8126719,14.385057,9.4271837,target272 reproducible failure
+R4P_B4,272,8core_calibration,fail,1.8126719,14.385057,9.4271837,target272 CPU-count insensitive failure
+R4P_A3,272,exact_native_control,pass,0,0,0,native restart continuity valid
