@@ -1980,4 +1980,27 @@ Final recommended jump:\\
 
 The model was smoke-tested through PBS job \code{1362113.mmaster02} on \code{teachingq} with one CPU. The test did not launch Abaqus and finished with \code{Exit\_status=0}. This implementation is Nesnas-Saanouni-style rather than a full constitutive-level reproduction, because the current lightweight evidence contains comparison metrics rather than complete per-integration-point internal-variable histories.
 
+\section{Stage 16N-R4Q Long Adaptive Chain}
+
+R4Q is the active long-chain Abaqus test of the validated 21-cycle adaptive recommendation. It is not a new boundary-widening study and should not be duplicated while the submitted controller is active. The controller applies the already accepted safe jump pattern over sequential 250-cycle blocks:
+\begin{quote}
+source250 $\rightarrow$ target271, continue 272--500;\\
+source500 $\rightarrow$ target521, continue 522--750;\\
+source750 $\rightarrow$ target771, continue 772--1000;
+\end{quote}
+and then continues with the same rule toward checkpoints 2000 and 5000 if walltime and restart state allow. Checkpoints with matching reference CSVs are classified as accuracy validation; otherwise completed blocks are feasibility evidence.
+
+The controller was prepared in:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4q\_long\_adaptive\_chain\_1cpu/
+\end{quote}
+It was submitted on 2026-07-01 through \code{/home/pr21vyci/bin/qsub\_abq\_guarded}, not raw \code{qsub}, as PBS job \code{1362114.mmaster02}. The pre-submission storage gate reported \code{/scratch9/pr21vyci=2.7T}. The PBS request is one CPU, 30 GB, and 24 h, with Abaqus executed as \code{cpus=1}. The scheduler snapshot after submission showed \code{job\_state=R}, \code{queue=mediumq}, \code{exec\_host=mnode028/0}, and \code{select=1:ncpus=1:mpiprocs=1:ompthreads=1:mem=30gb}.
+
+The controller runs from scratch at:
+\begin{quote}\footnotesize\ttfamily
+/scratch/pr21vyci/stage16n\_r4q\_long\_adaptive\_chain\_1cpu/1362114.mmaster02
+\end{quote}
+and copies back only lightweight evidence. The first snapshot recorded \code{status=starting}, \code{phase=preflight}, and \code{detail=storage gate passed}. The controller log shows that the initial source datacheck completed successfully with Abaqus \code{Exit status: 0}; the initial source solve had then started. The important lightweight files are \code{R4Q\_LONG\_CHAIN\_STATUS.txt}, \code{R4Q\_LONG\_CHAIN\_BLOCK\_SUMMARY.csv}, \code{R4Q\_LONG\_CHAIN\_CONTROLLER.log}, \code{R4Q\_LONG\_CHAIN\_SUBMITTED\_JOB.txt}, and the \code{qstat\_r4q\_1362114} snapshots.
+
 \end{document}

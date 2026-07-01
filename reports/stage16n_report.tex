@@ -91,6 +91,11 @@ R = \max\left(\frac{e_\mathrm{global}}{1\%}, \frac{e_\mathrm{primary-local}}{5\%
 \]
 A target is admissible only if all true-jump records at that target pass and satisfy \(R \leq 1\). With tolerances of 1\% global error, 5\% primary-local error, and 1\% S11 error, the candidate table is: target270 \(R=0.796601\), pass; target271 \(R=0.835717\), pass; target272 \(R=9.42718\), fail. The first-order monitor trend proposes target274 before validation capping, but existing validation evidence already rejects target272, so the model caps the final recommendation at target271. The final recommended jump is source250 \(\rightarrow\) target271, or 21 skipped cycles. The PBS smoke test \texttt{1362113.mmaster02} ran on \texttt{teachingq} with one CPU, did not launch Abaqus, and finished with \texttt{Exit\_status=0}. This implementation is Nesnas-Saanouni-style rather than a full constitutive-level reproduction, because the current lightweight evidence contains comparison metrics rather than complete per-integration-point internal-variable histories.
 
+\subsection*{R4Q long adaptive chain}
+R4Q is the active long-chain Abaqus test of the validated 21-cycle adaptive recommendation, not a new boundary-widening study. A single guarded controller, \texttt{R4Q\_long\_adaptive\_chain\_1cpu}, was submitted through \texttt{/home/pr21vyci/bin/qsub\_abq\_guarded} as PBS job \texttt{1362114.mmaster02} after the storage gate reported \texttt{/scratch9/pr21vyci=2.7T}. The request is one CPU, 30 GB, and 24 h, with Abaqus run as \texttt{cpus=1}; the scheduler snapshot shows \texttt{job\_state=R}, \texttt{queue=mediumq}, and \texttt{exec\_host=mnode028/0}. The controller runs entirely in \texttt{/scratch/pr21vyci/stage16n\_r4q\_long\_adaptive\_chain\_1cpu/1362114.mmaster02} and copies back only lightweight status, summary, qstat, and log evidence.
+
+The intended chain repeats the accepted safe jump over 250-cycle blocks: source250 \(\rightarrow\) target271 followed by native continuation 272--500, then source500 \(\rightarrow\) target521 followed by 522--750, then source750 \(\rightarrow\) target771 followed by 772--1000, and similarly toward checkpoints 2000 and 5000 if walltime and restart state allow. Checkpoints with matching reference CSVs are classified as accuracy validation; otherwise completed blocks are feasibility evidence. The first lightweight R4Q snapshot records \texttt{status=starting}, \texttt{phase=preflight}, and \texttt{detail=storage gate passed}; the controller log shows that the initial source datacheck completed with Abaqus \texttt{Exit status: 0} and the initial source solve had started. No additional R4Q or wider true-jump Abaqus job should be submitted while \texttt{1362114.mmaster02} is active.
+
 \small
 \setlength{\tabcolsep}{3pt}
 \begin{longtable}{p{0.14\textwidth}p{0.13\textwidth}p{0.12\textwidth}p{0.10\textwidth}p{0.12\textwidth}p{0.13\textwidth}p{0.12\textwidth}}
@@ -180,6 +185,11 @@ stage16n\_restart\_control/r4p\_boundary\_reproducibility\_and\_diagnostics/
 Adaptive selector code, classified evidence, and HPC smoke-test records are stored under:
 \begin{quote}\footnotesize\ttfamily
 minor\_projects/adaptive\_cycle\_jump\_abaqus/
+\end{quote}
+R4Q long-chain controller and lightweight submission evidence are stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4q\_long\_adaptive\_chain\_1cpu/
 \end{quote}
 The restart-source inventory is stored at:
 \begin{quote}\footnotesize\ttfamily
