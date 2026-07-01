@@ -20,7 +20,16 @@ The exact/native restart control at target272 passed with zero error. Therefore,
 ```text
 data/stage16n_boundary_summary.csv
 scripts/adaptive_jump_selector.py
+scripts/plot_boundary.py
+figures/error_vs_target.png
+figures/cycle_jump_boundary.png
 ```
+
+## Figures
+
+![Error vs target](figures/error_vs_target.png)
+
+![Cycle jump boundary](figures/cycle_jump_boundary.png)
 
 ## Run
 
@@ -28,6 +37,7 @@ From this folder:
 
 ```bash
 python scripts/adaptive_jump_selector.py
+python scripts/plot_boundary.py
 ```
 
 Expected decision:
