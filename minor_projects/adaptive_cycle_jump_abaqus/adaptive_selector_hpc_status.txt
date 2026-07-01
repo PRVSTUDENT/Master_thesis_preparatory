@@ -1,0 +1,8 @@
+status=PASS
+test=adaptive_selector_hpc_smoke_test
+expected_boundary=target271
+expected_first_rejected=target272
+expected_exact_native_target272=pass
+tested_on=mnode105.cluster
+tested_at=Mi 1. Jul 11:28:14 CEST 2026
+pbs_job_id=1362109.mmaster02

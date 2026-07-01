@@ -1,0 +1,44 @@
+#!/bin/bash
+#PBS -N adaptive_selector_test
+#PBS -q teachingq
+#PBS -l select=1:ncpus=1:mpiprocs=1
+#PBS -l walltime=00:05:00
+#PBS -o adaptive_selector_hpc_test.out
+#PBS -e adaptive_selector_hpc_test.err
+
+set -euo pipefail
+
+echo "Job started on: $(date)"
+echo "Running on node: $(hostname)"
+echo "PBS job ID: ${PBS_JOBID:-unknown}"
+echo "PBS workdir: ${PBS_O_WORKDIR:-unknown}"
+
+cd "$PBS_O_WORKDIR"
+
+echo "Current directory: $(pwd)"
+echo "Python executable:"
+which python3 || true
+python3 --version
+
+echo "Running adaptive selector..."
+python3 scripts/adaptive_jump_selector.py | tee adaptive_selector_hpc_output.txt
+
+echo "Checking expected adaptive decision..."
+
+grep -q "Accepted boundary: target271" adaptive_selector_hpc_output.txt
+grep -q "First rejected extrapolated target: target272" adaptive_selector_hpc_output.txt
+grep -q "Exact/native restart at target272: pass" adaptive_selector_hpc_output.txt
+
+cat > adaptive_selector_hpc_status.txt <<EOF
+status=PASS
+test=adaptive_selector_hpc_smoke_test
+expected_boundary=target271
+expected_first_rejected=target272
+expected_exact_native_target272=pass
+tested_on=$(hostname)
+tested_at=$(date)
+pbs_job_id=${PBS_JOBID:-unknown}
+EOF
+
+echo "Adaptive selector HPC smoke test PASSED."
+echo "Job finished on: $(date)"

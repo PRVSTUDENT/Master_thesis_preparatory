@@ -1917,4 +1917,35 @@ After fixing PBS repository-root detection, R4P was resubmitted at 06:21:04 CEST
 
 All R4P jobs regenerated the compact complete cycle-250 source package inside scratch, validated \code{.odb/.stt/.res/.mdl/.prt/.sim/.sta}, ran with continuation restart writing disabled, copied back only lightweight evidence, and removed heavy Abaqus files after classification. A2 and later jobs recorded predecessor status but used PBS \code{afterany} rather than pass-only self-gating. The A3 exact/native control wrote an intermediate native cycle272 source restart, resolved the restart increment from the generated \code{.sta}, and then continued 273--500 natively to separate true-jump prediction error from an Abaqus restart-path effect. The final result is that target271 remains the accepted 250-branch true-jump boundary, target272 remains rejected, and the exact/native zero-error control localizes the failure to the extrapolated state predictor.
 
+\section{Adaptive Selector HPC Smoke Test}
+
+The R4P Abaqus/PBS runs provide the evidence layer; the lightweight adaptive selector now provides the decision layer. On 2026-07-01 the selector was first run as a login-node preflight and then through PBS job \code{1362109.mmaster02} on \code{teachingq} with one CPU and a five-minute walltime request. This smoke test did not launch Abaqus. It executed:
+\begin{quote}\footnotesize\ttfamily
+minor\_projects/adaptive\_cycle\_jump\_abaqus/scripts/adaptive\_jump\_selector.py
+\end{quote}
+against the classified boundary CSV:
+\begin{quote}\footnotesize\ttfamily
+minor\_projects/adaptive\_cycle\_jump\_abaqus/data/stage16n\_boundary\_summary.csv
+\end{quote}
+
+The login-node preflight and PBS output both reported:
+\begin{quote}\footnotesize\ttfamily
+Accepted boundary: target271\\
+First rejected extrapolated target: target272\\
+Exact/native restart at target272: pass
+\end{quote}
+The PBS status file recorded \code{status=PASS}; the finished scheduler record shows \code{job\_state=F}, \code{queue=teachingq}, \code{exec\_host=mnode105/0}, and \code{Exit\_status=0}. Therefore the minor-project adaptive layer is now tested on the cluster: it accepts target271 and blocks higher true-jump widening because target272 fails by extrapolated state-prediction error while the native restart path at target272 passes.
+
+The selector smoke-test records are stored in:
+\begin{itemize}
+  \item \code{minor\_projects/adaptive\_cycle\_jump\_abaqus/adaptive\_selector\_login\_preflight.txt}
+  \item \code{minor\_projects/adaptive\_cycle\_jump\_abaqus/adaptive\_selector\_hpc\_jobid.txt}
+  \item \code{minor\_projects/adaptive\_cycle\_jump\_abaqus/adaptive\_selector\_hpc\_output.txt}
+  \item \code{minor\_projects/adaptive\_cycle\_jump\_abaqus/adaptive\_selector\_hpc\_status.txt}
+  \item \code{minor\_projects/adaptive\_cycle\_jump\_abaqus/adaptive\_selector\_hpc\_qstat\_finished.txt}
+  \item \code{minor\_projects/adaptive\_cycle\_jump\_abaqus/adaptive\_selector\_hpc\_test.out}
+  \item \code{minor\_projects/adaptive\_cycle\_jump\_abaqus/adaptive\_selector\_hpc\_test.err}
+  \item \code{minor\_projects/adaptive\_cycle\_jump\_abaqus/run\_adaptive\_selector\_hpc\_test.pbs}
+\end{itemize}
+
 \end{document}

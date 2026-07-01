@@ -14,13 +14,10 @@ Example:
     python adaptive_jump_selector.py --csv ../data/stage16n_boundary_summary.csv
 """
 
-from __future__ import annotations
-
 import argparse
 import csv
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, List, Optional
+from typing import Dict, Iterable, List, Optional
 
 
 TRUE_JUMP_MODES = {
@@ -34,16 +31,26 @@ CONTROL_MODES = {
 }
 
 
-@dataclass(frozen=True)
 class JumpResult:
-    case: str
-    target: int
-    mode: str
-    status: str
-    max_global_error: float
-    max_primary_local_error: float
-    s11_error: float
-    meaning: str
+    def __init__(
+        self,
+        case: str,
+        target: int,
+        mode: str,
+        status: str,
+        max_global_error: float,
+        max_primary_local_error: float,
+        s11_error: float,
+        meaning: str,
+    ) -> None:
+        self.case = case
+        self.target = target
+        self.mode = mode
+        self.status = status
+        self.max_global_error = max_global_error
+        self.max_primary_local_error = max_primary_local_error
+        self.s11_error = s11_error
+        self.meaning = meaning
 
     @property
     def is_pass(self) -> bool:
@@ -99,8 +106,8 @@ def read_results(csv_path: Path) -> List[JumpResult]:
     return results
 
 
-def group_by_target(results: Iterable[JumpResult], *, true_jump_only: bool) -> dict[int, List[JumpResult]]:
-    grouped: dict[int, List[JumpResult]] = {}
+def group_by_target(results: Iterable[JumpResult], *, true_jump_only: bool) -> Dict[int, List[JumpResult]]:
+    grouped: Dict[int, List[JumpResult]] = {}
     for result in results:
         if true_jump_only and not result.is_true_jump_evidence:
             continue
