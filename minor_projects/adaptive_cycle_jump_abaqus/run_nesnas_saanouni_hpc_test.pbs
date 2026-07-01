@@ -1,0 +1,50 @@
+#!/bin/bash
+#PBS -N nesnas_saanouni_test
+#PBS -q teachingq
+#PBS -l select=1:ncpus=1:mpiprocs=1
+#PBS -l walltime=00:05:00
+#PBS -o nesnas_saanouni_hpc_test.out
+#PBS -e nesnas_saanouni_hpc_test.err
+
+set -euo pipefail
+
+echo "Job started on: $(date)"
+echo "Running on node: $(hostname)"
+echo "PBS job ID: ${PBS_JOBID:-unknown}"
+echo "PBS workdir: ${PBS_O_WORKDIR:-unknown}"
+
+cd "$PBS_O_WORKDIR"
+
+echo "Current directory: $(pwd)"
+echo "Python executable:"
+which python3 || true
+python3 --version
+
+echo "Running Nesnas-Saanouni-style adaptive model..."
+python3 scripts/nesnas_saanouni_jump_model.py \
+  --source-cycle 250 \
+  --global-tol 1 \
+  --primary-local-tol 5 \
+  --s11-tol 1 \
+  | tee nesnas_saanouni_hpc_output.txt
+
+echo "Checking expected adaptive model decision..."
+
+grep -q "Final recommended jump:" nesnas_saanouni_hpc_output.txt
+grep -q "  target cycle: 271" nesnas_saanouni_hpc_output.txt
+grep -q "  skipped cycles: 21" nesnas_saanouni_hpc_output.txt
+grep -q "exact/native restart control: pass" nesnas_saanouni_hpc_output.txt
+
+cat > nesnas_saanouni_hpc_status.txt <<EOF
+status=PASS
+test=nesnas_saanouni_hpc_smoke_test
+expected_target_cycle=271
+expected_skipped_cycles=21
+expected_exact_native_target272=pass
+tested_on=$(hostname)
+tested_at=$(date)
+pbs_job_id=${PBS_JOBID:-unknown}
+EOF
+
+echo "Nesnas-Saanouni-style adaptive model HPC smoke test PASSED."
+echo "Job finished on: $(date)"
