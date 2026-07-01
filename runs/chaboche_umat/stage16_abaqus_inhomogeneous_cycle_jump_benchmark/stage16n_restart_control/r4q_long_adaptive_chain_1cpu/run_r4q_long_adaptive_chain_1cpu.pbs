@@ -1,0 +1,67 @@
+#!/bin/bash
+#PBS -N stage16n_r4q_long_chain_1cpu
+#PBS -q entryq
+#PBS -l select=1:ncpus=1:mpiprocs=1:ompthreads=1:mem=30gb
+#PBS -l walltime=24:00:00
+#PBS -o /scratch/pr21vyci/stage16n_r4q_long_adaptive_chain_1cpu/r4q_long_chain.pbs.out
+#PBS -j oe
+
+set -euo pipefail
+
+SUBMIT_DIR="${PBS_O_WORKDIR:-$PWD}"
+REPO_ROOT="$SUBMIT_DIR"
+while [[ "$REPO_ROOT" != "/" && ! -d "$REPO_ROOT/.git" ]]; do
+  REPO_ROOT="$(dirname "$REPO_ROOT")"
+done
+if [[ ! -d "$REPO_ROOT/.git" && -d "/scratch/$USER/git_work/Master_thesis_preparatory/.git" ]]; then
+  REPO_ROOT="/scratch/$USER/git_work/Master_thesis_preparatory"
+fi
+if [[ ! -d "$REPO_ROOT/.git" ]]; then
+  echo "Could not resolve Git repository root from PBS_O_WORKDIR=${PBS_O_WORKDIR:-unset}" >&2
+  exit 2
+fi
+
+export REPO_ROOT
+export HOME_CASE_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4q_long_adaptive_chain_1cpu"
+export SUPPORT_CASE_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4p_boundary_reproducibility_and_diagnostics"
+export REF_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot"
+export SCRATCH_BASE="/scratch/$USER/stage16n_r4q_long_adaptive_chain_1cpu"
+export SCRATCH_CASE_DIR="$SCRATCH_BASE/${PBS_JOBID:-manual}"
+export TMPDIR="$SCRATCH_CASE_DIR/tmp"
+export LOG_DIR="_logs"
+export ABAQUS_CPUS=1
+export ABAQUS_MP_MODE=threads
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export CLEAN_HEAVY_AFTER_CLASSIFICATION=1
+
+mkdir -p "$SCRATCH_BASE" "$SCRATCH_CASE_DIR" "$TMPDIR" "$HOME_CASE_DIR" "$SCRATCH_CASE_DIR/$LOG_DIR"
+
+rsync -a --delete \
+  --exclude='*.odb' --exclude='*.stt' --exclude='*.res' --exclude='*.sim' \
+  --exclude='*.mdl' --exclude='*.prt' --exclude='*.dat' --exclude='*.msg' \
+  --exclude='*.sta' --exclude='*.023' --exclude='*.cax' --exclude='*.abq' \
+  --exclude='*.pac' --exclude='*.sel' --exclude='*.lck' --exclude='state.bin' \
+  --exclude='state.csv' \
+  "$HOME_CASE_DIR/" "$SCRATCH_CASE_DIR/"
+
+for required in \
+  stage16n_r1b_restart_ref_250cycles.inp \
+  stage16n_neml_equivalent_chaboche_umat.for \
+  stage16n_r3_jump_umat.for \
+  stage16n_extract_hysteresis_and_local_states.py \
+  stage16n_extract_exact_state_for_reinjection.py \
+  stage16n_make_extrapolated_state.py \
+  stage16n_compare_r3j_jump_against_reference.py; do
+  cp "$SUPPORT_CASE_DIR/$required" "$SCRATCH_CASE_DIR/$required"
+done
+
+if [[ -s "$REF_DIR/stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv" ]]; then
+  cp "$REF_DIR/stage16n_plate_hole_neml_equiv_1000cycles_cycle_metrics.csv" "$SCRATCH_CASE_DIR/reference_1000_cycle_metrics.csv"
+fi
+if [[ -s "$REF_DIR/stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv" ]]; then
+  cp "$REF_DIR/stage16n_plate_hole_neml_equiv_1000cycles_selected_cycle_local_states.csv" "$SCRATCH_CASE_DIR/reference_1000_selected_cycle_local_states.csv"
+fi
+
+cd "$SCRATCH_CASE_DIR"
+exec bash run_stage16n_r4q_long_adaptive_chain_1cpu_hpc.sh
