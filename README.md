@@ -11,6 +11,19 @@ Repository for Abaqus-based master thesis preparation, including model setup not
 - `analysis/` - extracted CSV data, plots, and result summaries
 - `one_cycle_run/` - raw archive folder that still contains a few locked or in-use Abaqus artifacts
 
+## Highlighted Project
+
+### Adaptive Cycle-Jump Prediction in Abaqus
+
+[`minor_projects/adaptive_cycle_jump_abaqus/`](minor_projects/adaptive_cycle_jump_abaqus/) packages a restart-based workflow for accelerating cyclic Chaboche UMAT simulations. It combines Abaqus/PBS evidence, a lightweight adaptive selector, HPC smoke-test records, and visualization.
+
+Key result: from source cycle 250, the selector accepts `target271` as the largest validated extrapolated true-jump target and rejects `target272` because of extrapolated internal-state prediction error, not Abaqus restart continuity.
+
+- [Project README](minor_projects/adaptive_cycle_jump_abaqus/README.md)
+- [Project summary](minor_projects/adaptive_cycle_jump_abaqus/docs/project_summary.md)
+- [Resume bullets](minor_projects/adaptive_cycle_jump_abaqus/docs/resume_bullets.md)
+- [Boundary figures](minor_projects/adaptive_cycle_jump_abaqus/figures/)
+
 ## Typical workflow
 
 1. Run an Abaqus job from the relevant `runs/` folder, for example:
