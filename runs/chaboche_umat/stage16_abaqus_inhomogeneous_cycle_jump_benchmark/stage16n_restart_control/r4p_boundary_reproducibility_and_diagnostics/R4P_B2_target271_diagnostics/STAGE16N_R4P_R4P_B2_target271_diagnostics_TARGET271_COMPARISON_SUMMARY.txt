@@ -1,0 +1,2 @@
+cycles,status,max_global_error_pct,max_primary_local_error_pct,diagnostic_s11_error_pct,details_file
+500,pass,0.00016431012,4.1785861,0.00022768842,stage16n_r4p_target271_jump_250_to_271_solve_272_to_500_comparison_details.csv

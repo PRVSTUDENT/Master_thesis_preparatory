@@ -1767,6 +1767,28 @@ R4O-B1 target274 & 1356503 & 500 & fail & 0.46378221 & 13.495934 & 1.0204996 \\
 
 The current operational conclusion after R4O is that the 250 branch has a storage-light source-regeneration pattern and a passed target-271 true-jump gate, but target 272 is not validated. The 505 branch is parked until a new exact-control gate or redesign is defined. The preserved R4E2 cycle-505 source should not be treated as a valid continuation source. R4J9/R4J10, target 273/275/276/280/285 progression, and any broad true-jump batch remain blocked until the target-272 failure signature is diagnosed or a new gated controller is explicitly defined.
 
+R4P then repeated and diagnosed this target271/target272 boundary. The first R4P submission, jobs \code{1358943}--\code{1358950}, failed immediately with \code{Exit\_status=127} because the PBS wrappers did not stage the runner into scratch; this was an infrastructure launch failure only. The corrected jobs \code{1358951}--\code{1358958} all finished with \code{Exit\_status=0} and \code{Stageout\_status=1}. The stage-out flag is recorded as an infrastructure warning because lightweight evidence was recovered. Target270 passed, target271 passed in three runs including the 8-core calibration, and target272 failed in three true-jump runs including the 8-core calibration. The exact/native target272 control passed with zero comparison error after reading the native cycle-272 source at \code{STEP=272, INC=57}. Therefore the target272 failure is not an Abaqus native restart-continuity error; it is the extrapolated true-jump state-prediction boundary.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{llllrrr}
+\toprule
+Case & PBS job & Endpoint & Status & Global error & Primary local error & S11 error \\
+\midrule
+R4P-B1 target270 & 1358952 & 500 & pass & 0.39923577 & 3.9830029 & 0.1398007 \\
+R4P-A1 target271 & 1358951 & 500 & pass & 0.00016431012 & 4.1785861 & 0.00022768842 \\
+R4P-B2 target271 & 1358954 & 500 & pass & 0.00016431012 & 4.1785861 & 0.00022768842 \\
+R4P-B3 target271 8-core & 1358956 & 500 & pass & 0.00016431012 & 4.1785861 & 0.00022768842 \\
+R4P-A2 target272 & 1358953 & 500 & fail & 1.8126719 & 14.385057 & 9.4271837 \\
+R4P-A4 target272 diagnostic & 1358957 & 500 & fail & 1.8126719 & 14.385057 & 9.4271837 \\
+R4P-B4 target272 8-core & 1358958 & 500 & fail & 1.8126719 & 14.385057 & 9.4271837 \\
+R4P-A3 exact/native target272 & 1358955 & 500 & pass & 0 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{Stage 16N-R4P corrected boundary reproducibility and diagnostics. Target271 is reproducibly accepted, target272 is reproducibly rejected for the extrapolated true-jump state, and exact/native target272 restart continuity is zero-error.}
+\end{table}
+
 \appendix
 \section{Key Repository Evidence Files}
 
@@ -1891,8 +1913,8 @@ B & R4P-B4 & 272 & 8-core calibration & afterany B3 \\
 
 R4P was first submitted through \code{/home/pr21vyci/bin/qsub\_abq\_guarded} on 2026-06-28 06:13:35 CEST after the storage gate reported \code{/scratch9/pr21vyci = 2.862T}, below the 5T abort threshold. The first jobs, \code{1358943}--\code{1358950}, failed immediately with \code{Exit\_status=127} because the PBS wrappers did not stage the runner into scratch. This is an infrastructure launch failure, not an Abaqus scientific result.
 
-After fixing PBS repository-root detection, R4P was resubmitted at 06:21:04 CEST. The active corrected jobs are A1 \code{1358951.mmaster02}, A2 \code{1358953.mmaster02}, A3 \code{1358955.mmaster02}, A4 \code{1358957.mmaster02}, B1 \code{1358952.mmaster02}, B2 \code{1358954.mmaster02}, B3 \code{1358956.mmaster02}, and B4 \code{1358958.mmaster02}. Initial corrected qstat verification showed A1/B1 queued and downstream jobs held by dependencies.
+After fixing PBS repository-root detection, R4P was resubmitted at 06:21:04 CEST. The corrected jobs were A1 \code{1358951.mmaster02}, A2 \code{1358953.mmaster02}, A3 \code{1358955.mmaster02}, A4 \code{1358957.mmaster02}, B1 \code{1358952.mmaster02}, B2 \code{1358954.mmaster02}, B3 \code{1358956.mmaster02}, and B4 \code{1358958.mmaster02}. Initial corrected qstat verification showed A1/B1 queued and downstream jobs held by dependencies. By 2026-07-01 10:39 CEST no R4P job remained active in \code{qstat}; all corrected jobs were finished and classified.
 
-All R4P jobs regenerate the compact complete cycle-250 source package inside scratch, validate \code{.odb/.stt/.res/.mdl/.prt/.sim/.sta}, run with continuation restart writing disabled, copy back only lightweight evidence, and remove heavy Abaqus files after classification. A2 and later jobs record predecessor status but use PBS \code{afterany} rather than pass-only self-gating. The A3 exact/native control writes an intermediate native cycle272 source restart, resolves the restart increment from the generated \code{.sta}, and then continues 273--500 natively to separate true-jump prediction error from an Abaqus restart-path effect.
+All R4P jobs regenerated the compact complete cycle-250 source package inside scratch, validated \code{.odb/.stt/.res/.mdl/.prt/.sim/.sta}, ran with continuation restart writing disabled, copied back only lightweight evidence, and removed heavy Abaqus files after classification. A2 and later jobs recorded predecessor status but used PBS \code{afterany} rather than pass-only self-gating. The A3 exact/native control wrote an intermediate native cycle272 source restart, resolved the restart increment from the generated \code{.sta}, and then continued 273--500 natively to separate true-jump prediction error from an Abaqus restart-path effect. The final result is that target271 remains the accepted 250-branch true-jump boundary, target272 remains rejected, and the exact/native zero-error control localizes the failure to the extrapolated state predictor.
 
 \end{document}
