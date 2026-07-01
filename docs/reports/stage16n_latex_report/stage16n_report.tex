@@ -1948,4 +1948,36 @@ The selector smoke-test records are stored in:
   \item \code{minor\_projects/adaptive\_cycle\_jump\_abaqus/run\_adaptive\_selector\_hpc\_test.pbs}
 \end{itemize}
 
+\section{Nesnas-Saanouni-Style Adaptive Jump Model}
+
+The second adaptive layer implements a Nesnas-Saanouni-style bounded monitor increment model. The monitored quantities are the currently available comparison metrics: global error, primary-local error, and S11 error. The normalized monitor ratio is
+\[
+R = \max\left(\frac{e_\mathrm{global}}{1\%}, \frac{e_\mathrm{primary-local}}{5\%}, \frac{e_\mathrm{S11}}{1\%}\right).
+\]
+A candidate target is admissible only if every true-jump record at that target has pass status and satisfies \(R \leq 1\). The tested tolerances are 1\% global error, 5\% primary-local error, and 1\% S11 error.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{rrrrl}
+\toprule
+Target & Skipped cycles & Monitor ratio & Status & Interpretation \\
+\midrule
+270 & 20 & 0.796601 & pass & Lower safe repeat \\
+271 & 21 & 0.835717 & pass & Accepted adaptive boundary \\
+272 & 22 & 9.42718 & fail & First rejected true jump \\
+\bottomrule
+\end{tabular}
+\caption{Nesnas-Saanouni-style monitor-ratio decision using global, primary-local, and S11 comparison metrics.}
+\end{table}
+
+The first-order monitor trend proposes target274 before validation capping. However, direct validation evidence already rejects target272, so the controller applies target272 as a hard safety cap and returns the final recommendation to target271:
+\begin{quote}\footnotesize\ttfamily
+Final recommended jump:\\
+\quad target cycle: 271\\
+\quad skipped cycles: 21
+\end{quote}
+
+The model was smoke-tested through PBS job \code{1362113.mmaster02} on \code{teachingq} with one CPU. The test did not launch Abaqus and finished with \code{Exit\_status=0}. This implementation is Nesnas-Saanouni-style rather than a full constitutive-level reproduction, because the current lightweight evidence contains comparison metrics rather than complete per-integration-point internal-variable histories.
+
 \end{document}

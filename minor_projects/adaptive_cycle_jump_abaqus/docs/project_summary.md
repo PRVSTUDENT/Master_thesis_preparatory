@@ -39,6 +39,46 @@ First rejected extrapolated target: target272
 Exact/native restart at target272: pass
 ```
 
+## Nesnas-Saanouni-Style Adaptive Jump Model
+
+A second adaptive layer implements a Nesnas-Saanouni-style bounded monitor increment model. The monitored quantities are the available comparison metrics:
+
+```text
+global error
+primary-local error
+S11 error
+```
+
+The normalized monitor ratio is:
+
+```text
+R = max(
+    global_error / global_tolerance,
+    primary_local_error / primary_local_tolerance,
+    S11_error / S11_tolerance
+)
+```
+
+The tested tolerances are 1% global error, 5% primary-local error, and 1% S11 error. A candidate target is admissible only when all true-jump records at that target pass and remain below tolerance (`R <= 1`).
+
+```text
+target270: R = 0.796601, pass
+target271: R = 0.835717, pass
+target272: R = 9.42718, fail
+```
+
+The first-order monitor trend proposes target274 before validation capping, but target272 is already rejected by direct validation evidence. The safety cap therefore returns the final recommendation to target271:
+
+```text
+Final recommended jump:
+  target cycle: 271
+  skipped cycles: 21
+```
+
+This model was smoke-tested through PBS job `1362113.mmaster02` without launching Abaqus. The job finished with `Exit_status=0` and the expected recommendation.
+
+This implementation is Nesnas-Saanouni-style rather than a full constitutive-level reproduction, because the current lightweight evidence contains comparison metrics rather than complete per-integration-point internal-variable histories.
+
 ## Conclusion
 
 The safe adaptive boundary from source cycle 250 is target271. Target272 is the first reproducibly rejected extrapolated true-jump target.
