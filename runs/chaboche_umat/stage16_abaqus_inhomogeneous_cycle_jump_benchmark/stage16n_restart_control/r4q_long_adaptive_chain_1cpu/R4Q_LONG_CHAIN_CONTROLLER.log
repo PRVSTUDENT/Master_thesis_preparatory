@@ -113,3 +113,496 @@ Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(
 Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
 
 ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Wed 01 Jul 2026 12:29:16 PM CEST
+Begin Analysis Input File Processor
+Wed 01 Jul 2026 12:29:16 PM CEST
+Run pre
+Wed 01 Jul 2026 12:29:27 PM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+Wed 01 Jul 2026 12:29:27 PM CEST
+Run standard
+Wed 01 Jul 2026 10:11:30 PM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Wed 01 Jul 2026 10:11:30 PM CEST
+Run SMASimUtility
+Wed 01 Jul 2026 10:11:30 PM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_r1b_restart_ref_250cycles COMPLETED
+	Command being timed: "abaqus job=stage16n_r1b_restart_ref_250cycles input=stage16n_r1b_restart_ref_250cycles.inp user=stage16n_neml_equivalent_chaboche_umat.for interactive ask_delete=OFF scratch=/scratch/pr21vyci/stage16n_r4q_long_adaptive_chain_1cpu/1362114.mmaster02/tmp cpus=1 mp_mode=threads"
+	User time (seconds): 30621.02
+	System time (seconds): 2285.16
+	Percent of CPU this job got: 94%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 9:42:26
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 992260
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 297
+	Minor (reclaiming a frame) page faults: 624686349
+	Voluntary context switches: 3132967
+	Involuntary context switches: 139057
+	Swaps: 0
+	File system inputs: 52208
+	File system outputs: 565740400
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: initial source solve
+TIME: Mi 1. Jul 22:11:30 CEST 2026
+EXIT: 0
+============================================================
+
+============================================================
+PHASE START: extract source state cycle 100 from stage16n_r1b_restart_ref_250cycles
+TIME: Mi 1. Jul 22:11:31 CEST 2026
+============================================================
+Wrote _source_state/stage16n_exact_state_cycle0100.csv
+Wrote _source_state/stage16n_exact_state_cycle0100_summary.md
+	Command being timed: "abaqus python stage16n_extract_exact_state_for_reinjection.py --odb stage16n_r1b_restart_ref_250cycles.odb --cycles 100 --outdir _source_state"
+	User time (seconds): 8.43
+	System time (seconds): 0.51
+	Percent of CPU this job got: 71%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:12.43
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 362260
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 161
+	Minor (reclaiming a frame) page faults: 80479
+	Voluntary context switches: 6389
+	Involuntary context switches: 20
+	Swaps: 0
+	File system inputs: 22680
+	File system outputs: 40256
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: extract source state cycle 100 from stage16n_r1b_restart_ref_250cycles
+TIME: Mi 1. Jul 22:11:43 CEST 2026
+EXIT: 0
+============================================================
+
+============================================================
+PHASE START: extract source state cycle 250 from stage16n_r1b_restart_ref_250cycles
+TIME: Mi 1. Jul 22:11:43 CEST 2026
+============================================================
+Wrote _source_state/stage16n_exact_state_cycle0250.csv
+Wrote _source_state/stage16n_exact_state_cycle0250_summary.md
+	Command being timed: "abaqus python stage16n_extract_exact_state_for_reinjection.py --odb stage16n_r1b_restart_ref_250cycles.odb --cycles 250 --outdir _source_state"
+	User time (seconds): 8.32
+	System time (seconds): 0.46
+	Percent of CPU this job got: 93%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.41
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 360596
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 83217
+	Voluntary context switches: 2132
+	Involuntary context switches: 29
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 39992
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: extract source state cycle 250 from stage16n_r1b_restart_ref_250cycles
+TIME: Mi 1. Jul 22:11:52 CEST 2026
+EXIT: 0
+============================================================
+sending incremental file list
+./
+R4Q_LONG_CHAIN_BLOCK_SUMMARY.csv
+R4Q_LONG_CHAIN_CONTROLLER.log
+R4Q_LONG_CHAIN_STATUS.txt
+reference_1000_cycle_metrics.csv
+reference_1000_selected_cycle_local_states.csv
+stage16n_r1b_restart_ref_250cycles_dat_tail.txt
+stage16n_r1b_restart_ref_250cycles_datacheck_dat_tail.txt
+stage16n_r1b_restart_ref_250cycles_datacheck_msg_tail.txt
+stage16n_r1b_restart_ref_250cycles_msg_tail.txt
+stage16n_r1b_restart_ref_250cycles_sta_tail.txt
+_logs/
+_logs/R4Q_storage_df_before.txt
+_logs/R4Q_storage_qstat_before.txt
+_logs/R4Q_storage_scratch9_top80_before.txt
+_logs/R4Q_storage_scratch9_user_before.txt
+_logs/stage16n_r1b_restart_ref_250cycles.log
+_logs/stage16n_r1b_restart_ref_250cycles_datacheck.log
+_logs/stage16n_r1b_restart_ref_250cycles_extract_state_100.log
+_logs/stage16n_r1b_restart_ref_250cycles_extract_state_250.log
+_source_state/
+_source_state/stage16n_exact_state_cycle0100.csv
+_source_state/stage16n_exact_state_cycle0100_summary.md
+_source_state/stage16n_exact_state_cycle0250.csv
+_source_state/stage16n_exact_state_cycle0250_summary.md
+tmp/
+
+sent 27,915,759 bytes  received 457 bytes  18,610,810.67 bytes/sec
+total size is 27,913,324  speedup is 1.00
+Wrote stage16n_r4q_block01_250_to_271_solve_272_to_500.inp
+
+============================================================
+PHASE START: block 1 datacheck
+TIME: Mi 1. Jul 22:11:58 CEST 2026
+============================================================
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r4q_block01_250_to_271_solve_272_to_500_datacheck
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 5 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<251 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Wed 01 Jul 2026 10:12:00 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_r3_jump_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+stage16n_r3_jump_umat.for(248): remark #15009: stage16n_r3j_jump_overwrite_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Wed 01 Jul 2026 10:12:09 PM CEST
+Begin Analysis Input File Processor
+Wed 01 Jul 2026 10:12:09 PM CEST
+Run pre
+Wed 01 Jul 2026 10:12:24 PM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Datacheck
+Begin Abaqus/Standard Analysis
+Wed 01 Jul 2026 10:12:24 PM CEST
+Run standard
+Wed 01 Jul 2026 10:12:27 PM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Wed 01 Jul 2026 10:12:27 PM CEST
+Run SMASimUtility
+Wed 01 Jul 2026 10:12:27 PM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_r4q_block01_250_to_271_solve_272_to_500_datacheck COMPLETED
+	Command being timed: "abaqus job=stage16n_r4q_block01_250_to_271_solve_272_to_500_datacheck input=stage16n_r4q_block01_250_to_271_solve_272_to_500.inp oldjob=stage16n_r1b_restart_ref_250cycles user=stage16n_r3_jump_umat.for datacheck interactive ask_delete=OFF scratch=/scratch/pr21vyci/stage16n_r4q_long_adaptive_chain_1cpu/1362114.mmaster02/tmp cpus=1 mp_mode=threads"
+	User time (seconds): 18.71
+	System time (seconds): 3.23
+	Percent of CPU this job got: 73%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:29.68
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 824408
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 522
+	Minor (reclaiming a frame) page faults: 514372
+	Voluntary context switches: 9795
+	Involuntary context switches: 285
+	Swaps: 0
+	File system inputs: 84440
+	File system outputs: 265152
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: block 1 datacheck
+TIME: Mi 1. Jul 22:12:27 CEST 2026
+EXIT: 0
+============================================================
+
+============================================================
+PHASE START: block 1 solve
+TIME: Mi 1. Jul 22:12:27 CEST 2026
+============================================================
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r4q_block01_250_to_271_solve_272_to_500
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 5 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<251 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Wed 01 Jul 2026 10:12:29 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_r3_jump_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+stage16n_r3_jump_umat.for(248): remark #15009: stage16n_r3j_jump_overwrite_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Wed 01 Jul 2026 10:12:39 PM CEST
+Begin Analysis Input File Processor
+Wed 01 Jul 2026 10:12:39 PM CEST
+Run pre
+Wed 01 Jul 2026 10:12:51 PM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+Wed 01 Jul 2026 10:12:51 PM CEST
+Run standard
+Thu 02 Jul 2026 09:19:09 AM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Thu 02 Jul 2026 09:19:09 AM CEST
+Run SMASimUtility
+Thu 02 Jul 2026 09:19:10 AM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_r4q_block01_250_to_271_solve_272_to_500 COMPLETED
+	Command being timed: "abaqus job=stage16n_r4q_block01_250_to_271_solve_272_to_500 input=stage16n_r4q_block01_250_to_271_solve_272_to_500.inp oldjob=stage16n_r1b_restart_ref_250cycles user=stage16n_r3_jump_umat.for interactive ask_delete=OFF scratch=/scratch/pr21vyci/stage16n_r4q_long_adaptive_chain_1cpu/1362114.mmaster02/tmp cpus=1 mp_mode=threads"
+	User time (seconds): 33830.81
+	System time (seconds): 3214.89
+	Percent of CPU this job got: 92%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 11:06:42
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1081224
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 59
+	Minor (reclaiming a frame) page faults: 657266639
+	Voluntary context switches: 3525349
+	Involuntary context switches: 208803
+	Swaps: 0
+	File system inputs: 10360
+	File system outputs: 1201148040
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: block 1 solve
+TIME: Do 2. Jul 09:19:10 CEST 2026
+EXIT: 0
+============================================================
+
+============================================================
+PHASE START: block 1 ODB extraction
+TIME: Do 2. Jul 09:19:10 CEST 2026
+============================================================
+Wrote: stage16n_r4q_block01_250_to_271_solve_272_to_500_cycle_metrics.csv
+Wrote: stage16n_r4q_block01_250_to_271_solve_272_to_500_selected_cycle_loops.csv
+Wrote: stage16n_r4q_block01_250_to_271_solve_272_to_500_selected_cycle_local_states.csv
+	Command being timed: "abaqus python stage16n_extract_hysteresis_and_local_states.py --job stage16n_r4q_block01_250_to_271_solve_272_to_500"
+	User time (seconds): 19.03
+	System time (seconds): 1.76
+	Percent of CPU this job got: 88%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:23.49
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 917480
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 76
+	Minor (reclaiming a frame) page faults: 215810
+	Voluntary context switches: 2544
+	Involuntary context switches: 53
+	Swaps: 0
+	File system inputs: 8768
+	File system outputs: 64
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: block 1 ODB extraction
+TIME: Do 2. Jul 09:19:33 CEST 2026
+EXIT: 0
+============================================================
+
+============================================================
+PHASE START: extract source state cycle 500 from stage16n_r4q_block01_250_to_271_solve_272_to_500
+TIME: Do 2. Jul 09:19:33 CEST 2026
+============================================================
+Wrote _source_state/stage16n_exact_state_cycle0500.csv
+Wrote _source_state/stage16n_exact_state_cycle0500_summary.md
+	Command being timed: "abaqus python stage16n_extract_exact_state_for_reinjection.py --odb stage16n_r4q_block01_250_to_271_solve_272_to_500.odb --cycles 500 --outdir _source_state"
+	User time (seconds): 8.50
+	System time (seconds): 0.45
+	Percent of CPU this job got: 93%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:09.59
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 357716
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 75779
+	Voluntary context switches: 2149
+	Involuntary context switches: 40
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 39528
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: extract source state cycle 500 from stage16n_r4q_block01_250_to_271_solve_272_to_500
+TIME: Do 2. Jul 09:19:43 CEST 2026
+EXIT: 0
+============================================================
+sending incremental file list
+./
+R4Q_LONG_CHAIN_BLOCK_SUMMARY.csv
+R4Q_LONG_CHAIN_CONTROLLER.log
+R4Q_LONG_CHAIN_STATUS.txt
+R4Q_SOURCE250_TARGET271_EXTRAPOLATED_STATE.md
+stage16n_r4q_block01_250_to_271_solve_272_to_500_cycle_metrics.csv
+stage16n_r4q_block01_250_to_271_solve_272_to_500_dat_tail.txt
+stage16n_r4q_block01_250_to_271_solve_272_to_500_datacheck_dat_tail.txt
+stage16n_r4q_block01_250_to_271_solve_272_to_500_datacheck_msg_tail.txt
+stage16n_r4q_block01_250_to_271_solve_272_to_500_msg_tail.txt
+stage16n_r4q_block01_250_to_271_solve_272_to_500_selected_cycle_local_states.csv
+stage16n_r4q_block01_250_to_271_solve_272_to_500_selected_cycle_loops.csv
+stage16n_r4q_block01_250_to_271_solve_272_to_500_sta_tail.txt
+_logs/
+_logs/stage16n_r4q_block01_250_to_271_solve_272_to_500.log
+_logs/stage16n_r4q_block01_250_to_271_solve_272_to_500_datacheck.log
+_logs/stage16n_r4q_block01_250_to_271_solve_272_to_500_extract.log
+_logs/stage16n_r4q_block01_250_to_271_solve_272_to_500_extract_state_500.log
+_logs/stage16n_r4q_block01_250_to_271_solve_272_to_500_overwrite_trace.txt
+_logs/stage16n_r4q_block01_250_to_271_solve_272_to_500_parallelism_check.log
+_source_state/
+_source_state/stage16n_exact_state_cycle0500.csv
+_source_state/stage16n_exact_state_cycle0500_summary.md
+tmp/
+
+sent 13,698,064 bytes  received 419 bytes  9,132,322.00 bytes/sec
+total size is 41,593,048  speedup is 3.04
+./stage16n_r1b_restart_ref_250cycles.prt
+./stage16n_r1b_restart_ref_250cycles.sta
+./stage16n_r1b_restart_ref_250cycles.mdl
+./stage16n_r1b_restart_ref_250cycles_datacheck.dat
+./stage16n_r1b_restart_ref_250cycles_datacheck.odb
+./stage16n_r1b_restart_ref_250cycles_datacheck.stt
+./stage16n_r1b_restart_ref_250cycles.res
+./stage16n_r1b_restart_ref_250cycles_datacheck.mdl
+./stage16n_r1b_restart_ref_250cycles_datacheck.res
+./stage16n_r1b_restart_ref_250cycles_datacheck.023
+./stage16n_r1b_restart_ref_250cycles_datacheck.cax
+./stage16n_r1b_restart_ref_250cycles_datacheck.msg
+./stage16n_r1b_restart_ref_250cycles_datacheck.prt
+./stage16n_r1b_restart_ref_250cycles_datacheck.sim
+./stage16n_r1b_restart_ref_250cycles.sim
+./stage16n_r1b_restart_ref_250cycles.dat
+./stage16n_r1b_restart_ref_250cycles.odb
+./stage16n_r1b_restart_ref_250cycles.msg
+./stage16n_r1b_restart_ref_250cycles.stt
+sending incremental file list
+./
+R4Q_LONG_CHAIN_CONTROLLER.log
+
+sent 28,191 bytes  received 41 bytes  56,464.00 bytes/sec
+total size is 41,595,312  speedup is 1,473.34
+usage: stage16n_make_r4q_restart_deck.py [-h] --output OUTPUT --old-step
+                                         OLD_STEP --old-inc OLD_INC
+                                         --solved-start SOLVED_START
+                                         --block-end BLOCK_END --title TITLE
+stage16n_make_r4q_restart_deck.py: error: argument --old-inc: invalid int value: ''
+
+============================================================
+PHASE START: block 2 datacheck
+TIME: Do 2. Jul 09:19:49 CEST 2026
+============================================================
+Abaqus Error: The following file(s) could not be located: stage16n_r4q_block02_500_to_521_solve_522_to_750.inp
+Abaqus/Datacheck exited with error(s).
+Command exited with non-zero status 1
+	Command being timed: "abaqus job=stage16n_r4q_block02_500_to_521_solve_522_to_750_datacheck input=stage16n_r4q_block02_500_to_521_solve_522_to_750.inp oldjob=stage16n_r4q_block01_250_to_271_solve_272_to_500 user=stage16n_r3_jump_umat.for datacheck interactive ask_delete=OFF scratch=/scratch/pr21vyci/stage16n_r4q_long_adaptive_chain_1cpu/1362114.mmaster02/tmp cpus=1 mp_mode=threads"
+	User time (seconds): 0.11
+	System time (seconds): 0.03
+	Percent of CPU this job got: 86%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.17
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 45224
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 7225
+	Voluntary context switches: 394
+	Involuntary context switches: 4
+	Swaps: 0
+	File system inputs: 160
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+============================================================
+PHASE END: block 2 datacheck
+TIME: Do 2. Jul 09:19:49 CEST 2026
+EXIT: 1
+============================================================
+sending incremental file list
+./
+R4Q_LONG_CHAIN_BLOCK_SUMMARY.csv
+R4Q_LONG_CHAIN_CONTROLLER.log
+R4Q_LONG_CHAIN_STATUS.txt
+R4Q_SOURCE500_TARGET521_EXTRAPOLATED_STATE.md
+_logs/
+_logs/stage16n_r4q_block02_500_to_521_solve_522_to_750_datacheck.log
+
+sent 33,837 bytes  received 128 bytes  67,930.00 bytes/sec
+total size is 41,599,794  speedup is 1,224.78
+sending incremental file list
+R4Q_LONG_CHAIN_CONTROLLER.log
+
+sent 30,830 bytes  received 38 bytes  61,736.00 bytes/sec
+total size is 41,600,144  speedup is 1,347.68
+Dateisystem             Größe Benutzt Verf. Verw% Eingehängt auf
+panfs://mpanfs/scratch9   33T    7,8T   25T   24% /scratch9
+panfs://mpanfs/scratch   101T     84T   17T   84% /scratch
+mnfs:/home                17T     13T  3,2T   81% /home
+3,2T	/scratch9/pr21vyci
+sending incremental file list
+R4Q_LONG_CHAIN_CONTROLLER.log
+R4Q_LONG_CHAIN_STATUS.txt
+_logs/R4Q_storage_df_after.txt
+_logs/R4Q_storage_scratch9_user_after.txt
+
+sent 32,247 bytes  received 99 bytes  64,692.00 bytes/sec
+total size is 41,600,856  speedup is 1,286.12
+[Stage16N-R4Q] end: 2026-07-02 09:20:00
+sending incremental file list

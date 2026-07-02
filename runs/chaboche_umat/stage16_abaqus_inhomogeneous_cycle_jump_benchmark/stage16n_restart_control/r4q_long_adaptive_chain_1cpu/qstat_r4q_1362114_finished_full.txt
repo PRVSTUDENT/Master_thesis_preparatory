@@ -1,0 +1,66 @@
+Job Id: 1362114.mmaster02
+    Job_Name = stage16n_r4q_long_chain_1cpu
+    Job_Owner = pr21vyci@mlogin01.cluster
+    resources_used.cpupercent = 99
+    resources_used.cput = 19:27:30
+    resources_used.mem = 31457284kb
+    resources_used.ncpus = 1
+    resources_used.vmem = 7944792kb
+    resources_used.walltime = 20:52:02
+    job_state = F
+    queue = mediumq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Wed Jul  1 12:26:21 2026
+    Error_Path = mlogin01.cluster:/scratch/pr21vyci/git_work/Master_thesis_prep
+	aratory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benc
+	hmark/stage16n_restart_control/r4q_long_adaptive_chain_1cpu/stage16n_r4
+	q_long_chain_1cpu.e1362114
+    exec_host = mnode028/0
+    exec_vnode = (mnode028[0]:ncpus=1:mem=31457280kb)
+    Hold_Types = n
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = a
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Thu Jul  2 09:20:08 2026
+    Output_Path = mlogin01.cluster:/scratch/pr21vyci/stage16n_r4q_long_adaptive
+	_chain_1cpu/r4q_long_chain.pbs.out
+    Priority = 0
+    qtime = Wed Jul  1 12:26:22 2026
+    Rerunable = True
+    Resource_List.mem = 30gb
+    Resource_List.mpiprocs = 1
+    Resource_List.ncpus = 1
+    Resource_List.ngpus = 0
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=1:mpiprocs=1:ompthreads=1:mem=30gb
+    Resource_List.walltime = 24:00:00
+    stime = Wed Jul  1 12:27:49 2026
+    obittime = Thu Jul  2 09:20:08 2026
+    session_id = 739533
+    sandbox = PRIVATE
+    jobdir = /home/pr21vyci/pbs.1362114.mmaster02.x8z
+    substate = 92
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/bin:/home/pr21vyci/texlive/2026/bin/x86_64-l
+	inux:/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin:/usr/b
+	in:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/scratch/pr21vyci/git_work/Master_thesis_preparatory/run
+	s/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage
+	16n_restart_control/r4q_long_adaptive_chain_1cpu,PBS_O_SYSTEM=Linux,
+	PBS_O_QUEUE=entryq
+    comment = Job run at Wed Jul 01 at 12:27 on (mnode028[0]:ncpus=1:mem=314572
+	80kb) and finished
+    etime = Wed Jul  1 12:26:22 2026
+    run_count = 1
+    eligible_time = 00:01:42
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = run_r4q_long_adaptive_chain_1cpu.pbs
+    history_timestamp = 1782976808
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+

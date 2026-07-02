@@ -1,6 +1,6 @@
-status=starting
-phase=preflight
-detail=storage gate passed
+status=finished_or_safe_stopped
+phase=controller_end
+detail=source_cycle=500 block_index=2
 controller=R4Q_long_adaptive_chain_1cpu
 pbs_job_id=1362114.mmaster02
 source_cycle_start=250
@@ -10,6 +10,6 @@ checkpoints=1000 2000 5000
 abaqus_cpus=1
 classification_scope=restart-chain feasibility unless matching reference CSV exists
 scratch_case_dir=/scratch/pr21vyci/stage16n_r4q_long_adaptive_chain_1cpu/1362114.mmaster02
-elapsed_seconds=37
-remaining_seconds=86363
-updated_at=2026-07-01 12:28:38
+elapsed_seconds=75119
+remaining_seconds=11281
+updated_at=2026-07-02 09:20:00
