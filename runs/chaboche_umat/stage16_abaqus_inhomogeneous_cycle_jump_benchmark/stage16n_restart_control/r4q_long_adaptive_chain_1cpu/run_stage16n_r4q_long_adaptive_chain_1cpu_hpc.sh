@@ -12,7 +12,7 @@ SCRATCH9_USER_LIMIT_TB="${SCRATCH9_USER_LIMIT_TB:-5}"
 START_EPOCH="$(date +%s)"
 LOG_DIR="${LOG_DIR:-_logs}"
 ABAQUS_SCRATCH="${TMPDIR:-$PWD/tmp}"
-MAIL_TO="${MAIL_TO:-Prasanna-Ramesh.Hegde@student.tu-freiberg.de}"
+MAIL_TO="${MAIL_TO:-${USER}@mailserver.tu-freiberg.de}"
 MAIL_SUBJECT_PREFIX="${MAIL_SUBJECT_PREFIX:-Stage16N-R4Q long adaptive chain}"
 JOB_FINAL_STATUS="starting"
 MAIL_BEGIN_SENT=0
@@ -220,10 +220,29 @@ enforce_storage_gate() {
   fi
 }
 
-find_restart_inc() {
+find_restart_record() {
   local sta="$1"
-  local step="$2"
-  awk -v step="$step" '$1 == step && $2 ~ /^[0-9]+$/ {inc=$2} END {if (inc == "") exit 3; print inc}' "$sta"
+  local requested_step="$2"
+  awk -v requested_step="$requested_step" '
+    $1 ~ /^[0-9]+$/ && $2 ~ /^[0-9]+$/ {
+      last_step=$1
+      last_inc=$2
+      if ($1 == requested_step) {
+        exact_step=$1
+        exact_inc=$2
+      }
+    }
+    END {
+      if (exact_inc != "") {
+        print exact_step, exact_inc, "exact"
+        exit 0
+      }
+      if (last_inc != "") {
+        print last_step, last_inc, "final"
+        exit 0
+      }
+      exit 3
+    }' "$sta"
 }
 
 checkpoint_for() {
@@ -355,14 +374,21 @@ run_block() {
   checkpoint="$(checkpoint_for "$block_end")"
   local job="stage16n_r4q_block$(printf '%02d' "$block_index")_${source_cycle}_to_${jump_target}_solve_${solved_start}_to_${block_end}"
   local inp="${job}.inp"
-  local restart_inc
-  restart_inc="$(find_restart_inc "${oldjob}.sta" "$source_cycle")"
+  local restart_record restart_step restart_inc restart_resolution
+  if ! restart_record="$(find_restart_record "${oldjob}.sta" "$source_cycle")"; then
+    append_summary "$block_index" "$source_cycle" "$jump_target" "$solved_start" "$block_end" "$checkpoint" "restart_record_missing" "feasibility" "unknown" "not_run" "$job" "$oldjob" "no restart step/inc found in ${oldjob}.sta"
+    write_status "restart_record_missing" "block_${block_index}_prepare" "oldjob=${oldjob} requested_step=${source_cycle}"
+    copy_lightweight_evidence
+    return 19
+  fi
+  read -r restart_step restart_inc restart_resolution <<< "$restart_record"
+  echo "[restart] block=${block_index} oldjob=${oldjob} requested_step=${source_cycle} resolved_step=${restart_step} resolved_inc=${restart_inc} resolution=${restart_resolution}"
 
   write_status "running" "block_${block_index}_prepare" "source=$source_cycle target=$jump_target end=$block_end"
   prepare_jump_state "$previous_cycle" "$source_cycle" "$jump_target"
   python3 stage16n_make_r4q_restart_deck.py \
     --output "$inp" \
-    --old-step "$source_cycle" \
+    --old-step "$restart_step" \
     --old-inc "$restart_inc" \
     --solved-start "$solved_start" \
     --block-end "$block_end" \
@@ -445,6 +471,98 @@ run_block() {
   return 0
 }
 
+run_block2_preflight_only() {
+  local block_index=2
+  local source_cycle=500
+  local jump_target=$((source_cycle + SAFE_JUMP))
+  local solved_start=$((jump_target + 1))
+  local block_end=$((source_cycle + BLOCK_SIZE))
+  local oldjob="stage16n_r4q_block01_250_to_271_solve_272_to_500"
+  local job="stage16n_r4q_block02_500_to_521_solve_522_to_750"
+  local inp="${job}.inp"
+  local restart_record restart_step restart_inc restart_resolution restart_line status detail
+
+  {
+    echo "[preflight] R4Q block-2 no-solver preflight"
+    echo "[preflight] time=$(date '+%Y-%m-%d %H:%M:%S %Z')"
+    echo "[preflight] oldjob=${oldjob}"
+    echo "[preflight] requested_source_cycle=${source_cycle}"
+    if [[ ! -s "${oldjob}.sta" ]]; then
+      status="fail"
+      detail="missing ${oldjob}.sta"
+      echo "[preflight] ERROR: ${detail}"
+      {
+        echo "status=${status}"
+        echo "detail=${detail}"
+        echo "oldjob=${oldjob}"
+        echo "requested_source_cycle=${source_cycle}"
+      } > R4Q_BLOCK2_PREFLIGHT_STATUS.txt
+      return 1
+    fi
+
+    if ! restart_record="$(find_restart_record "${oldjob}.sta" "$source_cycle")"; then
+      status="fail"
+      detail="no restart step/inc found in ${oldjob}.sta"
+      echo "[preflight] ERROR: ${detail}"
+      {
+        echo "status=${status}"
+        echo "detail=${detail}"
+        echo "oldjob=${oldjob}"
+        echo "requested_source_cycle=${source_cycle}"
+      } > R4Q_BLOCK2_PREFLIGHT_STATUS.txt
+      return 1
+    fi
+
+    read -r restart_step restart_inc restart_resolution <<< "$restart_record"
+    echo "[preflight] resolved_step=${restart_step}"
+    echo "[preflight] resolved_inc=${restart_inc}"
+    echo "[preflight] resolution=${restart_resolution}"
+
+    python3 stage16n_make_r4q_restart_deck.py \
+      --output "$inp" \
+      --old-step "$restart_step" \
+      --old-inc "$restart_inc" \
+      --solved-start "$solved_start" \
+      --block-end "$block_end" \
+      --title "Stage 16N-R4Q block ${block_index}: ${source_cycle} to ${jump_target}, solve ${solved_start} to ${block_end}"
+
+    restart_line="$(grep -m 1 '^\*RESTART, READ, STEP=[0-9][0-9]*, INC=[0-9][0-9]*$' "$inp" || true)"
+    if [[ -z "$restart_line" ]]; then
+      status="fail"
+      detail="generated deck lacks non-empty restart read line"
+      echo "[preflight] ERROR: ${detail}"
+      {
+        echo "status=${status}"
+        echo "detail=${detail}"
+        echo "oldjob=${oldjob}"
+        echo "requested_source_cycle=${source_cycle}"
+        echo "restart_step=${restart_step}"
+        echo "restart_inc=${restart_inc}"
+        echo "restart_resolution=${restart_resolution}"
+        echo "deck=${inp}"
+      } > R4Q_BLOCK2_PREFLIGHT_STATUS.txt
+      return 1
+    fi
+
+    status="pass"
+    detail="block-2 deck generated without Abaqus submission"
+    echo "[preflight] restart_line=${restart_line}"
+    echo "[preflight] PASS: ${detail}"
+    {
+      echo "status=${status}"
+      echo "detail=${detail}"
+      echo "oldjob=${oldjob}"
+      echo "requested_source_cycle=${source_cycle}"
+      echo "restart_step=${restart_step}"
+      echo "restart_inc=${restart_inc}"
+      echo "restart_resolution=${restart_resolution}"
+      echo "deck=${inp}"
+      echo "restart_line=${restart_line}"
+      echo "updated_at=$(date '+%Y-%m-%d %H:%M:%S')"
+    } > R4Q_BLOCK2_PREFLIGHT_STATUS.txt
+  } 2>&1 | tee R4Q_BLOCK2_PREFLIGHT.log
+}
+
 on_error() {
   local rc=$?
   write_status "controller_failure" "trap" "exit code $rc"
@@ -458,6 +576,11 @@ on_exit() {
   send_job_mail "END" "$JOB_FINAL_STATUS"
   exit "$rc"
 }
+
+if [[ "${R4Q_BLOCK2_PREFLIGHT_ONLY:-0}" == "1" ]]; then
+  run_block2_preflight_only
+  exit $?
+fi
 
 trap on_error ERR
 trap on_exit EXIT

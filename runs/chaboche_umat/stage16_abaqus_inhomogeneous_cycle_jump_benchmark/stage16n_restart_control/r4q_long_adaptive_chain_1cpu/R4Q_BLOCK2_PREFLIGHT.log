@@ -1,0 +1,10 @@
+[preflight] R4Q block-2 no-solver preflight
+[preflight] time=2026-07-02 15:06:27 CEST
+[preflight] oldjob=stage16n_r4q_block01_250_to_271_solve_272_to_500
+[preflight] requested_source_cycle=500
+[preflight] resolved_step=479
+[preflight] resolved_inc=65
+[preflight] resolution=final
+Wrote stage16n_r4q_block02_500_to_521_solve_522_to_750.inp
+[preflight] restart_line=*RESTART, READ, STEP=479, INC=65
+[preflight] PASS: block-2 deck generated without Abaqus submission
