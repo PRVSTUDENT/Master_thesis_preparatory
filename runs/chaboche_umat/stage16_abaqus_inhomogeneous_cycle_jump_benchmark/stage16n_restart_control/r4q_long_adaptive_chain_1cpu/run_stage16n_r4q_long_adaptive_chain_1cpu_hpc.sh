@@ -12,9 +12,58 @@ SCRATCH9_USER_LIMIT_TB="${SCRATCH9_USER_LIMIT_TB:-5}"
 START_EPOCH="$(date +%s)"
 LOG_DIR="${LOG_DIR:-_logs}"
 ABAQUS_SCRATCH="${TMPDIR:-$PWD/tmp}"
+MAIL_TO="${MAIL_TO:-Prasanna-Ramesh.Hegde@student.tu-freiberg.de}"
+MAIL_SUBJECT_PREFIX="${MAIL_SUBJECT_PREFIX:-Stage16N-R4Q long adaptive chain}"
+JOB_FINAL_STATUS="starting"
+MAIL_BEGIN_SENT=0
 mkdir -p "$LOG_DIR" "$ABAQUS_SCRATCH" "_source_state"
 
 exec > >(tee -a R4Q_LONG_CHAIN_CONTROLLER.log) 2>&1
+
+elapsed_seconds() {
+  echo $(( $(date +%s) - START_EPOCH ))
+}
+
+remaining_seconds() {
+  echo $(( WALLTIME_SECONDS - $(elapsed_seconds) ))
+}
+
+send_job_mail() {
+  local event="$1"
+  local status="${2:-unknown}"
+  local subject="${MAIL_SUBJECT_PREFIX}: ${event} ${PBS_JOBID:-manual} (${status})"
+  local body
+  body="Controller: $CONTROLLER
+Event: $event
+Status: $status
+PBS job: ${PBS_JOBID:-manual}
+Host: $(hostname 2>/dev/null || echo unknown)
+Workdir: $PWD
+Scratch: ${SCRATCH_CASE_DIR:-$PWD}
+Time: $(date '+%Y-%m-%d %H:%M:%S %Z')
+Elapsed seconds: $(elapsed_seconds)
+Remaining seconds: $(remaining_seconds)
+"
+
+  if [[ -z "$MAIL_TO" ]]; then
+    echo "[mail] MAIL_TO is empty; not sending ${event} notification"
+    return 0
+  fi
+  if command -v mailx >/dev/null 2>&1; then
+    printf '%s\n' "$body" | mailx -s "$subject" "$MAIL_TO" || echo "[mail] mailx failed for ${event}"
+  elif command -v mail >/dev/null 2>&1; then
+    printf '%s\n' "$body" | mail -s "$subject" "$MAIL_TO" || echo "[mail] mail failed for ${event}"
+  elif command -v sendmail >/dev/null 2>&1; then
+    {
+      echo "To: $MAIL_TO"
+      echo "Subject: $subject"
+      echo
+      printf '%s\n' "$body"
+    } | sendmail -t || echo "[mail] sendmail failed for ${event}"
+  else
+    echo "[mail] no mail/mailx/sendmail command available; ${event} notification not sent"
+  fi
+}
 
 phase_time() {
   local label="$1"
@@ -45,14 +94,6 @@ run_logged_phase() {
   return "$rc"
 }
 
-elapsed_seconds() {
-  echo $(( $(date +%s) - START_EPOCH ))
-}
-
-remaining_seconds() {
-  echo $(( WALLTIME_SECONDS - $(elapsed_seconds) ))
-}
-
 walltime_low() {
   [[ "$(remaining_seconds)" -lt "$WALLTIME_STOP_MARGIN_SECONDS" ]]
 }
@@ -61,6 +102,7 @@ write_status() {
   local status="$1"
   local phase="$2"
   local detail="$3"
+  JOB_FINAL_STATUS="$status"
   {
     echo "status=$status"
     echo "phase=$phase"
@@ -409,8 +451,16 @@ on_error() {
   copy_lightweight_evidence
   exit 0
 }
+
+on_exit() {
+  local rc=$?
+  copy_lightweight_evidence
+  send_job_mail "END" "$JOB_FINAL_STATUS"
+  exit "$rc"
+}
+
 trap on_error ERR
-trap copy_lightweight_evidence EXIT
+trap on_exit EXIT
 
 module purge
 module load gcc/11.4.0
@@ -421,6 +471,8 @@ echo "[Stage16N-R4Q] start: $(date '+%Y-%m-%d %H:%M:%S')"
 echo "[Stage16N-R4Q] PBS job: ${PBS_JOBID:-manual}"
 echo "[Stage16N-R4Q] scratch: ${SCRATCH_CASE_DIR:-$PWD}"
 echo "[Stage16N-R4Q] cpus=${ABAQUS_CPUS:-1} mp_mode=${ABAQUS_MP_MODE:-threads}"
+send_job_mail "BEGIN" "started"
+MAIL_BEGIN_SENT=1
 init_summary
 copy_1000_reference_aliases
 enforce_storage_gate
