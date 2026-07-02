@@ -6,7 +6,7 @@
 #PBS -o /scratch/pr21vyci/stage16n_r4q_long_adaptive_chain_1cpu/r4q_long_chain.pbs.out
 #PBS -j oe
 #PBS -m abe
-#PBS -M Prasanna-Ramesh.Hegde@student.tu-freiberg.de
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
 
 set -euo pipefail
 
@@ -36,7 +36,7 @@ export ABAQUS_MP_MODE=threads
 export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export CLEAN_HEAVY_AFTER_CLASSIFICATION=1
-export MAIL_TO="${MAIL_TO:-Prasanna-Ramesh.Hegde@student.tu-freiberg.de}"
+export MAIL_TO="${MAIL_TO:-${USER}@mailserver.tu-freiberg.de}"
 export MAIL_SUBJECT_PREFIX="${MAIL_SUBJECT_PREFIX:-Stage16N-R4Q long adaptive chain}"
 
 mkdir -p "$SCRATCH_BASE" "$SCRATCH_CASE_DIR" "$TMPDIR" "$HOME_CASE_DIR" "$SCRATCH_CASE_DIR/$LOG_DIR"
