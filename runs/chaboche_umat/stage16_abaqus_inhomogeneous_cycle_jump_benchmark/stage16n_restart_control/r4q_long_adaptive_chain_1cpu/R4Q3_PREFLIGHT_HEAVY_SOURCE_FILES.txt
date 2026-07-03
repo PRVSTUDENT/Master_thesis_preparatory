@@ -1,0 +1,7 @@
+-rw-r--r-- 1 pr21vyci t2-dg-role_student  61M Jul  3 00:28 stage16n_r4q2_block02_500_to_521_solve_522_to_750.mdl
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 324M Jul  3 00:28 stage16n_r4q2_block02_500_to_521_solve_522_to_750.odb
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 2.0K Jul  3 00:28 stage16n_r4q2_block02_500_to_521_solve_522_to_750.prt
+-rw-r--r-- 1 pr21vyci t2-dg-role_student  45M Jul  3 00:28 stage16n_r4q2_block02_500_to_521_solve_522_to_750.res
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 1.6M Jul  3 00:28 stage16n_r4q2_block02_500_to_521_solve_522_to_750.sim
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 911K Jul  3 00:28 stage16n_r4q2_block02_500_to_521_solve_522_to_750.sta
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 420G Jul  3 00:28 stage16n_r4q2_block02_500_to_521_solve_522_to_750.stt
