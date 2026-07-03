@@ -1,0 +1,18 @@
+created=2026-07-03 06:27:16 CEST
+pwd=/scratch/pr21vyci/git_work/Master_thesis_preparatory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4q_long_adaptive_chain_1cpu
+--- qstat -u pr21vyci ---
+--- df -h /scratch9 /scratch /home ---
+Filesystem               Size  Used Avail Use% Mounted on
+panfs://mpanfs/scratch9   33T  8.1T   25T  25% /scratch9
+panfs://mpanfs/scratch   101T   85T   16T  85% /scratch
+mnfs:/home                17T   14T  3.1T  82% /home
+--- du -sh /scratch9/pr21vyci ---
+3.7T	/scratch9/pr21vyci
+--- heavy source files ---
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 911K Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.sta
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 45M Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.res
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 420G Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.stt
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 61M Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.mdl
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 2.0K Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.prt
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 1.6M Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.sim
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 324M Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.odb
