@@ -1,0 +1,2 @@
+cycles,status,max_global_error_pct,max_primary_local_error_pct,diagnostic_s11_error_pct,details_file
+1000,review,2.330504e-05,6.2795526,0.00031922278,R4Q3_REFERENCE_REPAIR_cycle1000_comparison_details.csv
