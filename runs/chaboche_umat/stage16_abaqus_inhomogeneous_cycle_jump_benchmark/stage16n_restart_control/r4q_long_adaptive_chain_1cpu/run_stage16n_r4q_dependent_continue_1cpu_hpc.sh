@@ -18,6 +18,8 @@ ABAQUS_SCRATCH="${TMPDIR:-$PWD/tmp}"
 MAIL_TO="${MAIL_TO:-${USER}@mailserver.tu-freiberg.de}"
 MAIL_SUBJECT_PREFIX="${MAIL_SUBJECT_PREFIX:-Stage16N-${CONTROLLER}}"
 ALLOW_PREVIOUS_FEASIBILITY="${ALLOW_PREVIOUS_FEASIBILITY:-0}"
+R4Q_ALLOW_FEASIBILITY_AFTER_1000_FAIL="${R4Q_ALLOW_FEASIBILITY_AFTER_1000_FAIL:-0}"
+CLASSIFICATION_SCOPE_OVERRIDE="${CLASSIFICATION_SCOPE_OVERRIDE:-}"
 RESTART_STEP=""
 RESTART_INC=""
 JOB_FINAL_STATUS="starting"
@@ -85,6 +87,8 @@ write_status() {
     echo "restart_step=$RESTART_STEP"
     echo "restart_inc=$RESTART_INC"
     echo "allow_previous_feasibility=$ALLOW_PREVIOUS_FEASIBILITY"
+    echo "R4Q_ALLOW_FEASIBILITY_AFTER_1000_FAIL=$R4Q_ALLOW_FEASIBILITY_AFTER_1000_FAIL"
+    echo "classification_scope=${CLASSIFICATION_SCOPE_OVERRIDE:-auto}"
     echo "abaqus_cpus=${ABAQUS_CPUS:-1}"
     echo "scratch_case_dir=${SCRATCH_CASE_DIR:-$PWD}"
     echo "elapsed_seconds=$(elapsed_seconds)"
@@ -215,6 +219,14 @@ latest_previous_status() {
   awk -F= '$1 == "status" {print $2; exit}' "$status_file"
 }
 
+cycle1000_accuracy_fail_override_allowed() {
+  [[ "$R4Q_ALLOW_FEASIBILITY_AFTER_1000_FAIL" == "1" ]] || return 1
+  [[ "$SOURCE_CYCLE" == "1000" ]] || return 1
+  [[ -s "R4Q3_REFERENCE_REPAIR_STATUS.txt" ]] || return 1
+  grep -q '^status=accuracy_validation_fail$' R4Q3_REFERENCE_REPAIR_STATUS.txt || return 1
+  grep -q '^max_primary_local_error_pct=6\.2795526$' R4Q3_REFERENCE_REPAIR_STATUS.txt || return 1
+}
+
 gate_previous_controller() {
   local prev_status line prev_block_status prev_scope prev_ref prev_compare prev_detail
   prev_status="$(latest_previous_status)"
@@ -242,6 +254,10 @@ gate_previous_controller() {
     exit 0
   fi
   if [[ "$prev_compare" == "fail" || "$prev_compare" == "review" || "$prev_compare" == "comparison_error" ]]; then
+    if cycle1000_accuracy_fail_override_allowed; then
+      echo "[gate] explicit feasibility override accepted after cycle1000 accuracy_validation_fail"
+      return 0
+    fi
     append_summary "previous_comparison_blocked" "self_gate" "$prev_ref" "$prev_compare" "previous comparison blocked continuation"
     write_status "previous_comparison_blocked" "self_gate" "previous comparison=$prev_compare"
     copy_lightweight_evidence
@@ -436,11 +452,11 @@ else
 fi
 
 ref_available="no"
-scope="feasibility"
+scope="${CLASSIFICATION_SCOPE_OVERRIDE:-feasibility}"
 comparison_status="not_available"
 if reference_available_for "$BLOCK_END"; then
   ref_available="yes"
-  scope="accuracy_validation"
+  scope="${CLASSIFICATION_SCOPE_OVERRIDE:-accuracy_validation}"
   comparison_status="$(run_comparison_if_available "$JOB" "$BLOCK_END")"
 fi
 

@@ -1,0 +1,4 @@
+primary_local_tolerance_pct,official_strict_gate,max_global_error_pct,global_pass_1pct,max_primary_local_error_pct,primary_local_pass,diagnostic_s11_error_pct,s11_pass_1pct,overall_status
+5,yes,2.330504e-05,true,6.2795526,false,0.00031922278,true,fail
+7.5,no,2.330504e-05,true,6.2795526,true,0.00031922278,true,pass
+10,no,2.330504e-05,true,6.2795526,true,0.00031922278,true,pass

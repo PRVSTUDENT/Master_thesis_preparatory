@@ -1,0 +1,10 @@
+cycle,reference_HOLE_RING_SDV1_MAX,jump_HOLE_RING_SDV1_MAX,error_pct,status
+1,0.0560648106039,,,reference_only
+2,0.0853657722473,,,reference_only
+10,0.326688826084,,,reference_only
+50,1.40247964859,,,reference_only
+100,2.54507756233,,,reference_only
+250,6.41741323471,,,reference_only
+500,13.0502681732,,,reference_only
+750,19.5627155304,,,reference_only
+1000,26.0519256592,24.4159812927,6.27955257,compared
