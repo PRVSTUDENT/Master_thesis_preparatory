@@ -256,6 +256,10 @@ gate_previous_controller() {
   echo "[gate] previous status=$prev_status summary_status=$prev_block_status scope=$prev_scope ref=$prev_ref comparison=$prev_compare detail=$prev_detail"
 
   if [[ "$prev_status" != "completed" || "$prev_block_status" != "completed" ]]; then
+    if [[ "$prev_block_status" == "completed" ]] && cycle1000_accuracy_fail_override_allowed; then
+      echo "[gate] explicit feasibility override accepted after cycle1000 accuracy_validation_fail with completed predecessor summary"
+      return 0
+    fi
     append_summary "previous_not_completed" "self_gate" "$prev_ref" "$prev_compare" "previous status=$prev_status block_status=$prev_block_status"
     write_status "previous_not_completed" "self_gate" "previous status=$prev_status block_status=$prev_block_status"
     copy_lightweight_evidence
