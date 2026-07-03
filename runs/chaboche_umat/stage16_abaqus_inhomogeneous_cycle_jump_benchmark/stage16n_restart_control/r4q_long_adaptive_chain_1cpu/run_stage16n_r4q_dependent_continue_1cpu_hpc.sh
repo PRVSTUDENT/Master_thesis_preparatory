@@ -200,23 +200,37 @@ resolve_restart_from_sta() {
 }
 
 latest_previous_summary_line() {
-  local summary
-  summary="$(find "$PREVIOUS_SCRATCH_DIR" -maxdepth 1 -type f -name '*_BLOCK_SUMMARY.csv' | sort | tail -n 1 || true)"
-  if [[ -z "$summary" || ! -s "$summary" ]]; then
-    echo ""
-    return 0
-  fi
-  tail -n 1 "$summary"
+  local summary line
+  while IFS= read -r summary; do
+    [[ -s "$summary" ]] || continue
+    line="$(awk -F, -v oldjob="$OLDJOB" '
+      NR == 1 {
+        delete idx
+        for (i = 1; i <= NF; i++) idx[$i] = i
+        next
+      }
+      idx["job"] && $idx["job"] == oldjob { found = $0 }
+      END { if (found != "") print found }
+    ' "$summary")"
+    if [[ -n "$line" ]]; then
+      echo "$line"
+      return 0
+    fi
+  done < <(find "$PREVIOUS_SCRATCH_DIR" -maxdepth 1 -type f -name '*_BLOCK_SUMMARY.csv' | sort)
+  echo ""
 }
 
 latest_previous_status() {
-  local status_file
-  status_file="$(find "$PREVIOUS_SCRATCH_DIR" -maxdepth 1 -type f -name '*_STATUS.txt' | sort | tail -n 1 || true)"
-  if [[ -z "$status_file" || ! -s "$status_file" ]]; then
-    echo ""
-    return 0
-  fi
-  awk -F= '$1 == "status" {print $2; exit}' "$status_file"
+  local status_file status
+  while IFS= read -r status_file; do
+    [[ -s "$status_file" ]] || continue
+    if grep -q "^job=$OLDJOB$" "$status_file"; then
+      status="$(awk -F= '$1 == "status" {print $2; exit}' "$status_file")"
+      echo "$status"
+      return 0
+    fi
+  done < <(find "$PREVIOUS_SCRATCH_DIR" -maxdepth 1 -type f -name '*_STATUS.txt' | sort)
+  echo ""
 }
 
 cycle1000_accuracy_fail_override_allowed() {
