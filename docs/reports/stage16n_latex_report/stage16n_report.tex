@@ -1982,7 +1982,7 @@ The model was smoke-tested through PBS job \code{1362113.mmaster02} on \code{tea
 
 \section{Stage 16N-R4Q Long Adaptive Chain}
 
-R4Q is the active long-chain Abaqus test of the validated 21-cycle adaptive recommendation. It is not a new boundary-widening study and should not be duplicated while the submitted controller is active. The controller applies the already accepted safe jump pattern over sequential 250-cycle blocks:
+R4Q is the long-chain Abaqus test of the validated 21-cycle adaptive recommendation. It is not a new boundary-widening study. The controller applies the already accepted safe jump pattern over sequential 250-cycle blocks:
 \begin{quote}
 source250 $\rightarrow$ target271, continue 272--500;\\
 source500 $\rightarrow$ target521, continue 522--750;\\
@@ -2003,6 +2003,8 @@ The controller runs from scratch at:
 \end{quote}
 and copies back only lightweight evidence. The important lightweight files are \code{STAGE16N\_R4Q\_RESULT.md}, \code{R4Q\_LONG\_CHAIN\_STATUS.txt}, \code{R4Q\_LONG\_CHAIN\_BLOCK\_SUMMARY.csv}, \code{R4Q\_LONG\_CHAIN\_CONTROLLER.log}, \code{R4Q\_LONG\_CHAIN\_SUBMITTED\_JOB.txt}, and the \code{qstat\_r4q\_1362114} snapshots.
 
-The completed R4Q result is partial feasibility evidence. Block 1 completed source250 \(\rightarrow\) target271, solved 272--500, and extracted a new cycle-500 source state; no comparison reference was available for that endpoint, so it is not an accuracy-validation claim. Block 2 stopped before solving. The controller produced the source500 \(\rightarrow\) target521 extrapolated state, but \code{stage16n\_make\_r4q\_restart\_deck.py} received an empty \code{--old-inc}, so the block-2 input deck was not generated and Abaqus datacheck reported the missing \code{stage16n\_r4q\_block02\_500\_to\_521\_solve\_522\_to\_750.inp}. This is a controller/deck-generation stop, not a scientific rejection of the 500 \(\rightarrow\) 521 \(\rightarrow\) 750 adaptive jump. The next step is a cheap no-solver preflight that proves the block-2 restart step/increment and generated input deck before any further Abaqus solve is submitted.
+The completed R4Q/R4Q2 result is feasibility evidence. Block 1 completed source250 \(\rightarrow\) target271, solved 272--500, and extracted a new cycle-500 source state; no comparison reference was available for that endpoint, so it is not an accuracy-validation claim. The first R4Q controller stopped before solving block 2 because \code{stage16n\_make\_r4q\_restart\_deck.py} received an empty \code{--old-inc}. A no-solver preflight then resolved the cycle-500 restart point as \code{STEP=479, INC=65}, after which R4Q2 continued only from the preserved cycle-500 source.
+
+R4Q2 job \code{1362597.mmaster02} completed source500 \(\rightarrow\) target521 plus native continuation 522--750 and extracted the cycle-750 state. Its final PBS record shows \code{job\_state=F}, \code{Exit\_status=0}, \code{Stageout\_status=1}, \code{resources\_used.walltime=09:13:54}, \code{resources\_used.cput=08:29:02}, \code{resources\_used.cpupercent=98}, \code{resources\_used.ncpus=1}, and \code{exec\_host=mnode075/2*0}. The R4Q2 block summary is \code{status=completed}, \code{classification\_scope=feasibility}, \code{reference\_available=no}, \code{comparison\_status=not\_available}, and \code{detail=extraction=ok; cycle750\_state=ok}. This confirms a second closed-loop feasibility block for the fixed 21-skipped-cycle rule, but it does not validate accuracy at cycle 750 or widen the accepted 250-branch true-jump boundary beyond target271.
 
 \end{document}
