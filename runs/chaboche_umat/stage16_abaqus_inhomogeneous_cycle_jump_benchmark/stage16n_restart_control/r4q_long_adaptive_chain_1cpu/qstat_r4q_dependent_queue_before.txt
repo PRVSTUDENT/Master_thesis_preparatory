@@ -1,0 +1,6 @@
+
+mmaster02: 
+                                                            Req'd  Req'd   Elap
+Job ID          Username Queue    Jobname    SessID NDS TSK Memory Time  S Time
+--------------- -------- -------- ---------- ------ --- --- ------ ----- - -----
+1362636.mmaste* pr21vyci mediumq  stage16n_* 539951   1   1   30gb 24:00 R 00:14
