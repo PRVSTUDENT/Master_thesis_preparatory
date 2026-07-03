@@ -237,7 +237,7 @@ cycle1000_accuracy_fail_override_allowed() {
   [[ "$R4Q_ALLOW_FEASIBILITY_AFTER_1000_FAIL" == "1" ]] || return 1
   [[ "$SOURCE_CYCLE" == "1000" ]] || return 1
   [[ -s "R4Q3_REFERENCE_REPAIR_STATUS.txt" ]] || return 1
-  grep -q '^status=accuracy_validation_fail$' R4Q3_REFERENCE_REPAIR_STATUS.txt || return 1
+  grep -q 'status=accuracy_validation_fail' R4Q3_REFERENCE_REPAIR_STATUS.txt || return 1
   grep -q '^max_primary_local_error_pct=6\.2795526$' R4Q3_REFERENCE_REPAIR_STATUS.txt || return 1
 }
 
