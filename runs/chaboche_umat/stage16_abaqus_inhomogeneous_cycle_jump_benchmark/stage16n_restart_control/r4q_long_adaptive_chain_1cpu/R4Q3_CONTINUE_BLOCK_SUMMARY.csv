@@ -1,2 +1,2 @@
 block_index,source_cycle,jump_target,solved_start,block_end,status,classification_scope,reference_available,comparison_status,job,oldjob,elapsed_seconds,detail
-3,750,771,772,1000,preflight_passed,preflight,unknown,not_run,stage16n_r4q3_block03_750_to_771_solve_772_to_1000,stage16n_r4q2_block02_500_to_521_solve_522_to_750,8,"deck=stage16n_r4q3_block03_750_to_771_solve_772_to_1000.inp restart_step=708 restart_inc=62"
+3,750,771,772,1000,completed,accuracy_validation,yes,comparison_error,stage16n_r4q3_block03_750_to_771_solve_772_to_1000,stage16n_r4q2_block02_500_to_521_solve_522_to_750,42097,"extraction=ok; cycle1000_state=ok"

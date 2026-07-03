@@ -1,0 +1,19 @@
+[Stage16N-R4Q7_continue_from_cycle1750_1cpu] start: 2026-07-03 18:10:21
+[Stage16N-R4Q7_continue_from_cycle1750_1cpu] PBS job: 1362640.mmaster02
+[Stage16N-R4Q7_continue_from_cycle1750_1cpu] scratch: /scratch/pr21vyci/stage16n_r4q7_continue_from_cycle1750_1cpu/1362640.mmaster02
+[Stage16N-R4Q7_continue_from_cycle1750_1cpu] previous source: /scratch/pr21vyci/stage16n_r4q6_continue_from_cycle1500_1cpu/1362639.mmaster02/stage16n_r4q6_block06_1500_to_1521_solve_1522_to_1750
+[gate] previous status=finished_or_safe_stopped summary_status=1000 scope=datacheck_failure ref=feasibility comparison=unknown detail=75108,"datacheck failed"
+sending incremental file list
+./
+R4Q7_continue_from_cycle1750_1cpu_BLOCK_SUMMARY.csv
+R4Q7_continue_from_cycle1750_1cpu_CONTROLLER.log
+R4Q7_continue_from_cycle1750_1cpu_STATUS.txt
+tmp/
+
+sent 3,256 bytes  received 86 bytes  6,684.00 bytes/sec
+total size is 53,500  speedup is 16.01
+sending incremental file list
+R4Q7_continue_from_cycle1750_1cpu_CONTROLLER.log
+
+sent 2,346 bytes  received 38 bytes  4,768.00 bytes/sec
+total size is 53,780  speedup is 22.56
