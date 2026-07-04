@@ -1,0 +1,60 @@
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] start: 2026-07-04 01:52:17
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] PBS job: 1363409.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] scratch: /scratch/pr21vyci/stage16n_r4q4f_continue_from_cycle1000_1cpu/1363409.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] previous source: /scratch/pr21vyci/stage16n_r4q3_continue_from_cycle750_1cpu/1362636.mmaster02/stage16n_r4q3_block03_750_to_771_solve_772_to_1000
+[gate] previous status=finished_or_safe_stopped summary_status=1000 scope=datacheck_failure ref=feasibility comparison=unknown detail=75108,"datacheck failed"
+sending incremental file list
+./
+R4Q4F_continue_from_cycle1000_1cpu_BLOCK_SUMMARY.csv
+R4Q4F_continue_from_cycle1000_1cpu_CONTROLLER.log
+R4Q4F_continue_from_cycle1000_1cpu_STATUS.txt
+tmp/
+
+sent 3,155 bytes  received 86 bytes  6,482.00 bytes/sec
+total size is 53,072  speedup is 16.38
+sending incremental file list
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] start: 2026-07-04 01:54:43
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] PBS job: 1363435.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] scratch: /scratch/pr21vyci/stage16n_r4q4f_continue_from_cycle1000_1cpu/1363435.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] previous source: /scratch/pr21vyci/stage16n_r4q3_continue_from_cycle750_1cpu/1362636.mmaster02/stage16n_r4q3_block03_750_to_771_solve_772_to_1000
+[gate] previous status=passed summary_status=completed scope=accuracy_validation ref=yes comparison=comparison_error detail="extraction=ok; cycle1000_state=ok"
+sending incremental file list
+./
+R4Q4F_continue_from_cycle1000_1cpu.pbs.out
+R4Q4F_continue_from_cycle1000_1cpu_BLOCK_SUMMARY.csv
+R4Q4F_continue_from_cycle1000_1cpu_CONTROLLER.log
+R4Q4F_continue_from_cycle1000_1cpu_STATUS.txt
+tmp/
+
+sent 5,337 bytes  received 105 bytes  10,884.00 bytes/sec
+total size is 55,084  speedup is 10.12
+sending incremental file list
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] start: 2026-07-04 01:55:59
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] PBS job: 1363512.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] scratch: /scratch/pr21vyci/stage16n_r4q4f_continue_from_cycle1000_1cpu/1363512.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] previous source: /scratch/pr21vyci/stage16n_r4q3_continue_from_cycle750_1cpu/1362636.mmaster02/stage16n_r4q3_block03_750_to_771_solve_772_to_1000
+[gate] previous status=passed summary_status=completed scope=accuracy_validation ref=yes comparison=comparison_error detail="extraction=ok; cycle1000_state=ok"
+sending incremental file list
+./
+R4Q4F_continue_from_cycle1000_1cpu.pbs.out
+R4Q4F_continue_from_cycle1000_1cpu_BLOCK_SUMMARY.csv
+R4Q4F_continue_from_cycle1000_1cpu_CONTROLLER.log
+R4Q4F_continue_from_cycle1000_1cpu_STATUS.txt
+tmp/
+
+sent 6,579 bytes  received 105 bytes  13,368.00 bytes/sec
+total size is 59,412  speedup is 8.89
+sending incremental file list
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] start: 2026-07-04 01:58:01
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] PBS job: 1363629.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] scratch: /scratch/pr21vyci/stage16n_r4q4f_continue_from_cycle1000_1cpu/1363629.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] previous source: /scratch/pr21vyci/stage16n_r4q3_continue_from_cycle750_1cpu/1362636.mmaster02/stage16n_r4q3_block03_750_to_771_solve_772_to_1000
+[gate] previous status=passed summary_status=completed scope=accuracy_validation ref=yes comparison=comparison_error detail="extraction=ok; cycle1000_state=ok"
+[gate] explicit feasibility override accepted after cycle1000 accuracy_validation_fail with completed predecessor summary
+Wrote stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250.inp
+sending incremental file list
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+./
+R4Q4F_continue_from_cycle1000_1cpu.pbs.out
+R4Q4F_continue_from_cycle1000_1cpu_BLOCK_SUMMARY.csv
