@@ -1,0 +1,17 @@
+submitted_at=2026-07-06 07:59:46 CEST
+classification_scope=feasibility_only_after_cycle1000_accuracy_fail
+R4Q_ALLOW_FEASIBILITY_AFTER_1000_FAIL=1
+dependency_mode=strict_afterok
+stop_cycle=5000
+R4Q8F=1364994.mmaster02 dependency=none target=2000_to_2021_solve_2022_to_2250
+R4Q9F=1364995.mmaster02 dependency=afterok:1364994.mmaster02 target=2250_to_2271_solve_2272_to_2500
+R4Q10F=1364996.mmaster02 dependency=afterok:1364995.mmaster02 target=2500_to_2521_solve_2522_to_2750
+R4Q11F=1364997.mmaster02 dependency=afterok:1364996.mmaster02 target=2750_to_2771_solve_2772_to_3000
+R4Q12F=1364998.mmaster02 dependency=afterok:1364997.mmaster02 target=3000_to_3021_solve_3022_to_3250
+R4Q13F=1364999.mmaster02 dependency=afterok:1364998.mmaster02 target=3250_to_3271_solve_3272_to_3500
+R4Q14F=1365000.mmaster02 dependency=afterok:1364999.mmaster02 target=3500_to_3521_solve_3522_to_3750
+R4Q15F=1365001.mmaster02 dependency=afterok:1365000.mmaster02 target=3750_to_3771_solve_3772_to_4000
+R4Q16F=1365002.mmaster02 dependency=afterok:1365001.mmaster02 target=4000_to_4021_solve_4022_to_4250
+R4Q17F=1365003.mmaster02 dependency=afterok:1365002.mmaster02 target=4250_to_4271_solve_4272_to_4500
+R4Q18F=1365004.mmaster02 dependency=afterok:1365003.mmaster02 target=4500_to_4521_solve_4522_to_4750
+R4Q19F=1365005.mmaster02 dependency=afterok:1365004.mmaster02 target=4750_to_4771_solve_4772_to_5000

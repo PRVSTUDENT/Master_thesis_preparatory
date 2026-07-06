@@ -1,0 +1,51 @@
+Job Id: 1364998.mmaster02
+    Job_Name = stage16n_r4q12f_continue_1cpu
+    Job_Owner = pr21vyci@mlogin01.cluster
+    job_state = H
+    queue = mediumq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Mon Jul  6 07:59:43 2026
+    depend = afterok:1364997.mmaster02@mmaster02,
+	beforeok:1364999.mmaster02@mmaster02
+    Error_Path = mlogin01.cluster:/scratch/pr21vyci/git_work/Master_thesis_prep
+	aratory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benc
+	hmark/stage16n_restart_control/r4q_long_adaptive_chain_1cpu/stage16n_r4
+	q12f_continue_1cpu.e1364998
+    Hold_Types = s
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = abe
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Mon Jul  6 07:59:43 2026
+    Output_Path = mlogin01.cluster:/scratch/pr21vyci/stage16n_r4q12f_continue_f
+	rom_cycle3000_1cpu/R4Q12F_continue_from_cycle3000_1cpu.pbs.out
+    Priority = 0
+    qtime = Mon Jul  6 07:59:43 2026
+    Rerunable = True
+    Resource_List.mem = 30gb
+    Resource_List.mpiprocs = 1
+    Resource_List.ncpus = 1
+    Resource_List.ngpus = 0
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=1:mpiprocs=1:ompthreads=1:mem=30gb
+    Resource_List.walltime = 24:00:00
+    sandbox = PRIVATE
+    substate = 22
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/bin:/home/pr21vyci/texlive/2026/bin/x86_64-l
+	inux:/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin:/usr/b
+	in:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/scratch/pr21vyci/git_work/Master_thesis_preparatory/run
+	s/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage
+	16n_restart_control/r4q_long_adaptive_chain_1cpu,PBS_O_SYSTEM=Linux,
+	PBS_O_QUEUE=entryq
+    etime = Mon Jul  6 07:59:43 2026
+    eligible_time = 00:00:00
+    Submit_arguments = -W depend=afterok:1364997.mmaster02 run_r4q12f_continue_
+	from_cycle3000_1cpu.pbs
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+

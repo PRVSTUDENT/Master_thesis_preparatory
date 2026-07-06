@@ -53,6 +53,27 @@ At the live post-submit snapshot, R4Q4F `1363629.mmaster02` was running in `medi
 
 R4Q5F--R4Q7F were held behind PBS dependencies. Do not queue beyond cycle2000 until this feasibility chain is classified.
 
+## Cycle5000 extension
+
+Updated 2026-07-06 08:03 CEST: R4Q4F--R4Q7F completed cleanly through cycle2000, still as feasibility-only continuation after the R4Q3 cycle1000 strict local accuracy fail. The next feasibility-only chain was submitted through `/home/pr21vyci/bin/qsub_abq_guarded` with 1 CPU, 30 GB, 24 h per job, scratch-only execution, lightweight copy-back, strict `afterok` dependencies, and `R4Q_ALLOW_FEASIBILITY_AFTER_1000_FAIL=1`.
+
+- R4Q8F `1364994.mmaster02`: source2000 -> target2021, solve 2022--2250, dependency none.
+- R4Q9F `1364995.mmaster02`: source2250 -> target2271, solve 2272--2500, dependency `afterok:1364994.mmaster02`.
+- R4Q10F `1364996.mmaster02`: source2500 -> target2521, solve 2522--2750, dependency `afterok:1364995.mmaster02`.
+- R4Q11F `1364997.mmaster02`: source2750 -> target2771, solve 2772--3000, dependency `afterok:1364996.mmaster02`.
+- R4Q12F `1364998.mmaster02`: source3000 -> target3021, solve 3022--3250, dependency `afterok:1364997.mmaster02`.
+- R4Q13F `1364999.mmaster02`: source3250 -> target3271, solve 3272--3500, dependency `afterok:1364998.mmaster02`.
+- R4Q14F `1365000.mmaster02`: source3500 -> target3521, solve 3522--3750, dependency `afterok:1364999.mmaster02`.
+- R4Q15F `1365001.mmaster02`: source3750 -> target3771, solve 3772--4000, dependency `afterok:1365000.mmaster02`.
+- R4Q16F `1365002.mmaster02`: source4000 -> target4021, solve 4022--4250, dependency `afterok:1365001.mmaster02`.
+- R4Q17F `1365003.mmaster02`: source4250 -> target4271, solve 4272--4500, dependency `afterok:1365002.mmaster02`.
+- R4Q18F `1365004.mmaster02`: source4500 -> target4521, solve 4522--4750, dependency `afterok:1365003.mmaster02`.
+- R4Q19F `1365005.mmaster02`: source4750 -> target4771, solve 4772--5000, dependency `afterok:1365004.mmaster02`.
+
+The post-submit live snapshot shows R4Q8F running and R4Q9F--R4Q19F held behind the strict dependency chain. R4Q19F stops at cycle5000; no jobs were queued beyond cycle5000.
+
+The R4Q3N exact/native diagnostic was also submitted. The first guarded attempt `1365006.mmaster02` self-gated before Abaqus because the diagnostic gate did not recognize the older R4Q2 status layout. The corrected guarded retry `1365007.mmaster02` is running and uses the R4Q2 cycle750 source without the 750 -> 771 extrapolated overwrite.
+
 ## Skipped submit attempts
 
 Three earlier F-chain submissions stopped before Abaqus because the predecessor self-gate was too strict for the repaired R4Q3 status layout:

@@ -1,0 +1,2 @@
+case,source_cycle,solved_start,block_end,status,classification_scope,reference_available,comparison_status,job,oldjob,elapsed_seconds,detail
+R4Q3N_exact_native_control_750_to_1000,750,751,1000,previous_status_missing,exact_native_diagnostic_control,unknown,not_run,stage16n_r4q3n_exact_native_750_to_1000,stage16n_r4q2_block02_500_to_521_solve_522_to_750,3,"R4Q2 status file missing"
