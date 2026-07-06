@@ -1,0 +1,2 @@
+block_index,source_cycle,jump_target,solved_start,block_end,status,classification_scope,reference_available,comparison_status,job,oldjob,elapsed_seconds,detail
+6,1500,1521,1522,1750,completed,feasibility_only_after_cycle1000_accuracy_fail,no,not_available,stage16n_r4q6f_block06_1500_to_1521_solve_1522_to_1750,stage16n_r4q5f_block05_1250_to_1271_solve_1272_to_1500,34470,"extraction=ok; cycle1750_state=ok"
