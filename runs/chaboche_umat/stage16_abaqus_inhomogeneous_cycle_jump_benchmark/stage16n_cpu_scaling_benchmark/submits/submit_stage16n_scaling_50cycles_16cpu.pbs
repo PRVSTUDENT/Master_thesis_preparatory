@@ -1,0 +1,17 @@
+#!/bin/bash
+#PBS -N s16n_scl_16c
+#PBS -q entry_teachingq
+#PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=70gb
+#PBS -l walltime=03:00:00
+#PBS -j oe
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
+
+set -euo pipefail
+cd "$PBS_O_WORKDIR"
+export REPO_ROOT="/home/pr21vyci/master_thesis/Abaqus_trial"
+export BENCHMARK_CYCLES="50"
+export ABAQUS_CPUS="16"
+export ABAQUS_MP_MODE="threads"
+
+bash runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/run_stage16n_cpu_scaling_case_hpc.sh

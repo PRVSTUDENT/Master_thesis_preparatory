@@ -1,0 +1,2 @@
+block_index,source_cycle,jump_target,solved_start,block_end,status,classification_scope,reference_available,comparison_status,job,oldjob,elapsed_seconds,detail
+6,1500,1521,1522,1750,previous_not_completed,self_gate,feasibility,unknown,stage16n_r4q6_block06_1500_to_1521_solve_1522_to_1750,stage16n_r4q5_block05_1250_to_1271_solve_1272_to_1500,2,"previous status=finished_or_safe_stopped block_status=1000"

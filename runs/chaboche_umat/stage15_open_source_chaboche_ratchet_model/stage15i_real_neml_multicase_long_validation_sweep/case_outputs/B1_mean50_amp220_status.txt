@@ -1,0 +1,9 @@
+case_name=B1_mean50_amp220
+cycle=908241
+target_cycle=1500000
+elapsed_seconds=527.286
+cycles_per_hour=6200934.799549
+estimated_final_cycle_at_stop_guard=908241
+current_memory=620968kb
+status=stopped_by_time_guard
+last_checkpoint_cycle=908241

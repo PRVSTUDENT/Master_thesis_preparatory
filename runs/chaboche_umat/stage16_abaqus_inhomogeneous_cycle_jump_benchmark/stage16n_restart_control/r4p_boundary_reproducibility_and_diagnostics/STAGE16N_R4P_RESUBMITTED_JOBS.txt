@@ -1,0 +1,17 @@
+R4P corrected resubmission on 2026-06-28 06:21:04 CEST
+Storage gate: /scratch9/pr21vyci 2.862T <= 5T
+Guarded wrapper: /home/pr21vyci/bin/qsub_abq_guarded
+
+Previous failed launch IDs: 1358943.mmaster02 through 1358950.mmaster02 (Exit_status=127; runner not staged)
+
+Chain A:
+A1 R4P_A1_repeat_target271 job=1358951.mmaster02 dependency=none script=submit_stage16n_R4P_A1_repeat_target271.pbs
+A2 R4P_A2_repeat_target272 job=1358953.mmaster02 dependency=afterany:1358951.mmaster02 script=submit_stage16n_R4P_A2_repeat_target272.pbs
+A3 R4P_A3_target272_exact_native_control job=1358955.mmaster02 dependency=afterany:1358953.mmaster02 script=submit_stage16n_R4P_A3_target272_exact_native_control.pbs
+A4 R4P_A4_target272_failure_diagnostics job=1358957.mmaster02 dependency=afterany:1358955.mmaster02 script=submit_stage16n_R4P_A4_target272_failure_diagnostics.pbs
+
+Chain B:
+B1 R4P_B1_repeat_target270 job=1358952.mmaster02 dependency=none script=submit_stage16n_R4P_B1_repeat_target270.pbs
+B2 R4P_B2_target271_diagnostics job=1358954.mmaster02 dependency=afterany:1358952.mmaster02 script=submit_stage16n_R4P_B2_target271_diagnostics.pbs
+B3 R4P_B3_8core_target271_calibration job=1358956.mmaster02 dependency=afterany:1358954.mmaster02 script=submit_stage16n_R4P_B3_8core_target271_calibration.pbs
+B4 R4P_B4_8core_target272_calibration job=1358958.mmaster02 dependency=afterany:1358956.mmaster02 script=submit_stage16n_R4P_B4_8core_target272_calibration.pbs

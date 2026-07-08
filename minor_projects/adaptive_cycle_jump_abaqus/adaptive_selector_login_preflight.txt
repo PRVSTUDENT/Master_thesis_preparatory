@@ -1,0 +1,16 @@
+Adaptive cycle-jump decision
+==================================
+Accepted boundary: target271
+First rejected extrapolated target: target272
+Exact/native restart at target272: pass
+
+Target evidence:
+  target270: true-jump [R4P_B1:pass], controls [none]
+  target271: true-jump [R4P_A1:pass, R4P_B2:pass, R4P_B3:pass], controls [none]
+  target272: true-jump [R4P_A2:fail, R4P_A4:fail, R4P_B4:fail], controls [R4P_A3:pass]
+
+Conclusion:
+  target271 is the accepted true-jump boundary. target272 is rejected for extrapolated state prediction, not for Abaqus native restart continuity.
+
+Recommended next action:
+  Stop widening jumps. The native restart control passes, so the rejected target is limited by extrapolated state prediction. Redesign or diagnose the predictor before any higher target.

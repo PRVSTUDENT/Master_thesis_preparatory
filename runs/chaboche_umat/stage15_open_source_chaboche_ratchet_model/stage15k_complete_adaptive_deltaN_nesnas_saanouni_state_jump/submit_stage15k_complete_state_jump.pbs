@@ -1,0 +1,39 @@
+#!/bin/bash
+#PBS -N stage15k_statejump
+#PBS -q teachingq
+#PBS -l select=1:ncpus=40:mem=160gb:ompthreads=1
+#PBS -l walltime=23:55:00
+#PBS -j oe
+
+set -euo pipefail
+
+cd "$PBS_O_WORKDIR"
+mkdir -p logs
+
+WRAPPER_LOG="logs/stage15k_pbs_wrapper_${PBS_JOBID:-manual}.log"
+exec > >(tee -a "$WRAPPER_LOG") 2>&1
+trap 'status=$?; echo "Stage 15K PBS wrapper exiting with status ${status} at $(date)"; exit ${status}' EXIT
+
+echo "Stage 15K PBS wrapper started at $(date)"
+echo "PBS_JOBID=${PBS_JOBID:-unset}"
+echo "PBS_O_WORKDIR=${PBS_O_WORKDIR:-unset}"
+echo "HOSTNAME=$(hostname)"
+echo "PWD=$(pwd)"
+
+PYTHON_DIR="/cluster/stages/2024.0/spack-0.22/opt/spack/linux-rocky8-cascadelake/gcc-11.4.0/python-3.11.7-qfpdtq2pisspwunkuc4fqloxqo2ltw6j/bin"
+export PATH="${PYTHON_DIR}:${PATH}"
+hash -r
+which python
+python --version
+python - <<'PY'
+import neml
+print("NEML import OK:", neml.__file__)
+PY
+
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export STAGE15K_ACTIVE_WORKERS=40
+
+bash run_stage15k_full_hpc.sh

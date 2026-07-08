@@ -1,0 +1,11 @@
+# Stage 16N Exact Reinjection State
+
+- Source ODB: `stage16n_r1b_restart_ref_250cycles.odb`
+- Source step: `CYCLE_0100`
+- Source cycle: `100`
+- Frame value: `1.0`
+- Element/IP records: `25184`
+- State CSV: `stage16n_exact_state_cycle0100.csv`
+- State binary: `stage16n_exact_state_cycle0100.bin`
+- Stress components: `S1-S6`
+- State variables: `SDV1-SDV27`

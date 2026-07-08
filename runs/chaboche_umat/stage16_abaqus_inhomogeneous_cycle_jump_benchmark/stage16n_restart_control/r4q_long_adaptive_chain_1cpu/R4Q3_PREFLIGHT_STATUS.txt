@@ -1,0 +1,15 @@
+status=passed
+detail=deck generated with parsed restart step/inc
+controller=R4Q3_continue_from_cycle750_1cpu
+previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02
+oldjob=stage16n_r4q2_block02_500_to_521_solve_522_to_750
+job=stage16n_r4q3_block03_750_to_771_solve_772_to_1000
+source_cycle=750
+jump_target=771
+solved_start=772
+block_end=1000
+restart_step=708
+restart_inc=62
+deck=stage16n_r4q3_block03_750_to_771_solve_772_to_1000.inp
+restart_line=*RESTART, READ, STEP=708, INC=62
+updated_at=2026-07-03 06:24:25

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+<rect width="100%" height="100%" fill="white"/>
+<text x="450.00" y="28" text-anchor="middle" font-size="22" font-family="Arial">Cycle-jump prediction vs explicit 20 cycles</text>
+<line x1="95" y1="520" x2="730" y2="520" stroke="black" stroke-width="2"/>
+<line x1="95" y1="50" x2="95" y2="520" stroke="black" stroke-width="2"/>
+<line x1="95.00" y1="50" x2="95.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="95.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">0.43</text>
+<line x1="95" y1="520.00" x2="730" y2="520.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="525.00" text-anchor="end" font-size="13" font-family="Arial">-0.001229</text>
+<line x1="222.00" y1="50" x2="222.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="222.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">4.458</text>
+<line x1="95" y1="426.00" x2="730" y2="426.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="431.00" text-anchor="end" font-size="13" font-family="Arial">0.02881</text>
+<line x1="349.00" y1="50" x2="349.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="349.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">8.486</text>
+<line x1="95" y1="332.00" x2="730" y2="332.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="337.00" text-anchor="end" font-size="13" font-family="Arial">0.05884</text>
+<line x1="476.00" y1="50" x2="476.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="476.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">12.51</text>
+<line x1="95" y1="238.00" x2="730" y2="238.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="243.00" text-anchor="end" font-size="13" font-family="Arial">0.08888</text>
+<line x1="603.00" y1="50" x2="603.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="603.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">16.54</text>
+<line x1="95" y1="144.00" x2="730" y2="144.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="149.00" text-anchor="end" font-size="13" font-family="Arial">0.1189</text>
+<line x1="730.00" y1="50" x2="730.00" y2="520" stroke="#dddddd" stroke-width="1"/>
+<text x="730.00" y="545" text-anchor="middle" font-size="13" font-family="Arial">20.57</text>
+<line x1="95" y1="50.00" x2="730" y2="50.00" stroke="#dddddd" stroke-width="1"/>
+<text x="85" y="55.00" text-anchor="end" font-size="13" font-family="Arial">0.1489</text>
+<polyline points="112.97,498.64 144.50,476.17 176.03,453.66 207.56,431.16 239.09,408.67 270.62,386.18 302.15,363.69 333.68,341.20 365.21,318.72 396.74,296.24 428.26,273.77 459.79,251.30 491.32,228.83 522.85,206.37 554.38,183.91 585.91,161.45 617.44,139.00 648.97,116.55 680.50,94.11 712.03,71.66" fill="none" stroke="#1f77b4" stroke-width="2.5"/>
+<polyline points="428.26,273.76 459.79,251.27 491.32,228.78 522.85,206.29 554.38,183.80 585.91,161.32 617.44,138.83 648.97,116.34 680.50,93.85 712.03,71.36" fill="none" stroke="#d62728" stroke-width="2.5"/>
+<line x1="755" y1="58" x2="785" y2="58" stroke="#1f77b4" stroke-width="3"/>
+<text x="795" y="63" font-size="14" font-family="Arial">explicit Abaqus cycles 1-20</text>
+<line x1="755" y1="82" x2="785" y2="82" stroke="#d62728" stroke-width="3"/>
+<text x="795" y="87" font-size="14" font-family="Arial">jump prediction cycles 11-20</text>
+<text x="412.50" y="575" text-anchor="middle" font-size="18" font-family="Arial">Cycle</text>
+<text x="25" y="285.00" text-anchor="middle" font-size="18" font-family="Arial" transform="rotate(-90 25,285.00)">SDV1</text>
+</svg>

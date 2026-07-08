@@ -1,0 +1,21 @@
+status=running
+phase=prepare
+detail=source=3000 target=3021 solve=3022-3250 restart=2769/57
+controller=R4Q12F_continue_from_cycle3000_1cpu
+pbs_job_id=1364998.mmaster02
+previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q11f_continue_from_cycle2750_1cpu/1364997.mmaster02
+oldjob=stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000
+job=stage16n_r4q12f_block12_3000_to_3021_solve_3022_to_3250
+source_cycle=3000
+jump_target=3021
+solved_start=3022
+block_end=3250
+restart_step=2769
+restart_inc=57
+allow_previous_feasibility=1
+R4Q_ALLOW_FEASIBILITY_AFTER_1000_FAIL=1
+classification_scope=feasibility_only_after_cycle1000_accuracy_fail
+abaqus_cpus=1
+scratch_case_dir=/scratch/pr21vyci/stage16n_r4q12f_continue_from_cycle3000_1cpu/1364998.mmaster02
+elapsed_seconds=3
+updated_at=2026-07-08 02:44:35

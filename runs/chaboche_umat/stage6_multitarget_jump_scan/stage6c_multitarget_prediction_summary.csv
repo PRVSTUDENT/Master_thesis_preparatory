@@ -1,0 +1,4 @@
+target_cycle,continuation_to_cycle,delta_n,skipped_intermediate_cycles,cycle_jump_computed_cycles,full_reference_cycles,cycle_count_reduction_percent,STATEV1_relative_error_percent,STATEV2_4_max_relative_error_percent,STATEV8_10_max_relative_error_percent,S11_relative_error_percent,recommendation
+29,30,19,18,11,30,63.3333333333,0.135335066339,4.06462912747,1.92948361911,2.16514971786,acceptable_exploratory_candidate
+39,40,29,28,11,40,72.5,0.212701182838,6.20776169223,2.94821440017,3.30894356786,not_headline_candidate
+49,50,39,38,11,50,78,0.290736770316,8.35356376404,3.96914287256,4.45565123814,not_headline_candidate

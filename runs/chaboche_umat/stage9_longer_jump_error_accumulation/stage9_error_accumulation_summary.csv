@@ -1,0 +1,6 @@
+stage,route,target_cycle,delta_n,skipped,statev1_error_percent,s11_error_percent,outcome
+5B,10 -> 19 -> 20,20,9,8,0.049427,0.127013,clean_success
+6D,10 -> 29 -> 30,30,19,18,0.0458269,2.34366,accepted_exploratory_success
+7C,10 -> 27 -> 28,28,17,16,0.0231584782019,2.36494669088,accepted_exploratory_success
+9A,10 -> 39 -> 40,40,29,28,0.148910633675,2.23754024819,accepted_exploratory_success
+9B,10 -> 49 -> 50,50,39,38,0.253071065812,0.0522291978811,accepted_clean_success

@@ -1,0 +1,4 @@
+Dateisystem             Größe Benutzt Verf. Verw% Eingehängt auf
+panfs://mpanfs/scratch9   33T    8,2T   25T   25% /scratch9
+panfs://mpanfs/scratch   101T     82T   19T   82% /scratch
+mnfs:/home                17T     13T  3,3T   80% /home

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="540" viewBox="0 0 860 540">
+<title>Chaboche-v1: STATEV1 evolution over cycle</title>
+<rect width="100%%" height="100%%" fill="white"/>
+<rect x="80" y="50" width="750" height="400" fill="none" stroke="#cccccc" stroke-width="1"/>
+<line x1="80" y1="450" x2="830" y2="450" stroke="#333333" stroke-width="1.5"/>
+<line x1="80" y1="50" x2="80" y2="450" stroke="#333333" stroke-width="1.5"/>
+<text x="80" y="28" font-size="18" font-family="Arial" font-weight="bold">Chaboche-v1: STATEV1 evolution over cycle</text>
+<text x="435.0" y="458" font-size="14" font-family="Arial">Cycle</text>
+<text x="18" y="268.0" font-size="14" font-family="Arial" transform="rotate(-90 18 268.0)">STATEV1</text>
+<line x1="80.0" y1="50" x2="80.0" y2="450" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="80.0" y="468" font-size="11" font-family="Arial" text-anchor="middle">1.0000</text>
+<line x1="230.0" y1="50" x2="230.0" y2="450" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="230.0" y="468" font-size="11" font-family="Arial" text-anchor="middle">4.8000</text>
+<line x1="380.0" y1="50" x2="380.0" y2="450" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="380.0" y="468" font-size="11" font-family="Arial" text-anchor="middle">8.6000</text>
+<line x1="530.0" y1="50" x2="530.0" y2="450" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="530.0" y="468" font-size="11" font-family="Arial" text-anchor="middle">12.4000</text>
+<line x1="680.0" y1="50" x2="680.0" y2="450" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="680.0" y="468" font-size="11" font-family="Arial" text-anchor="middle">16.2000</text>
+<line x1="830.0" y1="50" x2="830.0" y2="450" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="830.0" y="468" font-size="11" font-family="Arial" text-anchor="middle">20.0000</text>
+<line x1="80" y1="450.0" x2="830" y2="450.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="454.0" font-size="11" font-family="Arial" text-anchor="end">-0.00558</text>
+<line x1="80" y1="370.0" x2="830" y2="370.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="374.0" font-size="11" font-family="Arial" text-anchor="end">0.0268</text>
+<line x1="80" y1="290.0" x2="830" y2="290.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="294.0" font-size="11" font-family="Arial" text-anchor="end">0.0592</text>
+<line x1="80" y1="210.0" x2="830" y2="210.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="214.0" font-size="11" font-family="Arial" text-anchor="end">0.0916</text>
+<line x1="80" y1="130.0" x2="830" y2="130.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="134.0" font-size="11" font-family="Arial" text-anchor="end">0.1240</text>
+<line x1="80" y1="50.0" x2="830" y2="50.0" stroke="#999999" stroke-width="1" opacity="0.25"/>
+<text x="72" y="54.0" font-size="11" font-family="Arial" text-anchor="end">0.1564</text>
+<polyline fill="none" stroke="#1f77b4" stroke-width="2.5" points="80.0000,422.4138 119.4737,404.6867 158.9474,386.9342 198.4211,369.1839 237.8947,351.4364 277.3684,333.6918 316.8421,315.9500 356.3158,298.2111 395.7895,280.4750 435.2632,262.7417 474.7368,245.0113 514.2105,227.2837 553.6842,209.5589 593.1579,191.8370 632.6316,174.1179 672.1053,156.4016 711.5789,138.6881 751.0526,120.9775 790.5263,103.2697 830.0000,85.5647"/>
+<circle cx="80.0000" cy="422.4138" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="119.4737" cy="404.6867" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="158.9474" cy="386.9342" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="198.4211" cy="369.1839" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="237.8947" cy="351.4364" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="277.3684" cy="333.6918" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="316.8421" cy="315.9500" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="356.3158" cy="298.2111" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="395.7895" cy="280.4750" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="435.2632" cy="262.7417" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="474.7368" cy="245.0113" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="514.2105" cy="227.2837" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="553.6842" cy="209.5589" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="593.1579" cy="191.8370" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="632.6316" cy="174.1179" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="672.1053" cy="156.4016" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="711.5789" cy="138.6881" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="751.0526" cy="120.9775" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="790.5263" cy="103.2697" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<circle cx="830.0000" cy="85.5647" r="4" fill="#1f77b4" stroke="white" stroke-width="1"/>
+<rect x="620" y="60" width="14" height="14" fill="#1f77b4"/>
+<text x="642" y="70" font-size="12" font-family="Arial">DMAX = 0.020</text>
+<polyline fill="none" stroke="#d62728" stroke-width="2.5" points="80.0000,422.3252 119.4737,404.3922 158.9474,386.4436 198.4211,368.4976 237.8947,350.5546 277.3684,332.6146 316.8421,314.6775 356.3158,296.7434 395.7895,278.8121 435.2632,260.8827 474.7368,242.9564 514.2105,225.0330 553.6842,207.1126 593.1579,189.1953 632.6316,171.2809 672.1053,153.3695 711.5789,135.4611 751.0526,117.5557 790.5263,99.6533 830.0000,81.7539"/>
+<circle cx="80.0000" cy="422.3252" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="119.4737" cy="404.3922" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="158.9474" cy="386.4436" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="198.4211" cy="368.4976" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="237.8947" cy="350.5546" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="277.3684" cy="332.6146" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="316.8421" cy="314.6775" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="356.3158" cy="296.7434" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="395.7895" cy="278.8121" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="435.2632" cy="260.8827" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="474.7368" cy="242.9564" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="514.2105" cy="225.0330" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="553.6842" cy="207.1126" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="593.1579" cy="189.1953" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="632.6316" cy="171.2809" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="672.1053" cy="153.3695" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="711.5789" cy="135.4611" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="751.0526" cy="117.5557" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="790.5263" cy="99.6533" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<circle cx="830.0000" cy="81.7539" r="4" fill="#d62728" stroke="white" stroke-width="1"/>
+<rect x="620" y="82" width="14" height="14" fill="#d62728"/>
+<text x="642" y="92" font-size="12" font-family="Arial">DMAX = 0.010</text>
+<polyline fill="none" stroke="#2ca02c" stroke-width="2.5" points="80.0000,422.1894 119.4737,404.0429 158.9474,385.8805 198.4211,367.7210 237.8947,349.5646 277.3684,331.4113 316.8421,313.2610 356.3158,295.1138 395.7895,276.9697 435.2632,258.8286 474.7368,240.6906 514.2105,222.5557 553.6842,204.4238 593.1579,186.2950 632.6316,168.1692 672.1053,150.0465 711.5789,131.9268 751.0526,113.8103 790.5263,95.6967 830.0000,77.5862"/>
+<circle cx="80.0000" cy="422.1894" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="119.4737" cy="404.0429" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="158.9474" cy="385.8805" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="198.4211" cy="367.7210" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="237.8947" cy="349.5646" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="277.3684" cy="331.4113" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="316.8421" cy="313.2610" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="356.3158" cy="295.1138" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="395.7895" cy="276.9697" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="435.2632" cy="258.8286" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="474.7368" cy="240.6906" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="514.2105" cy="222.5557" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="553.6842" cy="204.4238" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="593.1579" cy="186.2950" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="632.6316" cy="168.1692" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="672.1053" cy="150.0465" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="711.5789" cy="131.9268" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="751.0526" cy="113.8103" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="790.5263" cy="95.6967" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<circle cx="830.0000" cy="77.5862" r="4" fill="#2ca02c" stroke="white" stroke-width="1"/>
+<rect x="620" y="104" width="14" height="14" fill="#2ca02c"/>
+<text x="642" y="114" font-size="12" font-family="Arial">DMAX = 0.005</text>
+</svg>

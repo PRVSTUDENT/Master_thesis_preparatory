@@ -1,0 +1,62 @@
+Job Id: 1350236.mmaster02
+    Job_Name = hpc_stage_archive_cleanup
+    Job_Owner = pr21vyci@mlogin01.cluster
+    resources_used.cpupercent = 18
+    resources_used.cput = 00:00:03
+    resources_used.mem = 246108kb
+    resources_used.ncpus = 1
+    resources_used.vmem = 82272kb
+    resources_used.walltime = 00:00:16
+    job_state = F
+    queue = teachingq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Fri Jun 19 05:37:58 2026
+    Error_Path = mlogin01.cluster:/home/pr21vyci/hpc_stage_archive_cleanup.e135
+	0236
+    exec_host = mnode104/0
+    exec_vnode = (mnode104[0]:ncpus=1:mem=8388608kb)
+    Hold_Types = n
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = a
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Fri Jun 19 16:39:37 2026
+    Output_Path = mlogin01.cluster:/scratch/pr21vyci/hpc_stage_archive_cleanup.
+	pbs.out
+    Priority = 0
+    qtime = Fri Jun 19 05:37:58 2026
+    Rerunable = True
+    Resource_List.mem = 8gb
+    Resource_List.ncpus = 1
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=1:mem=8gb
+    Resource_List.walltime = 24:00:00
+    stime = Fri Jun 19 16:39:15 2026
+    obittime = Fri Jun 19 16:39:37 2026
+    session_id = 789541
+    sandbox = PRIVATE
+    jobdir = /home/pr21vyci/pbs.1350236.mmaster02.x8z
+    substate = 92
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/bin:/home/pr21vyci/texlive/2026/bin/x86_64-l
+	inux:/home/pr21vyci/.local/bin:/home/pr21vyci/bin:/usr/local/bin:/usr/b
+	in:/usr/local/sbin:/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/home/pr21vyci,PBS_O_SYSTEM=Linux,PBS_O_QUEUE=teachingq
+    comment = Job run at Fri Jun 19 at 16:39 on (mnode104[0]:ncpus=1:mem=838860
+	8kb) and finished
+    etime = Fri Jun 19 05:37:58 2026
+    run_count = 1
+    eligible_time = 00:00:01
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = /home/pr21vyci/submit_hpc_stage_archive_and_scratch_clea
+	n.pbs
+    estimated.exec_vnode = (mnode101[0]:ncpus=1:mem=8388608kb)
+    estimated.start_time = Sat Jun 20 10:42:34 2026
+    history_timestamp = 1781879977
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+

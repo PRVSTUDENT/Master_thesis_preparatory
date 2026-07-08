@@ -1,0 +1,48 @@
+# Stage 4A.1 — Exact-State Injection Preparation Report
+
+Prepared: May 9, 2026
+
+## Purpose
+Extract exact cycle-19 STATEV and stress for injection-mechanics validation.
+
+## Data source
+Extracted from: ODB (Abaqus Python)
+
+## Files created
+- cycle19_exact_statev_for_injection.csv
+- cycle19_exact_stress_for_injection.csv
+- cycle20_reference_statev.csv
+- cycle20_reference_stress.csv
+
+## Summary
+Cycle-19 frame time: 18.990257
+Cycle-19 time error: 9.742737e-03
+Cycle-20 frame time: 20.000000
+Cycle-20 time error: 0.000000e+00
+
+| Variable | Cycle 19 | Cycle 20 |
+|---:|---:|---:|
+| STATEV1_end | 0.13485494256019592 | 0.14202569425106049 |
+| STATEV2_end | -85.89347076416016 | -85.88802337646484 |
+| STATEV3_end | 42.94673538208008 | 42.94401168823242 |
+| STATEV4_end | 42.94673538208008 | 42.94401168823242 |
+| STATEV5_end | -2.0947599256398208e-15 | 1.1030211997830208e-15 |
+| STATEV6_end | 2.2161001084864085e-16 | 2.8931807586961353e-15 |
+| STATEV7_end | -2.4222445285629373e-15 | -2.306375073442314e-15 |
+| STATEV8_end | -0.0017928289016708732 | -0.0017925434513017535 |
+| STATEV9_end | 0.0008964144508354366 | 0.0008962717256508768 |
+| STATEV10_end | 0.0008964144508354366 | 0.0008962717256508768 |
+| STATEV11_end | -3.3179593353900074e-19 | -2.5770435713846094e-19 |
+| STATEV12_end | -2.99851439388397e-19 | -2.6635644339474113e-19 |
+| STATEV13_end | -1.0530329811066763e-19 | -1.2047765260593373e-19 |
+| STATEV14_end | 1.3440132141113281 | 1.4152259826660156 |
+| STATEV15_end | 0.0 | 0.0 |
+
+| Stress | Cycle 19 | Cycle 20 |
+|---:|---:|---:|
+| S11 | 335.5768737792969 | 376.43414306640625 |
+| S22 | 2.220446049250313e-16 | 2.6645352591003757e-15 |
+| S33 | -5.329070518200751e-15 | 8.881784197001252e-16 |
+| S12 | -8.976868290776868e-15 | 9.556535883800389e-15 |
+| S13 | -6.977829043877193e-15 | -9.16453761201969e-15 |
+| S23 | 3.2197274248314003e-15 | 3.772474438054273e-15 |

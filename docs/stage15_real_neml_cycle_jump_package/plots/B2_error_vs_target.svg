@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="520" viewBox="0 0 920 520">
+<rect width="100%" height="100%" fill="white"/>
+<text x="460.0" y="32" text-anchor="middle" font-family="Arial" font-size="20">B2 best normalized error vs target</text>
+<line x1="70" y1="450" x2="850" y2="450" stroke="#333"/>
+<line x1="70" y1="70" x2="70" y2="450" stroke="#333"/>
+<text x="460.0" y="502" text-anchor="middle" font-family="Arial" font-size="14">target cycle</text>
+<text x="18" y="260.0" transform="rotate(-90 18,260.0)" text-anchor="middle" font-family="Arial" font-size="14">normalized error percent</text>
+<polyline points="70.00,450.00 71.73,429.09 73.90,446.78 91.25,397.53 112.92,445.00 286.35,388.42 503.14,271.48 719.93,146.64 850.00,70.00" fill="none" stroke="#1f6f8b" stroke-width="2"/>
+<circle cx="70.00" cy="450.00" r="3" fill="#1f6f8b" />
+<circle cx="71.73" cy="429.09" r="3" fill="#1f6f8b" />
+<circle cx="73.90" cy="446.78" r="3" fill="#1f6f8b" />
+<circle cx="91.25" cy="397.53" r="3" fill="#1f6f8b" />
+<circle cx="112.92" cy="445.00" r="3" fill="#1f6f8b" />
+<circle cx="286.35" cy="388.42" r="3" fill="#1f6f8b" />
+<circle cx="503.14" cy="271.48" r="3" fill="#1f6f8b" />
+<circle cx="719.93" cy="146.64" r="3" fill="#1f6f8b" />
+<circle cx="850.00" cy="70.00" r="3" fill="#1f6f8b" />
+</svg>

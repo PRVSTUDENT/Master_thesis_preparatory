@@ -1,0 +1,33 @@
+Nesnas-Saanouni-style adaptive cycle-jump model
+======================================================
+Source cycle: 250
+Tolerances:
+  max global error        <= 1.0 %
+  max primary-local error <= 5.0 %
+  S11 error               <= 1.0 %
+
+Candidate monitor table:
+  target  skip  status  monitor_ratio  global%  local%  s11%
+     270    20  pass         0.796601  0.399236    3.983  0.139801
+     271    21  pass         0.835717  0.00016431  4.17859  0.000227688
+     272    22  fail          9.42718  1.81267  14.3851  9.42718
+
+Accepted jump boundary from validation evidence:
+  target cycle: 271
+  skipped cycles: 21
+
+First rejected jump:
+  target cycle: 272
+  skipped cycles: 22
+  exact/native restart control: pass
+
+Nesnas-Saanouni-style first-order proposal:
+  proposed target before validation cap: 274
+  reason: first-order monitor slope 0.0391166/cycle, current ratio 0.835717 validation cap applied because target272 is already rejected
+
+Final recommended jump:
+  target cycle: 271
+  skipped cycles: 21
+
+Interpretation:
+  Use source250 -> target271. Do not widen beyond target271 until the extrapolated state predictor is redesigned.

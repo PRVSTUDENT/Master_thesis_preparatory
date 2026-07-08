@@ -1,0 +1,226 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,booktabs,hyperref}
+\usepackage{longtable}
+\title{Stage 16N Report}
+\author{}
+\date{Updated 2026-06-22}
+\begin{document}
+\maketitle
+
+\section{Overview}
+Stage 16N investigates restart-preserved cycle-jump behavior for the Chaboche UMAT Abaqus benchmark. The R4H diagnostic tested whether source-split restart files differ from restart records produced by long restarted replay runs. The R4I-R recovery rerun then repeated the cycle-280 source-split branch with durable lightweight copy-back and absolute reference CSVs.
+
+\section{Results}
+R4H completed six PBS/Abaqus jobs successfully with \texttt{Exit\_status=0}. Long-replay restart records passed exactly: R4H1 at cycle 500, R4H3 at cycle 500, and R4H5 at cycle 750 all had zero global, local, and diagnostic S11 error. Short source-split restart cases remained inconsistent: R4H2 failed at cycle 500 with 11.83033\% max primary local error, R4H4 was review-level at cycle 500 with 9.3860617\%, and R4H6 was review-level at cycle 750 with 8.0369449\%.
+
+The R4I-R first wave finished by 2026-06-20 13:28 CEST and was absent from the live PBS queue on 2026-06-21 05:47 CEST. PBS history no longer returned records for jobs \texttt{1350601} and \texttt{1350602}, so the current classification uses scratch case status files, PBS stdout, Abaqus completion messages, and copied comparison CSVs. R4I-R1 passed exactly at cycle 500; R4I-R2 failed with the same source-split signature as R4H2.
+
+\small
+\setlength{\tabcolsep}{2pt}
+\begin{longtable}{p{0.08\textwidth}p{0.28\textwidth}p{0.10\textwidth}p{0.10\textwidth}p{0.10\textwidth}p{0.14\textwidth}p{0.10\textwidth}}
+\toprule
+Case & Mode & Endpoint & Status & Global \% & Primary local \% & S11 \% \\
+\midrule
+R4H1 & Long replay 280--500 & 500 & pass & 0 & 0 & 0 \\
+R4H2 & Source 250--281, restart 280--500 & 500 & fail & 1.1887403 & 11.83033 & 0.92936729 \\
+R4H3 & Long replay 270--500 & 500 & pass & 0 & 0 & 0 \\
+R4H4 & Source 250--271, restart 270--500 & 500 & review & 2.5314199 & 9.3860617 & 1.2392968 \\
+R4H5 & Long replay 505--750 & 750 & pass & 0 & 0 & 0 \\
+R4H6 & Source 500--506, restart 505--750 & 750 & review & 0.31896796 & 8.0369449 & 1.5702038 \\
+\bottomrule
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+\subsection*{R4I-R first-wave recovery}
+\small
+\setlength{\tabcolsep}{2pt}
+\begin{longtable}{p{0.13\textwidth}p{0.17\textwidth}p{0.14\textwidth}p{0.09\textwidth}p{0.09\textwidth}p{0.10\textwidth}p{0.13\textwidth}p{0.10\textwidth}}
+\toprule
+Case & Source solve & Restart & Endpoint & Status & Global \% & Primary local \% & S11 \% \\
+\midrule
+R4I-R1 & Deck-clone 250--281 & 280--500 & 500 & pass & 0 & 0 & 0 \\
+R4I-R2 & Buffered 250--300 & 280--500 & 500 & fail & 1.1887403 & 11.83033 & 0.92936729 \\
+\bottomrule
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+R4I-R1 shows that cloning/truncating the clean direct replay deck shape repairs the cycle-280 branch. R4I-R2 shows that a longer buffered generated source alone does not repair that branch; the dominant mismatch remains \texttt{HOLE\_RING\_SDV8\_MAX}.
+
+\subsection*{R4I-R second wave and deck-clone confirmations}
+R4I-R3 and R4I-R4 were submitted on 2026-06-21 through the guarded storage-gated scratch workflow. Both jobs requested one node with 16 cores, one MPI rank, 16 OpenMP threads, 90 GB memory, and 24 h walltime. R4I-R3 reproduced the generated-buffer review signature at restart 270 with 9.3860617\% maximum primary local error. R4I-R4 reproduced the generated-buffer review signature at restart 505 with 8.0369449\% maximum primary local error.
+
+R4I-R5 then confirmed the deck-clone/truncate strategy for the 270--500 branch: deck-clone source 250--271, restart 270--500, zero global, primary-local, and S11 error at cycle 500. R4I-R6 and R4I-R6B did not classify the 505--750 branch scientifically. R4I-R6 failed during continuation \texttt{.stt} writing near cycle 731, and R4I-R6B failed earlier during source \texttt{.stt} writing near cycle 503. These are infrastructure/output-writing failures, not numerical method failures.
+
+\subsection*{R4K controller preparation}
+A 2026-06-22 storage/source audit showed \texttt{/scratch9} at 99\% use and found no visible clean cycle-505 restart source under \texttt{/scratch9/pr21vyci}, \texttt{/scratch/pr21vyci}, or the home project clone. The next prepared work is therefore split into two controllers: R4K1 runs the confirmed 250-branch exact deck-clone control \texttt{250 -> exact 280 -> 500}; R4K2 performs a 505-branch restart-source preflight and stops before Abaqus solve if no valid source is found. Both controllers include phase timing and lightweight evidence copy-back.
+
+The controllers were submitted on 2026-06-22 through the guarded wrapper. R4K1, job \texttt{1350764.mmaster02}, finished with \texttt{Exit\_status=0} after 06:01:15 walltime and 20:39:54 CPU time. Abaqus completed successfully, and the exact-control comparison at cycle 500 passed with zero maximum global error, zero maximum primary-local error, and zero diagnostic S11 error. This confirms the 250-branch deck-clone exact control \texttt{250 -> exact 280 -> 500}. The corrected R4K2 preflight is job \texttt{1350767.mmaster02}; it finished successfully in 6 s walltime and found one large non-R4I candidate from the earlier R4E exact-target scratch area, \texttt{stage16n\_r4e2\_exact\_500\_to\_505\_solve\_506\_to\_750\_exact\_target\_source}, with a 4.9 GB \texttt{.stt} and successful cycle-505 source \texttt{.sta}.
+
+The follow-up storage-light validation controller R4K2B, job \texttt{1352353.mmaster02}, used that preserved R4E2 cycle-505 candidate directly. It did not generate a new source \texttt{.stt}; the scratch case linked the preserved source files, read \texttt{STEP=505, INC=54}, and continued cycles 506--750 with no continuation restart-write request. PBS recorded \texttt{Exit\_status=0}, \texttt{Stageout\_status=1}, 05:41:43 walltime, 19:16:27 CPU time, and about 3.38 average active cores out of 16. Abaqus completed through cycle 750, but the comparison was nonzero: 0.31896796\% maximum global error, 8.0369449\% maximum primary-local error, and 1.5702038\% diagnostic S11 error. Therefore R4K2B is a scientific validation failure of the R4E2 505 candidate, not an infrastructure failure. The stage-out warning is recorded separately because lightweight evidence was recovered and committed.
+
+The 250-cycle restart branch is now validated for deck-clone/truncate source construction, including the exact-control case R4K1 with zero global and local comparison error. In contrast, the 505-cycle branch remains unresolved. The preserved R4E2 cycle-505 restart candidate completed the R4K2B continuation but reproduced the previous review signature, with 8.0369449\% maximum primary-local error. Therefore, the R4E2 candidate is not accepted as a validated 505 -> 750 continuation source, and further 505-branch work is postponed to avoid additional large restart-file generation. The next work should focus on storage-light true-jump candidates on the validated 250 branch.
+
+\subsection*{R4L prepared storage-light true-jump controller}
+The next prepared production controller is \texttt{stage16n\_r4l\_250branch\_storage\_light\_controller}. It uses the validated 250-branch deck-clone/truncate source construction and keeps the continuation decks restart-read-only. The controller runs R4L1 first, targeting the conservative 250 -> 270 -> 500 true-jump case, then runs R4L2 around 250 -> 280 -> 500 only if R4L1 passes. If R4L1 reviews or fails, R4L2 is not run; instead the controller writes diagnostic summaries for source-cycle state, first solved continuation cycle, comparison details, and local hole-ring metric ranking. R4L copies only lightweight evidence and deletes case-local heavy Abaqus files after classification.
+
+After confirming no active jobs and \texttt{/scratch9/pr21vyci} at about 2.7 TB, R4L was submitted twice. Job \texttt{1353907.mmaster02} stopped before Abaqus solve because the first source linker expected a retained R1A \texttt{.odb}. The corrected job \texttt{1353908.mmaster02} used a cached 270 jump state but still stopped before the R4L1 source solve because Abaqus/Standard restart requires \texttt{res}, \texttt{prt}, \texttt{mdl}, \texttt{stt}, and \texttt{sim}, and the retained R1A \texttt{.mdl} is missing. Therefore R4L is not scientifically classified; the current blocker is incomplete retained R1A restart provenance after storage cleanup.
+
+A restart-source inventory was then run without submitting any solver job. It found no complete retained heavy source set for R4I-R1, R4I-R5, or R4K1. R1A remains incomplete because its \texttt{.mdl} is missing or broken. R1B is the only viable 250-branch restart candidate found: \texttt{.stt}, \texttt{.res}, \texttt{.mdl}, \texttt{.prt}, \texttt{.sim}, and \texttt{.sta} are accessible, and the \texttt{.sta} completed cleanly at cycle 250. Its \texttt{.odb} is missing or broken, so an R4L redesign using R1B must avoid ODB-dependent state extraction and use cached validated jump-state files or another lightweight state source.
+
+The R4L redesign was then prepared as \texttt{stage16n\_r4l2\_250branch\_r1b\_restart\_storage\_light\_controller}. It uses R1B directly as \texttt{oldjob=stage16n\_r1b\_restart\_ref\_250cycles} and avoids R1A completely. The first R4L2 submission, job \texttt{1353909.mmaster02}, is not a scientific true-jump result. PBS finished with \texttt{Exit\_status=0} and \texttt{Stageout\_status=1} after 00:01:17 walltime and 00:00:17 CPU time. R1B preflight passed and cached target-270 jump state was found, but R4L2-1 failed in the Abaqus input file processor before a valid continuation/comparison. R4L2-2 was not run.
+
+The follow-up R4L2-D1/E0 diagnostics showed that the retained R1B source is incomplete for the current Abaqus restart path. Although the restart companion files \texttt{.stt}, \texttt{.res}, \texttt{.mdl}, \texttt{.prt}, \texttt{.sim}, and \texttt{.sta} are available, Abaqus input processing also requires the exact solved output database \texttt{stage16n\_r1b\_restart\_ref\_250cycles.odb}. Only a datacheck ODB was found, and the exact solved ODB is a broken symlink. Therefore, R4L2 remains blocked before any valid continuation solve or scientific comparison. No conclusion can be drawn yet about the true-jump method from R4L2.
+
+The R4M storage-light recovery controller, job \texttt{1353942.mmaster02}, then regenerated the missing complete cycle-250 source package with the exact basename \texttt{stage16n\_r1b\_restart\_ref\_250cycles}. The scratch-only package included \texttt{.odb}, \texttt{.stt}, \texttt{.res}, \texttt{.mdl}, \texttt{.prt}, \texttt{.sim}, and \texttt{.sta}; the key heavy files were a 523 MB \texttt{.odb} and a 276 GB \texttt{.stt}. The controller then ran a target-270 datacheck and continuation for 271 -> 500 with continuation restart writing disabled. The comparison passed at cycle 500 with 0.39923577\% maximum global error, 3.9830029\% maximum primary-local error, and 0.1398007\% diagnostic S11 error. PBS recorded \texttt{Exit\_status=0}, \texttt{Stageout\_status=1}, 11:05:25 walltime, 48:19:32 CPU time, \texttt{resources\_used.cpupercent=654}, and about 4.36 average active cores from \texttt{cput}/walltime. The scratch case was cleaned after classification and checked at about 3.4 MB, with no top-level heavy Abaqus outputs remaining. R4M therefore resolves the missing-source-package blocker for the validated 250-branch target-270 gate; R4J9/R4J10, the 505 branch, and broad true-jump batches remain blocked.
+
+The next refinement controller, R4N job \texttt{1355855.mmaster02}, regenerated the same complete cycle-250 source package in scratch and advanced to the first refinement target, 250 -> 275 -> 500, with continuation restart writing disabled. PBS recorded \texttt{Exit\_status=0}, \texttt{Stageout\_status=1}, 08:34:00 walltime, 38:44:20 CPU time, \texttt{resources\_used.cpupercent=675}, and about 4.52 average active cores out of 16. The target-275 comparison completed but reviewed rather than passed: 2.5313106\% maximum global error, 9.3841268\% maximum primary-local error dominated by \texttt{HOLE\_RING\_SDV8\_MAX}, and 1.2393651\% diagnostic S11 error. Because target 275 reviewed, R4N did not proceed to target 280 or optional target 285. This is a scientific refinement result for the 250-branch true-jump path, while \texttt{Stageout\_status=1} is recorded separately as an infrastructure warning because lightweight evidence was recovered.
+
+R4O then refined the 250-branch true-jump boundary with two dependency chains. All six jobs finished with \texttt{Exit\_status=0} and \texttt{Stageout\_status=1}; the stage-out flag is recorded as an infrastructure warning because the lightweight evidence was recovered. The long-running solved cases were R4O-A1 target 271, R4O-A2 target 272, and R4O-B1 target 274. Target 271 passed at cycle 500 with 0.00016431012\% maximum global error, 4.1785861\% maximum primary-local error, and 0.00022768842\% diagnostic S11 error. Target 272 failed with 1.8126719\% maximum global error, 14.385057\% maximum primary-local error, and 9.4271837\% diagnostic S11 error. Target 274 independently failed with 0.46378221\% maximum global error, 13.495934\% maximum primary-local error, and 1.0204996\% diagnostic S11 error. Therefore the validated 250-branch true-jump boundary is now target 271: target 270 and target 271 pass, while target 272 and target 274 fail. R4O-A3, R4O-B2, and R4O-B3 were skipped by their self-gates after predecessor failures or missing predecessor comparison evidence.
+
+R4P then repeated and diagnosed the target271/target272 edge. The first R4P submission, jobs \texttt{1358943}--\texttt{1358950}, failed immediately with \texttt{Exit\_status=127} because the PBS wrappers did not stage the runner into scratch; this was an infrastructure launch failure only. After fixing repository-root detection, corrected jobs \texttt{1358951}--\texttt{1358958} all finished with \texttt{Exit\_status=0} and \texttt{Stageout\_status=1}. The stage-out flag is again recorded as an infrastructure warning because lightweight evidence was recovered. R4P confirms reproducibility: target 270 passed, target 271 passed in three runs including the 8-core calibration, and target 272 failed in three true-jump runs including the 8-core calibration. The exact/native target272 control passed with zero global, primary-local, and S11 error after reading the native cycle-272 source at \texttt{STEP=272, INC=57}. Thus the target272 failure is not an Abaqus native restart-continuity error; it is the extrapolated true-jump state-prediction boundary.
+
+The lightweight adaptive decision layer was then tested on HPC without launching Abaqus. PBS job \texttt{1362109.mmaster02} ran \texttt{minor\_projects/adaptive\_cycle\_jump\_abaqus/scripts/adaptive\_jump\_selector.py} on \texttt{teachingq} with one CPU and finished with \texttt{Exit\_status=0}. The selector read the classified R4P boundary CSV, reported \texttt{Accepted boundary: target271}, \texttt{First rejected extrapolated target: target272}, and \texttt{Exact/native restart at target272: pass}, then recommended blocking higher true jumps because the first rejected target is limited by extrapolated state prediction rather than native restart continuity.
+
+\subsection*{Nesnas-Saanouni-style adaptive jump model}
+The adaptive model layer implements a Nesnas-Saanouni-style bounded monitor increment using the available comparison metrics as monitored quantities. The normalized monitor ratio is
+\[
+R = \max\left(\frac{e_\mathrm{global}}{1\%}, \frac{e_\mathrm{primary-local}}{5\%}, \frac{e_\mathrm{S11}}{1\%}\right).
+\]
+A target is admissible only if all true-jump records at that target pass and satisfy \(R \leq 1\). With tolerances of 1\% global error, 5\% primary-local error, and 1\% S11 error, the candidate table is: target270 \(R=0.796601\), pass; target271 \(R=0.835717\), pass; target272 \(R=9.42718\), fail. The first-order monitor trend proposes target274 before validation capping, but existing validation evidence already rejects target272, so the model caps the final recommendation at target271. The final recommended jump is source250 \(\rightarrow\) target271, or 21 skipped cycles. The PBS smoke test \texttt{1362113.mmaster02} ran on \texttt{teachingq} with one CPU, did not launch Abaqus, and finished with \texttt{Exit\_status=0}. This implementation is Nesnas-Saanouni-style rather than a full constitutive-level reproduction, because the current lightweight evidence contains comparison metrics rather than complete per-integration-point internal-variable histories.
+
+\subsection*{R4Q long adaptive chain}
+R4Q is the long-chain Abaqus test of the validated 21-cycle adaptive recommendation, not a new boundary-widening study. A single guarded controller, \texttt{R4Q\_long\_adaptive\_chain\_1cpu}, was submitted through \texttt{/home/pr21vyci/bin/qsub\_abq\_guarded} as PBS job \texttt{1362114.mmaster02} after the storage gate reported \texttt{/scratch9/pr21vyci=2.7T}. The request was one CPU, 30 GB, and 24 h, with Abaqus run as \texttt{cpus=1}. The final PBS record shows \texttt{job\_state=F}, \texttt{Exit\_status=0}, \texttt{Stageout\_status=1}, \texttt{resources\_used.walltime=20:52:02}, \texttt{resources\_used.cput=19:27:30}, \texttt{resources\_used.cpupercent=99}, and \texttt{exec\_host=mnode028/0}. The stage-out flag is treated as an infrastructure warning because the controller copied back the lightweight status, summary, qstat, and log evidence.
+
+The intended chain repeats the accepted safe jump over 250-cycle blocks: source250 \(\rightarrow\) target271 followed by native continuation 272--500, then source500 \(\rightarrow\) target521 followed by 522--750, then source750 \(\rightarrow\) target771 followed by 772--1000, and similarly toward checkpoints 2000 and 5000 if walltime and restart state allow. The completed R4Q/R4Q2 result is feasibility evidence. Block 1 completed source250 \(\rightarrow\) target271, solved 272--500, and extracted a new cycle-500 source state. R4Q2 then continued only from that preserved cycle-500 source, used \texttt{*RESTART, READ, STEP=479, INC=65}, completed source500 \(\rightarrow\) target521 plus native continuation 522--750, and extracted the cycle-750 state. No cycle-500 or cycle-750 comparison reference is available in the lightweight evidence, so both completed blocks are classified as feasibility rather than accuracy validation.
+
+R4Q3 completed the cycle1000 checkpoint solve. The no-solver preflight parsed the cycle-750 restart point from the R4Q2 \texttt{.sta} as \texttt{STEP=708, INC=62}; PBS job \texttt{1362636.mmaster02} then ran source750 \(\rightarrow\) target771 plus native continuation 772--1000 with \texttt{Exit\_status=0}, \texttt{resources\_used.walltime=11:41:46}, \texttt{resources\_used.cput=10:46:26}, and \texttt{resources\_used.cpupercent=99}. The controller extracted the cycle1000 state successfully. The R4Q3 cycle1000 metric row reports \texttt{RF1\_max=2908.24456024}, \texttt{RF1\_min=-3074.8221283}, \texttt{RF1\_mean=534.29378297}, and \texttt{loop\_area\_abs=577.068180846}. The first comparison did not classify the checkpoint because the copied \texttt{reference\_1000\_cycle\_metrics.csv} lacked a \texttt{cycle=1000} row. A no-Abaqus reference repair then used the documented full \texttt{stage16n\_parallel\_max\_reference} CSVs, which contain cycles 1--1000 and selected local states through cycle1000. The repaired cycle1000 comparison completed and is classified as \texttt{accuracy\_validation\_fail} under the strict gate: max global error \texttt{2.330504e-05\%}, max primary-local error \texttt{6.2795526\%} controlled by \texttt{HOLE\_RING\_SDV1\_MAX}, and diagnostic S11 error \texttt{0.00031922278\%}. This is not an Abaqus failure; it is a local-state accuracy miss at the cycle1000 checkpoint.
+
+R4Q4--R4Q7 released after R4Q3 but self-gated safely in seconds without launching Abaqus. R4Q4 \texttt{1362637.mmaster02}, R4Q5 \texttt{1362638.mmaster02}, R4Q6 \texttt{1362639.mmaster02}, and R4Q7 \texttt{1362640.mmaster02} all recorded \texttt{status=previous\_not\_completed} after the cycle1000 checkpoint remained unclassified. After the reference repair classified R4Q3 as a strict-gate \texttt{accuracy\_validation\_fail}, a separate feasibility-only follow-up chain was submitted with the explicit override \texttt{R4Q\_ALLOW\_FEASIBILITY\_AFTER\_1000\_FAIL=1} and \texttt{classification\_scope=feasibility\_only\_after\_cycle1000\_accuracy\_fail}. The corrected chain has now finished through cycle2000: R4Q4F \texttt{1363629.mmaster02} completed source1000 \(\rightarrow\) target1021 plus 1022--1250, R4Q5F \texttt{1363630.mmaster02} completed source1250 \(\rightarrow\) target1271 plus 1272--1500, R4Q6F \texttt{1363631.mmaster02} completed source1500 \(\rightarrow\) target1521 plus 1522--1750, and R4Q7F \texttt{1363633.mmaster02} completed source1750 \(\rightarrow\) target1771 plus 1772--2000. All four final PBS records show \texttt{job\_state=F}, \texttt{Exit\_status=0}, and \texttt{Stageout\_status=1}; the stage-out flag is retained as an infrastructure warning while the controller evidence was copied back. The controller summaries report completed endpoint state extraction for cycles 1250, 1500, 1750, and 2000 with restart points \texttt{STEP=937, INC=63}, \texttt{STEP=1166, INC=63}, \texttt{STEP=1395, INC=63}, and \texttt{STEP=1624, INC=57}. The endpoint RF/loop metrics at cycle2000 are \texttt{RF1\_max=2970.01576996}, \texttt{RF1\_min=-3065.62892914}, \texttt{RF1\_mean=352.421461661}, and \texttt{loop\_area\_abs=580.000180464}. These jobs are feasibility continuation only; they do not validate accuracy beyond cycle1000 or widen the accepted 250-branch true-jump boundary beyond target271.
+
+On 2026-07-06 the feasibility-only chain was extended, but not scientifically validated, from cycle2000 toward cycle5000. The pre-submit gate recorded \texttt{/scratch9/pr21vyci=6.2T}, so the required size audit was run; the R4Q7F cycle2000 heavy restart source was verified with \texttt{.sta}, \texttt{.res}, \texttt{.stt}, \texttt{.mdl}, \texttt{.prt}, \texttt{.sim}, and \texttt{.odb}. R4Q8F--R4Q19F were submitted through \texttt{/home/pr21vyci/bin/qsub\_abq\_guarded}, with one CPU, 30 GB, 24 h per job, scratch-only execution, lightweight copy-back, \texttt{R4Q\_ALLOW\_FEASIBILITY\_AFTER\_1000\_FAIL=1}, and strict \texttt{afterok} dependencies. The submitted jobs are R4Q8F \texttt{1364994.mmaster02} for source2000 \(\rightarrow\) target2021 plus 2022--2250, R4Q9F \texttt{1364995.mmaster02} for 2250--2500, R4Q10F \texttt{1364996.mmaster02} for 2500--2750, R4Q11F \texttt{1364997.mmaster02} for 2750--3000, R4Q12F \texttt{1364998.mmaster02} for 3000--3250, R4Q13F \texttt{1364999.mmaster02} for 3250--3500, R4Q14F \texttt{1365000.mmaster02} for 3500--3750, R4Q15F \texttt{1365001.mmaster02} for 3750--4000, R4Q16F \texttt{1365002.mmaster02} for 4000--4250, R4Q17F \texttt{1365003.mmaster02} for 4250--4500, R4Q18F \texttt{1365004.mmaster02} for 4500--4750, and R4Q19F \texttt{1365005.mmaster02} for 4750--5000. The 2026-07-08 10:03 CEST check shows R4Q8F--R4Q11F finished with \texttt{Exit\_status=0} and endpoint extraction through cycle3000, R4Q12F running on \texttt{mnode023/2}, and R4Q13F--R4Q19F still held behind the strict dependency chain. The completed endpoint RF/loop rows remain stable: cycle2250 \texttt{RF1\_max=2970.01662445}, \texttt{RF1\_min=-3065.62980652}, \texttt{RF1\_mean=352.421585721}, \texttt{loop\_area\_abs=580.000090221}; cycle2500 \texttt{RF1\_max=2970.0172348}, \texttt{RF1\_min=-3065.63053131}, \texttt{RF1\_mean=352.421655671}, \texttt{loop\_area\_abs=580.00001775}; cycle2750 \texttt{RF1\_max=2970.01766968}, \texttt{RF1\_min=-3065.63117981}, \texttt{RF1\_mean=352.42167823}, \texttt{loop\_area\_abs=579.999966069}; and cycle3000 \texttt{RF1\_max=2970.01799011}, \texttt{RF1\_min=-3065.63172913}, \texttt{RF1\_mean=352.421677979}, \texttt{loop\_area\_abs=579.999915867}. These are still feasibility-only results after the cycle1000 strict-gate failure; they do not validate accuracy beyond cycle1000 or widen the accepted true-jump boundary. No job was queued beyond cycle5000.
+
+The diagnostic \texttt{R4Q3N\_exact\_native\_control\_750\_to\_1000} was also submitted to separate extrapolated-jump error from local metric or reference sensitivity. It uses the R4Q2 cycle750 source and does not apply the 750 \(\rightarrow\) 771 extrapolated overwrite. The first guarded attempt \texttt{1365006.mmaster02} self-gated before Abaqus because the diagnostic gate did not recognize the historical R4Q2 status-file layout; this is an infrastructure-only retry marker, not a scientific result. The corrected diagnostic \texttt{1365007.mmaster02} finished with \texttt{Exit\_status=0}, \texttt{Stageout\_status=1}, successful cycle1000 extraction, and \texttt{comparison\_status=pass}. Its cycle1000 comparison gives max global error \texttt{3.1625025e-05\%}, max primary-local error \texttt{4.1863684\%}, and diagnostic S11 error \texttt{0.00018241296\%}. This supports the diagnosis that the R4Q3 strict-gate miss is tied to the extrapolated overwrite/local-state prediction path, not to native 750--1000 continuation or the repaired cycle1000 reference.
+
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{p{0.14\textwidth}p{0.13\textwidth}p{0.12\textwidth}p{0.10\textwidth}p{0.12\textwidth}p{0.13\textwidth}p{0.12\textwidth}}
+\toprule
+Case & PBS job & Endpoint & Status & Global \% & Primary local \% & S11 \% \\
+\midrule
+R4K1 & 1350764 & 500 & pass & 0 & 0 & 0 \\
+R4K2B & 1352353 & 750 & review & 0.31896796 & 8.0369449 & 1.5702038 \\
+R4M & 1353942 & 500 & pass & 0.39923577 & 3.9830029 & 0.1398007 \\
+R4N & 1355855 & 500 & review & 2.5313106 & 9.3841268 & 1.2393651 \\
+R4O-A1 & 1356502 & 500 & pass & 0.00016431012 & 4.1785861 & 0.00022768842 \\
+R4O-A2 & 1356504 & 500 & fail & 1.8126719 & 14.385057 & 9.4271837 \\
+R4O-B1 & 1356503 & 500 & fail & 0.46378221 & 13.495934 & 1.0204996 \\
+R4P-B1 & 1358952 & 500 & pass & 0.39923577 & 3.9830029 & 0.1398007 \\
+R4P-A1 & 1358951 & 500 & pass & 0.00016431012 & 4.1785861 & 0.00022768842 \\
+R4P-B2 & 1358954 & 500 & pass & 0.00016431012 & 4.1785861 & 0.00022768842 \\
+R4P-B3 & 1358956 & 500 & pass & 0.00016431012 & 4.1785861 & 0.00022768842 \\
+R4P-A2 & 1358953 & 500 & fail & 1.8126719 & 14.385057 & 9.4271837 \\
+R4P-A4 & 1358957 & 500 & fail & 1.8126719 & 14.385057 & 9.4271837 \\
+R4P-B4 & 1358958 & 500 & fail & 1.8126719 & 14.385057 & 9.4271837 \\
+R4P-A3 exact/native & 1358955 & 500 & pass & 0 & 0 & 0 \\
+\bottomrule
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+\section{Images}
+No R4H images were generated in this update.
+
+\section{Tables}
+The key R4H and R4I-R comparison tables are included in the Results section. Lightweight R4I-R evidence is stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4ir\_restart\_source\_buffer\_recovery/
+\end{quote}
+Prepared R4K controller files are stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4k\_deck\_clone\_controllers/
+\end{quote}
+R4K1 lightweight result evidence is stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4k\_deck\_clone\_controllers/\\
+R4K1\_250branch\_controller/
+\end{quote}
+R4K2B lightweight validation evidence is stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4k\_deck\_clone\_controllers/\\
+R4K2B\_505candidate\_validation\_controller/
+\end{quote}
+Prepared R4L controller files are stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4l\_250branch\_storage\_light\_controller/\\
+R4L\_250branch\_storage\_light\_controller/
+\end{quote}
+The R4L setup-failure result note is stored at:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4l\_250branch\_storage\_light\_controller/\\
+STAGE16N\_R4L\_RESULT.md
+\end{quote}
+Prepared R4L2 R1B restart controller files are stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4l2\_250branch\_r1b\_restart\_storage\_light\_controller/\\
+R4L2\_250branch\_R1B\_restart\_storage\_light\_controller/
+\end{quote}
+The R4L2 result note is stored at:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4l2\_250branch\_r1b\_restart\_storage\_light\_controller/\\
+STAGE16N\_R4L2\_RESULT.md
+\end{quote}
+R4N target-275 refinement evidence is stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4n\_250branch\_refinement\_storage\_light\_controller/
+\end{quote}
+R4P boundary reproducibility and diagnostics evidence is stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4p\_boundary\_reproducibility\_and\_diagnostics/
+\end{quote}
+Adaptive selector code, classified evidence, and HPC smoke-test records are stored under:
+\begin{quote}\footnotesize\ttfamily
+minor\_projects/adaptive\_cycle\_jump\_abaqus/
+\end{quote}
+R4Q/R4Q2/R4Q3 long-chain controller, final PBS accounting, completed feasibility/checkpoint evidence, repaired cycle1000 comparison records, no-solver diagnostics, feasibility-only follow-up queue records, self-gate records, and result notes are stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4q\_long\_adaptive\_chain\_1cpu/
+\end{quote}
+The restart-source inventory is stored at:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/STAGE16N\_RESTART\_SOURCE\_INVENTORY\_2026\_06\_22.md
+\end{quote}
+The earlier R4H CSV evidence is stored under:
+\begin{quote}\footnotesize\ttfamily
+runs/chaboche\_umat/stage16\_abaqus\_inhomogeneous\_cycle\_jump\_benchmark/\\
+stage16n\_restart\_control/r4h\_restart\_source\_diagnostics/
+\end{quote}
+
+\section{Failures and Debugging}
+No R4H job failed at PBS/Abaqus level. The original R4I comparison failed because remote reference CSV paths were missing after extraction, and its scratch outputs were not recoverable. R4I-R fixed that workflow by staging absolute reference CSVs and copying lightweight evidence before comparison. The scientific failure now narrows to generated source-split consistency: R4I-R2 reproduces the R4H2 error even with a larger 250--300 source buffer, and R4I-R3/R4I-R4 show that generated post-target buffering does not repair the 270 or 505 branches. R4I-R6/R4I-R6B additionally exposed scratch \texttt{.stt} write failures on the 505 branch.
+
+\subsection*{R4P boundary reproducibility and diagnostics}
+R4P was prepared on 2026-06-28 as the next storage-light queued batch after R4O tightened the 250-branch boundary. The scientific basis is now: R4M target270 passed, R4O target271 passed, R4O target272 failed, and R4O target274 failed. Therefore the active boundary question is the target271/target272 transition, not target280/285 progression and not any 505-branch continuation.
+
+The prepared R4P controller was first submitted through \texttt{/home/pr21vyci/bin/qsub\_abq\_guarded} on 2026-06-28 06:13:35 CEST after the storage gate reported \texttt{/scratch9/pr21vyci = 2.862T}, below the 5T abort threshold. That first submission, jobs \texttt{1358943}--\texttt{1358950}, failed immediately with \texttt{Exit\_status=127} because the PBS wrappers did not stage the runner into scratch; this is an infrastructure launch failure, not an Abaqus scientific result. The wrapper root detection was fixed and R4P was resubmitted at 06:21:04 CEST as jobs \texttt{1358951}--\texttt{1358958}.
+
+The corrected submission contained eight jobs in two PBS \texttt{afterany} chains, with only A1 and B1 runnable initially so at most two jobs were active. Chain A repeated target271 (\texttt{1358951.mmaster02}), repeated target272 (\texttt{1358953.mmaster02}), ran an exact/native target272 control (\texttt{1358955.mmaster02}), and then ran target272 diagnostics (\texttt{1358957.mmaster02}). Chain B repeated target270 (\texttt{1358952.mmaster02}), ran target271 diagnostics (\texttt{1358954.mmaster02}), and performed 8-core target271/target272 calibration runs (\texttt{1358956.mmaster02}, \texttt{1358958.mmaster02}). All jobs regenerated the complete cycle-250 source package inside scratch, validated \texttt{.odb/.stt/.res/.mdl/.prt/.sim/.sta}, disabled continuation restart writing, copied back only lightweight evidence, and deleted heavy outputs after classification. The final R4P result confirms target271 as the accepted boundary and rejects target272 by reproducible true-jump failure.
+
+\section{Conclusion and Next Steps}
+R4H, R4I-R, and R4K1 show that long-replay/deck-clone restart records are clean on the confirmed 250 branch, while generated short-source decks remain non-equivalent even with post-target buffering. Deck-clone/truncate is confirmed for 250--270--500 and for the exact-control path 250--280--500. R4M established a storage-light source-regeneration path and passed the 250 -> 270 -> 500 true-jump gate. R4O established target271 as the accepted boundary and rejected target272/274; R4P then reproduced that boundary, showed target271 passes under repeat/diagnostic/8-core conditions, showed target272 fails under repeat/diagnostic/8-core conditions, and proved the native target272 restart path can pass exactly. The adaptive selector now turns those manually classified results into a tested decision layer: it accepts target271, rejects target272, and blocks further widening until the extrapolated state predictor is diagnosed or redesigned. The Nesnas-Saanouni-style model adds a tolerance-normalized monitor calculation and recommends the same safe jump, source250 -> target271, with 21 skipped cycles after applying the rejected target272 validation cap. The 505--750 branch remains parked after R4K2B rejected the preserved R4E2 cycle-505 candidate scientifically. R4J9/R4J10, target 273/275/276/280/285 progression, broad true-jump batches, and the 505 branch remain blocked unless a new explicit gated controller is defined.
+
+\end{document}

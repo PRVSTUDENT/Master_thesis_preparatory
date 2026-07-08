@@ -1,0 +1,48 @@
+============================================================
+HPC Abaqus stage archive + scratch cleanup
+Started: Fr 19. Jun 16:39:17 CEST 2026
+Mode: plan
+User: pr21vyci
+SCRATCH_ROOT: /scratch/pr21vyci
+HOME_PROJECT: /home/pr21vyci/master_thesis/Abaqus_trial
+ARCHIVE_ROOT: /home/pr21vyci/master_thesis/Abaqus_trial/hpc_lightweight_stage_archive
+RUN_ID: 20260619_163917
+DRY_RUN=1
+DELETE=0
+CONFIRM_DELETE=NO
+MIN_SIZE=100M
+MIN_AGE_MINUTES=180
+EXTRACT_ODB=1
+KEEP_REGEX=stage16n_r4i|R4I|r4i_restart_source|stage16n_r4i|git_work|software|texlive|R1A_restart_reference|R1B_restart_reference|stage16n_parallel_max_reference|stage16n_1000cycle_pilot|stage16n_r1a|stage16n_r1b
+DELETE_ONLY_REGEX=
+============================================================
+Dateisystem            Größe Benutzt Verf. Verw% Eingehängt auf
+mnfs:/home               17T     11T  5,4T   67% /home
+panfs://mpanfs/scratch  110T     82T   28T   75% /scratch
+56G	/home/pr21vyci/master_thesis/Abaqus_trial
+48K	/scratch/pr21vyci
+
+mmaster02: 
+                                                            Req'd  Req'd   Elap
+Job ID          Username Queue    Jobname    SessID NDS TSK Memory Time  S Time
+--------------- -------- -------- ---------- ------ --- --- ------ ----- - -----
+1350236.mmaste* pr21vyci teachin* hpc_stage* 789541   1   1    8gb 24:00 R 00:00
+
+Creating heavy-file inventory...
+Inventory: /home/pr21vyci/master_thesis/Abaqus_trial/hpc_lightweight_stage_archive/heavy_file_inventory_20260619_163917.tsv
+Delete candidates: /home/pr21vyci/master_thesis/Abaqus_trial/hpc_lightweight_stage_archive/delete_candidates_20260619_163917.txt
+Keep list: /home/pr21vyci/master_thesis/Abaqus_trial/hpc_lightweight_stage_archive/keep_heavy_files_20260619_163917.txt
+
+Summary by action:
+
+Top 30 delete candidates:
+
+Final storage snapshot:
+Dateisystem            Größe Benutzt Verf. Verw% Eingehängt auf
+mnfs:/home               17T     11T  5,4T   67% /home
+panfs://mpanfs/scratch  110T     82T   28T   75% /scratch
+56G	/home/pr21vyci/master_thesis/Abaqus_trial
+48K	/scratch/pr21vyci
+Log: /home/pr21vyci/hpc_storage_cleanup_logs/hpc_stage_archive_cleanup_20260619_163917.log
+Archive: /home/pr21vyci/master_thesis/Abaqus_trial/hpc_lightweight_stage_archive
+Inventory: /home/pr21vyci/master_thesis/Abaqus_trial/hpc_lightweight_stage_archive/heavy_file_inventory_20260619_163917.tsv

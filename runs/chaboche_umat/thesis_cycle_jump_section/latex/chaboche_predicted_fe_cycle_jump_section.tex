@@ -1,0 +1,123 @@
+\section{Predicted-State FE Cycle-Jump Continuation}
+
+The preceding sensitivity study identified that the Chaboche-v1 UMAT response depends on the accepted increment schedule. For this reason, the final cycle-jump demonstration was constructed as a controlled Abaqus continuation test rather than as a general production restart algorithm. The purpose of this section is to document the completed predicted-state FE cycle-jump workflow.
+
+The no-skip Abaqus simulations provide cycle-end histories of the material state and stress. A cycle-space extrapolation is then used to predict a future internal state from the available cycle history. The predicted \texttt{STATEV} vector is injected through \texttt{SDVINI}, and the predicted residual stress is injected through \texttt{SIGINI}. Abaqus then computes only one continuation cycle, and the final state is compared with the corresponding full no-skip Abaqus reference.
+
+\subsection{Clean Predicted-State FE Jump}
+
+The first predicted FE continuation case used cycle-10 data to predict the cycle-19 state. This predicted state was injected into Abaqus, and one continuation cycle was computed from cycle 19 to cycle 20. The case skipped the intermediate FE cycles 11--18 and reproduced the full 20-cycle reference with sub-percent errors in both accumulated viscoplastic strain and axial stress.
+
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrll}
+\toprule
+\textbf{Route} & \textbf{Skipped} & \textbf{Computed route} & \textbf{Reference} & \textbf{STATEV1 err.} & \textbf{$S_{11}$ err.} & \textbf{Decision} \\
+\midrule
+Cycle 10 $\rightarrow$ predicted 19 $\rightarrow$ 20 & 8 & 11 instead of 20 & 20 & 0.049427\% & 0.127013\% & Clean success \\
+\bottomrule
+\end{tabular}
+}
+\caption{Stage 5B predicted-state FE cycle-jump result. The predicted cycle-19 state was injected with \texttt{SDVINI}/\texttt{SIGINI} and continued for one computed cycle.}
+\label{tab:stage5b_predicted_fe_jump}
+\end{table}
+
+\subsection{Target Selection for a Larger Jump}
+
+After the clean cycle-19 to cycle-20 result, a 50-cycle no-skip reference was generated and used to scan larger target cycles before running another FE continuation. The scan evaluated the quality of the predicted target state for cycles 29, 39, and 49. The scalar accumulated strain prediction remained accurate for all three targets, but the stress and backstress-related components degraded with increasing jump length. Cycle 29 was therefore selected as the largest acceptable next FE validation target.
+
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrl}
+\toprule
+\textbf{Target} & \textbf{$\Delta N$} & \textbf{Skipped} & \textbf{Reduction} & \textbf{STATEV1 err. / $S_{11}$ err.} & \textbf{Recommendation} \\
+\midrule
+29 $\rightarrow$ 30 & 19 & 18 & 63.33\% & 0.135335\% / 2.16515\% & Acceptable exploratory \\
+39 $\rightarrow$ 40 & 29 & 28 & 72.5\% & 0.212701\% / 3.30894\% & Not headline \\
+49 $\rightarrow$ 50 & 39 & 38 & 78.0\% & 0.290737\% / 4.45565\% & Not headline \\
+\bottomrule
+\end{tabular}
+}
+\caption{Stage 6C multi-target prediction scan. The scan used the existing 50-cycle no-skip reference and no additional Abaqus continuation runs.}
+\label{tab:stage6c_multitarget_scan}
+\end{table}
+
+\subsection{Larger Cycle-29 to Cycle-30 Jump}
+
+The second FE continuation case used cycle-10 data to predict the cycle-29 state, then computed only the continuation cycle from cycle 29 to cycle 30. This increased the number of skipped intermediate FE cycles from 8 to 18. The computed route was reduced from 30 full cycles to 10 base cycles plus one continuation cycle, corresponding to a 63.33\% cycle-count reduction.
+
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrll}
+\toprule
+\textbf{Route} & \textbf{$\Delta N$} & \textbf{Skipped} & \textbf{Computed route} & \textbf{Reduction} & \textbf{STATEV1 err. / $S_{11}$ err.} & \textbf{Outcome} \\
+\midrule
+Cycle 10 $\rightarrow$ predicted 29 $\rightarrow$ 30 & 19 & 18 & 11 instead of 30 & 63.33\% & 0.0458269\% / 2.34366\% & Acceptable exploratory success \\
+\bottomrule
+\end{tabular}
+}
+\caption{Stage 6D larger predicted-state FE cycle-jump result. The comparison used an interpolated exact-time cycle-30 reference from the 50-cycle Abaqus ODB.}
+\label{tab:stage6d_predicted_fe_jump}
+\end{table}
+
+Stage 5B demonstrates a clean predicted FE cycle-jump case. Stage 6D extends the method to a larger jump, increasing skipped intermediate FE cycles from 8 to 18. The accumulated viscoplastic strain remains highly accurate, while the axial stress error increases because stress and backstress prediction becomes the limiting factor for larger jumps.
+
+\subsection{Adaptive Jump-Size Selection Inspired by Nesnas--Saanouni}
+
+To connect the implementation to the adaptive cycle-jump concept of Nesnas and Saanouni without introducing damage, the original damage variable was replaced by a generic Chaboche control quantity \(Y_i\). For each selected variable, an admissible state change
+\begin{equation}
+A_i = \tau_i S_i
+\end{equation}
+was prescribed and a jump estimate was computed from the ratio of this admissible change to the mean per-cycle increment:
+\begin{equation}
+\Delta N_i =
+\left\lfloor
+\eta
+\frac{A_i}{|\overline{\Delta Y_i}|+\epsilon}
+\right\rfloor .
+\end{equation}
+Here, \(\eta\) is a safety factor and \(\epsilon\) prevents division by zero.
+
+The adaptive jump-size controller in this work is inspired by the damage-based cycle-jump strategy of Nesnas--Saanouni. However, the present implementation is not a direct implementation of their coupled damage-viscoplasticity formulation. Since the current Chaboche UMAT does not include an explicit damage variable, the damage-control quantity is replaced by generalized Chaboche state and stress-control variables. Therefore, the contribution of this work is a Chaboche-based adaptive cycle-jump workflow with practical Abaqus continuation through \texttt{SDVINI}/\texttt{SIGINI}, rather than a full damage-based fatigue-life model.
+
+Because accumulated viscoplastic strain \(p\) is cumulative and was accurately predicted even for larger jumps, it was retained as an accuracy monitor rather than the global limiter. The restart jump size was instead controlled by backstress, viscoplastic strain tensor, and residual stress consistency:
+\begin{equation}
+\Delta N_{\mathrm{restart}} =
+\min\left(\Delta N_X,\Delta N_{\varepsilon^{vp}},\Delta N_S\right).
+\end{equation}
+The grouped controller gave \(\Delta N_X=17\), \(\Delta N_{\varepsilon^{vp}}=43\), and \(\Delta N_S=23\), so that \(\Delta N_{\mathrm{restart}}=17\). This recommendation is close to the validated exploratory FE jump with \(\Delta N=19\), for which the Stage 6D continuation skipped 18 intermediate FE cycles and remained acceptable.
+
+The adaptive recommendation was then checked directly in Abaqus by injecting the predicted cycle-27 state and computing the continuation cycle to cycle 28. This Stage 7C validation skipped 16 intermediate FE cycles. The injected state was reproduced accurately in the first output frame, with an absolute error of \(1.40\times10^{-9}\) in \(\text{STATEV1}\) and \(3.39\times10^{-6}\,\mathrm{MPa}\) in \(S_{11}\). At cycle 28, the relative error was \(0.0232\%\) for accumulated viscoplastic strain and \(2.365\%\) for \(S_{11}\). Therefore, the formula-selected \(\Delta N_{\mathrm{restart}}=17\) was accepted as an exploratory cycle jump, consistent with the Stage 6D result while being selected by the adaptive controller rather than by manual target scanning.
+
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrl}
+\toprule
+\textbf{Stage} & \textbf{Purpose} & \textbf{$\Delta N$} & \textbf{Skipped} & \textbf{STATEV1 err.} & \textbf{$S_{11}$ err.} & \textbf{Outcome} \\
+\midrule
+5B & Clean predicted FE jump & 9 & 8 & 0.049427\% & 0.127013\% & Clean success \\
+6D & Larger manually selected FE jump & 19 & 18 & 0.0458269\% & 2.34366\% & Accepted exploratory \\
+7B & Grouped adaptive controller & 17 & 16 & monitor only & controller only & Recommended \\
+7C & Formula-selected FE validation & 17 & 16 & 0.0231585\% & 2.36495\% & Accepted exploratory \\
+\bottomrule
+\end{tabular}
+}
+\caption{Final cycle-jump validation summary. Stage 7B provides the grouped adaptive recommendation, while Stage 7C validates that recommendation through a direct Abaqus continuation run.}
+\label{tab:final_cycle_jump_summary}
+\end{table}
+
+\subsection{Interpretation and Limitation}
+
+The remaining limitation is not Abaqus initialization, \texttt{SDVINI}, \texttt{SIGINI}, or UMAT continuation. These mechanisms were verified by the exact-state and predicted-state continuation tests. The remaining limitation is the accuracy of first-order stress and backstress extrapolation for larger cycle jumps.
+
+The core FE cycle-jump concept was successfully demonstrated for the simplified Chaboche-v1 UMAT. A predicted future material state was obtained from cycle-space extrapolation, injected into Abaqus through \texttt{SDVINI} and \texttt{SIGINI}, and used to continue the FE simulation after skipping intermediate cycles. The method reproduced the no-skip FE reference accurately for accumulated viscoplastic strain and acceptably for stress in the larger exploratory jump.
+
+This result should be interpreted within its intended scope. It does not claim a full Nesnas--Saanouni damage model, a fatigue-life prediction method, a calibrated 316 stainless steel material model, or a general production-ready adaptive cycle-jump framework. Future work should calibrate the Chaboche parameters for the target material, improve the stress and backstress extrapolation beyond the present first-order predictor, and test the grouped adaptive controller on multi-element geometries and longer cyclic histories.

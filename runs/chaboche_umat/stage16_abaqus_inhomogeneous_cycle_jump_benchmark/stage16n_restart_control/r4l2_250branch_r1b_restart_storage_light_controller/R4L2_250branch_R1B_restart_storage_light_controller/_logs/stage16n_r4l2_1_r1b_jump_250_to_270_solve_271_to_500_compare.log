@@ -1,0 +1,44 @@
+
+============================================================
+PHASE START: R4L2_1 comparison
+TIME: Mo 22. Jun 22:01:38 CEST 2026
+============================================================
+Traceback (most recent call last):
+  File "stage16n_compare_r3j_jump_against_reference.py", line 166, in <module>
+    main()
+  File "stage16n_compare_r3j_jump_against_reference.py", line 87, in main
+    jump_local_fields, jump_local = read_by_cycle(args.jump_local_states)
+  File "stage16n_compare_r3j_jump_against_reference.py", line 25, in read_by_cycle
+    rows = {int(float(row["cycle"])): row for row in reader}
+  File "stage16n_compare_r3j_jump_against_reference.py", line 25, in <dictcomp>
+    rows = {int(float(row["cycle"])): row for row in reader}
+ValueError: could not convert string to float: 
+Command exited with non-zero status 1
+	Command being timed: "python3 stage16n_compare_r3j_jump_against_reference.py --jump-metrics stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_cycle_metrics.csv --jump-local-states stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500_selected_cycle_local_states.csv --ref-metrics reference_1000_cycle_metrics.csv --ref-local-states reference_1000_selected_cycle_local_states.csv --cycles 500 --out-dir . --prefix stage16n_r4l2_1_r1b_jump_250_to_270_solve_271_to_500"
+	User time (seconds): 0.02
+	System time (seconds): 0.00
+	Percent of CPU this job got: 94%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.03
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 12744
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 1832
+	Voluntary context switches: 3
+	Involuntary context switches: 2
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+============================================================
+PHASE END: R4L2_1 comparison
+TIME: Mo 22. Jun 22:01:38 CEST 2026
+EXIT: 1
+============================================================

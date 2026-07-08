@@ -1,0 +1,98 @@
+% Stage 14D 2000-cycle adaptive cycle-jump results insert
+% Add this section before the Final Takeaway in cycle_jump_professor_report.tex.
+
+\section{Stage 14C--14D Adaptive Blockwise Results for the 2000-Cycle Problem}
+
+After the Stage 12 single-jump validation, the next question was whether the same reinjection idea could be used repeatedly in a long-cycle blockwise workflow. In this blockwise method, the solution is not advanced by one large jump only. Instead, the procedure is
+\[
+\text{predict} \;\rightarrow\; \text{inject state} \;\rightarrow\; \text{compute a short Abaqus/Standard recovery window} \;\rightarrow\; \text{re-anchor from the recovered state}.
+\]
+The recovered state from each block becomes the base state for the next block. This makes the method closer to the cycle-jump idea of periodically updating the cycle-scale trend instead of relying on the early cycles 2--10 slope for the entire long simulation.
+
+\subsection{Stage 14B: Motivation for a More Conservative Adaptive Controller}
+
+The first adaptive blockwise controller, Stage 14B, used a local \texttt{STATEV1} curvature estimate to choose \(\Delta N\). It ran numerically, but it was not accepted. The final 2000-cycle errors were
+\[
+ e_{\texttt{STATEV1}} = 124.209089872\%, \qquad
+ e_{S11} = 3294.42756431\%, \qquad
+ e_{RF1} = 3294.42764545\%.
+\]
+The important interpretation is not that cycle jumping failed. The controller detected an unstable region near cycle 1600, but the hard lower bound on the jump size prevented \(\Delta N\) from becoming sufficiently small. After the first failed block, the route continued from a corrupted recovered state, so the final error became very large. This motivated Stage 14C, where \(\Delta N\) was allowed to shrink to 1 and more conservative safety factors were tested.
+
+\subsection{Stage 14C: First Clean 2000-Cycle Adaptive Acceptance}
+
+Stage 14C introduced a corrected adaptive controller with \texttt{DN\_MIN = 1}. Several 2000-cycle cases reached clean acceptance. The best accuracy case was \texttt{X06}:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Case & Stage 14C \texttt{X06} \\
+\midrule
+Final cycle & 2000 \\
+\texttt{STATEV1} error & 0.0418369623642\% \\
+S11 error & 0.00753596543494\% \\
+RF1 error & 0.00753596560110\% \\
+Number of blocks & 106 \\
+Solved recovery cycles & 1051 \\
+Skipped cycles & 833 \\
+Effective speed-up & 1.88501413761$\times$ \\
+Decision & accepted clean success \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This result proves that the blockwise reinjection concept can remain accurate over 2000 cycles when the adaptive controller is sufficiently conservative.
+
+\subsection{Stage 14D: Faster Accepted-Clean Boundary Case}
+
+Stage 14D used a 24-hour high-density controller sweep to push the speed boundary. The best accepted-clean speed case was \texttt{SB\_s055\_d200}. This case used
+\[
+\texttt{LOCAL\_TOL}=0.001, \qquad
+\texttt{SAFETY\_FACTOR}=0.55, \qquad
+\texttt{DN\_MIN}=1, \qquad
+\texttt{DN\_MAX}=200,
+\]
+with a 10-cycle Abaqus/Standard recovery window, first-order prediction, \texttt{STATEV1}-only \(\Delta N\) control, and full \texttt{STATEV} plus predicted-stress reinjection.
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Case & Stage 14D \texttt{SB\_s055\_d200} \\
+\midrule
+Final cycle & 2000 \\
+\texttt{STATEV1} reference value & 12.6968250275 \\
+\texttt{STATEV1} cycle-jump value & 12.8192453384 \\
+\texttt{STATEV1} error & 0.964180499257\% \\
+S11 reference value & 300.884613037 MPa \\
+S11 cycle-jump value & 300.190582275 MPa \\
+S11 error & 0.230663427619\% \\
+RF1 reference value & 1203.53845215 \\
+RF1 cycle-jump value & 1200.76232910 \\
+RF1 error & 0.230663427785\% \\
+Number of blocks & 51 \\
+Solved recovery cycles & 504 \\
+Skipped cycles & 1435 \\
+Effective speed-up & 3.89105058366$\times$ \\
+Decision & accepted clean success \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The same speed-up and error were obtained for \texttt{SB\_s055\_d250}, which indicates that the local adaptive formula, rather than the nominal \texttt{DN\_MAX} value alone, controlled the effective route. Nearby accepted boundary cases were \texttt{SB\_s055\_d175}, with \texttt{STATEV1} error 0.957089997870\% and speed-up 3.88349514563$\times$, and \texttt{SB\_s055\_d150}, with \texttt{STATEV1} error 0.977685500840\% and speed-up 3.78787878788$\times$.
+
+\subsection{Interpretation of the Stage 14C--14D Results}
+
+The Stage 14C and Stage 14D results change the conclusion of the blockwise study. Stage 14B showed that an overly aggressive controller can fail, but Stage 14C and Stage 14D show that the same reinjection concept can succeed when the jump-size controller is conservative enough. The current practical conclusion is:
+
+\begin{itemize}
+  \item \texttt{X06} is the robust validation case, because all errors are far below 1\%.
+  \item \texttt{SB\_s055\_d200} is the current fastest accepted-clean boundary case, because it reaches 3.891$\times$ speed-up while keeping \texttt{STATEV1}, S11, and RF1 below 1\% error.
+  \item The fastest case should be presented as a boundary result, because its \texttt{STATEV1} error is 0.964\%, close to the 1\% limit.
+  \item The result supports the statement that the failure of Stage 14B was not a failure of the cycle-jump/reinjection idea, but of an overly aggressive adaptive controller.
+\end{itemize}
+
+A concise thesis-ready statement is:
+
+\begin{quote}
+Stage 14D refined the adaptive blockwise controller beyond the Stage 14C result. The fastest accepted-clean configuration was \texttt{SB\_s055\_d200}, using safety factor 0.55, \texttt{DN\_MAX = 200}, and 10-cycle recovery windows. It reached cycle 2000 with \texttt{STATEV1} error 0.964\%, S11/RF1 error 0.231\%, and an effective speed-up of 3.89$\times$. This establishes the current practical speed boundary for the 2000-cycle Chaboche UMAT problem.
+\end{quote}

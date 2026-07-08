@@ -1,0 +1,10 @@
+status=pass
+detail=block-2 deck generated without Abaqus submission
+oldjob=stage16n_r4q_block01_250_to_271_solve_272_to_500
+requested_source_cycle=500
+restart_step=479
+restart_inc=65
+restart_resolution=final
+deck=stage16n_r4q_block02_500_to_521_solve_522_to_750.inp
+restart_line=*RESTART, READ, STEP=479, INC=65
+updated_at=2026-07-02 15:06:28

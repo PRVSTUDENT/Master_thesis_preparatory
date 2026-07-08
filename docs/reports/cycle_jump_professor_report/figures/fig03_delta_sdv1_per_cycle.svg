@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1250" height="650" viewBox="0 0 1250 650">
+<rect width="100%" height="100%" fill="white"/>
+<text x="625.0" y="30" text-anchor="middle" font-family="Arial" font-size="24" font-weight="bold">Cycle-by-cycle STATEV1 increment</text>
+<line x1="150.00" y1="62" x2="150.00" y2="568" stroke="#dddddd" stroke-width="1"/>
+<text x="150.00" y="602" text-anchor="middle" font-family="Arial" font-size="16">1</text>
+<line x1="236.67" y1="62" x2="236.67" y2="568" stroke="#dddddd" stroke-width="1"/>
+<text x="236.67" y="602" text-anchor="middle" font-family="Arial" font-size="16">2</text>
+<line x1="323.33" y1="62" x2="323.33" y2="568" stroke="#dddddd" stroke-width="1"/>
+<text x="323.33" y="602" text-anchor="middle" font-family="Arial" font-size="16">3</text>
+<line x1="410.00" y1="62" x2="410.00" y2="568" stroke="#dddddd" stroke-width="1"/>
+<text x="410.00" y="602" text-anchor="middle" font-family="Arial" font-size="16">4</text>
+<line x1="496.67" y1="62" x2="496.67" y2="568" stroke="#dddddd" stroke-width="1"/>
+<text x="496.67" y="602" text-anchor="middle" font-family="Arial" font-size="16">5</text>
+<line x1="583.33" y1="62" x2="583.33" y2="568" stroke="#dddddd" stroke-width="1"/>
+<text x="583.33" y="602" text-anchor="middle" font-family="Arial" font-size="16">6</text>
+<line x1="670.00" y1="62" x2="670.00" y2="568" stroke="#dddddd" stroke-width="1"/>
+<text x="670.00" y="602" text-anchor="middle" font-family="Arial" font-size="16">7</text>
+<line x1="756.67" y1="62" x2="756.67" y2="568" stroke="#dddddd" stroke-width="1"/>
+<text x="756.67" y="602" text-anchor="middle" font-family="Arial" font-size="16">8</text>
+<line x1="843.33" y1="62" x2="843.33" y2="568" stroke="#dddddd" stroke-width="1"/>
+<text x="843.33" y="602" text-anchor="middle" font-family="Arial" font-size="16">9</text>
+<line x1="930.00" y1="62" x2="930.00" y2="568" stroke="#dddddd" stroke-width="1"/>
+<text x="930.00" y="602" text-anchor="middle" font-family="Arial" font-size="16">10</text>
+<line x1="150" y1="527.25" x2="930" y2="527.25" stroke="#dddddd" stroke-width="1"/>
+<text x="136" y="532.25" text-anchor="end" font-family="Arial" font-size="16">0.0056</text>
+<line x1="150" y1="420.29" x2="930" y2="420.29" stroke="#dddddd" stroke-width="1"/>
+<text x="136" y="425.29" text-anchor="end" font-family="Arial" font-size="16">0.0060</text>
+<line x1="150" y1="313.34" x2="930" y2="313.34" stroke="#dddddd" stroke-width="1"/>
+<text x="136" y="318.34" text-anchor="end" font-family="Arial" font-size="16">0.0064</text>
+<line x1="150" y1="206.38" x2="930" y2="206.38" stroke="#dddddd" stroke-width="1"/>
+<text x="136" y="211.38" text-anchor="end" font-family="Arial" font-size="16">0.0068</text>
+<line x1="150" y1="99.43" x2="930" y2="99.43" stroke="#dddddd" stroke-width="1"/>
+<text x="136" y="104.43" text-anchor="end" font-family="Arial" font-size="16">0.0072</text>
+<rect x="150" y="62" width="780" height="506" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="540.0" y="630" text-anchor="middle" font-family="Arial" font-size="22">Cycle number</text>
+<text transform="translate(36,315.0) rotate(-90)" text-anchor="middle" font-family="Arial" font-size="22">Delta STATEV1 per cycle</text>
+<polyline fill="none" stroke="#111111" stroke-width="4" points="150.00,527.89 236.67,104.85 323.33,102.11 410.00,102.34 496.67,102.65 583.33,102.96 670.00,103.27 756.67,103.57 843.33,103.88 930.00,104.19"/>
+<circle cx="150.00" cy="527.89" r="4.5" fill="#111111"/>
+<circle cx="236.67" cy="104.85" r="4.5" fill="#111111"/>
+<circle cx="323.33" cy="102.11" r="4.5" fill="#111111"/>
+<circle cx="410.00" cy="102.34" r="4.5" fill="#111111"/>
+<circle cx="496.67" cy="102.65" r="4.5" fill="#111111"/>
+<circle cx="583.33" cy="102.96" r="4.5" fill="#111111"/>
+<circle cx="670.00" cy="103.27" r="4.5" fill="#111111"/>
+<circle cx="756.67" cy="103.57" r="4.5" fill="#111111"/>
+<circle cx="843.33" cy="103.88" r="4.5" fill="#111111"/>
+<circle cx="930.00" cy="104.19" r="4.5" fill="#111111"/>
+<line x1="962" y1="86" x2="1016" y2="86" stroke="#111111" stroke-width="4"/><text x="1028" y="92" font-family="Arial" font-size="18">Delta STATEV1 per cycle</text>
+<polyline fill="none" stroke="#666666" stroke-width="4" stroke-dasharray="10,7" points="150.00,103.31 930.00,103.31"/>
+<circle cx="150.00" cy="103.31" r="4.5" fill="#666666"/>
+<circle cx="930.00" cy="103.31" r="4.5" fill="#666666"/>
+<line x1="962" y1="120" x2="1016" y2="120" stroke="#666666" stroke-width="4" stroke-dasharray="10,7"/><text x="1028" y="126" font-family="Arial" font-size="18">Mean cycles 2-10</text>
+</svg>

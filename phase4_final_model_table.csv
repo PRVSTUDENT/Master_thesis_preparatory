@@ -1,0 +1,4 @@
+model,force_level,loop_character,final_u1,what_it_captures,what_it_misses,when_to_use
+linear_kinematic,lowest,symmetric stable loop,0.0,simple Bauschinger-type cyclic response,limited nonlinear hardening description,quick warm-up and baseline cyclic benchmark
+multilinear_kinematic,intermediate,stronger loop than linear but still below combined,0.0,piecewise nonlinear hardening response,less physically rich than combined isotropic-kinematic evolution,intermediate benchmark when piecewise plastic data are available
+combined_tuned,highest,widest and strongest loop,0.0,nonlinear isotropic plus kinematic cyclic response,still a simplified built-in representation and not a full custom constitutive model,main built-in cyclic plasticity study for this thesis stage

@@ -1,0 +1,30 @@
+created=2026-07-06 07:59:41 CEST
+case_dir=/scratch/pr21vyci/git_work/Master_thesis_preparatory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4q_long_adaptive_chain_1cpu
+classification_scope=feasibility_only_after_cycle1000_accuracy_fail
+R4Q_ALLOW_FEASIBILITY_AFTER_1000_FAIL=1
+planned_chain=R4Q8F..R4Q19F
+stop_cycle=5000
+--- qstat -u pr21vyci ---
+--- df -h /scratch9 /scratch /home ---
+Filesystem               Size  Used Avail Use% Mounted on
+panfs://mpanfs/scratch9   33T   11T   23T  33% /scratch9
+panfs://mpanfs/scratch   101T   85T   16T  85% /scratch
+mnfs:/home                17T   14T  2.8T  83% /home
+--- du -sh /scratch9/pr21vyci ---
+6.2T	/scratch9/pr21vyci
+--- verify R4Q7F cycle2000 heavy source ---
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 112M Jul  5 21:06 /scratch/pr21vyci/stage16n_r4q7f_continue_from_cycle1750_1cpu/1363633.mmaster02/stage16n_r4q7f_block07_1750_to_1771_solve_1772_to_2000.mdl
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 324M Jul  5 21:06 /scratch/pr21vyci/stage16n_r4q7f_continue_from_cycle1750_1cpu/1363633.mmaster02/stage16n_r4q7f_block07_1750_to_1771_solve_1772_to_2000.odb
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 2.0K Jul  5 21:06 /scratch/pr21vyci/stage16n_r4q7f_continue_from_cycle1750_1cpu/1363633.mmaster02/stage16n_r4q7f_block07_1750_to_1771_solve_1772_to_2000.prt
+-rw-r--r-- 1 pr21vyci t2-dg-role_student  45M Jul  5 21:05 /scratch/pr21vyci/stage16n_r4q7f_continue_from_cycle1750_1cpu/1363633.mmaster02/stage16n_r4q7f_block07_1750_to_1771_solve_1772_to_2000.res
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 1.6M Jul  5 21:06 /scratch/pr21vyci/stage16n_r4q7f_continue_from_cycle1750_1cpu/1363633.mmaster02/stage16n_r4q7f_block07_1750_to_1771_solve_1772_to_2000.sim
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 924K Jul  5 21:06 /scratch/pr21vyci/stage16n_r4q7f_continue_from_cycle1750_1cpu/1363633.mmaster02/stage16n_r4q7f_block07_1750_to_1771_solve_1772_to_2000.sta
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 419G Jul  5 21:06 /scratch/pr21vyci/stage16n_r4q7f_continue_from_cycle1750_1cpu/1363633.mmaster02/stage16n_r4q7f_block07_1750_to_1771_solve_1772_to_2000.stt
+--- verify R4Q2 cycle750 heavy source for R4Q3N diagnostic ---
+-rw-r--r-- 1 pr21vyci t2-dg-role_student  61M Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.mdl
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 324M Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.odb
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 2.0K Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.prt
+-rw-r--r-- 1 pr21vyci t2-dg-role_student  45M Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.res
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 1.6M Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.sim
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 911K Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.sta
+-rw-r--r-- 1 pr21vyci t2-dg-role_student 420G Jul  3 00:28 /scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02/stage16n_r4q2_block02_500_to_521_solve_522_to_750.stt

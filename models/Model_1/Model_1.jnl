@@ -1,0 +1,788 @@
+# -*- coding: mbcs -*-
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=50.0)
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(0.0, 0.0), 
+    point2=(10.0, 2.0))
+mdb.models['Model-1'].Part(dimensionality=THREE_D, name='Part-1', type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].parts['Part-1'].BaseSolidExtrude(depth=2.0, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].Material(name='Steel_EP')
+mdb.models['Model-1'].materials['Steel_EP'].Elastic(table=((210000.0, 0.3), ))
+mdb.models['Model-1'].materials['Steel_EP'].Plastic(table=((250.0, 0.0), (
+    300.0, 0.02), (350.0, 0.1)))
+mdb.models['Model-1'].HomogeneousSolidSection(material='Steel_EP', name=
+    'Sec_EP', thickness=None)
+mdb.models['Model-1'].parts['Part-1'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=Region(
+    cells=mdb.models['Model-1'].parts['Part-1'].cells.getSequenceFromMask(
+    mask=('[#1 ]', ), )), sectionName='Sec_EP', thicknessAssignment=
+    FROM_SECTION)
+mdb.models['Model-1'].parts['Part-1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.5)
+mdb.models['Model-1'].parts['Part-1'].setMeshControls(elemShape=HEX, regions=
+    mdb.models['Model-1'].parts['Part-1'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), technique=STRUCTURED)
+mdb.models['Model-1'].parts['Part-1'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    hourglassControl=DEFAULT, distortionControl=DEFAULT), ), regions=(
+    mdb.models['Model-1'].parts['Part-1'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), ))
+mdb.models['Model-1'].parts['Part-1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.DatumCsysByDefault(CARTESIAN)
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name='Part-1-1', 
+    part=mdb.models['Model-1'].parts['Part-1'])
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    ('[#1 ]', ), ), name='Set-1')
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    ('[#4 ]', ), ), name='Set-2')
+mdb.models['Model-1'].rootAssembly.Set(name='Set_Left_Nodes', nodes=
+    mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].nodes.getSequenceFromMask(
+    mask=('[#0:15 #fff00000 #1fff ]', ), ))
+mdb.models['Model-1'].rootAssembly.Set(name='Set_Right_Nodes', nodes=
+    mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].nodes.getSequenceFromMask(
+    mask=('[#1ffffff ]', ), ))
+mdb.models['Model-1'].StaticStep(initialInc=0.1, maxInc=0.1, maxNumInc=100, 
+    minInc=1e-05, name='Step-1', nlgeom=OFF, previous='Initial', timePeriod=
+    1.0)
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Step-1', 
+    distributionType=UNIFORM, fieldName='', fixed=OFF, localCsys=None, name=
+    'BC-left', region=mdb.models['Model-1'].rootAssembly.sets['Set-1'], u1=0.0, 
+    u2=0.0, u3=0.0, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+del mdb.models['Model-1'].parts['Part-1']
+mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=20.0)
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(0.0, 0.0), 
+    point2=(10.0, 2.0))
+mdb.models['Model-1'].Part(dimensionality=THREE_D, name='Bar', type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].parts['Bar'].BaseSolidExtrude(depth=2.0, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].parts['Bar'].Set(cells=
+    mdb.models['Model-1'].parts['Bar'].cells.getSequenceFromMask(('[#1 ]', ), )
+    , name='Sec_EP')
+mdb.models['Model-1'].parts['Bar'].SectionAssignment(offset=0.0, offsetField=''
+    , offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['Bar'].sets['Sec_EP'], sectionName='Sec_EP', 
+    thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].rootAssembly.suppressFeatures(featureNames=('Part-1-1', 
+    ))
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name='Bar-1', part=
+    mdb.models['Model-1'].parts['Bar'])
+mdb.models['Model-1'].parts['Bar'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    kinematicSplit=AVERAGE_STRAIN, hourglassControl=DEFAULT, 
+    distortionControl=DEFAULT), ElemType(elemCode=C3D6, elemLibrary=STANDARD), 
+    ElemType(elemCode=C3D4, elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1'].parts['Bar'].cells.getSequenceFromMask(('[#1 ]', ), 
+    ), ))
+mdb.models['Model-1'].parts['Bar'].seedPart(deviationFactor=0.1, minSizeFactor=
+    0.1, size=0.5)
+mdb.models['Model-1'].parts['Bar'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].rootAssembly.Set(name='Set_Left_Nodes', nodes=
+    mdb.models['Model-1'].rootAssembly.instances['Bar-1'].nodes.getSequenceFromMask(
+    mask=('[#0:15 #fff00000 #1fff ]', ), ))
+mdb.models['Model-1'].rootAssembly.Set(name='Set_Right_Nodes', nodes=
+    mdb.models['Model-1'].rootAssembly.instances['Bar-1'].nodes.getSequenceFromMask(
+    mask=('[#1ffffff ]', ), ))
+del mdb.models['Model-1'].boundaryConditions['BC-left']
+mdb.models['Model-1'].rootAssembly.Set(cells=
+    mdb.models['Model-1'].rootAssembly.instances['Bar-1'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), edges=
+    mdb.models['Model-1'].rootAssembly.instances['Bar-1'].edges.getSequenceFromMask(
+    ('[#fff ]', ), ), faces=
+    mdb.models['Model-1'].rootAssembly.instances['Bar-1'].faces.getSequenceFromMask(
+    ('[#3f ]', ), ), name='Set-5', vertices=
+    mdb.models['Model-1'].rootAssembly.instances['Bar-1'].vertices.getSequenceFromMask(
+    ('[#bf ]', ), ))
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Step-1', 
+    distributionType=UNIFORM, fieldName='', fixed=OFF, localCsys=None, name=
+    'BC-Left', region=mdb.models['Model-1'].rootAssembly.sets['Set-5'], u1=0.0, 
+    u2=0.0, u3=0.0, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].boundaryConditions['BC-Left'].setValues(region=
+    mdb.models['Model-1'].rootAssembly.sets['Set_Left_Nodes'])
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Step-1', 
+    distributionType=UNIFORM, fieldName='', fixed=OFF, localCsys=None, name=
+    'BC-Right', region=
+    mdb.models['Model-1'].rootAssembly.sets['Set_Right_Nodes'], u1=0.5, u2=
+    UNSET, u3=UNSET, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['Bar-1'].faces.getSequenceFromMask(
+    ('[#1 ]', ), ), name='Set_Left_Face')
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['Bar-1'].faces.getSequenceFromMask(
+    ('[#4 ]', ), ), name='Set_Right_face')
+mdb.models['Model-1'].boundaryConditions['BC-Left'].setValues(region=
+    mdb.models['Model-1'].rootAssembly.sets['Set_Left_Face'])
+mdb.models['Model-1'].boundaryConditions['BC-Right'].setValues(region=
+    mdb.models['Model-1'].rootAssembly.sets['Set_Right_face'])
+mdb.models['Model-1'].HistoryOutputRequest(createStepName='Step-1', name=
+    'H-RF-Left', rebar=EXCLUDE, region=
+    mdb.models['Model-1'].rootAssembly.sets['Set_Left_Nodes'], sectionPoints=
+    DEFAULT, variables=('RF1', 'RF2', 'RF3', 'RM1', 'RM2', 'RM3'))
+mdb.models['Model-1'].HistoryOutputRequest(createStepName='Step-1', name=
+    'H-U-right', rebar=EXCLUDE, region=
+    mdb.models['Model-1'].rootAssembly.sets['Set_Right_Nodes'], sectionPoints=
+    DEFAULT, variables=('U1', 'U2', 'U3', 'UR1', 'UR2', 'UR3'))
+mdb.Job(atTime=None, contactPrint=OFF, description='mono_ep_test', echoPrint=
+    OFF, explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF
+    , memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='mono_ep_test', nodalOutputPrecision=
+    SINGLE, numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, 
+    resultsFormat=ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=
+    0, waitMinutes=0)
+mdb.jobs['mono_ep_test'].submit(consistencyChecking=OFF)
+mdb.jobs['mono_ep_test']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'jobName': 'mono_ep_test', 'clientHost': 'PRUTHVI', 'handle': 0})
+mdb.jobs['mono_ep_test']._Message(HEADING, {'heading': 'mono_ep_test', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST RM1 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST RM2 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST RM3 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST UR1 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST UR2 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST UR3 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FILE, {
+    'file': 'D:\\TUBAF\\Master_Thesis\\Abaqus_trial\\mono_ep_test.odb', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(COMPLETED, {
+    'message': 'Analysis phase complete', 'phase': BATCHPRE_PHASE, 
+    'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'jobName': 'mono_ep_test', 'clientHost': 'PRUTHVI', 'handle': 3556})
+mdb.jobs['mono_ep_test']._Message(STEP, {'stepId': 1, 'phase': STANDARD_PHASE, 
+    'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FRAME, {'step': 0, 'frame': 0, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(MEMORY_ESTIMATE, {'memory': 26.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(PHYSICAL_MEMORY, {'physical_memory': 23906.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(MINIMUM_MEMORY, {'minimum_memory': 17.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FRAME, {'step': 0, 'frame': 1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(STATUS, {'step': 1, 'increment': 1, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 5, 'iterations': 5, 
+    'totalTime': 0.1, 'stepTime': 0.1, 'timeIncrement': 0.1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FRAME, {'step': 0, 'frame': 2, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(STATUS, {'step': 1, 'increment': 2, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 3, 'iterations': 3, 
+    'totalTime': 0.2, 'stepTime': 0.2, 'timeIncrement': 0.1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FRAME, {'step': 0, 'frame': 3, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(STATUS, {'step': 1, 'increment': 3, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 3, 'iterations': 3, 
+    'totalTime': 0.3, 'stepTime': 0.3, 'timeIncrement': 0.1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FRAME, {'step': 0, 'frame': 4, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(STATUS, {'step': 1, 'increment': 4, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.4, 'stepTime': 0.4, 'timeIncrement': 0.1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FRAME, {'step': 0, 'frame': 5, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(STATUS, {'step': 1, 'increment': 5, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.5, 'stepTime': 0.5, 'timeIncrement': 0.1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FRAME, {'step': 0, 'frame': 6, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(STATUS, {'step': 1, 'increment': 6, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.6, 'stepTime': 0.6, 'timeIncrement': 0.1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FRAME, {'step': 0, 'frame': 7, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(STATUS, {'step': 1, 'increment': 7, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.7, 'stepTime': 0.7, 'timeIncrement': 0.1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FRAME, {'step': 0, 'frame': 8, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(STATUS, {'step': 1, 'increment': 8, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.8, 'stepTime': 0.8, 'timeIncrement': 0.1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FRAME, {'step': 0, 'frame': 9, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(STATUS, {'step': 1, 'increment': 9, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.9, 'stepTime': 0.9, 'timeIncrement': 0.1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(ODB_FRAME, {'step': 0, 'frame': 10, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(STATUS, {'step': 1, 'increment': 10, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 1.0, 'stepTime': 1.0, 'timeIncrement': 0.1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(END_STEP, {'stepId': 1, 
+    'phase': STANDARD_PHASE, 'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(COMPLETED, {
+    'message': 'Analysis phase complete', 'phase': STANDARD_PHASE, 
+    'jobName': 'mono_ep_test'})
+mdb.jobs['mono_ep_test']._Message(JOB_COMPLETED, {
+    'time': 'Mon Apr 20 06:31:03 2026', 'jobName': 'mono_ep_test'})
+# Save by pruth on 2026_04_20-06.31.58; build 2024 2023_09_21-14.55.25 RELr426 190762
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.Model(name='phase2_lin_kin', objectToCopy=mdb.models['Model-1'])
+mdb.models['phase2_lin_kin'].materials['Steel_EP'].plastic.setValues(hardening=
+    KINEMATIC, scaleStress=None, table=((250.0, 0.0), (350.0, 0.1)))
+mdb.models['phase2_lin_kin'].TabularAmplitude(data=((0.0, 0.0), (0.25, 1.0), (
+    0.5, 0.0), (0.75, -1.0), (1.0, 0.0)), name='Amp_1cycle', smooth=
+    SOLVER_DEFAULT, timeSpan=STEP)
+mdb.models['phase2_lin_kin'].boundaryConditions['BC-Right'].setValues(
+    amplitude='Amp_1cycle')
+mdb.models['phase2_lin_kin'].steps['Step-1'].setValues(initialInc=0.01, maxInc=
+    0.02)
+mdb.Job(atTime=None, contactPrint=OFF, description='lin_kin_1cycle', echoPrint=
+    OFF, explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF
+    , memory=90, memoryUnits=PERCENTAGE, model='phase2_lin_kin', modelPrint=OFF
+    , multiprocessingMode=DEFAULT, name='lin_kin_1cycle', nodalOutputPrecision=
+    SINGLE, numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, 
+    resultsFormat=ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=
+    0, waitMinutes=0)
+mdb.jobs['lin_kin_1cycle'].submit(consistencyChecking=OFF)
+mdb.jobs['lin_kin_1cycle']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'jobName': 'lin_kin_1cycle', 'clientHost': 'PRUTHVI', 'handle': 0})
+mdb.jobs['lin_kin_1cycle']._Message(HEADING, {'heading': 'lin_kin_1cycle', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST RM1 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST RM2 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST RM3 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST UR1 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST UR2 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'OUTPUT REQUEST UR3 IS NOT VALID SINCE IT REQUESTS OUTPUT AT A DOF THAT IS NOT ACTIVE', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FILE, {
+    'file': 'D:\\TUBAF\\Master_Thesis\\Abaqus_trial\\lin_kin_1cycle.odb', 
+    'phase': BATCHPRE_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(COMPLETED, {
+    'message': 'Analysis phase complete', 'phase': BATCHPRE_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle', 'clientHost': 'PRUTHVI', 'handle': 21172})
+mdb.jobs['lin_kin_1cycle']._Message(STEP, {'stepId': 1, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 0, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(MEMORY_ESTIMATE, {'memory': 26.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(PHYSICAL_MEMORY, {
+    'physical_memory': 23906.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(MINIMUM_MEMORY, {'minimum_memory': 17.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 1, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 1, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 6, 'iterations': 6, 
+    'totalTime': 0.01, 'stepTime': 0.01, 'timeIncrement': 0.01, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 2, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 2, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 4, 'iterations': 4, 
+    'totalTime': 0.02, 'stepTime': 0.02, 'timeIncrement': 0.01, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 3, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 3, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.03, 'stepTime': 0.03, 'timeIncrement': 0.01, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 4, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 4, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.045, 'stepTime': 0.045, 'timeIncrement': 0.015, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 5, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 5, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.065, 'stepTime': 0.065, 'timeIncrement': 0.02, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 6, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 6, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.085, 'stepTime': 0.085, 'timeIncrement': 0.02, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 7, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 7, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.105, 'stepTime': 0.105, 'timeIncrement': 0.02, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 8, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 8, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.125, 'stepTime': 0.125, 'timeIncrement': 0.02, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 9, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 9, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.145, 'stepTime': 0.145, 'timeIncrement': 0.02, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 10, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 10, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.165, 'stepTime': 0.165, 'timeIncrement': 0.02, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 11, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 11, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.185, 'stepTime': 0.185, 'timeIncrement': 0.02, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 12, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 12, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.205, 'stepTime': 0.205, 'timeIncrement': 0.02, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 13, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 13, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.225, 'stepTime': 0.225, 'timeIncrement': 0.02, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 14, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 14, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.245, 'stepTime': 0.245, 'timeIncrement': 0.02, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 15, 
+    'attempts': ' 1U', 'severe': 0, 'equilibrium': 4, 'iterations': 4, 
+    'totalTime': 0.245, 'stepTime': 0.245, 'timeIncrement': 0.02, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 15, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 15, 
+    'attempts': 2, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.25, 'stepTime': 0.25, 'timeIncrement': 0.005, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 16, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 16, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.2575, 'stepTime': 0.2575, 'timeIncrement': 0.0075, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'THE STRAIN INCREMENT HAS EXCEEDED FIFTY TIMES THE STRAIN TO CAUSE FIRST YIELD AT 12 POINTS', 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'THE STRAIN INCREMENT HAS EXCEEDED FIFTY TIMES THE STRAIN TO CAUSE FIRST YIELD AT 272 POINTS', 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'THE STRAIN INCREMENT HAS EXCEEDED FIFTY TIMES THE STRAIN TO CAUSE FIRST YIELD AT 296 POINTS', 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'THE STRAIN INCREMENT HAS EXCEEDED FIFTY TIMES THE STRAIN TO CAUSE FIRST YIELD AT 300 POINTS', 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'THE STRAIN INCREMENT HAS EXCEEDED FIFTY TIMES THE STRAIN TO CAUSE FIRST YIELD AT 316 POINTS', 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 17, 
+    'attempts': ' 1U', 'severe': 0, 'equilibrium': 7, 'iterations': 7, 
+    'totalTime': 0.2575, 'stepTime': 0.2575, 'timeIncrement': 0.01125, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 17, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 17, 
+    'attempts': 2, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.2603125, 'stepTime': 0.2603125, 'timeIncrement': 0.0028125, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 18, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 18, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 4, 'iterations': 4, 
+    'totalTime': 0.26453125, 'stepTime': 0.26453125, 
+    'timeIncrement': 0.00421875, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 19, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 19, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 5, 'iterations': 5, 
+    'totalTime': 0.270859375, 'stepTime': 0.270859375, 
+    'timeIncrement': 0.006328125, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 20, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 20, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.2771875, 'stepTime': 0.2771875, 
+    'timeIncrement': 0.006328125, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 21, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 21, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.283515625, 'stepTime': 0.283515625, 
+    'timeIncrement': 0.006328125, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 22, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 22, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.2930078125, 'stepTime': 0.2930078125, 
+    'timeIncrement': 0.0094921875, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 23, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 23, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.30724609375, 'stepTime': 0.30724609375, 
+    'timeIncrement': 0.01423828125, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 24, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 24, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.32724609375, 'stepTime': 0.32724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 25, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 25, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.34724609375, 'stepTime': 0.34724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 26, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 26, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.36724609375, 'stepTime': 0.36724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 27, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 27, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.38724609375, 'stepTime': 0.38724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 28, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 28, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.40724609375, 'stepTime': 0.40724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 29, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 29, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.42724609375, 'stepTime': 0.42724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 30, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 30, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.44724609375, 'stepTime': 0.44724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 31, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 31, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.46724609375, 'stepTime': 0.46724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 32, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 32, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.48724609375, 'stepTime': 0.48724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 33, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 33, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.50724609375, 'stepTime': 0.50724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 34, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 34, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.52724609375, 'stepTime': 0.52724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 35, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 35, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.54724609375, 'stepTime': 0.54724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 36, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 36, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.56724609375, 'stepTime': 0.56724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 37, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 37, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.58724609375, 'stepTime': 0.58724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 38, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 38, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.60724609375, 'stepTime': 0.60724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 39, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 39, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.62724609375, 'stepTime': 0.62724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 40, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 40, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.64724609375, 'stepTime': 0.64724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 41, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 41, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.66724609375, 'stepTime': 0.66724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 42, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 42, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.68724609375, 'stepTime': 0.68724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 43, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 43, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.70724609375, 'stepTime': 0.70724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 44, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 44, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.72724609375, 'stepTime': 0.72724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 45, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 45, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.74724609375, 'stepTime': 0.74724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 46, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 46, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 5, 'iterations': 5, 
+    'totalTime': 0.76724609375, 'stepTime': 0.76724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'THE STRAIN INCREMENT HAS EXCEEDED FIFTY TIMES THE STRAIN TO CAUSE FIRST YIELD AT 76 POINTS', 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(WARNING, {
+    'message': 'THE STRAIN INCREMENT HAS EXCEEDED FIFTY TIMES THE STRAIN TO CAUSE FIRST YIELD AT 176 POINTS', 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 47, 
+    'attempts': ' 1U', 'severe': 0, 'equilibrium': 4, 'iterations': 4, 
+    'totalTime': 0.76724609375, 'stepTime': 0.76724609375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 47, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 47, 
+    'attempts': 2, 'severe': 0, 'equilibrium': 5, 'iterations': 5, 
+    'totalTime': 0.77224609375, 'stepTime': 0.77224609375, 
+    'timeIncrement': 0.005, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 48, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 48, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.77724609375, 'stepTime': 0.77724609375, 
+    'timeIncrement': 0.005, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 49, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 49, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.78224609375, 'stepTime': 0.78224609375, 
+    'timeIncrement': 0.005, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 50, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 50, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.78974609375, 'stepTime': 0.78974609375, 
+    'timeIncrement': 0.0075, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 51, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 51, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.80099609375, 'stepTime': 0.80099609375, 
+    'timeIncrement': 0.01125, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 52, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 52, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.81787109375, 'stepTime': 0.81787109375, 
+    'timeIncrement': 0.016875, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 53, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 53, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.83787109375, 'stepTime': 0.83787109375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 54, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 54, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.85787109375, 'stepTime': 0.85787109375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 55, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 55, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.87787109375, 'stepTime': 0.87787109375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 56, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 56, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.89787109375, 'stepTime': 0.89787109375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 57, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 57, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.91787109375, 'stepTime': 0.91787109375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 58, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 58, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.93787109375, 'stepTime': 0.93787109375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 59, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 59, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.95787109375, 'stepTime': 0.95787109375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 60, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 60, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 2, 'iterations': 2, 
+    'totalTime': 0.97787109375, 'stepTime': 0.97787109375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 61, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 61, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 0.99787109375, 'stepTime': 0.99787109375, 
+    'timeIncrement': 0.02, 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(ODB_FRAME, {'step': 0, 'frame': 62, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(STATUS, {'step': 1, 'increment': 62, 
+    'attempts': 1, 'severe': 0, 'equilibrium': 1, 'iterations': 1, 
+    'totalTime': 1.0, 'stepTime': 1.0, 'timeIncrement': 0.00212890624999951, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(END_STEP, {'stepId': 1, 
+    'phase': STANDARD_PHASE, 'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(COMPLETED, {
+    'message': 'Analysis phase complete', 'phase': STANDARD_PHASE, 
+    'jobName': 'lin_kin_1cycle'})
+mdb.jobs['lin_kin_1cycle']._Message(JOB_COMPLETED, {
+    'time': 'Mon Apr 20 06:57:57 2026', 'jobName': 'lin_kin_1cycle'})
+# Save by pruth on 2026_04_20-07.06.55; build 2024 2023_09_21-14.55.25 RELr426 190762

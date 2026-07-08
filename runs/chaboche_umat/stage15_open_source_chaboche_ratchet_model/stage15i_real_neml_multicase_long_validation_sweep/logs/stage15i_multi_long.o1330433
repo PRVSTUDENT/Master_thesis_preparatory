@@ -1,0 +1,32 @@
+[Stage 15I full] host=mfatnode004.cluster
+[Stage 15I full] python=/cluster/stages/2024.0/spack-0.22/opt/spack/linux-rocky8-cascadelake/gcc-11.4.0/python-3.11.7-qfpdtq2pisspwunkuc4fqloxqo2ltw6j/bin/python3
+Python 3.11.7
+[Stage 15I full] active workers=24
+[Stage 15I full] max cycles per launch=10000
+[Stage 15I full] stop seconds=70800
+[Stage 15I preflight]
+Python: 3.11.7
+[OK] Python version is acceptable
+[OK] numpy import works: 2.4.4
+[OK] pandas import works: 3.0.2
+[OK] neml import works: /home/pr21vyci/.local/lib/python3.11/site-packages/neml/__init__.py
+[OK] real NEML import path looks valid
+[OK] fallback backend is not enabled
+[OK] points_per_cycle = 40
+[OK] case definitions are valid and unique
+[OK] preserved target cycles sorted and inside extension target
+[OK] stop guard is less than PBS walltime
+[OK] active workers <= 24 by default: 24
+[OK] hard max active workers <= 32: 32
+[OK] OMP_NUM_THREADS=1
+[OK] MKL_NUM_THREADS=1
+[OK] OPENBLAS_NUM_THREADS=1
+[OK] NUMEXPR_NUM_THREADS=1
+[OK] output path does not overwrite Stage 15G
+[OK] case_outputs path writable
+[OK] smoke_test_outputs path writable
+[OK] logs path writable
+[Stage 15I preflight] PASSED
+Stage 15I finished: 14 cases
+wrote 200 rows to STAGE15I_TARGET_CYCLE_VALUES.csv
+[Stage 15I full] completed wrapper

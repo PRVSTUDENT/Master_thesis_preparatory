@@ -1,0 +1,2 @@
+case,source_cycle,solved_start,block_end,status,classification_scope,reference_available,comparison_status,job,oldjob,elapsed_seconds,detail
+R4Q3N_exact_native_control_750_to_1000,750,751,1000,completed,exact_native_diagnostic_control,yes,pass,stage16n_r4q3n_exact_native_750_to_1000,stage16n_r4q2_block02_500_to_521_solve_522_to_750,36234,"extraction=ok; cycle1000_state=ok; no_extrapolated_overwrite=confirmed"

@@ -1,0 +1,16 @@
+created=2026-07-03 06:42:49 CEST
+case_dir=/scratch/pr21vyci/git_work/Master_thesis_preparatory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4q_long_adaptive_chain_1cpu
+--- qstat -u pr21vyci ---
+
+mmaster02: 
+                                                            Req'd  Req'd   Elap
+Job ID          Username Queue    Jobname    SessID NDS TSK Memory Time  S Time
+--------------- -------- -------- ---------- ------ --- --- ------ ----- - -----
+1362636.mmaste* pr21vyci mediumq  stage16n_* 539951   1   1   30gb 24:00 R 00:14
+--- df -h /scratch9 /scratch /home ---
+Filesystem               Size  Used Avail Use% Mounted on
+panfs://mpanfs/scratch9   33T  8.1T   25T  25% /scratch9
+panfs://mpanfs/scratch   101T   85T   16T  85% /scratch
+mnfs:/home                17T   14T  3.1T  82% /home
+--- du -sh /scratch9/pr21vyci ---
+3.7T	/scratch9/pr21vyci

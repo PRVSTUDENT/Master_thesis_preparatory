@@ -1,0 +1,1027 @@
+# -*- coding: mbcs -*-
+#
+# Abaqus/CAE Release 2024 replay file
+# Internal Version: 2023_09_21-14.55.25 RELr426 190762
+# Run by pruth on Mon Apr 20 06:05:53 2026
+#
+
+# from driverUtils import executeOnCaeGraphicsStartup
+# executeOnCaeGraphicsStartup()
+#: Executing "onCaeGraphicsStartup()" in the site directory ...
+#: Warning: Permission was denied for "abaqus.rpy"; "abaqus.rpy.4" will be used for this session's replay file.
+from abaqus import *
+from abaqusConstants import *
+session.Viewport(name='Viewport: 1', origin=(0.0, 0.0), width=222.166656494141, 
+    height=132.017364501953)
+session.viewports['Viewport: 1'].makeCurrent()
+session.viewports['Viewport: 1'].maximize()
+from caeModules import *
+from driverUtils import executeOnCaeStartup
+executeOnCaeStartup()
+session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
+    referenceRepresentation=ON)
+#--- Recover file: 'abaqus2.rec' ---
+# -*- coding: mbcs -*- 
+from mesh import *
+mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=50.0)
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(0.0, 0.0), 
+    point2=(10.0, 2.0))
+mdb.models['Model-1'].Part(dimensionality=THREE_D, name='Part-1', 
+    type=DEFORMABLE_BODY)
+mdb.models['Model-1'].parts['Part-1'].BaseSolidExtrude(depth=2.0, 
+    sketch=mdb.models['Model-1'].sketches['__profile__'])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].Material(name='Steel_EP')
+mdb.models['Model-1'].materials['Steel_EP'].Elastic(table=((210000.0, 0.3), ))
+mdb.models['Model-1'].materials['Steel_EP'].Plastic(table=((250.0, 0.0), (
+    300.0, 0.02), (350.0, 0.1)))
+mdb.models['Model-1'].HomogeneousSolidSection(material='Steel_EP', 
+    name='Sec_EP', thickness=None)
+mdb.models['Model-1'].parts['Part-1'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=Region(
+    cells=mdb.models['Model-1'].parts['Part-1'].cells.getSequenceFromMask(
+    mask=('[#1 ]', ), )), sectionName='Sec_EP', 
+    thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].parts['Part-1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.5)
+mdb.models['Model-1'].parts['Part-1'].setMeshControls(elemShape=HEX, 
+    regions=mdb.models['Model-1'].parts['Part-1'].cells.getSequenceFromMask(
+    mask=('[#1 ]', ), ), technique=STRUCTURED)
+mdb.models['Model-1'].parts['Part-1'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    hourglassControl=DEFAULT, distortionControl=DEFAULT), ), regions=(
+    mdb.models['Model-1'].parts['Part-1'].cells.getSequenceFromMask(mask=(
+    '[#1 ]', ), ), ))
+mdb.models['Model-1'].parts['Part-1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.DatumCsysByDefault(CARTESIAN)
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name='Part-1-1', 
+    part=mdb.models['Model-1'].parts['Part-1'])
+mdb.models['Model-1'].rootAssembly.Set(
+    faces=mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    mask=('[#1 ]', ), ), name='Set-1')
+mdb.models['Model-1'].rootAssembly.Set(
+    faces=mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    mask=('[#4 ]', ), ), name='Set-2')
+mdb.models['Model-1'].rootAssembly.Set(name='Set_Left_Nodes', 
+    nodes=mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].nodes.getSequenceFromMask(
+    mask=('[#0:15 #fff00000 #1fff ]', ), ))
+mdb.models['Model-1'].rootAssembly.Set(name='Set_Right_Nodes', 
+    nodes=mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].nodes.getSequenceFromMask(
+    mask=('[#1ffffff ]', ), ))
+mdb.models['Model-1'].StaticStep(initialInc=0.1, maxInc=0.1, maxNumInc=100, 
+    minInc=1e-05, name='Step-1', nlgeom=OFF, previous='Initial', 
+    timePeriod=1.0)
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Step-1', 
+    distributionType=UNIFORM, fieldName='', fixed=OFF, localCsys=None, 
+    name='BC-left', region=mdb.models['Model-1'].rootAssembly.sets['Set-1'], 
+    u1=0.0, u2=0.0, u3=0.0, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+#--- End of Recover file ------
+del mdb.models['Model-1'].parts['Part-1']
+s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=20.0)
+g, v, d, c = s.geometry, s.vertices, s.dimensions, s.constraints
+s.setPrimaryObject(option=STANDALONE)
+s.rectangle(point1=(0.0, 0.0), point2=(10.0, 2.0))
+session.viewports['Viewport: 1'].view.setValues(nearPlane=16.2932, 
+    farPlane=21.4192, width=27.2786, height=13.1564, cameraPosition=(1.22248, 
+    0.572258, 18.8562), cameraTarget=(1.22248, 0.572258, 0))
+p = mdb.models['Model-1'].Part(name='Bar', dimensionality=THREE_D, 
+    type=DEFORMABLE_BODY)
+p = mdb.models['Model-1'].parts['Bar']
+p.BaseSolidExtrude(sketch=s, depth=2.0)
+s.unsetPrimaryObject()
+p = mdb.models['Model-1'].parts['Bar']
+session.viewports['Viewport: 1'].setValues(displayedObject=p)
+del mdb.models['Model-1'].sketches['__profile__']
+session.viewports['Viewport: 1'].partDisplay.setValues(sectionAssignments=ON, 
+    engineeringFeatures=ON)
+session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
+    referenceRepresentation=OFF)
+p = mdb.models['Model-1'].parts['Bar']
+c = p.cells
+cells = c.getSequenceFromMask(mask=('[#1 ]', ), )
+region = p.Set(cells=cells, name='Sec_EP')
+p = mdb.models['Model-1'].parts['Bar']
+p.SectionAssignment(region=region, sectionName='Sec_EP', offset=0.0, 
+    offsetType=MIDDLE_SURFACE, offsetField='', 
+    thicknessAssignment=FROM_SECTION)
+a = mdb.models['Model-1'].rootAssembly
+a.suppressFeatures(featureNames=('Part-1-1', ))
+a = mdb.models['Model-1'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(
+    optimizationTasks=OFF, geometricRestrictions=OFF, stopConditions=OFF)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=3.60163, 
+    farPlane=4.39837, width=3.46416, height=1.67076, viewOffsetX=-0.099474, 
+    viewOffsetY=-0.0335626)
+a = mdb.models['Model-1'].rootAssembly
+p = mdb.models['Model-1'].parts['Bar']
+a.Instance(name='Bar-1', part=p, dependent=ON)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(
+    adaptiveMeshConstraints=ON)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(step='Step-1')
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=ON, 
+    adaptiveMeshConstraints=OFF)
+session.viewports['Viewport: 1'].assemblyDisplay.meshOptions.setValues(
+    meshTechnique=ON)
+p = mdb.models['Model-1'].parts['Bar']
+session.viewports['Viewport: 1'].setValues(displayedObject=p)
+session.viewports['Viewport: 1'].partDisplay.setValues(sectionAssignments=OFF, 
+    engineeringFeatures=OFF, mesh=ON)
+session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
+    meshTechnique=ON)
+elemType1 = mesh.ElemType(elemCode=C3D8R, elemLibrary=STANDARD, 
+    kinematicSplit=AVERAGE_STRAIN, secondOrderAccuracy=OFF, 
+    hourglassControl=DEFAULT, distortionControl=DEFAULT)
+elemType2 = mesh.ElemType(elemCode=C3D6, elemLibrary=STANDARD)
+elemType3 = mesh.ElemType(elemCode=C3D4, elemLibrary=STANDARD)
+p = mdb.models['Model-1'].parts['Bar']
+c = p.cells
+cells = c.getSequenceFromMask(mask=('[#1 ]', ), )
+pickedRegions =(cells, )
+p.setElementType(regions=pickedRegions, elemTypes=(elemType1, elemType2, 
+    elemType3))
+p = mdb.models['Model-1'].parts['Bar']
+p.seedPart(size=0.5, deviationFactor=0.1, minSizeFactor=0.1)
+p = mdb.models['Model-1'].parts['Bar']
+p.generateMesh()
+a = mdb.models['Model-1'].rootAssembly
+a.regenerate()
+a = mdb.models['Model-1'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=OFF)
+session.viewports['Viewport: 1'].assemblyDisplay.meshOptions.setValues(
+    meshTechnique=OFF)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=ON)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=OFF)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=17.6501, 
+    farPlane=28.0157, width=10.3567, height=5.31016, cameraUpVector=(-0.353552, 
+    0.540005, -0.763803), cameraTarget=(5.43995, 0.695779, 0.86427))
+session.viewports['Viewport: 1'].view.setValues(nearPlane=19.5691, 
+    farPlane=25.6246, width=11.4827, height=5.88749, cameraPosition=(7.91956, 
+    13.701, 19.4669), cameraUpVector=(-0.0848752, 0.584849, -0.806689), 
+    cameraTarget=(5.43997, 0.69578, 0.864261))
+session.viewports['Viewport: 1'].view.setValues(nearPlane=18.472, 
+    farPlane=26.3404, width=10.8389, height=5.55742, cameraPosition=(-0.669347, 
+    14.9073, 17.6342), cameraUpVector=(0.189893, 0.524831, -0.829755), 
+    cameraTarget=(5.5297, 0.683177, 0.883408))
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=ON)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=18.6055, 
+    farPlane=26.2069, width=10.9173, height=5.59759, viewOffsetX=0.0204573, 
+    viewOffsetY=0.0155073)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=OFF)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=ON)
+a = mdb.models['Model-1'].rootAssembly
+n1 = a.instances['Bar-1'].nodes
+nodes1 = n1.getSequenceFromMask(mask=('[#0:15 #fff00000 #1fff ]', ), )
+a.Set(nodes=nodes1, name='Set_Left_Nodes')
+#: The set 'Set_Left_Nodes' has been edited (25 nodes).
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=OFF)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=ON)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=OFF)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=ON)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=17.5008, 
+    farPlane=28.0909, width=10.2691, height=5.26521, cameraPosition=(19.1777, 
+    9.41372, 16.7458), cameraUpVector=(-0.498526, 0.743923, -0.445029), 
+    cameraTarget=(5.16547, 0.785384, 0.916951), viewOffsetX=0.0192426, 
+    viewOffsetY=0.0145866)
+a = mdb.models['Model-1'].rootAssembly
+n1 = a.instances['Bar-1'].nodes
+nodes1 = n1.getSequenceFromMask(mask=('[#1ffffff ]', ), )
+a.Set(nodes=nodes1, name='Set_Right_Nodes')
+#: The set 'Set_Right_Nodes' has been edited (25 nodes).
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=OFF)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=ON, bcs=ON, 
+    predefinedFields=ON, connectors=ON)
+del mdb.models['Model-1'].boundaryConditions['BC-left']
+a = mdb.models['Model-1'].rootAssembly
+c1 = a.instances['Bar-1'].cells
+cells1 = c1.getSequenceFromMask(mask=('[#1 ]', ), )
+f1 = a.instances['Bar-1'].faces
+faces1 = f1.getSequenceFromMask(mask=('[#3f ]', ), )
+e1 = a.instances['Bar-1'].edges
+edges1 = e1.getSequenceFromMask(mask=('[#fff ]', ), )
+v1 = a.instances['Bar-1'].vertices
+verts1 = v1.getSequenceFromMask(mask=('[#bf ]', ), )
+region = a.Set(vertices=verts1, edges=edges1, faces=faces1, cells=cells1, 
+    name='Set-5')
+mdb.models['Model-1'].DisplacementBC(name='BC-Left', createStepName='Step-1', 
+    region=region, u1=0.0, u2=0.0, u3=0.0, ur1=UNSET, ur2=UNSET, ur3=UNSET, 
+    amplitude=UNSET, fixed=OFF, distributionType=UNIFORM, fieldName='', 
+    localCsys=None)
+a = mdb.models['Model-1'].rootAssembly
+region = a.sets['Set_Left_Nodes']
+mdb.models['Model-1'].boundaryConditions['BC-Left'].setValues(region=region)
+a = mdb.models['Model-1'].rootAssembly
+region = a.sets['Set_Right_Nodes']
+mdb.models['Model-1'].DisplacementBC(name='BC-Right', createStepName='Step-1', 
+    region=region, u1=0.5, u2=UNSET, u3=UNSET, ur1=UNSET, ur2=UNSET, ur3=UNSET, 
+    amplitude=UNSET, fixed=OFF, distributionType=UNIFORM, fieldName='', 
+    localCsys=None)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=OFF, bcs=OFF, 
+    predefinedFields=OFF, connectors=OFF)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=18.1678, 
+    farPlane=26.9984, width=10.6605, height=5.46591, cameraPosition=(-4.60873, 
+    8.41206, 20.0464), cameraUpVector=(0.0663663, 0.747472, -0.66097), 
+    cameraTarget=(5.19546, 0.783094, 0.888643), viewOffsetX=0.019976, 
+    viewOffsetY=0.0151425)
+a = mdb.models['Model-1'].rootAssembly
+f1 = a.instances['Bar-1'].faces
+faces1 = f1.getSequenceFromMask(mask=('[#1 ]', ), )
+a.Set(faces=faces1, name='Set_Left_Face')
+#: The set 'Set_Left_Face' has been created (1 face).
+session.viewports['Viewport: 1'].view.setValues(nearPlane=18.1326, 
+    farPlane=27.0336, width=10.6398, height=5.45531, cameraPosition=(-4.60925, 
+    8.41257, 20.0459), cameraUpVector=(0.0900717, 0.753506, -0.651241), 
+    cameraTarget=(5.19494, 0.783607, 0.888172), viewOffsetX=0.0199373, 
+    viewOffsetY=0.0151131)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=20.025, 
+    farPlane=25.2222, width=11.7502, height=6.02466, cameraPosition=(4.45407, 
+    10.4368, 21.555), cameraUpVector=(0.110704, 0.709155, -0.696307), 
+    cameraTarget=(5.08924, 0.769097, 0.879584), viewOffsetX=0.0220181, 
+    viewOffsetY=0.0166904)
+session.viewports['Viewport: 1'].view.setValues(nearPlane=18.0192, 
+    farPlane=27.3766, width=10.5732, height=5.4212, cameraPosition=(15.6738, 
+    6.3132, 20.3149), cameraUpVector=(-0.362692, 0.82801, -0.427614), 
+    cameraTarget=(4.99512, 0.801029, 0.90042), viewOffsetX=0.0198126, 
+    viewOffsetY=0.0150186)
+a = mdb.models['Model-1'].rootAssembly
+f1 = a.instances['Bar-1'].faces
+faces1 = f1.getSequenceFromMask(mask=('[#4 ]', ), )
+a.Set(faces=faces1, name='Set_Right_face')
+#: The set 'Set_Right_face' has been created (1 face).
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=ON, bcs=ON, 
+    predefinedFields=ON, connectors=ON)
+a = mdb.models['Model-1'].rootAssembly
+region = a.sets['Set_Left_Face']
+mdb.models['Model-1'].boundaryConditions['BC-Left'].setValues(region=region)
+a = mdb.models['Model-1'].rootAssembly
+region = a.sets['Set_Right_face']
+mdb.models['Model-1'].boundaryConditions['BC-Right'].setValues(region=region)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=OFF, bcs=OFF, 
+    predefinedFields=OFF, connectors=OFF, adaptiveMeshConstraints=ON)
+regionDef=mdb.models['Model-1'].rootAssembly.sets['Set_Left_Nodes']
+mdb.models['Model-1'].HistoryOutputRequest(name='H-RF-Left', 
+    createStepName='Step-1', variables=('RF1', 'RF2', 'RF3', 'RM1', 'RM2', 
+    'RM3'), region=regionDef, sectionPoints=DEFAULT, rebar=EXCLUDE)
+regionDef=mdb.models['Model-1'].rootAssembly.sets['Set_Right_Nodes']
+mdb.models['Model-1'].HistoryOutputRequest(name='H-U-right', 
+    createStepName='Step-1', variables=('U1', 'U2', 'U3', 'UR1', 'UR2', 'UR3'), 
+    region=regionDef, sectionPoints=DEFAULT, rebar=EXCLUDE)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(
+    adaptiveMeshConstraints=OFF, optimizationTasks=ON, 
+    geometricRestrictions=ON, stopConditions=ON)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(
+    optimizationTasks=OFF, geometricRestrictions=OFF, stopConditions=OFF)
+mdb.Job(name='mono_ep_test', model='Model-1', description='mono_ep_test', 
+    type=ANALYSIS, atTime=None, waitMinutes=0, waitHours=0, queue=None, 
+    memory=90, memoryUnits=PERCENTAGE, getMemoryFromAnalysis=True, 
+    explicitPrecision=SINGLE, nodalOutputPrecision=SINGLE, echoPrint=OFF, 
+    modelPrint=OFF, contactPrint=OFF, historyPrint=OFF, userSubroutine='', 
+    scratch='', resultsFormat=ODB, numThreadsPerMpiProcess=1, 
+    multiprocessingMode=DEFAULT, numCpus=1, numGPUs=0)
+mdb.jobs['mono_ep_test'].writeInput(consistencyChecking=OFF)
+#: The job input file has been written to "mono_ep_test.inp".
+mdb.jobs['mono_ep_test'].submit(consistencyChecking=OFF)
+#: The job input file "mono_ep_test.inp" has been submitted for analysis.
+#: Job mono_ep_test: Analysis Input File Processor completed successfully.
+#: Job mono_ep_test: Abaqus/Standard completed successfully.
+#: Job mono_ep_test completed successfully. 
+mdb.saveAs(
+    pathName='D:/TUBAF/Master_Thesis/Abaqus_trial/models/Model_1/Model_1')
+#: The model database has been saved to "D:\TUBAF\Master_Thesis\Abaqus_trial\models\Model_1\Model_1.cae".
+session.viewports['Viewport: 1'].setValues(displayedObject=None)
+o1 = session.openOdb(
+    name='D:/TUBAF/Master_Thesis/Abaqus_trial/mono_ep_test.odb')
+session.viewports['Viewport: 1'].setValues(displayedObject=o1)
+#: Model: D:/TUBAF/Master_Thesis/Abaqus_trial/mono_ep_test.odb
+#: Number of Assemblies:         1
+#: Number of Assembly instances: 0
+#: Number of Part instances:     1
+#: Number of Meshes:             1
+#: Number of Element Sets:       5
+#: Number of Node Sets:          7
+#: Number of Steps:              1
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    CONTOURS_ON_DEF, ))
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    DEFORMED, ))
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    UNDEFORMED, ))
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    DEFORMED, ))
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    CONTOURS_ON_DEF, ))
+session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(
+    maxValue=322.991, minValue=260.089)
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    UNDEFORMED, ))
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    DEFORMED, ))
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    CONTOURS_ON_DEF, ))
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    SYMBOLS_ON_DEF, ))
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    ORIENT_ON_DEF, ))
+#: Warning: Material orientation information is not available in the current frame for any elements in the current display group. Please make sure that the primary variable is element-based and orientations were defined in the pertinent solid/shell sections.
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    CONTOURS_ON_DEF, ))
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    DEFORMED, ))
+session.viewports['Viewport: 1'].odbDisplay.display.setValues(plotState=(
+    CONTOURS_ON_DEF, ))
+session.viewports['Viewport: 1'].view.setValues(width=9.77835, height=5.01361, 
+    viewOffsetX=-0.0571129, viewOffsetY=-0.0519105)
+odb = session.odbs['D:/TUBAF/Master_Thesis/Abaqus_trial/mono_ep_test.odb']
+xy1 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Spatial displacement: U1 at Node 13 in NSET SET_RIGHT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c1 = session.Curve(xyData=xy1)
+xyp = session.XYPlot('XYPlot-1')
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+chart.setValues(curvesToPlot=(c1, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+session.viewports['Viewport: 1'].setValues(displayedObject=xyp)
+odb = session.odbs['D:/TUBAF/Master_Thesis/Abaqus_trial/mono_ep_test.odb']
+xy1 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 501 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c1 = session.Curve(xyData=xy1)
+xy2 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 502 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c2 = session.Curve(xyData=xy2)
+xy3 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 503 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c3 = session.Curve(xyData=xy3)
+xy4 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 504 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c4 = session.Curve(xyData=xy4)
+xy5 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 505 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c5 = session.Curve(xyData=xy5)
+xy6 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 506 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c6 = session.Curve(xyData=xy6)
+xy7 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 507 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c7 = session.Curve(xyData=xy7)
+xy8 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 508 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c8 = session.Curve(xyData=xy8)
+xy9 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 509 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c9 = session.Curve(xyData=xy9)
+xy10 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 510 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c10 = session.Curve(xyData=xy10)
+xy11 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 511 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c11 = session.Curve(xyData=xy11)
+xy12 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 512 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c12 = session.Curve(xyData=xy12)
+xy13 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 513 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c13 = session.Curve(xyData=xy13)
+xy14 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 514 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c14 = session.Curve(xyData=xy14)
+xy15 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 515 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c15 = session.Curve(xyData=xy15)
+xy16 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 516 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c16 = session.Curve(xyData=xy16)
+xy17 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 517 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c17 = session.Curve(xyData=xy17)
+xy18 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 518 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c18 = session.Curve(xyData=xy18)
+xy19 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 519 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c19 = session.Curve(xyData=xy19)
+xy20 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 520 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c20 = session.Curve(xyData=xy20)
+xy21 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 521 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c21 = session.Curve(xyData=xy21)
+xy22 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 522 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c22 = session.Curve(xyData=xy22)
+xy23 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 523 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c23 = session.Curve(xyData=xy23)
+xy24 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 524 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c24 = session.Curve(xyData=xy24)
+xy25 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 525 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c25 = session.Curve(xyData=xy25)
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+chart.setValues(curvesToPlot=(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, 
+    c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+session.xyPlots[session.viewports['Viewport: 1'].displayedObject.name].setValues(
+    transform=(1.1236, 0, 0, 0.0159497, 0, 1.1236, 0, 0.0782757, 0, 0, 1.1236, 
+    0, 0, 0, 0, 1))
+xy1 = session.xyDataObjects['_temp_2']
+xy2 = session.xyDataObjects['_temp_3']
+xy3 = session.xyDataObjects['_temp_4']
+xy4 = session.xyDataObjects['_temp_5']
+xy5 = session.xyDataObjects['_temp_6']
+xy6 = session.xyDataObjects['_temp_7']
+xy7 = session.xyDataObjects['_temp_8']
+xy8 = session.xyDataObjects['_temp_9']
+xy9 = session.xyDataObjects['_temp_10']
+xy10 = session.xyDataObjects['_temp_11']
+xy11 = session.xyDataObjects['_temp_12']
+xy12 = session.xyDataObjects['_temp_13']
+xy13 = session.xyDataObjects['_temp_14']
+xy14 = session.xyDataObjects['_temp_15']
+xy15 = session.xyDataObjects['_temp_16']
+xy16 = session.xyDataObjects['_temp_17']
+xy17 = session.xyDataObjects['_temp_18']
+xy18 = session.xyDataObjects['_temp_19']
+xy19 = session.xyDataObjects['_temp_20']
+xy20 = session.xyDataObjects['_temp_21']
+xy21 = session.xyDataObjects['_temp_22']
+xy22 = session.xyDataObjects['_temp_23']
+xy23 = session.xyDataObjects['_temp_24']
+xy24 = session.xyDataObjects['_temp_25']
+xy25 = session.xyDataObjects['_temp_26']
+xy26 = sum((xy1, xy2, xy3, xy4, xy5, xy6, xy7, xy8, xy9, xy10, xy11, xy12, 
+    xy13, xy14, xy15, xy16, xy17, xy18, xy19, xy20, xy21, xy22, xy23, xy24, 
+    xy25))
+xy26.setValues(
+    sourceDescription='sum ( ( "_temp_2", "_temp_3", "_temp_4", "_temp_5", "_temp_6", "_temp_7", "_temp_8", "_temp_9", "_temp_10", "_temp_11", "_temp_12", "_temp_13", "_temp_14", "_temp_15", "_temp_16", "_temp_17", "_temp_18", "_temp_19", "_temp_20", "_temp_21", "_temp_22", "_temp_23", "_temp_24", "_temp_25", "_temp_26" ) )')
+tmpName = xy26.name
+session.xyDataObjects.changeKey(tmpName, 'RF_total')
+xy1 = session.xyDataObjects['_temp_2']
+xy2 = session.xyDataObjects['_temp_3']
+xy3 = session.xyDataObjects['_temp_4']
+xy4 = session.xyDataObjects['_temp_5']
+xy5 = session.xyDataObjects['_temp_6']
+xy6 = session.xyDataObjects['_temp_7']
+xy7 = session.xyDataObjects['_temp_8']
+xy8 = session.xyDataObjects['_temp_9']
+xy9 = session.xyDataObjects['_temp_10']
+xy10 = session.xyDataObjects['_temp_11']
+xy11 = session.xyDataObjects['_temp_12']
+xy12 = session.xyDataObjects['_temp_13']
+xy13 = session.xyDataObjects['_temp_14']
+xy14 = session.xyDataObjects['_temp_15']
+xy15 = session.xyDataObjects['_temp_16']
+xy16 = session.xyDataObjects['_temp_17']
+xy17 = session.xyDataObjects['_temp_18']
+xy18 = session.xyDataObjects['_temp_19']
+xy19 = session.xyDataObjects['_temp_20']
+xy20 = session.xyDataObjects['_temp_21']
+xy21 = session.xyDataObjects['_temp_22']
+xy22 = session.xyDataObjects['_temp_23']
+xy23 = session.xyDataObjects['_temp_24']
+xy24 = session.xyDataObjects['_temp_25']
+xy25 = session.xyDataObjects['_temp_26']
+xy26 = sum((xy1, xy2, xy3, xy4, xy5, xy6, xy7, xy8, xy9, xy10, xy11, xy12, 
+    xy13, xy14, xy15, xy16, xy17, xy18, xy19, xy20, xy21, xy22, xy23, xy24, 
+    xy25))
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+c1 = session.Curve(xyData=xy26)
+chart.setValues(curvesToPlot=(c1, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+odb = session.odbs['D:/TUBAF/Master_Thesis/Abaqus_trial/mono_ep_test.odb']
+xy_result = session.XYDataFromHistory(name='U1_curve', odb=odb, 
+    outputVariableName='Spatial displacement: U1 at Node 13 in NSET SET_RIGHT_NODES', 
+    steps=('Step-1', ), __linkedVpName__='Viewport: 1')
+c1 = session.Curve(xyData=xy_result)
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+chart.setValues(curvesToPlot=(c1, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+odb = session.odbs['D:/TUBAF/Master_Thesis/Abaqus_trial/mono_ep_test.odb']
+xy1 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Spatial displacement: U1 at Node 13 in NSET SET_RIGHT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c1 = session.Curve(xyData=xy1)
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+chart.setValues(curvesToPlot=(c1, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+xy1 = session.xyDataObjects['RF_total']
+xy2 = session.xyDataObjects['U1_curve']
+xy3 = combine(xy1, xy2)
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+c1 = session.Curve(xyData=xy3)
+chart.setValues(curvesToPlot=(c1, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+session.viewports['Viewport: 1'].partDisplay.setValues(mesh=OFF)
+session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
+    meshTechnique=OFF)
+session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
+    referenceRepresentation=ON)
+p = mdb.models['Model-1'].parts['Bar']
+session.viewports['Viewport: 1'].setValues(displayedObject=p)
+mdb.Model(name='phase2_lin_kin', objectToCopy=mdb.models['Model-1'])
+#: The model "phase2_lin_kin" has been created.
+p = mdb.models['phase2_lin_kin'].parts['Bar']
+session.viewports['Viewport: 1'].setValues(displayedObject=p)
+session.viewports['Viewport: 1'].partDisplay.setValues(sectionAssignments=ON, 
+    engineeringFeatures=ON)
+session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
+    referenceRepresentation=OFF)
+mdb.models['phase2_lin_kin'].materials['Steel_EP'].plastic.setValues(
+    hardening=KINEMATIC, scaleStress=None, table=((250.0, 0.0), (350.0, 0.1)))
+a = mdb.models['phase2_lin_kin'].rootAssembly
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=ON, bcs=ON, 
+    predefinedFields=ON, connectors=ON)
+mdb.models['phase2_lin_kin'].TabularAmplitude(name='Amp_1cycle', timeSpan=STEP, 
+    smooth=SOLVER_DEFAULT, data=((0.0, 0.0), (0.25, 1.0), (0.5, 0.0), (0.75, 
+    -1.0), (1.0, 0.0)))
+mdb.models['phase2_lin_kin'].boundaryConditions['BC-Right'].setValues(
+    amplitude='Amp_1cycle')
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=OFF, bcs=OFF, 
+    predefinedFields=OFF, connectors=OFF, adaptiveMeshConstraints=ON)
+mdb.models['phase2_lin_kin'].steps['Step-1'].setValues(initialInc=0.01, 
+    maxInc=0.02)
+session.viewports['Viewport: 1'].assemblyDisplay.setValues(
+    adaptiveMeshConstraints=OFF)
+mdb.Job(name='lin_kin_1cycle', model='phase2_lin_kin', 
+    description='lin_kin_1cycle', type=ANALYSIS, atTime=None, waitMinutes=0, 
+    waitHours=0, queue=None, memory=90, memoryUnits=PERCENTAGE, 
+    getMemoryFromAnalysis=True, explicitPrecision=SINGLE, 
+    nodalOutputPrecision=SINGLE, echoPrint=OFF, modelPrint=OFF, 
+    contactPrint=OFF, historyPrint=OFF, userSubroutine='', scratch='', 
+    resultsFormat=ODB, numThreadsPerMpiProcess=1, multiprocessingMode=DEFAULT, 
+    numCpus=1, numGPUs=0)
+mdb.jobs['lin_kin_1cycle'].writeInput(consistencyChecking=OFF)
+#: The job input file has been written to "lin_kin_1cycle.inp".
+mdb.jobs['lin_kin_1cycle'].submit(consistencyChecking=OFF)
+#: The job input file "lin_kin_1cycle.inp" has been submitted for analysis.
+#: Job lin_kin_1cycle: Analysis Input File Processor completed successfully.
+#: Job lin_kin_1cycle: Abaqus/Standard completed successfully.
+#: Job lin_kin_1cycle completed successfully. 
+xyp = session.xyPlots['XYPlot-1']
+session.viewports['Viewport: 1'].setValues(displayedObject=xyp)
+o1 = session.openOdb(
+    name='D:/TUBAF/Master_Thesis/Abaqus_trial/lin_kin_1cycle.odb')
+session.viewports['Viewport: 1'].setValues(displayedObject=o1)
+#: Model: D:/TUBAF/Master_Thesis/Abaqus_trial/lin_kin_1cycle.odb
+#: Number of Assemblies:         1
+#: Number of Assembly instances: 0
+#: Number of Part instances:     1
+#: Number of Meshes:             1
+#: Number of Element Sets:       5
+#: Number of Node Sets:          7
+#: Number of Steps:              1
+odb = session.odbs['D:/TUBAF/Master_Thesis/Abaqus_trial/lin_kin_1cycle.odb']
+xy1 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Spatial displacement: U1 at Node 13 in NSET SET_RIGHT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c1 = session.Curve(xyData=xy1)
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+chart.setValues(curvesToPlot=(c1, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+session.viewports['Viewport: 1'].setValues(displayedObject=xyp)
+odb = session.odbs['D:/TUBAF/Master_Thesis/Abaqus_trial/lin_kin_1cycle.odb']
+xy1 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 513 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c1 = session.Curve(xyData=xy1)
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+chart.setValues(curvesToPlot=(c1, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+odb = session.odbs['D:/TUBAF/Master_Thesis/Abaqus_trial/lin_kin_1cycle.odb']
+xy1 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 501 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c1 = session.Curve(xyData=xy1)
+xy2 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 502 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c2 = session.Curve(xyData=xy2)
+xy3 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 503 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c3 = session.Curve(xyData=xy3)
+xy4 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 504 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c4 = session.Curve(xyData=xy4)
+xy5 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 505 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c5 = session.Curve(xyData=xy5)
+xy6 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 506 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c6 = session.Curve(xyData=xy6)
+xy7 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 507 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c7 = session.Curve(xyData=xy7)
+xy8 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 508 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c8 = session.Curve(xyData=xy8)
+xy9 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 509 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c9 = session.Curve(xyData=xy9)
+xy10 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 510 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c10 = session.Curve(xyData=xy10)
+xy11 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 511 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c11 = session.Curve(xyData=xy11)
+xy12 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 512 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c12 = session.Curve(xyData=xy12)
+xy13 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 513 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c13 = session.Curve(xyData=xy13)
+xy14 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 514 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c14 = session.Curve(xyData=xy14)
+xy15 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 515 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c15 = session.Curve(xyData=xy15)
+xy16 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 516 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c16 = session.Curve(xyData=xy16)
+xy17 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 517 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c17 = session.Curve(xyData=xy17)
+xy18 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 518 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c18 = session.Curve(xyData=xy18)
+xy19 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 519 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c19 = session.Curve(xyData=xy19)
+xy20 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 520 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c20 = session.Curve(xyData=xy20)
+xy21 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 521 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c21 = session.Curve(xyData=xy21)
+xy22 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 522 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c22 = session.Curve(xyData=xy22)
+xy23 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 523 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c23 = session.Curve(xyData=xy23)
+xy24 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 524 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c24 = session.Curve(xyData=xy24)
+xy25 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 525 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c25 = session.Curve(xyData=xy25)
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+chart.setValues(curvesToPlot=(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, 
+    c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+odb = session.odbs['D:/TUBAF/Master_Thesis/Abaqus_trial/lin_kin_1cycle.odb']
+xy0 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 501 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy1 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 502 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy2 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 503 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy3 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 504 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy4 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 505 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy5 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 506 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy6 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 507 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy7 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 508 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy8 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 509 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy9 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 510 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy10 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 511 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy11 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 512 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy12 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 513 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy13 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 514 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy14 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 515 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy15 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 516 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy16 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 517 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy17 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 518 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy18 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 519 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy19 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 520 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy20 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 521 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy21 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 522 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy22 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 523 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy23 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 524 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy24 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 525 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+xy25 = sum((xy0, xy1, xy2, xy3, xy4, xy5, xy6, xy7, xy8, xy9, xy10, xy11, xy12, 
+    xy13, xy14, xy15, xy16, xy17, xy18, xy19, xy20, xy21, xy22, xy23, xy24, ), 
+    )
+session.XYData(name='XYData-1', objectToCopy=xy25, 
+    sourceDescription='sum((XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, XYData-1, ),)')
+del session.xyDataObjects[xy0.name]
+del session.xyDataObjects[xy1.name]
+del session.xyDataObjects[xy2.name]
+del session.xyDataObjects[xy3.name]
+del session.xyDataObjects[xy4.name]
+del session.xyDataObjects[xy5.name]
+del session.xyDataObjects[xy6.name]
+del session.xyDataObjects[xy7.name]
+del session.xyDataObjects[xy8.name]
+del session.xyDataObjects[xy9.name]
+del session.xyDataObjects[xy10.name]
+del session.xyDataObjects[xy11.name]
+del session.xyDataObjects[xy12.name]
+del session.xyDataObjects[xy13.name]
+del session.xyDataObjects[xy14.name]
+del session.xyDataObjects[xy15.name]
+del session.xyDataObjects[xy16.name]
+del session.xyDataObjects[xy17.name]
+del session.xyDataObjects[xy18.name]
+del session.xyDataObjects[xy19.name]
+del session.xyDataObjects[xy20.name]
+del session.xyDataObjects[xy21.name]
+del session.xyDataObjects[xy22.name]
+del session.xyDataObjects[xy23.name]
+del session.xyDataObjects[xy24.name]
+del session.xyDataObjects[xy25.name]
+odb = session.odbs['D:/TUBAF/Master_Thesis/Abaqus_trial/lin_kin_1cycle.odb']
+xy1 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 501 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c1 = session.Curve(xyData=xy1)
+xy2 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 502 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c2 = session.Curve(xyData=xy2)
+xy3 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 503 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c3 = session.Curve(xyData=xy3)
+xy4 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 504 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c4 = session.Curve(xyData=xy4)
+xy5 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 505 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c5 = session.Curve(xyData=xy5)
+xy6 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 506 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c6 = session.Curve(xyData=xy6)
+xy7 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 507 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c7 = session.Curve(xyData=xy7)
+xy8 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 508 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c8 = session.Curve(xyData=xy8)
+xy9 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 509 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c9 = session.Curve(xyData=xy9)
+xy10 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 510 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c10 = session.Curve(xyData=xy10)
+xy11 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 511 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c11 = session.Curve(xyData=xy11)
+xy12 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 512 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c12 = session.Curve(xyData=xy12)
+xy13 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 513 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c13 = session.Curve(xyData=xy13)
+xy14 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 514 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c14 = session.Curve(xyData=xy14)
+xy15 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 515 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c15 = session.Curve(xyData=xy15)
+xy16 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 516 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c16 = session.Curve(xyData=xy16)
+xy17 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 517 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c17 = session.Curve(xyData=xy17)
+xy18 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 518 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c18 = session.Curve(xyData=xy18)
+xy19 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 519 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c19 = session.Curve(xyData=xy19)
+xy20 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 520 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c20 = session.Curve(xyData=xy20)
+xy21 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 521 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c21 = session.Curve(xyData=xy21)
+xy22 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 522 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c22 = session.Curve(xyData=xy22)
+xy23 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 523 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c23 = session.Curve(xyData=xy23)
+xy24 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 524 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c24 = session.Curve(xyData=xy24)
+xy25 = xyPlot.XYDataFromHistory(odb=odb, 
+    outputVariableName='Reaction force: RF1 at Node 525 in NSET SET_LEFT_NODES', 
+    steps=('Step-1', ), suppressQuery=True, __linkedVpName__='Viewport: 1')
+c25 = session.Curve(xyData=xy25)
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+chart.setValues(curvesToPlot=(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, 
+    c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+xy1 = session.xyDataObjects['_temp_52']
+xy2 = session.xyDataObjects['_temp_53']
+xy3 = session.xyDataObjects['_temp_54']
+xy4 = session.xyDataObjects['_temp_55']
+xy5 = session.xyDataObjects['_temp_56']
+xy6 = session.xyDataObjects['_temp_57']
+xy7 = session.xyDataObjects['_temp_58']
+xy8 = session.xyDataObjects['_temp_59']
+xy9 = session.xyDataObjects['_temp_60']
+xy10 = session.xyDataObjects['_temp_61']
+xy11 = session.xyDataObjects['_temp_62']
+xy12 = session.xyDataObjects['_temp_63']
+xy13 = session.xyDataObjects['_temp_64']
+xy14 = session.xyDataObjects['_temp_65']
+xy15 = session.xyDataObjects['_temp_66']
+xy16 = session.xyDataObjects['_temp_67']
+xy17 = session.xyDataObjects['_temp_68']
+xy18 = session.xyDataObjects['_temp_69']
+xy19 = session.xyDataObjects['_temp_70']
+xy20 = session.xyDataObjects['_temp_71']
+xy21 = session.xyDataObjects['_temp_72']
+xy22 = session.xyDataObjects['_temp_73']
+xy23 = session.xyDataObjects['_temp_74']
+xy24 = session.xyDataObjects['_temp_75']
+xy25 = session.xyDataObjects['_temp_76']
+xy26 = sum((xy1, xy2, xy3, xy4, xy5, xy6, xy7, xy8, xy9, xy10, xy11, xy12, 
+    xy13, xy14, xy15, xy16, xy17, xy18, xy19, xy20, xy21, xy22, xy23, xy24, 
+    xy25))
+xy26.setValues(
+    sourceDescription='sum(("_temp_52", "_temp_53", "_temp_54", "_temp_55", "_temp_56", "_temp_57", "_temp_58", "_temp_59", "_temp_60", "_temp_61", "_temp_62", "_temp_63", "_temp_64", "_temp_65", "_temp_66", "_temp_67", "_temp_68", "_temp_69", "_temp_70", "_temp_71", "_temp_72", "_temp_73", "_temp_74", "_temp_75", "_temp_76"))')
+tmpName = xy26.name
+session.xyDataObjects.changeKey(tmpName, 'RF_total_cycle')
+xy1 = session.xyDataObjects['_temp_52']
+xy2 = session.xyDataObjects['_temp_53']
+xy3 = session.xyDataObjects['_temp_54']
+xy4 = session.xyDataObjects['_temp_55']
+xy5 = session.xyDataObjects['_temp_56']
+xy6 = session.xyDataObjects['_temp_57']
+xy7 = session.xyDataObjects['_temp_58']
+xy8 = session.xyDataObjects['_temp_59']
+xy9 = session.xyDataObjects['_temp_60']
+xy10 = session.xyDataObjects['_temp_61']
+xy11 = session.xyDataObjects['_temp_62']
+xy12 = session.xyDataObjects['_temp_63']
+xy13 = session.xyDataObjects['_temp_64']
+xy14 = session.xyDataObjects['_temp_65']
+xy15 = session.xyDataObjects['_temp_66']
+xy16 = session.xyDataObjects['_temp_67']
+xy17 = session.xyDataObjects['_temp_68']
+xy18 = session.xyDataObjects['_temp_69']
+xy19 = session.xyDataObjects['_temp_70']
+xy20 = session.xyDataObjects['_temp_71']
+xy21 = session.xyDataObjects['_temp_72']
+xy22 = session.xyDataObjects['_temp_73']
+xy23 = session.xyDataObjects['_temp_74']
+xy24 = session.xyDataObjects['_temp_75']
+xy25 = session.xyDataObjects['_temp_76']
+xy26 = sum((xy1, xy2, xy3, xy4, xy5, xy6, xy7, xy8, xy9, xy10, xy11, xy12, 
+    xy13, xy14, xy15, xy16, xy17, xy18, xy19, xy20, xy21, xy22, xy23, xy24, 
+    xy25))
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+c1 = session.Curve(xyData=xy26)
+chart.setValues(curvesToPlot=(c1, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+xyp = session.xyPlots['XYPlot-1']
+chartName = xyp.charts.keys()[0]
+chart = xyp.charts[chartName]
+xy1 = session.xyDataObjects['RF_total_cycle']
+c1 = session.Curve(xyData=xy1)
+chart.setValues(curvesToPlot=(c1, ), )
+session.charts[chartName].autoColor(lines=True, symbols=True)
+mdb.save()
+#: The model database has been saved to "D:\TUBAF\Master_Thesis\Abaqus_trial\models\Model_1\Model_1.cae".

@@ -1,0 +1,22 @@
+# Stage 16N-R4P Job Status
+
+- PBS job: 1358954.mmaster02
+- Controller: R4P_boundary_reproducibility_and_diagnostics
+- Case: R4P_B2_target271_diagnostics
+- Target: 271
+- Mode: diagnostic
+- Continuation range: 272-500
+- Previous case recorded: R4P_B1_repeat_target270
+- Source job: stage16n_r1b_restart_ref_250cycles
+- Source package required files: .odb .stt .res .mdl .prt .sim .sta
+- Continuation restart writing: disabled
+- R4J9/R4J10: blocked
+- 505 branch: parked
+- Classification: target271_pass
+- Phase: target-271_comparison
+- Detail: comparison completed with status pass
+- Heavy copy-back: disabled
+- Heavy cleanup after classification: enabled
+- Scratch case dir: /scratch/pr21vyci/stage16n_r4p/R4P_B2_target271_diagnostics/1358954.mmaster02
+- Result dir: /scratch/pr21vyci/git_work/Master_thesis_preparatory/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4p_boundary_reproducibility_and_diagnostics/R4P_B2_target271_diagnostics
+- Finished: 2026-06-28 23:47:48

@@ -1,0 +1,417 @@
+=== DATE ===
+Wed Jul  8 10:03:09 CEST 2026
+=== QSTAT_USER ===
+
+mmaster02:
+                                                            Req'd  Req'd   Elap
+Job ID          Username Queue    Jobname    SessID NDS TSK Memory Time  S Time
+--------------- -------- -------- ---------- ------ --- --- ------ ----- - -----
+1364998.mmaste* pr21vyci mediumq  stage16n_* 711050   1   1   30gb 24:00 R 07:18
+1364999.mmaste* pr21vyci mediumq  stage16n_*    --    1   1   30gb 24:00 H   --
+1365000.mmaste* pr21vyci mediumq  stage16n_*    --    1   1   30gb 24:00 H   --
+1365001.mmaste* pr21vyci mediumq  stage16n_*    --    1   1   30gb 24:00 H   --
+1365002.mmaste* pr21vyci mediumq  stage16n_*    --    1   1   30gb 24:00 H   --
+1365003.mmaste* pr21vyci mediumq  stage16n_*    --    1   1   30gb 24:00 H   --
+1365004.mmaste* pr21vyci mediumq  stage16n_*    --    1   1   30gb 24:00 H   --
+1365005.mmaste* pr21vyci mediumq  stage16n_*    --    1   1   30gb 24:00 H   --
+=== TARGET_QSTAT ===
+--- 1364994 ---
+    Job_Name = stage16n_r4q8f_continue_1cpu
+    resources_used.cpupercent = 99
+    resources_used.cput = 09:08:15
+    resources_used.ncpus = 1
+    resources_used.walltime = 10:09:42
+    job_state = F
+    queue = mediumq
+    depend = beforeok:1364995.mmaster02@mmaster02
+    exec_host = mnode048/4
+    mtime = Mon Jul  6 18:09:35 2026
+    qtime = Mon Jul  6 07:59:42 2026
+    stime = Mon Jul  6 07:59:46 2026
+    comment = Job run at Mon Jul 06 at 07:59 on (mnode048[1]:ncpus=1:mem=314572
+    etime = Mon Jul  6 07:59:42 2026
+    Stageout_status = 1
+    Exit_status = 0
+--- 1364995 ---
+    Job_Name = stage16n_r4q9f_continue_1cpu
+    resources_used.cpupercent = 99
+    resources_used.cput = 08:45:08
+    resources_used.ncpus = 1
+    resources_used.walltime = 09:27:56
+    job_state = F
+    queue = mediumq
+    depend = beforeok:1364996.mmaster02@mmaster02
+    exec_host = mnode051/3*0
+    mtime = Tue Jul  7 03:37:35 2026
+    qtime = Mon Jul  6 07:59:42 2026
+    stime = Mon Jul  6 18:09:33 2026
+    comment = Job run at Mon Jul 06 at 18:09 on (mnode051[0]:mem=15661056kb:ncp
+    etime = Mon Jul  6 07:59:42 2026
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = -W depend=afterok:1364994.mmaster02 run_r4q9f_continue_f
+--- 1364996 ---
+    Job_Name = stage16n_r4q10f_continue_1cpu
+    resources_used.cpupercent = 99
+    resources_used.cput = 11:55:08
+    resources_used.ncpus = 1
+    resources_used.walltime = 12:37:07
+    job_state = F
+    queue = mediumq
+    depend = beforeok:1364997.mmaster02@mmaster02
+    exec_host = mnode028/13*0
+    mtime = Tue Jul  7 16:14:50 2026
+    qtime = Mon Jul  6 07:59:42 2026
+    stime = Tue Jul  7 03:37:34 2026
+    comment = Job run at Tue Jul 07 at 03:37 on (mnode028[0]:mem=15728640kb:ncp
+    etime = Mon Jul  6 07:59:42 2026
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = -W depend=afterok:1364995.mmaster02 run_r4q10f_continue_
+--- 1364997 ---
+    Job_Name = stage16n_r4q11f_continue_1cpu
+    resources_used.cpupercent = 99
+    resources_used.cput = 09:52:46
+    resources_used.ncpus = 1
+    resources_used.walltime = 10:29:28
+    job_state = F
+    queue = mediumq
+    depend = beforeok:1364998.mmaster02@mmaster02
+    exec_host = mnode076/4
+    mtime = Wed Jul  8 02:44:22 2026
+    qtime = Mon Jul  6 07:59:42 2026
+    stime = Tue Jul  7 16:14:46 2026
+    comment = Job run at Tue Jul 07 at 16:14 on (mnode076[1]:ncpus=1:mem=314572
+    etime = Mon Jul  6 07:59:42 2026
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = -W depend=afterok:1364996.mmaster02 run_r4q11f_continue_
+--- 1364998 ---
+    Job_Name = stage16n_r4q12f_continue_1cpu
+    resources_used.cpupercent = 99
+    resources_used.cput = 06:14:48
+    resources_used.ncpus = 1
+    resources_used.walltime = 07:18:04
+    job_state = R
+    queue = mediumq
+    depend = beforeok:1364999.mmaster02@mmaster02
+    exec_host = mnode023/2
+    mtime = Wed Jul  8 10:02:29 2026
+    qtime = Mon Jul  6 07:59:43 2026
+    stime = Wed Jul  8 02:44:23 2026
+    comment = Job run at Wed Jul 08 at 02:44 on (mnode023[1]:ncpus=1:mem=314572
+    etime = Mon Jul  6 07:59:43 2026
+    Submit_arguments = -W depend=afterok:1364997.mmaster02 run_r4q12f_continue_
+--- 1364999 ---
+    Job_Name = stage16n_r4q13f_continue_1cpu
+    job_state = H
+    queue = mediumq
+    depend = afterok:1364998.mmaster02@mmaster02,
+    mtime = Wed Jul  8 06:37:49 2026
+    qtime = Mon Jul  6 07:59:43 2026
+    etime = Mon Jul  6 07:59:43 2026
+    Submit_arguments = -W depend=afterok:1364998.mmaster02 run_r4q13f_continue_
+--- 1365000 ---
+    Job_Name = stage16n_r4q14f_continue_1cpu
+    job_state = H
+    queue = mediumq
+    depend = afterok:1364999.mmaster02@mmaster02,
+    mtime = Mon Jul  6 07:59:44 2026
+    qtime = Mon Jul  6 07:59:43 2026
+    etime = Mon Jul  6 07:59:43 2026
+    Submit_arguments = -W depend=afterok:1364999.mmaster02 run_r4q14f_continue_
+--- 1365001 ---
+    Job_Name = stage16n_r4q15f_continue_1cpu
+    job_state = H
+    queue = mediumq
+    depend = afterok:1365000.mmaster02@mmaster02,
+    mtime = Mon Jul  6 07:59:44 2026
+    qtime = Mon Jul  6 07:59:44 2026
+    etime = Mon Jul  6 07:59:44 2026
+    Submit_arguments = -W depend=afterok:1365000.mmaster02 run_r4q15f_continue_
+--- 1365002 ---
+    Job_Name = stage16n_r4q16f_continue_1cpu
+    job_state = H
+    queue = mediumq
+    depend = afterok:1365001.mmaster02@mmaster02,
+    mtime = Mon Jul  6 07:59:45 2026
+    qtime = Mon Jul  6 07:59:44 2026
+    etime = Mon Jul  6 07:59:44 2026
+    Submit_arguments = -W depend=afterok:1365001.mmaster02 run_r4q16f_continue_
+--- 1365003 ---
+    Job_Name = stage16n_r4q17f_continue_1cpu
+    job_state = H
+    queue = mediumq
+    depend = afterok:1365002.mmaster02@mmaster02,
+    mtime = Mon Jul  6 07:59:45 2026
+    qtime = Mon Jul  6 07:59:45 2026
+    etime = Mon Jul  6 07:59:45 2026
+    Submit_arguments = -W depend=afterok:1365002.mmaster02 run_r4q17f_continue_
+--- 1365004 ---
+    Job_Name = stage16n_r4q18f_continue_1cpu
+    job_state = H
+    queue = mediumq
+    depend = afterok:1365003.mmaster02@mmaster02,
+    mtime = Mon Jul  6 07:59:45 2026
+    qtime = Mon Jul  6 07:59:45 2026
+    etime = Mon Jul  6 07:59:45 2026
+    Submit_arguments = -W depend=afterok:1365003.mmaster02 run_r4q18f_continue_
+--- 1365005 ---
+    Job_Name = stage16n_r4q19f_continue_1cpu
+    job_state = H
+    queue = mediumq
+    depend = afterok:1365004.mmaster02@mmaster02
+    mtime = Mon Jul  6 07:59:45 2026
+    qtime = Mon Jul  6 07:59:45 2026
+    etime = Mon Jul  6 07:59:45 2026
+    Submit_arguments = -W depend=afterok:1365004.mmaster02 run_r4q19f_continue_
+--- 1365007 ---
+    Job_Name = stage16n_r4q3n_exact_native_1cpu
+    resources_used.cpupercent = 98
+    resources_used.cput = 08:56:08
+    resources_used.ncpus = 1
+    resources_used.walltime = 10:04:30
+    job_state = F
+    queue = mediumq
+    exec_host = mnode051/3*0
+    mtime = Mon Jul  6 18:07:55 2026
+    qtime = Mon Jul  6 08:03:15 2026
+    stime = Mon Jul  6 08:03:17 2026
+    comment = Job run at Mon Jul 06 at 08:03 on (mnode051[0]:mem=15661056kb:ncp
+    etime = Mon Jul  6 08:03:15 2026
+    Stageout_status = 1
+    Exit_status = 0
+=== NEW_R4Q8_19_FILES ===
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q10F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q11F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q12F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q13F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q14F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q15F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q16F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q17F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q18F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q19F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q8F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_R4Q9F_GUARDED_SUBMIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_SCRATCH9_SIZE_AUDIT.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_SUBMITTED_JOBS.txt
+2026-07-06 07:59 ./R4Q8F_TO_R4Q19F_SUBMIT_GATE.txt
+2026-07-06 08:00 ./R4Q8F_continue_from_cycle2000_1cpu_SOURCE2000_TARGET2021_EXTRAPOLATED_STATE.md
+2026-07-06 08:00 ./qstat_1364994_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1364995_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1364996_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1364997_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1364998_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1364999_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1365000_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1365001_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1365002_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1365003_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1365004_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1365005_post_submit_f.txt
+2026-07-06 08:00 ./qstat_1365006_post_submit_f.txt
+2026-07-06 08:00 ./stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250.inp
+2026-07-06 08:01 ./_logs/stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_datacheck.log
+2026-07-06 08:03 ./qstat_1365007_post_submit_f.txt
+2026-07-06 18:08 ./_logs/stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250.log
+2026-07-06 18:08 ./_logs/stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_overwrite_trace.txt
+2026-07-06 18:08 ./_logs/stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_parallelism_check.log
+2026-07-06 18:08 ./stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_dat_tail.txt
+2026-07-06 18:08 ./stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_datacheck_dat_tail.txt
+2026-07-06 18:08 ./stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_datacheck_msg_tail.txt
+2026-07-06 18:08 ./stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_msg_tail.txt
+2026-07-06 18:08 ./stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_sta_tail.txt
+2026-07-06 18:09 ./R4Q8F_continue_from_cycle2000_1cpu_BLOCK_SUMMARY.csv
+2026-07-06 18:09 ./R4Q8F_continue_from_cycle2000_1cpu_CONTROLLER.log
+2026-07-06 18:09 ./R4Q8F_continue_from_cycle2000_1cpu_STATUS.txt
+2026-07-06 18:09 ./R4Q9F_continue_from_cycle2250_1cpu_SOURCE2250_TARGET2271_EXTRAPOLATED_STATE.md
+2026-07-06 18:09 ./_logs/R4Q8F_continue_from_cycle2000_1cpu_storage_df_after.txt
+2026-07-06 18:09 ./_logs/R4Q8F_continue_from_cycle2000_1cpu_storage_scratch9_user_after.txt
+2026-07-06 18:09 ./_logs/stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_extract.log
+2026-07-06 18:09 ./_logs/stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_extract_state_2250.log
+2026-07-06 18:09 ./stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_cycle_metrics.csv
+2026-07-06 18:09 ./stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_selected_cycle_local_states.csv
+2026-07-06 18:09 ./stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_selected_cycle_loops.csv
+2026-07-06 18:09 ./stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500.inp
+2026-07-06 18:10 ./_logs/stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_datacheck.log
+2026-07-07 03:36 ./_logs/stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500.log
+2026-07-07 03:36 ./_logs/stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_extract.log
+2026-07-07 03:36 ./_logs/stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_overwrite_trace.txt
+2026-07-07 03:36 ./_logs/stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_parallelism_check.log
+2026-07-07 03:36 ./stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_cycle_metrics.csv
+2026-07-07 03:36 ./stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_dat_tail.txt
+2026-07-07 03:36 ./stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_datacheck_dat_tail.txt
+2026-07-07 03:36 ./stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_datacheck_msg_tail.txt
+2026-07-07 03:36 ./stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_msg_tail.txt
+2026-07-07 03:36 ./stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_selected_cycle_local_states.csv
+2026-07-07 03:36 ./stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_selected_cycle_loops.csv
+2026-07-07 03:36 ./stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_sta_tail.txt
+2026-07-07 03:37 ./R4Q9F_continue_from_cycle2250_1cpu_BLOCK_SUMMARY.csv
+2026-07-07 03:37 ./R4Q9F_continue_from_cycle2250_1cpu_CONTROLLER.log
+2026-07-07 03:37 ./R4Q9F_continue_from_cycle2250_1cpu_STATUS.txt
+2026-07-07 03:37 ./_logs/R4Q9F_continue_from_cycle2250_1cpu_storage_df_after.txt
+2026-07-07 03:37 ./_logs/R4Q9F_continue_from_cycle2250_1cpu_storage_scratch9_user_after.txt
+2026-07-07 03:37 ./_logs/stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_extract_state_2500.log
+2026-07-07 03:38 ./R4Q10F_continue_from_cycle2500_1cpu_SOURCE2500_TARGET2521_EXTRAPOLATED_STATE.md
+2026-07-07 03:38 ./stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750.inp
+2026-07-07 03:39 ./_logs/stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_datacheck.log
+2026-07-07 16:13 ./_logs/stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750.log
+2026-07-07 16:13 ./_logs/stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_overwrite_trace.txt
+2026-07-07 16:13 ./_logs/stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_parallelism_check.log
+2026-07-07 16:13 ./stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_dat_tail.txt
+2026-07-07 16:13 ./stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_datacheck_dat_tail.txt
+2026-07-07 16:13 ./stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_datacheck_msg_tail.txt
+2026-07-07 16:13 ./stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_msg_tail.txt
+2026-07-07 16:13 ./stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_sta_tail.txt
+2026-07-07 16:14 ./R4Q10F_continue_from_cycle2500_1cpu_BLOCK_SUMMARY.csv
+2026-07-07 16:14 ./R4Q10F_continue_from_cycle2500_1cpu_CONTROLLER.log
+2026-07-07 16:14 ./R4Q10F_continue_from_cycle2500_1cpu_STATUS.txt
+2026-07-07 16:14 ./_logs/R4Q10F_continue_from_cycle2500_1cpu_storage_df_after.txt
+2026-07-07 16:14 ./_logs/R4Q10F_continue_from_cycle2500_1cpu_storage_scratch9_user_after.txt
+2026-07-07 16:14 ./_logs/stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_extract.log
+2026-07-07 16:14 ./_logs/stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_extract_state_2750.log
+2026-07-07 16:14 ./stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_cycle_metrics.csv
+2026-07-07 16:14 ./stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_selected_cycle_local_states.csv
+2026-07-07 16:14 ./stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_selected_cycle_loops.csv
+2026-07-07 16:15 ./R4Q11F_continue_from_cycle2750_1cpu_SOURCE2750_TARGET2771_EXTRAPOLATED_STATE.md
+2026-07-07 16:15 ./_logs/stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_datacheck.log
+2026-07-07 16:15 ./stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000.inp
+2026-07-08 02:43 ./_logs/stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000.log
+2026-07-08 02:43 ./_logs/stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_overwrite_trace.txt
+2026-07-08 02:43 ./_logs/stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_parallelism_check.log
+2026-07-08 02:43 ./stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_cycle_metrics.csv
+2026-07-08 02:43 ./stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_dat_tail.txt
+2026-07-08 02:43 ./stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_datacheck_dat_tail.txt
+2026-07-08 02:43 ./stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_datacheck_msg_tail.txt
+2026-07-08 02:43 ./stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_msg_tail.txt
+2026-07-08 02:43 ./stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_selected_cycle_local_states.csv
+2026-07-08 02:43 ./stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_selected_cycle_loops.csv
+2026-07-08 02:43 ./stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_sta_tail.txt
+2026-07-08 02:44 ./R4Q11F_continue_from_cycle2750_1cpu_BLOCK_SUMMARY.csv
+2026-07-08 02:44 ./R4Q11F_continue_from_cycle2750_1cpu_CONTROLLER.log
+2026-07-08 02:44 ./R4Q11F_continue_from_cycle2750_1cpu_STATUS.txt
+2026-07-08 02:44 ./R4Q12F_continue_from_cycle3000_1cpu_BLOCK_SUMMARY.csv
+2026-07-08 02:44 ./R4Q12F_continue_from_cycle3000_1cpu_CONTROLLER.log
+2026-07-08 02:44 ./R4Q12F_continue_from_cycle3000_1cpu_SOURCE3000_TARGET3021_EXTRAPOLATED_STATE.md
+2026-07-08 02:44 ./R4Q12F_continue_from_cycle3000_1cpu_STATUS.txt
+2026-07-08 02:44 ./_logs/R4Q11F_continue_from_cycle2750_1cpu_storage_df_after.txt
+2026-07-08 02:44 ./_logs/R4Q11F_continue_from_cycle2750_1cpu_storage_scratch9_user_after.txt
+2026-07-08 02:44 ./_logs/stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_extract.log
+2026-07-08 02:44 ./_logs/stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_extract_state_3000.log
+2026-07-08 02:44 ./stage16n_r4q12f_block12_3000_to_3021_solve_3022_to_3250.inp
+2026-07-08 10:03 ./R4Q8F_TO_R4Q19F_CHECK_20260708_100309.txt
+=== STATUS_HEADS ===
+--- R4Q8F_continue_from_cycle2000_1cpu_STATUS.txt ---
+status=completed
+phase=controller_end
+detail=block_end=2250 scope=feasibility_only_after_cycle1000_accuracy_fail comparison=not_available cycle2250_state=ok
+controller=R4Q8F_continue_from_cycle2000_1cpu
+pbs_job_id=1364994.mmaster02
+previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q7f_continue_from_cycle1750_1cpu/1363633.mmaster02
+oldjob=stage16n_r4q7f_block07_1750_to_1771_solve_1772_to_2000
+job=stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250
+source_cycle=2000
+jump_target=2021
+--- R4Q9F_continue_from_cycle2250_1cpu_STATUS.txt ---
+status=completed
+phase=controller_end
+detail=block_end=2500 scope=feasibility_only_after_cycle1000_accuracy_fail comparison=not_available cycle2500_state=ok
+controller=R4Q9F_continue_from_cycle2250_1cpu
+pbs_job_id=1364995.mmaster02
+previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q8f_continue_from_cycle2000_1cpu/1364994.mmaster02
+oldjob=stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250
+job=stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500
+source_cycle=2250
+jump_target=2271
+--- R4Q10F_continue_from_cycle2500_1cpu_STATUS.txt ---
+status=completed
+phase=controller_end
+detail=block_end=2750 scope=feasibility_only_after_cycle1000_accuracy_fail comparison=not_available cycle2750_state=ok
+controller=R4Q10F_continue_from_cycle2500_1cpu
+pbs_job_id=1364996.mmaster02
+previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q9f_continue_from_cycle2250_1cpu/1364995.mmaster02
+oldjob=stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500
+job=stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750
+source_cycle=2500
+jump_target=2521
+--- R4Q11F_continue_from_cycle2750_1cpu_STATUS.txt ---
+status=completed
+phase=controller_end
+detail=block_end=3000 scope=feasibility_only_after_cycle1000_accuracy_fail comparison=not_available cycle3000_state=ok
+controller=R4Q11F_continue_from_cycle2750_1cpu
+pbs_job_id=1364997.mmaster02
+previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q10f_continue_from_cycle2500_1cpu/1364996.mmaster02
+oldjob=stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750
+job=stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000
+source_cycle=2750
+jump_target=2771
+--- R4Q12F_continue_from_cycle3000_1cpu_STATUS.txt ---
+status=running
+phase=prepare
+detail=source=3000 target=3021 solve=3022-3250 restart=2769/57
+controller=R4Q12F_continue_from_cycle3000_1cpu
+pbs_job_id=1364998.mmaster02
+previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q11f_continue_from_cycle2750_1cpu/1364997.mmaster02
+oldjob=stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000
+job=stage16n_r4q12f_block12_3000_to_3021_solve_3022_to_3250
+source_cycle=3000
+jump_target=3021
+--- R4Q8F_continue_from_cycle2000_1cpu_BLOCK_SUMMARY.csv ---
+block_index,source_cycle,jump_target,solved_start,block_end,status,classification_scope,reference_available,comparison_status,job,oldjob,elapsed_seconds,detail
+8,2000,2021,2022,2250,completed,feasibility_only_after_cycle1000_accuracy_fail,no,not_available,stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250,stage16n_r4q7f_block07_1750_to_1771_solve_1772_to_2000,36553,"extraction=ok; cycle2250_state=ok"
+--- R4Q9F_continue_from_cycle2250_1cpu_BLOCK_SUMMARY.csv ---
+block_index,source_cycle,jump_target,solved_start,block_end,status,classification_scope,reference_available,comparison_status,job,oldjob,elapsed_seconds,detail
+9,2250,2271,2272,2500,completed,feasibility_only_after_cycle1000_accuracy_fail,no,not_available,stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500,stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250,34046,"extraction=ok; cycle2500_state=ok"
+--- R4Q10F_continue_from_cycle2500_1cpu_BLOCK_SUMMARY.csv ---
+block_index,source_cycle,jump_target,solved_start,block_end,status,classification_scope,reference_available,comparison_status,job,oldjob,elapsed_seconds,detail
+10,2500,2521,2522,2750,completed,feasibility_only_after_cycle1000_accuracy_fail,no,not_available,stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750,stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500,45389,"extraction=ok; cycle2750_state=ok"
+--- R4Q11F_continue_from_cycle2750_1cpu_BLOCK_SUMMARY.csv ---
+block_index,source_cycle,jump_target,solved_start,block_end,status,classification_scope,reference_available,comparison_status,job,oldjob,elapsed_seconds,detail
+11,2750,2771,2772,3000,completed,feasibility_only_after_cycle1000_accuracy_fail,no,not_available,stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000,stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750,37752,"extraction=ok; cycle3000_state=ok"
+--- R4Q12F_continue_from_cycle3000_1cpu_BLOCK_SUMMARY.csv ---
+block_index,source_cycle,jump_target,solved_start,block_end,status,classification_scope,reference_available,comparison_status,job,oldjob,elapsed_seconds,detail
+--- stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250_cycle_metrics.csv ---
+cycle,points,U1_max,U1_min,RF1_max,RF1_min,RF1_mean,loop_area_abs
+2022,66,0.0986132845283,-0.0990117192268,2873.81864929,-3064.97478485,748.478535477,561.004497794
+2023,56,0.0962499976158,-0.0987500026822,2927.50660706,-3084.47811127,390.156312144,552.010283839
+2024,58,0.0972499996424,-0.0977500006557,2916.59716797,-3076.7076416,422.553769918,550.851424643
+2025,55,0.0960000008345,-0.0989999994636,2932.65538788,-3082.33414459,360.390887948,552.197915222
+2026,65,0.0966132804751,-0.0983867198229,2883.33544922,-3086.42292786,642.318696477,549.709522223
+2027,62,0.0970664098859,-0.0979335904121,2881.63531494,-3082.8175354,559.090417289,549.948705586
+2028,86,0.0950664058328,-0.0989238247275,2894.76522827,-2963.55905151,152.320411682,536.590153762
+2029,64,0.0974999964237,-0.0974999964237,2920.12125397,-3062.40873718,512.184131501,549.578197493
+2030,73,0.0985117182136,-0.0972617194057,2917.63697052,-3046.70759583,592.933209716,545.116874452
+--- stage16n_r4q9f_block09_2250_to_2271_solve_2272_to_2500_cycle_metrics.csv ---
+cycle,points,U1_max,U1_min,RF1_max,RF1_min,RF1_mean,loop_area_abs
+2272,66,0.0986132845283,-0.0990117192268,2873.81887054,-3064.97537994,748.478389511,561.004458181
+2273,56,0.0962499976158,-0.0987500026822,2927.50795746,-3084.4789505,390.15631919,552.010162705
+2274,58,0.0972499996424,-0.0977500006557,2916.59845734,-3076.70846558,422.553808807,550.851239137
+2275,55,0.0960000008345,-0.0989999994636,2932.65680695,-3082.33488464,360.390921086,552.197770511
+2276,65,0.0966132804751,-0.0983867198229,2883.33655548,-3086.42375183,642.318661881,549.709349524
+2277,62,0.0970664098859,-0.0979335904121,2881.63651276,-3082.8183136,559.090388914,549.948524521
+2278,86,0.0950664058328,-0.0989238247275,2894.76642609,-2963.55860138,152.320662529,536.590090567
+2279,64,0.0974999964237,-0.0974999964237,2920.12191772,-3062.40971375,512.184270862,549.578120523
+2280,73,0.0985117182136,-0.0972617194057,2917.63803864,-3046.70755005,592.933501923,545.116717298
+--- stage16n_r4q10f_block10_2500_to_2521_solve_2522_to_2750_cycle_metrics.csv ---
+cycle,points,U1_max,U1_min,RF1_max,RF1_min,RF1_mean,loop_area_abs
+2522,66,0.0986132845283,-0.0990117192268,2873.81900024,-3064.97584534,748.478233343,561.004432602
+2523,56,0.0962499976158,-0.0987500026822,2927.50899506,-3084.47964478,390.1563081,552.010055566
+2524,58,0.0972499996424,-0.0977500006557,2916.59944916,-3076.70909119,422.553809655,550.851081486
+2525,55,0.0960000008345,-0.0989999994636,2932.65789795,-3082.33553314,360.39092799,552.197649929
+2526,65,0.0966132804751,-0.0983867198229,2883.3371048,-3086.42430878,642.318546253,549.709262489
+2527,62,0.0970664098859,-0.0979335904121,2881.6373291,-3082.81895447,559.090348043,549.948377781
+2528,86,0.0950664058328,-0.0989238247275,2894.7673645,-2963.55826569,152.320839855,536.590035291
+2529,64,0.0974999964237,-0.0974999964237,2920.12231445,-3062.41044617,512.184336498,549.578051619
+2530,73,0.0985117182136,-0.0972617194057,2917.63892365,-3046.70751953,592.933708762,545.116589953
+--- stage16n_r4q11f_block11_2750_to_2771_solve_2772_to_3000_cycle_metrics.csv ---
+cycle,points,U1_max,U1_min,RF1_max,RF1_min,RF1_mean,loop_area_abs
+2772,66,0.0986132845283,-0.0990117192268,2873.8190155,-3064.97627258,748.478076133,561.004413758
+2773,56,0.0962499976158,-0.0987500026822,2927.50977325,-3084.48021698,390.156265863,552.009964836
+2774,58,0.0972499996424,-0.0977500006557,2916.60025787,-3076.7095871,422.553781711,550.850950364
+2775,55,0.0960000008345,-0.0989999994636,2932.65873718,-3082.33608246,360.390907964,552.197551371
+2776,65,0.0966132804751,-0.0983867198229,2883.33745575,-3086.42479706,642.318417939,549.709194487
+2777,62,0.0970664098859,-0.0979335904121,2881.63786316,-3082.81945801,559.090252379,549.948283353
+2778,86,0.0950664058328,-0.0989238247275,2894.76799774,-2963.55802155,152.32095323,536.589989714
+2779,64,0.0974999964237,-0.0974999964237,2920.12261963,-3062.41094971,512.184360748,549.57798995
+2780,73,0.0985117182136,-0.0972617194057,2917.6394577,-3046.70762634,592.933716418,545.116525489

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="520" viewBox="0 0 760 520">
+<rect width="100%" height="100%" fill="white"/>
+<line x1="82" y1="442" x2="732" y2="442" stroke="#222" stroke-width="1.2"/>
+<line x1="82" y1="32" x2="82" y2="442" stroke="#222" stroke-width="1.2"/>
+<line x1="82.00" y1="32" x2="82.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="32.00" x2="732" y2="32.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="82.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">0.05</text>
+<text x="72" y="36.00" font-family="Arial" font-size="12" text-anchor="end">0.0072695911162</text>
+<line x1="212.00" y1="32" x2="212.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="114.00" x2="732" y2="114.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="212.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">4.23</text>
+<text x="72" y="118.00" font-family="Arial" font-size="12" text-anchor="end">0.00691926843932</text>
+<line x1="342.00" y1="32" x2="342.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="196.00" x2="732" y2="196.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="342.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">8.41</text>
+<text x="72" y="200.00" font-family="Arial" font-size="12" text-anchor="end">0.00656894576244</text>
+<line x1="472.00" y1="32" x2="472.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="278.00" x2="732" y2="278.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="472.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">12.59</text>
+<text x="72" y="282.00" font-family="Arial" font-size="12" text-anchor="end">0.00621862308556</text>
+<line x1="602.00" y1="32" x2="602.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="360.00" x2="732" y2="360.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="602.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">16.77</text>
+<text x="72" y="364.00" font-family="Arial" font-size="12" text-anchor="end">0.00586830040868</text>
+<line x1="732.00" y1="32" x2="732.00" y2="442" stroke="#ddd" stroke-width="0.8"/>
+<line x1="82" y1="442.00" x2="732" y2="442.00" stroke="#ddd" stroke-width="0.8"/>
+<text x="732.00" y="464" font-family="Arial" font-size="12" text-anchor="middle">20.95</text>
+<text x="72" y="446.00" font-family="Arial" font-size="12" text-anchor="end">0.0055179777318</text>
+<polyline points="111.55,423.36 142.65,53.04 173.75,50.64 204.85,50.84 235.95,51.11 267.05,51.38 298.15,51.65 329.25,51.92 360.35,52.19 391.45,52.46 422.55,52.73 453.65,52.99 484.75,53.26 515.85,53.53 546.95,53.80 578.05,54.07 609.15,54.33 640.25,54.60 671.35,54.87 702.45,55.14" fill="none" stroke="#1f77b4" stroke-width="2.0" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="111.55" cy="423.36" r="3.5" fill="#1f77b4"/>
+<circle cx="142.65" cy="53.04" r="3.5" fill="#1f77b4"/>
+<circle cx="173.75" cy="50.64" r="3.5" fill="#1f77b4"/>
+<circle cx="204.85" cy="50.84" r="3.5" fill="#1f77b4"/>
+<circle cx="235.95" cy="51.11" r="3.5" fill="#1f77b4"/>
+<circle cx="267.05" cy="51.38" r="3.5" fill="#1f77b4"/>
+<circle cx="298.15" cy="51.65" r="3.5" fill="#1f77b4"/>
+<circle cx="329.25" cy="51.92" r="3.5" fill="#1f77b4"/>
+<circle cx="360.35" cy="52.19" r="3.5" fill="#1f77b4"/>
+<circle cx="391.45" cy="52.46" r="3.5" fill="#1f77b4"/>
+<circle cx="422.55" cy="52.73" r="3.5" fill="#1f77b4"/>
+<circle cx="453.65" cy="52.99" r="3.5" fill="#1f77b4"/>
+<circle cx="484.75" cy="53.26" r="3.5" fill="#1f77b4"/>
+<circle cx="515.85" cy="53.53" r="3.5" fill="#1f77b4"/>
+<circle cx="546.95" cy="53.80" r="3.5" fill="#1f77b4"/>
+<circle cx="578.05" cy="54.07" r="3.5" fill="#1f77b4"/>
+<circle cx="609.15" cy="54.33" r="3.5" fill="#1f77b4"/>
+<circle cx="640.25" cy="54.60" r="3.5" fill="#1f77b4"/>
+<circle cx="671.35" cy="54.87" r="3.5" fill="#1f77b4"/>
+<circle cx="702.45" cy="55.14" r="3.5" fill="#1f77b4"/>
+<polyline points="142.65,51.69 702.45,51.69" fill="none" stroke="#d62728" stroke-width="2.0" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="7 5"/>
+<text x="407.00" y="495" font-family="Arial" font-size="16" text-anchor="middle">Cycle</text>
+<text x="22" y="260.00" font-family="Arial" font-size="16" text-anchor="middle" transform="rotate(-90 22 260.00)">Delta SDV1 per cycle</text>
+<line x1="485" y1="44" x2="523" y2="44" stroke="#1f77b4" stroke-width="2.4"/>
+<text x="533" y="49" font-family="Arial" font-size="13">Delta SDV1</text>
+<line x1="485" y1="68" x2="523" y2="68" stroke="#d62728" stroke-width="2.4" stroke-dasharray="7 5"/>
+<text x="533" y="73" font-family="Arial" font-size="13">Mean cycles 2-10</text>
+</svg>

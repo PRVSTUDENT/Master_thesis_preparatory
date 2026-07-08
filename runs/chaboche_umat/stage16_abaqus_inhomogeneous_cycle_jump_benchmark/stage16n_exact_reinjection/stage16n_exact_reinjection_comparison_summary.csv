@@ -1,0 +1,4 @@
+case,base_cycle,compare_cycle,status,max_error_pct,controlling_quantity
+B0_100_to_250,100,250,review,10.9164,HOLE_RING_SDV8_MAX
+B0_250_to_500,250,500,missing_outputs,,
+B0_500_to_1000,500,1000,missing_outputs,,

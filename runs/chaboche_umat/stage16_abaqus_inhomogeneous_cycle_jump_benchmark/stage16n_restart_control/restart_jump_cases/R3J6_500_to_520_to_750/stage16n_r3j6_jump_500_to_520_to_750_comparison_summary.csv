@@ -1,0 +1,2 @@
+cycles,status,max_global_error_pct,max_primary_local_error_pct,diagnostic_s11_error_pct,details_file
+750,pass,0,0,0,stage16n_r3j6_jump_500_to_520_to_750_comparison_details.csv

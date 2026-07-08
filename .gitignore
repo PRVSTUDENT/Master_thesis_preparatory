@@ -6,8 +6,49 @@ __pycache__/
 *.bak
 *.tmp
 *.log
+*.aux
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 *.lck
 .DS_Store
 Thumbs.db
 .vscode/
 one_cycle_run/ffmpeg-2023-09-04-git-f8503b4c33-full_build/
+
+# Abaqus/generated solver outputs belong on /scratch, not in Git.
+*.odb
+*.stt
+*.sim
+*.mdl
+*.res
+*.prt
+*.dat
+*.msg
+*.023
+*.cax
+*.com
+*.ipm
+*.sta
+*.simlog
+*.exception
+*.rec
+*.rpy
+*.rpy.*
+*.jnl
+*.cid
+*.SMABulk
+state.bin
+state.csv
+
+# Local/HPC transfer bundles and scratch upload mirrors.
+*.tar.gz
+.hpc_stage*_upload_*/
+
+# Abaqus simulation side directories can be huge and are reproducible.
+*.simdir/
+
+# Agent handoff mirror: local-only copies of recently edited files.
+runs/chaboche_umat/new files created or edited/

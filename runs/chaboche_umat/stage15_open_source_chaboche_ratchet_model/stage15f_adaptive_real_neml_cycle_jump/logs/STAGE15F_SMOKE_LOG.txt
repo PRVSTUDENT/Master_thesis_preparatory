@@ -1,0 +1,3 @@
+Wrote 18 rows to /home/pr21vyci/master_thesis/Abaqus_trial/docs/stage15_real_neml_cycle_jump_package/stage15e_results/STAGE15E_BEST_ACCEPTED_METHODS_BY_TARGET.csv
+Stage 15F complete: 415 rows, 6 accepted routes
+[Stage 15F smoke] PASSED

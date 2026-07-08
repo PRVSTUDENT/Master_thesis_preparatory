@@ -1,0 +1,70 @@
+Job Id: 1348013.mmaster02
+    Job_Name = stage16n_r4g5_split_250_to_280_to_500
+    Job_Owner = pr21vyci@mlogin01.cluster
+    resources_used.cpupercent = 653
+    resources_used.cput = 20:06:26
+    resources_used.mem = 94373888kb
+    resources_used.ncpus = 16
+    resources_used.vmem = 8260996kb
+    resources_used.walltime = 03:34:57
+    job_state = F
+    queue = teachingq
+    server = mmaster02
+    Checkpoint = u
+    ctime = Wed Jun 17 05:10:22 2026
+    Error_Path = mlogin01.cluster:/home/pr21vyci/master_thesis/Abaqus_trial/run
+	s/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage
+	16n_restart_control/r4g_native_replay_cases/R4G5_split_250_to_280_to_50
+	0/stage16n_r4g5_split_250_to_280_to_500.e1348013
+    exec_host = mnode101/0*0
+    exec_vnode = (mnode101[0]:mem=94371840kb:ncpus=8+mnode101[1]:ncpus=8)
+    Hold_Types = n
+    Join_Path = oe
+    Keep_Files = n
+    Mail_Points = abe
+    Mail_Users = pr21vyci@mailserver.tu-freiberg.de
+    mtime = Wed Jun 17 12:29:51 2026
+    Output_Path = mlogin01.cluster:/home/pr21vyci/master_thesis/Abaqus_trial/ru
+	ns/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stag
+	e16n_restart_control/r4g_native_replay_cases/R4G5_split_250_to_280_to_5
+	00/stage16n_r4g5_split_250_to_280_to_500.o1348013
+    Priority = 0
+    qtime = Wed Jun 17 05:10:22 2026
+    Rerunable = True
+    Resource_List.mem = 90gb
+    Resource_List.mpiprocs = 1
+    Resource_List.ncpus = 16
+    Resource_List.nodect = 1
+    Resource_List.place = free
+    Resource_List.select = 1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+    Resource_List.walltime = 24:00:00
+    stime = Wed Jun 17 08:54:49 2026
+    obittime = Wed Jun 17 12:29:50 2026
+    session_id = 1016799
+    sandbox = PRIVATE
+    jobdir = /home/pr21vyci/pbs.1348013.mmaster02.x8z
+    substate = 92
+    Variable_List = PBS_O_HOME=/home/pr21vyci,PBS_O_LOGNAME=pr21vyci,
+	PBS_O_PATH=/home/pr21vyci/texlive/2026/bin/x86_64-linux:/home/pr21vyci
+	/.local/bin:/home/pr21vyci/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:
+	/usr/sbin:/opt/pbs/bin,PBS_O_SHELL=/bin/bash,
+	PBS_O_INTERACTIVE_AUTH_METHOD=resvport,PBS_O_HOST=mlogin01.cluster,
+	PBS_O_WORKDIR=/home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_
+	umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart
+	_control/r4g_native_replay_cases/R4G5_split_250_to_280_to_500,
+	PBS_O_SYSTEM=Linux,PBS_O_QUEUE=teachingq
+    comment = Job run at Wed Jun 17 at 08:54 on (mnode101[0]:mem=94371840kb:ncp
+	us=8+mnode101[1]:ncpus=8) and finished
+    etime = Wed Jun 17 05:10:22 2026
+    run_count = 1
+    eligible_time = 00:00:01
+    Stageout_status = 1
+    Exit_status = 0
+    Submit_arguments = submit_stage16n_r4g5_split_250_to_280_to_500.pbs
+    estimated.exec_vnode = (mnode100[0]:mem=94371840kb:ncpus=8)+(mnode100[1]:nc
+	pus=8)
+    estimated.start_time = Thu Jun 18 05:10:23 2026
+    history_timestamp = 1781692191
+    project = _pbs_project_default
+    Submit_Host = mlogin01.cluster
+

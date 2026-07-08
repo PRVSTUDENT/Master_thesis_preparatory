@@ -1,0 +1,220 @@
+
+ AVERAGE FORCE                       4.12       TIME AVG. FORCE        4.44    
+ LARGEST RESIDUAL FORCE             2.599E-02   AT NODE       1330   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST INCREMENT OF DISP.         1.000E-02   AT NODE         81   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST CORRECTION TO DISP.       -1.985E-06   AT NODE       5306   DOF  2
+   INSTANCE: PLATE_INST                                                                      
+          FORCE     EQUILIBRIUM NOT ACHIEVED WITHIN TOLERANCE.
+ 
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 1 THREAD
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+ 	NUMBER OF FLOPS:         6.464e+08
+
+     CHECK POINT  START OF SOLVER     
+
+     CHECK POINT  END OF SOLVER       
+
+       ELAPSED USER TIME (SEC)      =  9.00000E-02
+       ELAPSED SYSTEM TIME (SEC)    =   0.0000    
+       ELAPSED TOTAL CPU TIME (SEC) =  9.00000E-02
+       ELAPSED WALLCLOCK TIME (SEC) =            0
+
+               CONVERGENCE CHECKS FOR EQUILIBRIUM ITERATION     5
+
+
+ AVERAGE FORCE                       4.12       TIME AVG. FORCE        4.44    
+ LARGEST RESIDUAL FORCE            -1.629E-02   AT NODE       1344   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST INCREMENT OF DISP.         1.000E-02   AT NODE         81   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST CORRECTION TO DISP.       -1.468E-06   AT NODE       5387   DOF  2
+   INSTANCE: PLATE_INST                                                                      
+          THE FORCE     EQUILIBRIUM EQUATIONS HAVE CONVERGED
+
+ ITERATION SUMMARY FOR THE INCREMENT:   5 TOTAL ITERATIONS, OF WHICH
+   0 ARE SEVERE DISCONTINUITY ITERATIONS AND  5 ARE EQUILIBRIUM ITERATIONS.
+
+ TIME INCREMENT COMPLETED  2.500E-02,  FRACTION OF STEP COMPLETED  0.975    
+ STEP TIME COMPLETED       0.975    ,  TOTAL TIME COMPLETED        1.624E+03
+
+     RESTART INFORMATION WRITTEN IN STEP1624  AFTER INCREMENT    56
+
+
+  INCREMENT    57 STARTS. ATTEMPT NUMBER  1, TIME INCREMENT  2.500E-02
+ 
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 1 THREAD
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+ 	NUMBER OF FLOPS:         6.464e+08
+
+     CHECK POINT  START OF SOLVER     
+
+     CHECK POINT  END OF SOLVER       
+
+       ELAPSED USER TIME (SEC)      =  9.00000E-02
+       ELAPSED SYSTEM TIME (SEC)    =  1.00000E-02
+       ELAPSED TOTAL CPU TIME (SEC) =  0.10000    
+       ELAPSED WALLCLOCK TIME (SEC) =            0
+
+               CONVERGENCE CHECKS FOR EQUILIBRIUM ITERATION     1
+
+
+ AVERAGE FORCE                       4.49       TIME AVG. FORCE        4.44    
+ LARGEST RESIDUAL FORCE            -0.334       AT NODE       4974   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST INCREMENT OF DISP.         1.000E-02   AT NODE         81   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST CORRECTION TO DISP.       -3.902E-05   AT NODE       3321   DOF  2
+   INSTANCE: PLATE_INST                                                                      
+          FORCE     EQUILIBRIUM NOT ACHIEVED WITHIN TOLERANCE.
+ 
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 1 THREAD
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+ 	NUMBER OF FLOPS:         6.464e+08
+
+     CHECK POINT  START OF SOLVER     
+
+     CHECK POINT  END OF SOLVER       
+
+       ELAPSED USER TIME (SEC)      =  9.00000E-02
+       ELAPSED SYSTEM TIME (SEC)    =  1.00000E-02
+       ELAPSED TOTAL CPU TIME (SEC) =  0.10000    
+       ELAPSED WALLCLOCK TIME (SEC) =            1
+
+               CONVERGENCE CHECKS FOR EQUILIBRIUM ITERATION     2
+
+
+ AVERAGE FORCE                       4.52       TIME AVG. FORCE        4.44    
+ LARGEST RESIDUAL FORCE            -0.148       AT NODE       4974   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST INCREMENT OF DISP.         1.000E-02   AT NODE         81   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST CORRECTION TO DISP.       -9.555E-06   AT NODE       6562   DOF  2
+   INSTANCE: PLATE_INST                                                                      
+          FORCE     EQUILIBRIUM NOT ACHIEVED WITHIN TOLERANCE.
+ 
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 1 THREAD
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+ 	NUMBER OF FLOPS:         6.464e+08
+
+     CHECK POINT  START OF SOLVER     
+
+     CHECK POINT  END OF SOLVER       
+
+       ELAPSED USER TIME (SEC)      =  9.00000E-02
+       ELAPSED SYSTEM TIME (SEC)    =  1.00000E-02
+       ELAPSED TOTAL CPU TIME (SEC) =  0.10000    
+       ELAPSED WALLCLOCK TIME (SEC) =            0
+
+               CONVERGENCE CHECKS FOR EQUILIBRIUM ITERATION     3
+
+
+ AVERAGE FORCE                       4.54       TIME AVG. FORCE        4.44    
+ LARGEST RESIDUAL FORCE             6.982E-02   AT NODE       1669   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST INCREMENT OF DISP.         1.000E-02   AT NODE         81   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST CORRECTION TO DISP.       -3.995E-06   AT NODE       3362   DOF  2
+   INSTANCE: PLATE_INST                                                                      
+          FORCE     EQUILIBRIUM NOT ACHIEVED WITHIN TOLERANCE.
+ 
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 1 THREAD
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+ 	NUMBER OF FLOPS:         6.464e+08
+
+     CHECK POINT  START OF SOLVER     
+
+     CHECK POINT  END OF SOLVER       
+
+       ELAPSED USER TIME (SEC)      =  8.00000E-02
+       ELAPSED SYSTEM TIME (SEC)    =  1.00000E-02
+       ELAPSED TOTAL CPU TIME (SEC) =  9.00000E-02
+       ELAPSED WALLCLOCK TIME (SEC) =            0
+
+               CONVERGENCE CHECKS FOR EQUILIBRIUM ITERATION     4
+
+
+ AVERAGE FORCE                       4.55       TIME AVG. FORCE        4.44    
+ LARGEST RESIDUAL FORCE            -3.470E-02   AT NODE       4974   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST INCREMENT OF DISP.         1.000E-02   AT NODE         81   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST CORRECTION TO DISP.       -2.138E-06   AT NODE       3362   DOF  2
+   INSTANCE: PLATE_INST                                                                      
+          FORCE     EQUILIBRIUM NOT ACHIEVED WITHIN TOLERANCE.
+ 
+	SYMMETRIC DIRECT SPARSE SOLVER RUNNING ON
+ 	1 HOST:        1 MPI RANK  x 1 THREAD
+ 	NUMBER OF EQUATIONS:     19704
+ 	NUMBER OF RHS:           1
+ 	NUMBER OF FLOPS:         6.464e+08
+
+     CHECK POINT  START OF SOLVER     
+
+     CHECK POINT  END OF SOLVER       
+
+       ELAPSED USER TIME (SEC)      =  8.00000E-02
+       ELAPSED SYSTEM TIME (SEC)    =   0.0000    
+       ELAPSED TOTAL CPU TIME (SEC) =  8.00000E-02
+       ELAPSED WALLCLOCK TIME (SEC) =            1
+
+               CONVERGENCE CHECKS FOR EQUILIBRIUM ITERATION     5
+
+
+ AVERAGE FORCE                       4.55       TIME AVG. FORCE        4.44    
+ LARGEST RESIDUAL FORCE            -1.904E-02   AT NODE       1652   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST INCREMENT OF DISP.         1.000E-02   AT NODE         81   DOF  1
+   INSTANCE: PLATE_INST                                                                      
+ LARGEST CORRECTION TO DISP.       -1.317E-06   AT NODE       3362   DOF  2
+   INSTANCE: PLATE_INST                                                                      
+          THE FORCE     EQUILIBRIUM EQUATIONS HAVE CONVERGED
+
+ ITERATION SUMMARY FOR THE INCREMENT:   5 TOTAL ITERATIONS, OF WHICH
+   0 ARE SEVERE DISCONTINUITY ITERATIONS AND  5 ARE EQUILIBRIUM ITERATIONS.
+
+ TIME INCREMENT COMPLETED  2.500E-02,  FRACTION OF STEP COMPLETED   1.00    
+ STEP TIME COMPLETED        1.00    ,  TOTAL TIME COMPLETED        1.624E+03
+
+     RESTART INFORMATION WRITTEN IN STEP1624  AFTER INCREMENT    57
+
+
+          THE ANALYSIS HAS BEEN COMPLETED
+
+
+
+     ANALYSIS SUMMARY:
+     TOTAL OF      97234  INCREMENTS
+                     620  CUTBACKS IN AUTOMATIC INCREMENTATION
+                  606300  ITERATIONS INCLUDING CONTACT ITERATIONS IF PRESENT
+                  606300  PASSES THROUGH THE EQUATION SOLVER OF WHICH 
+                  605455  INVOLVE MATRIX DECOMPOSITION, INCLUDING
+                       0  DECOMPOSITION(S) OF THE MASS MATRIX
+                       1  REORDERING OF EQUATIONS TO MINIMIZE WAVEFRONT
+                       0  ADDITIONAL RESIDUAL EVALUATIONS FOR LINE SEARCHES
+                       0  ADDITIONAL OPERATOR EVALUATIONS FOR LINE SEARCHES
+                       1  WARNING MESSAGES DURING USER INPUT PROCESSING
+                   18285  WARNING MESSAGES DURING ANALYSIS
+                       0  ANALYSIS WARNINGS ARE NUMERICAL PROBLEM MESSAGES
+                       0  ANALYSIS WARNINGS ARE NEGATIVE EIGENVALUE MESSAGES
+                       0  ERROR MESSAGES
+
+
+
+     JOB TIME SUMMARY
+       USER TIME (SEC)      =     2.83E+04
+       SYSTEM TIME (SEC)    =     2.56E+03
+       TOTAL CPU TIME (SEC) =     3.09E+04
+       WALLCLOCK TIME (SEC) =        34387
+       MEMORY PEAK (GB)     =            3

@@ -1,0 +1,17 @@
+status=completed
+phase=controller_end
+detail=block_end=750 cycle750_state=ok
+controller=R4Q2_continue_from_cycle500_1cpu
+pbs_job_id=1362597.mmaster02
+previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q_long_adaptive_chain_1cpu/1362114.mmaster02
+oldjob=stage16n_r4q_block01_250_to_271_solve_272_to_500
+source_cycle=500
+jump_target=521
+solved_start=522
+block_end=750
+restart_step=479
+restart_inc=65
+abaqus_cpus=1
+scratch_case_dir=/scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02
+elapsed_seconds=33221
+updated_at=2026-07-03 00:29:05

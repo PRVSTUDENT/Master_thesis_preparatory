@@ -1,0 +1,531 @@
+\documentclass[11pt,a4paper]{article}
+
+% ============================================================
+% Packages
+% ============================================================
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{siunitx}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+\graphicspath{{./}}
+
+% ============================================================
+% Helper command for robust figure inclusion
+% ============================================================
+\newcommand{\resultfigure}[3]{
+\begin{figure}[H]
+    \centering
+    \IfFileExists{#1}{
+        \includegraphics[width=0.82\textwidth]{#1}
+    }{
+        \fbox{\parbox{0.82\textwidth}{\centering Missing figure: \texttt{#1}}}
+    }
+    \caption{#2}
+    \label{#3}
+\end{figure}
+}
+
+% ============================================================
+% Title information
+% ============================================================
+\title{\textbf{Progress Report: Abaqus Cyclic Plasticity Benchmarks}}
+\author{Pruthvi}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textbf{Meeting preparation document for discussion with Dr. Omar}
+\end{center}
+
+\vspace{0.5cm}
+
+\noindent
+GitHub repository: \\
+\url{https://github.com/PRVSTUDENT/Master_thesis_preparatory}
+
+% ============================================================
+\section{Objective}
+
+The objective of this work was to become more confident with Abaqus by first testing built-in cyclic plasticity models before moving toward more advanced directions such as UMAT development or cycle-jump implementation. The study focused on a controlled benchmark where the geometry, mesh, boundary conditions, loading history, and post-processing workflow were kept fixed while changing only the material hardening model.
+
+The main Abaqus built-in models studied were:
+\begin{itemize}
+    \item linear kinematic hardening,
+    \item nonlinear combined isotropic/kinematic hardening,
+    \item multilinear kinematic hardening.
+\end{itemize}
+
+The purpose was to understand the resulting hysteresis response, plastic strain accumulation, and differences between the built-in cyclic plasticity models.
+
+% ============================================================
+\section{Benchmark Model}
+
+A simple 3D bar benchmark was used for all cyclic plasticity tests. The model was intentionally kept simple so that the material response and Abaqus post-processing workflow could be understood clearly.
+
+\begin{table}[H]
+\centering
+\caption{Benchmark geometry, units, and mesh.}
+\begin{tabular}{lll}
+\toprule
+Quantity & Value & Comment \\
+\midrule
+Units & mm, N, MPa & Consistent Abaqus unit system \\
+Length in $X$ & 10 mm & Loading direction \\
+Width in $Y$ & 2 mm & Rectangular bar \\
+Thickness in $Z$ & 2 mm & Rectangular bar \\
+Element type & C3D8R & 8-node reduced integration brick \\
+Mesh type & Structured hex mesh & Regular benchmark mesh \\
+Seed size & 0.5 mm & Mesh refinement used \\
+Number of elements & 320 & Verified benchmark mesh \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Boundary condition layout.}
+\begin{tabular}{lll}
+\toprule
+Set & Location & Boundary condition / use \\
+\midrule
+Set\_Left\_Face & $x=0$ face & Fixed support \\
+Set\_Right\_Face & $x=10$ face & Prescribed cyclic displacement \\
+Set\_Left\_Nodes & Nodes on $x=0$ face & Reaction force summation \\
+Set\_Right\_Nodes & Nodes on $x=10$ face & Representative displacement extraction \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+An important post-processing lesson was that the global reaction force should not be taken from a single node. Instead, the total reaction force was obtained by summing the $RF1$ contribution over all nodes on the fixed face.
+
+% ============================================================
+\section{Baseline Elastic-Plastic Material}
+
+The baseline elastic constants were kept the same throughout the study.
+
+\begin{table}[H]
+\centering
+\caption{Elastic material properties.}
+\begin{tabular}{lll}
+\toprule
+Property & Value & Unit \\
+\midrule
+Young's modulus $E$ & 210000 & MPa \\
+Poisson's ratio $\nu$ & 0.30 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A monotonic elastic-plastic benchmark was first used to verify:
+\begin{itemize}
+    \item correct deformation along the loading direction,
+    \item onset of yielding,
+    \item nonzero equivalent plastic strain,
+    \item correct reaction force extraction,
+    \item correct left/right node-set assignment.
+\end{itemize}
+
+% ============================================================
+\section{Cyclic Loading History}
+
+For the 2-cycle displacement-controlled benchmark, the prescribed displacement amplitude was applied through a tabular amplitude. The same cyclic history was reused for the linear kinematic, combined hardening, and multilinear kinematic comparisons.
+
+\begin{table}[H]
+\centering
+\caption{Symmetric 2-cycle amplitude history.}
+\begin{tabular}{cc}
+\toprule
+Step time & Amplitude value \\
+\midrule
+0.00 & 0.00 \\
+0.25 & 1.00 \\
+0.50 & 0.00 \\
+0.75 & -1.00 \\
+1.00 & 0.00 \\
+1.25 & 1.00 \\
+1.50 & 0.00 \\
+1.75 & -1.00 \\
+2.00 & 0.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The right face displacement magnitude was $U_1 = 0.5$ multiplied by the amplitude value. Therefore, the imposed displacement varied between $+0.5$ mm and $-0.5$ mm.
+
+% ============================================================
+\section{Abaqus Runs Completed}
+
+\begin{longtable}{p{0.28\textwidth}p{0.27\textwidth}p{0.35\textwidth}}
+\caption{Completed Abaqus benchmark cases.} \\
+\toprule
+Case & Input / output files & Purpose \\
+\midrule
+\endfirsthead
+\toprule
+Case & Input / output files & Purpose \\
+\midrule
+\endhead
+
+Monotonic elastic-plastic &
+\path{mono_ep_test.inp} &
+Basic Abaqus setup verification: geometry, mesh, yielding, plastic strain, and force-displacement extraction. \\
+
+Linear kinematic, 1 cycle &
+\path{lin_kin_1cycle_hys.png} &
+First cyclic plasticity warm-up case. Verified closed and symmetric hysteresis loop. \\
+
+Linear kinematic, 2 cycles &
+\path{lin_kin_2cycle.inp}, \newline
+\path{lin_kin_2cycle_hys.png} &
+Confirmed stable repeatable loop without ratcheting. \\
+
+Combined hardening, 2 cycles &
+\path{combined_2cycle.inp}, \newline
+\path{combined_2cycle_hys.png} &
+Initial nonlinear combined hardening benchmark. \\
+
+Tuned combined hardening &
+\path{combined_2cycle_tuned_hys.png} &
+Adjusted combined hardening parameters for a more useful comparison response. \\
+
+Asymmetric combined hardening &
+\path{combined_asym_2cycle.inp}, \newline
+\path{combined_asym_2cycle_hys.png} &
+Studied nonzero mean displacement cyclic response. \\
+
+Ratcheting-style combined, 2 cycles &
+\path{combined_ratcheting_2cycle.inp}, \newline
+\path{combined_ratcheting_2cycle_hys.png} &
+Studied a positive-mean cyclic loading case and plastic strain accumulation. \\
+
+Ratcheting-style combined, 10 cycles &
+\path{combined_ratcheting_10cycle.inp}, \newline
+\path{combined_ratcheting_10cycle_hys.png} &
+Extended ratcheting-style case to observe accumulated plastic strain over more cycles. \\
+
+Multilinear kinematic, 2 cycles &
+\path{ml_kin_2cycle.inp}, \newline
+\path{ml_kin_2cycle_hys.png} &
+Phase 4 comparison case against linear kinematic and combined hardening. \\
+
+\bottomrule
+\end{longtable}
+
+% ============================================================
+\section{Linear Kinematic Hardening}
+
+The linear kinematic hardening case was used as the first cyclic plasticity warm-up model. It produced a stable and nearly symmetric hysteresis loop. The second loop nearly overlapped the first loop, indicating no significant ratcheting in this simple symmetric strain-controlled case.
+
+\resultfigure{lin_kin_2cycle_hys.png}
+{Linear kinematic hardening response for two symmetric cycles.}
+{fig:lin_kin_2cycle}
+
+\begin{table}[H]
+\centering
+\caption{Linear kinematic 2-cycle result summary.}
+\begin{tabular}{lr}
+\toprule
+Quantity & Value \\
+\midrule
+Final $U_1$ & 0.0 \\
+Maximum tensile force & 1204.1761 \\
+Minimum compressive force & -1203.1267 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+This result served as the baseline for later cyclic hardening comparisons.
+
+% ============================================================
+\section{Combined Hardening}
+
+The combined hardening model was selected as the main Abaqus built-in cyclic plasticity model. It is more relevant for cyclic metallic behavior than purely linear kinematic hardening because it can combine isotropic and kinematic hardening effects.
+
+The tuned combined hardening model used the parameter line:
+\[
+250.,\quad 3000.,\quad 20.
+\]
+inside the Abaqus combined hardening definition.
+
+\resultfigure{combined_2cycle_tuned_hys.png}
+{Tuned combined hardening response for two symmetric cycles.}
+{fig:combined_tuned}
+
+The tuned combined hardening response gave a wider and stronger hysteresis loop than linear kinematic hardening.
+
+\begin{table}[H]
+\centering
+\caption{Tuned combined hardening 2-cycle result summary.}
+\begin{tabular}{lr}
+\toprule
+Quantity & Value \\
+\midrule
+Final $U_1$ & 0.0 \\
+Maximum tensile force & 1450.5829 \\
+Minimum compressive force & -1463.4036 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================
+\section{Symmetric and Asymmetric Combined Hardening}
+
+After the symmetric combined hardening case, an asymmetric cyclic displacement history was tested. The goal was to observe how a nonzero mean displacement affects the hysteresis loop and plastic strain accumulation.
+
+\resultfigure{compare_combined_sym_vs_asym_2cycle.png}
+{Comparison between symmetric and asymmetric combined hardening responses.}
+{fig:sym_asym_combined}
+
+The asymmetric case ended with a nonzero final displacement because the amplitude itself was not returned to zero, but instead ended at a positive mean value.
+
+\begin{table}[H]
+\centering
+\caption{Asymmetric combined hardening result summary.}
+\begin{tabular}{lr}
+\toprule
+Quantity & Value \\
+\midrule
+Final $U_1$ & 0.1000000015 \\
+Maximum tensile force & 1391.2656 \\
+Minimum compressive force & -1393.8040 \\
+Final PEEQ & 0.3972817361 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\resultfigure{combined_asym_2cycle_peeq.png}
+{PEEQ evolution for the asymmetric combined hardening case.}
+{fig:asym_peeq}
+
+% ============================================================
+\section{Ratcheting-Style Combined Hardening}
+
+A ratcheting-style benchmark was then created using a stronger positive-mean cyclic displacement history. This was not a full stress-controlled ratcheting test, but it was useful to study progressive plastic strain accumulation under a biased cyclic loading path.
+
+\resultfigure{combined_ratcheting_2cycle_hys.png}
+{Ratcheting-style combined hardening response for two cycles.}
+{fig:ratcheting_2cycle_hys}
+
+\resultfigure{combined_ratcheting_2cycle_peeq.png}
+{PEEQ evolution for the ratcheting-style two-cycle case.}
+{fig:ratcheting_2cycle_peeq}
+
+The two-cycle ratcheting-style case gave:
+
+\begin{table}[H]
+\centering
+\caption{Ratcheting-style two-cycle result summary.}
+\begin{tabular}{lr}
+\toprule
+Quantity & Value \\
+\midrule
+Final $U_1$ & 0.2000000030 \\
+Maximum tensile force & 1376.4971 \\
+Minimum compressive force & -1310.3864 \\
+Final PEEQ & 0.3095791042 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================
+\section{Two-Cycle and Ten-Cycle Ratcheting-Style Comparison}
+
+To check whether plastic strain accumulation continues over more cycles, the ratcheting-style case was extended from two cycles to ten cycles.
+
+\resultfigure{combined_ratcheting_10cycle_hys.png}
+{Ratcheting-style combined hardening response for ten cycles.}
+{fig:ratcheting_10cycle_hys}
+
+\resultfigure{combined_ratcheting_10cycle_peeq.png}
+{PEEQ evolution for the ten-cycle ratcheting-style case.}
+{fig:ratcheting_10cycle_peeq}
+
+\resultfigure{compare_ratcheting_2_vs_10cycle_hys.png}
+{Hysteresis comparison between two-cycle and ten-cycle ratcheting-style cases.}
+{fig:ratcheting_hys_2_vs_10}
+
+\resultfigure{compare_ratcheting_2_vs_10cycle_peeq.png}
+{PEEQ comparison between two-cycle and ten-cycle ratcheting-style cases.}
+{fig:ratcheting_peeq_2_vs_10}
+
+The force-displacement loop did not change dramatically between two and ten cycles, but PEEQ increased significantly. This means that the hysteresis loop alone is not enough to judge cyclic accumulation. PEEQ is a necessary additional output for identifying progressive plastic strain accumulation.
+
+\begin{table}[H]
+\centering
+\caption{Ratcheting-style two-cycle and ten-cycle comparison.}
+\begin{tabular}{lrrrrr}
+\toprule
+Case & Final $U_1$ & Max force & Min force & Final PEEQ & Max PEEQ \\
+\midrule
+2 cycles & 0.2000000030 & 1376.4971 & -1310.3864 & 0.3095791042 & 0.3095791042 \\
+10 cycles & 0.2000000030 & 1376.4971 & -1313.1001 & 1.4623500109 & 1.4623500109 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================
+\section{Multilinear Kinematic Hardening}
+
+A multilinear kinematic hardening model was added for the Phase 4 comparison. The plastic data used were:
+
+\begin{table}[H]
+\centering
+\caption{Multilinear kinematic plasticity data.}
+\begin{tabular}{cc}
+\toprule
+Yield stress & Plastic strain \\
+\midrule
+250 & 0.00 \\
+300 & 0.02 \\
+350 & 0.10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\resultfigure{ml_kin_2cycle_hys.png}
+{Multilinear kinematic hardening response for two cycles.}
+{fig:ml_kin_2cycle}
+
+The multilinear kinematic case produced a stronger response than linear kinematic hardening, but remained below the tuned combined hardening model.
+
+\begin{table}[H]
+\centering
+\caption{Multilinear kinematic 2-cycle result summary.}
+\begin{tabular}{lr}
+\toprule
+Quantity & Value \\
+\midrule
+Final $U_1$ & 0.0 \\
+Maximum tensile force & 1275.6619 \\
+Minimum compressive force & -1275.7019 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================
+\section{Comparison of Built-In Cyclic Plasticity Models}
+
+The three main built-in cyclic plasticity models were compared using the same geometry, mesh, boundary conditions, cyclic loading history, and post-processing procedure.
+
+\resultfigure{compare_lin_ml_combined_2cycle.png}
+{Controlled comparison of linear kinematic, multilinear kinematic, and tuned combined hardening.}
+{fig:phase4_model_comparison}
+
+\begin{table}[H]
+\centering
+\caption{Numerical comparison of the three cyclic plasticity models.}
+\begin{tabular}{lrrr}
+\toprule
+Model & Max force & Min force & Final $U_1$ \\
+\midrule
+Linear kinematic & 1204.1761 & -1203.1267 & 0.0 \\
+Multilinear kinematic & 1275.6619 & -1275.7019 & 0.0 \\
+Combined tuned & 1450.5829 & -1463.4036 & 0.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{longtable}{p{0.22\textwidth}p{0.24\textwidth}p{0.24\textwidth}p{0.22\textwidth}}
+\caption{Interpretation of the built-in Abaqus cyclic plasticity models.} \\
+\toprule
+Model & What it captures & What it misses & When to use \\
+\midrule
+\endfirsthead
+\toprule
+Model & What it captures & What it misses & When to use \\
+\midrule
+\endhead
+
+Linear kinematic &
+Simple Bauschinger-type response and stable symmetric hysteresis. &
+Limited nonlinear cyclic hardening behavior. &
+Warm-up model and baseline cyclic benchmark. \\
+
+Multilinear kinematic &
+Piecewise plastic hardening response and stronger loop than linear kinematic. &
+Less physically rich than combined isotropic-kinematic evolution. &
+Intermediate benchmark when piecewise plastic data are available. \\
+
+Combined hardening &
+Nonlinear isotropic plus kinematic cyclic response and widest loop among the tested models. &
+Still a simplified built-in model and not a full custom constitutive formulation. &
+Main built-in cyclic plasticity model for this thesis stage. \\
+
+\bottomrule
+\end{longtable}
+
+The controlled comparison showed a clear hierarchy in response level:
+\[
+\text{linear kinematic}
+<
+\text{multilinear kinematic}
+<
+\text{combined hardening}.
+\]
+
+Because the geometry, mesh, loading history, and extraction procedure were unchanged, this trend can be attributed mainly to the hardening-law formulation.
+
+% ============================================================
+\section{Post-Processing Workflow}
+
+The post-processing workflow was mainly terminal based. This was important because Abaqus/CAE XY-data operations can be misleading when reaction forces are not summed correctly.
+
+The extraction workflow was:
+\begin{enumerate}
+    \item open the Abaqus ODB using an Abaqus Python script,
+    \item extract a representative $U_1$ value from the loaded right face,
+    \item sum $RF1$ over all nodes on the fixed left face,
+    \item multiply the summed fixed-face reaction by the correct sign convention,
+    \item save the results to CSV,
+    \item generate hysteresis and PEEQ plots as PNG files.
+\end{enumerate}
+
+Important diagnostic lesson:
+\begin{quote}
+A single-node reaction force should not be used as the global force response. The total force response must be obtained by summing the reaction forces over all nodes on the constrained face.
+\end{quote}
+
+% ============================================================
+\section{Main Conclusions from the Abaqus Study}
+
+The Abaqus benchmark work helped establish the following points:
+
+\begin{itemize}
+    \item A simple monotonic elastic-plastic benchmark was useful for verifying the model setup.
+    \item Linear kinematic hardening is useful as a first cyclic plasticity warm-up model.
+    \item Combined hardening gives the richest built-in cyclic plasticity response among the tested models.
+    \item Asymmetric and ratcheting-style loading paths require monitoring plastic strain accumulation, not only hysteresis loops.
+    \item PEEQ is essential for identifying progressive plastic accumulation.
+    \item Multilinear kinematic hardening gives an intermediate response between linear kinematic and tuned combined hardening.
+    \item The terminal-based extraction workflow is more reliable and reproducible than manual Abaqus/CAE plotting.
+\end{itemize}
+
+% ============================================================
+
+
+% ============================================================
+\section*{Short Summary }
+
+A controlled Abaqus benchmark was created to study built-in cyclic plasticity models before moving toward UMAT or cycle-jump implementation. The work started with a monotonic elastic-plastic verification case and then progressed to linear kinematic, combined hardening, ratcheting-style combined hardening, and multilinear kinematic hardening. Hysteresis loops and equivalent plastic strain evolution were extracted using terminal-based Abaqus Python scripts. The final comparison showed that linear kinematic hardening gives the lowest force response, multilinear kinematic hardening gives an intermediate response, and tuned combined hardening gives the strongest and widest hysteresis loop. This provides a clear and reproducible Abaqus foundation for further discussion.
+
+\end{document}

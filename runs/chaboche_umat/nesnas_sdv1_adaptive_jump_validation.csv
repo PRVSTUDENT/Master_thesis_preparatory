@@ -1,0 +1,2 @@
+jump_base_cycle,recommended_DeltaN,adaptive_target_cycle,SDV1_base,mean_dSDV1_dN_used,mean_d2SDV1_dN2_used,first_order_SDV1_pred,second_order_SDV1_pred,explicit_SDV1_reference,first_order_abs_error,first_order_rel_error_percent,second_order_abs_error,second_order_rel_error_percent
+10,9,19,0.07026678324,0.00718546519056,3.1146925e-07,0.134935969955,0.13494858446,0.1348549426,-8.1027355e-05,0.0600848240619,-9.3641859625e-05,0.0694389525661

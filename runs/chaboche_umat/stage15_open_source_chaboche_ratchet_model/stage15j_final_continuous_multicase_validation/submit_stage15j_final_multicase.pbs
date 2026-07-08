@@ -1,0 +1,22 @@
+#!/bin/bash
+#PBS -N stage15j_final_multi
+#PBS -q teachingq
+#PBS -l select=1:ncpus=40:mpiprocs=40:mem=160gb:ompthreads=1
+#PBS -l walltime=20:00:00
+#PBS -j oe
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
+
+set -euo pipefail
+
+cd "$HOME/master_thesis/Abaqus_trial/runs/chaboche_umat/stage15_open_source_chaboche_ratchet_model/stage15j_final_continuous_multicase_validation"
+
+export OMP_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export STAGE15J_ACTIVE_WORKERS=40
+export STAGE15J_STOP_SECONDS=70800
+export STAGE15J_RESUME=1
+
+bash run_stage15j_full_hpc.sh

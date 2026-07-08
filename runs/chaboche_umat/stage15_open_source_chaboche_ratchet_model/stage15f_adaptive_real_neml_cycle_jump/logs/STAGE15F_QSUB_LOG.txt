@@ -1,0 +1,6 @@
+qsub submit_stage15f_adaptive_jump.pbs
+1330337.mmaster02
+job_state = F
+resources_used.walltime = 00:00:07
+resources_used.mem = 184752kb
+

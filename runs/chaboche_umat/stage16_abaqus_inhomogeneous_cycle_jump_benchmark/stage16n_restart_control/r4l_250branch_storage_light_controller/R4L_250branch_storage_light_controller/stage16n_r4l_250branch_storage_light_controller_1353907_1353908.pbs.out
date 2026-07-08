@@ -1,0 +1,29 @@
+[Stage16N-R4L] start: 2026-06-22 21:35:59
+[Stage16N-R4L] PBS job: 1353908.mmaster02
+[Stage16N-R4L] controller: stage16n_r4l_250branch_storage_light_controller
+[Stage16N-R4L] cpus=16 mp_mode=threads
+[Stage16N-R4L] storage-light cleanup=1
+Linking R1A restart sources from scratch/home retained sources
+Optional R1A support file not retained after cleanup: stage16n_r1a_restart_ref_500cycles.odb
+Optional R1A support file not retained after cleanup: stage16n_r1a_restart_ref_500cycles.mdl
+R4L1 source solve did not complete successfully; check stage16n_r4l1_deck_clone_jump_250_to_270_solve_271_to_500_source_250_to_271.sta
+sending incremental file list
+./
+STAGE16N_R3J_EXTRAPOLATED_STATE.md
+STAGE16N_R4L_CONTROLLER_STATUS.md
+reference_1000_cycle_metrics.csv
+reference_1000_selected_cycle_local_states.csv
+reference_parallel_cycle_metrics.csv
+reference_parallel_selected_cycle_local_states.csv
+state.csv
+_logs/
+_logs/stage16n_r4l1_case.log
+_logs/stage16n_r4l1_deck_clone_jump_250_to_270_solve_271_to_500_source_250_to_271.log
+tmp/
+
+sent 14,105,921 bytes  received 202 bytes  9,404,082.00 bytes/sec
+total size is 14,102,629  speedup is 1.00
+sending incremental file list
+
+sent 555 bytes  received 14 bytes  1,138.00 bytes/sec
+total size is 14,102,629  speedup is 24,784.94

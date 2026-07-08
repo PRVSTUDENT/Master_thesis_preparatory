@@ -1,0 +1,22 @@
+[Stage 15E preflight]
+Python: 3.11.7
+[OK] Python version is acceptable
+[OK] numpy import works: 2.4.4
+[OK] pandas import works: 3.0.2
+[OK] scipy import works (not required by current implementation)
+[OK] memory-safe mode enabled
+[OK] STAGE15E_MAX_WORKERS=12
+[OK] baseline file exists: /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage15_open_source_chaboche_ratchet_model/stage15d_real_neml_full_baseline/STAGE15D_BASELINE_RUN_SUMMARY.csv
+[OK] baseline file exists: /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage15_open_source_chaboche_ratchet_model/stage15d_real_neml_full_baseline/STAGE15D_BASELINE_MASTER_SUMMARY.md
+[OK] cycle summary exists for B1_stress_m150_to_250
+[OK] B1_stress_m150_to_250 required columns exist
+[OK] B1_stress_m150_to_250 numeric columns are finite
+[OK] B1_stress_m150_to_250 max cycle 279725 covers required target
+[OK] B1_stress_m150_to_250 selected target cycles are available
+[OK] cycle summary exists for B2_stress_0_to_300
+[OK] B2_stress_0_to_300 required columns exist
+[OK] B2_stress_0_to_300 numeric columns are finite
+[OK] B2_stress_0_to_300 max cycle 183632 covers required target
+[OK] B2_stress_0_to_300 selected target cycles are available
+[OK] output folder is writable
+[Stage 15E preflight] PASSED

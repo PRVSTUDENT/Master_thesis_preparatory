@@ -1,0 +1,4 @@
+Guard check: Abaqus job detected in submit_stage16n_R4P_A1_repeat_target271.pbs
+Guard passed. Submitting with qsub:
+  submit_stage16n_R4P_A1_repeat_target271.pbs
+1358943.mmaster02

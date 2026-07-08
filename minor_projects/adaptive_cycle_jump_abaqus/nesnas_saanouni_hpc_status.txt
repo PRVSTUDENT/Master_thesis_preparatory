@@ -1,0 +1,8 @@
+status=PASS
+test=nesnas_saanouni_hpc_smoke_test
+expected_target_cycle=271
+expected_skipped_cycles=21
+expected_exact_native_target272=pass
+tested_on=mnode105.cluster
+tested_at=Mi 1. Jul 11:59:02 CEST 2026
+pbs_job_id=1362113.mmaster02

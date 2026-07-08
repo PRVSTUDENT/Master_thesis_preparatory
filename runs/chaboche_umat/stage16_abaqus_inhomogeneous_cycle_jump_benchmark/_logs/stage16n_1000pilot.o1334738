@@ -1,0 +1,85 @@
+[Stage16N] generating 1000-cycle pilot deck
+Wrote /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/stage16n_plate_hole_neml_equiv_1000cycles.inp
+Wrote /home/pr21vyci/master_thesis/Abaqus_trial/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_1000cycle_pilot/STAGE16N_1000CYCLE_PILOT_MANIFEST.md
+[Stage16N] datacheck
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_plate_hole_neml_equiv_1000cycles_datacheck
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 5 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<195 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Tue 02 Jun 2026 02:02:23 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_neml_equivalent_chaboche_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Tue 02 Jun 2026 02:02:29 PM CEST
+Begin Analysis Input File Processor
+Tue 02 Jun 2026 02:02:29 PM CEST
+Run pre
+Tue 02 Jun 2026 02:03:01 PM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Datacheck
+Begin Abaqus/Standard Analysis
+Tue 02 Jun 2026 02:03:01 PM CEST
+Run standard
+Tue 02 Jun 2026 02:03:04 PM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Tue 02 Jun 2026 02:03:04 PM CEST
+Run SMASimUtility
+Tue 02 Jun 2026 02:03:04 PM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_plate_hole_neml_equiv_1000cycles_datacheck COMPLETED
+[Stage16N] full 1000-cycle pilot
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_plate_hole_neml_equiv_1000cycles
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 5 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<195 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Tue 02 Jun 2026 02:03:06 PM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_neml_equivalent_chaboche_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Tue 02 Jun 2026 02:03:12 PM CEST
+Begin Analysis Input File Processor
+Tue 02 Jun 2026 02:03:12 PM CEST
+Run pre
+Tue 02 Jun 2026 02:03:44 PM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+Tue 02 Jun 2026 02:03:44 PM CEST
+Run standard
+Mi 03 Jun 2026 07:10:30  CEST: Warning: HB Failure between the umbrella and license server
+Mi 03 Jun 2026 07:10:30  CEST: Suspending analysis
+Mi 03 Jun 2026 07:18:24  CEST: Connection reestablished with license server
+Mi 03 Jun 2026 07:18:24  CEST: Resuming analysis
+Wed 03 Jun 2026 07:10:30 AM CEST: Suspension is now pending
+Wed 03 Jun 2026 07:18:24 AM CEST: Job is now resumed.
+=>> PBS: job killed: walltime 79301 exceeded limit 79200

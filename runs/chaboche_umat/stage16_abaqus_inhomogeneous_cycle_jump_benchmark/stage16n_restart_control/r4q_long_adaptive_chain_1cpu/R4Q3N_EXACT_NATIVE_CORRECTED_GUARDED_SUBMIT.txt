@@ -1,0 +1,4 @@
+Guard check: Abaqus job detected in run_r4q3n_exact_native_control_750_to_1000_1cpu.pbs
+Guard passed. Submitting with qsub:
+  run_r4q3n_exact_native_control_750_to_1000_1cpu.pbs
+1365007.mmaster02

@@ -1,0 +1,4 @@
+Guard check: Abaqus job detected in run_r4q_long_adaptive_chain_1cpu.pbs
+Guard passed. Submitting with qsub:
+  run_r4q_long_adaptive_chain_1cpu.pbs
+1362114.mmaster02

@@ -1,0 +1,85 @@
+** Stage 4B: STATEV-only injection test
+** Objective: Test if SDVINI initialization alone can create a valid cycle-20 continuation
+** Method: Initialize only STATEV from cycle-19, do NOT initialize stress
+** Expected: Will differ from explicit cycle-20 due to stress state mismatch
+** This tests SDVINI functionality and stress effect on continuation
+
+*HEADING
+Stage 4B: Cycle-19 to Cycle-20 Exact-State Injection (STATEV+SIGINI)
+
+** ----------------------------------------------------------------
+** PART
+** ----------------------------------------------------------------
+*PART, NAME=BLOCK
+*NODE
+1,0.0,0.0,0.0
+2,10.0,0.0,0.0
+3,10.0,2.0,0.0
+4,0.0,2.0,0.0
+5,0.0,0.0,2.0
+6,10.0,0.0,2.0
+7,10.0,2.0,2.0
+8,0.0,2.0,2.0
+*ELEMENT, TYPE=C3D8, ELSET=BLOCK
+1,1,2,3,4,5,6,7,8
+*SOLID SECTION, ELSET=BLOCK, MATERIAL=CHABOCHE_VP
+*END PART
+
+** ----------------------------------------------------------------
+** ASSEMBLY
+** ----------------------------------------------------------------
+*ASSEMBLY, NAME=ASSEMBLY
+*INSTANCE, NAME=BLOCK_INST, PART=BLOCK
+*END INSTANCE
+*NSET, NSET=LEFT_FACE, INSTANCE=BLOCK_INST
+1,4,5,8
+*NSET, NSET=RIGHT_FACE, INSTANCE=BLOCK_INST
+2,3,6,7
+*END ASSEMBLY
+
+** ----------------------------------------------------------------
+** MATERIAL
+** ----------------------------------------------------------------
+*MATERIAL, NAME=CHABOCHE_VP
+*DEPVAR
+15
+*USER MATERIAL, CONSTANTS=9
+** E, nu, sigma_y, Q, b, C, gamma, K, m
+210000.0, 0.3, 520.0, 200.0, 0.05, 120000.0, 800.0, 1000.0, 5.0
+
+** ----------------------------------------------------------------
+** AMPLITUDE: Single cycle continuation, 0 -> +1 -> 0 -> -1 -> 0
+** ----------------------------------------------------------------
+*AMPLITUDE, NAME=AMP_SINGLE_CYCLE, DEFINITION=TABULAR
+0.00, 0.0
+0.25, 1.0
+0.50, 0.0
+0.75, -1.0
+1.00, 0.0
+
+** SDVINI activation for cycle-19 STATEV injection
+*INITIAL CONDITIONS, TYPE=SOLUTION, USER
+** SIGINI activation for cycle-19 residual stress injection
+*INITIAL CONDITIONS, TYPE=STRESS, USER
+
+** ----------------------------------------------------------------
+** STEP: Cycle-19 to Cycle-20 continuation (STATEV + residual stress)
+** ----------------------------------------------------------------
+*STEP, NAME=CYCLIC_CONT_STATEV_SIGINI, NLGEOM=NO, INC=1000
+*STATIC
+0.001, 1.0, 1.0E-08, 0.02
+
+*BOUNDARY
+LEFT_FACE, 1, 1, 0.0
+BLOCK_INST.1, 2, 3, 0.0
+BLOCK_INST.4, 3, 3, 0.0
+*BOUNDARY, AMPLITUDE=AMP_SINGLE_CYCLE
+RIGHT_FACE, 1, 1, 0.05
+
+*OUTPUT, FIELD, FREQUENCY=1
+*NODE OUTPUT
+U, RF
+*ELEMENT OUTPUT
+S, SDV
+
+*END STEP

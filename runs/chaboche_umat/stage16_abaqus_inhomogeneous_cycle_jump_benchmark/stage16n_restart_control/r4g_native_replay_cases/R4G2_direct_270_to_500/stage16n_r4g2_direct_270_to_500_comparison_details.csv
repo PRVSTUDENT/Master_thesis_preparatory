@@ -1,0 +1,11 @@
+kind,cycle,metric,jump_value,reference_value,error_pct
+global_cycle_metric,500,U1_max,0.10000000149,0.10000000149,0
+global_cycle_metric,500,U1_min,-0.10000000149,-0.10000000149,0
+global_cycle_metric,500,RF1_max,2896.65708923,2896.65708923,0
+global_cycle_metric,500,RF1_min,-3073.85819244,-3073.85819244,0
+global_cycle_metric,500,loop_area_abs,575.24166737,575.24166737,0
+primary_local_scalar,500,HOLE_RING_MISES_MAX,493.082414121,493.082414121,0
+primary_local_scalar,500,HOLE_RING_SDV1_MAX,13.0502681732,13.0502681732,0
+primary_local_scalar,500,HOLE_RING_SDV8_MAX,91.477432251,91.477432251,0
+primary_local_scalar,500,HOLE_RING_SDV11_MAX,60.1659240723,60.1659240723,0
+diagnostic_local_scalar,500,HOLE_RING_S11_MAX_ABS,536.128723145,536.128723145,0

@@ -1,0 +1,9 @@
+case_name=B1_stress_m150_to_250
+cycle=2000000
+target_cycle=2000000
+elapsed_seconds=80835.832
+cycles_per_hour=89069.411610
+estimated_final_cycle_at_stop_guard=2100553
+current_memory=119372628kb
+status=completed
+last_checkpoint_cycle=2000000

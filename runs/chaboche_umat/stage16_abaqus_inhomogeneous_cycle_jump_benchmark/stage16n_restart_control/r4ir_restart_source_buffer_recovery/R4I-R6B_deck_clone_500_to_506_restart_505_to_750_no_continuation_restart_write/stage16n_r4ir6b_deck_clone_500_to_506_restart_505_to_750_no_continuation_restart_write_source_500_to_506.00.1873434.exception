@@ -1,0 +1,67 @@
+<Description>
+      ABAQUS/standard rank 00 pid 1873434 received signal 6 (Aborted)
+
+</Description>
+
+<Details>
+   An error occurred during a write access to <rank=0,arg_name=/scratch9/pr21vyci/stage16n_r4ir/R4I-R6B_deck_clone_500_to_506_restart_505_to_750_no_continuation_restart_write/1350763.mmaster02>stage16n_r4ir6b_deck_clone_500_to_506_restart_505_to_750_no_continuation_restart_write_source_500_to_506.stt file. Check the disk space on your system.
+
+</Details>
+
+<Step> 503 </Step>
+
+<Procedure> STATIC </Procedure>
+
+
+<PriorErrors>
+1) An error occurred during a write access to <rank=0,arg_name=/scratch9/pr21vyci/stage16n_r4ir/R4I-R6B_deck_clone_500_to_506_restart_505_to_750_no_continuation_restart_write/1350763.mmaster02>stage16n_r4ir6b_deck_clone_500_to_506_restart_505_to_750_no_continuation_restart_write_source_500_to_506.stt file. Check the disk space on your system.
+</PriorErrors>
+
+<Context>
+   ELEMENT LOOP
+</Context>
+
+<Phase>
+   Increment | Attempt
+</Phase>
+
+
+<Memory>
+   <Current>            3 GB </Current>
+   <Resident>           0 GB </Resident>
+   <Physical>         188 GB </Physical>
+   <Limit>            150 GB </Limit>
+   <Accessible>       188 GB </Accessible>
+   <Available>        134 GB </Available>
+   <Allocator>            DL </Allocator>
+   <HugePages>        always </HugePages>
+</Memory>
+
+<Swap>
+       <Size>           0 GB </Size>
+       <Used>           0 GB </Used>
+       <Free>           0 GB </Free>
+</Swap>
+
+<Directories>
+  <current>                                </current> <free>     -1 GB </free>   <used>     -1 GB </used> 
+    <indir> /scratch9/pr21vyci/stage16n_r4ir/R4I-R6B_deck_clone_500_to_506_restart_505_to_750_no_continuation_restart_write/1350763.mmaster02 </indir>   <free>    211 GB </free>  
+   <outdir> /scratch9/pr21vyci/stage16n_r4ir/R4I-R6B_deck_clone_500_to_506_restart_505_to_750_no_continuation_restart_write/1350763.mmaster02 </outdir>  <free>    211 GB </free> 
+   <tmpdir> /scratch/pr21vyci/stage16n_r4ir/R4I-R6B_deck_clone_500_to_506_restart_505_to_750_no_continuation_restart_write/1350763.mmaster02/tmp/pr21vyci_stage16n_r4ir6b_deck_clone_500_to_506_restart_505_to_750_ </tmpdir>  <free>     -1 GB </free> 
+</Directories>
+
+<Installation>
+     <Version> 2023 6.23-1 </Version>
+       <Build> 2022_09_28-20.11.55 183150 </Build>
+  <Executable> /cluster/application/abaqus/2023/linux_a64/code/bin/standard </Executable>
+</Installation>
+
+<Callstack>
+   1) libc.so.6                  0x00021ee5 ! abort            :?
+   2) libstdc++.so.6             0x0009009b ! ??               ??:0
+   3) libJS0GROUP.so             0x00108ee2 ! ??               ??:0
+   4) libJS0GROUP.so             0x00109517 ! __CATNotifierCatchBlockPrologCxx ??:?
+   5) libstdc++.so.6             0x0009654c ! std::rethrow_exception ??:?
+   6) libstdc++.so.6             0x00095569 ! __cxa_throw_bad_array_new_length ??:?
+</Callstack>
+

@@ -1,0 +1,21 @@
+status=completed
+phase=controller_end
+detail=block_end=2000 scope=feasibility_only_after_cycle1000_accuracy_fail comparison=not_available cycle2000_state=ok
+controller=R4Q7F_continue_from_cycle1750_1cpu
+pbs_job_id=1363633.mmaster02
+previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q6f_continue_from_cycle1500_1cpu/1363631.mmaster02
+oldjob=stage16n_r4q6f_block06_1500_to_1521_solve_1522_to_1750
+job=stage16n_r4q7f_block07_1750_to_1771_solve_1772_to_2000
+source_cycle=1750
+jump_target=1771
+solved_start=1772
+block_end=2000
+restart_step=1624
+restart_inc=57
+allow_previous_feasibility=1
+R4Q_ALLOW_FEASIBILITY_AFTER_1000_FAIL=1
+classification_scope=feasibility_only_after_cycle1000_accuracy_fail
+abaqus_cpus=1
+scratch_case_dir=/scratch/pr21vyci/stage16n_r4q7f_continue_from_cycle1750_1cpu/1363633.mmaster02
+elapsed_seconds=46055
+updated_at=2026-07-05 21:06:45

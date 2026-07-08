@@ -1,0 +1,6 @@
+Guard check: Abaqus job detected in run_r4q14f_continue_from_cycle3500_1cpu.pbs
+Guard passed. Submitting with qsub:
+  -W
+  depend=afterok:1364999.mmaster02
+  run_r4q14f_continue_from_cycle3500_1cpu.pbs
+1365000.mmaster02

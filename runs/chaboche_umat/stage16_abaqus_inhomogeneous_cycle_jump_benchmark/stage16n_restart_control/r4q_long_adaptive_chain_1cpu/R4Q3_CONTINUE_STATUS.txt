@@ -1,0 +1,17 @@
+status=completed
+phase=controller_end
+detail=block_end=1000 scope=accuracy_validation comparison=comparison_error cycle1000_state=ok
+controller=R4Q3_continue_from_cycle750_1cpu
+pbs_job_id=1362636.mmaster02
+previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02
+oldjob=stage16n_r4q2_block02_500_to_521_solve_522_to_750
+source_cycle=750
+jump_target=771
+solved_start=772
+block_end=1000
+restart_step=708
+restart_inc=62
+abaqus_cpus=1
+scratch_case_dir=/scratch/pr21vyci/stage16n_r4q3_continue_from_cycle750_1cpu/1362636.mmaster02
+elapsed_seconds=42097
+updated_at=2026-07-03 18:09:19

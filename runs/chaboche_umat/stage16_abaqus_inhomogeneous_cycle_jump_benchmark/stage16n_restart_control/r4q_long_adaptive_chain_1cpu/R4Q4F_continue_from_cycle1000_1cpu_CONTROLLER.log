@@ -1,0 +1,346 @@
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] start: 2026-07-04 01:52:17
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] PBS job: 1363409.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] scratch: /scratch/pr21vyci/stage16n_r4q4f_continue_from_cycle1000_1cpu/1363409.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] previous source: /scratch/pr21vyci/stage16n_r4q3_continue_from_cycle750_1cpu/1362636.mmaster02/stage16n_r4q3_block03_750_to_771_solve_772_to_1000
+[gate] previous status=finished_or_safe_stopped summary_status=1000 scope=datacheck_failure ref=feasibility comparison=unknown detail=75108,"datacheck failed"
+sending incremental file list
+./
+R4Q4F_continue_from_cycle1000_1cpu_BLOCK_SUMMARY.csv
+R4Q4F_continue_from_cycle1000_1cpu_CONTROLLER.log
+R4Q4F_continue_from_cycle1000_1cpu_STATUS.txt
+tmp/
+
+sent 3,155 bytes  received 86 bytes  6,482.00 bytes/sec
+total size is 53,072  speedup is 16.38
+sending incremental file list
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] start: 2026-07-04 01:54:43
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] PBS job: 1363435.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] scratch: /scratch/pr21vyci/stage16n_r4q4f_continue_from_cycle1000_1cpu/1363435.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] previous source: /scratch/pr21vyci/stage16n_r4q3_continue_from_cycle750_1cpu/1362636.mmaster02/stage16n_r4q3_block03_750_to_771_solve_772_to_1000
+[gate] previous status=passed summary_status=completed scope=accuracy_validation ref=yes comparison=comparison_error detail="extraction=ok; cycle1000_state=ok"
+sending incremental file list
+./
+R4Q4F_continue_from_cycle1000_1cpu.pbs.out
+R4Q4F_continue_from_cycle1000_1cpu_BLOCK_SUMMARY.csv
+R4Q4F_continue_from_cycle1000_1cpu_CONTROLLER.log
+R4Q4F_continue_from_cycle1000_1cpu_STATUS.txt
+tmp/
+
+sent 5,337 bytes  received 105 bytes  10,884.00 bytes/sec
+total size is 55,084  speedup is 10.12
+sending incremental file list
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] start: 2026-07-04 01:55:59
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] PBS job: 1363512.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] scratch: /scratch/pr21vyci/stage16n_r4q4f_continue_from_cycle1000_1cpu/1363512.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] previous source: /scratch/pr21vyci/stage16n_r4q3_continue_from_cycle750_1cpu/1362636.mmaster02/stage16n_r4q3_block03_750_to_771_solve_772_to_1000
+[gate] previous status=passed summary_status=completed scope=accuracy_validation ref=yes comparison=comparison_error detail="extraction=ok; cycle1000_state=ok"
+sending incremental file list
+./
+R4Q4F_continue_from_cycle1000_1cpu.pbs.out
+R4Q4F_continue_from_cycle1000_1cpu_BLOCK_SUMMARY.csv
+R4Q4F_continue_from_cycle1000_1cpu_CONTROLLER.log
+R4Q4F_continue_from_cycle1000_1cpu_STATUS.txt
+tmp/
+
+sent 6,579 bytes  received 105 bytes  13,368.00 bytes/sec
+total size is 59,412  speedup is 8.89
+sending incremental file list
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] start: 2026-07-04 01:58:01
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] PBS job: 1363629.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] scratch: /scratch/pr21vyci/stage16n_r4q4f_continue_from_cycle1000_1cpu/1363629.mmaster02
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] previous source: /scratch/pr21vyci/stage16n_r4q3_continue_from_cycle750_1cpu/1362636.mmaster02/stage16n_r4q3_block03_750_to_771_solve_772_to_1000
+[gate] previous status=passed summary_status=completed scope=accuracy_validation ref=yes comparison=comparison_error detail="extraction=ok; cycle1000_state=ok"
+[gate] explicit feasibility override accepted after cycle1000 accuracy_validation_fail with completed predecessor summary
+Wrote stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250.inp
+sending incremental file list
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+./
+R4Q4F_continue_from_cycle1000_1cpu.pbs.out
+R4Q4F_continue_from_cycle1000_1cpu_BLOCK_SUMMARY.csv
+R4Q4F_continue_from_cycle1000_1cpu_CONTROLLER.log
+R4Q4F_continue_from_cycle1000_1cpu_SOURCE1000_TARGET1021_EXTRAPOLATED_STATE.md
+R4Q4F_continue_from_cycle1000_1cpu_STATUS.txt
+stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250.inp
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+_source_state/
+tmp/
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+No configuration file found at /home/pr21vyci/.esmtprc or /etc/esmtprc
+
+sent 57,865 bytes  received 146 bytes  116,022.00 bytes/sec
+total size is 110,619  speedup is 1.91
+
+============================================================
+PHASE START: R4Q4F_continue_from_cycle1000_1cpu datacheck
+TIME: Sa 4. Jul 01:58:06 CEST 2026
+============================================================
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_datacheck
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 5 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<238 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Sat 04 Jul 2026 01:58:18 AM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_r3_jump_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+stage16n_r3_jump_umat.for(248): remark #15009: stage16n_r3j_jump_overwrite_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Sat 04 Jul 2026 01:58:29 AM CEST
+Begin Analysis Input File Processor
+Sat 04 Jul 2026 01:58:29 AM CEST
+Run pre
+Sat 04 Jul 2026 01:58:54 AM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Datacheck
+Begin Abaqus/Standard Analysis
+Sat 04 Jul 2026 01:58:54 AM CEST
+Run standard
+Sat 04 Jul 2026 01:59:01 AM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Sat 04 Jul 2026 01:59:01 AM CEST
+Run SMASimUtility
+Sat 04 Jul 2026 01:59:01 AM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_datacheck COMPLETED
+	Command being timed: "abaqus job=stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_datacheck input=stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250.inp oldjob=stage16n_r4q3_block03_750_to_771_solve_772_to_1000 user=stage16n_r3_jump_umat.for datacheck interactive ask_delete=OFF scratch=/scratch/pr21vyci/stage16n_r4q4f_continue_from_cycle1000_1cpu/1363629.mmaster02/tmp cpus=1 mp_mode=threads"
+	User time (seconds): 21.06
+	System time (seconds): 3.29
+	Percent of CPU this job got: 43%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:55.39
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 933180
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 3817
+	Minor (reclaiming a frame) page faults: 571147
+	Voluntary context switches: 25927
+	Involuntary context switches: 155
+	Swaps: 0
+	File system inputs: 689152
+	File system outputs: 337392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: R4Q4F_continue_from_cycle1000_1cpu datacheck
+TIME: Sa 4. Jul 01:59:01 CEST 2026
+EXIT: 0
+============================================================
+
+============================================================
+PHASE START: R4Q4F_continue_from_cycle1000_1cpu solve
+TIME: Sa 4. Jul 01:59:01 CEST 2026
+============================================================
+Analysis initiated from SIMULIA established products
+Abaqus JOB stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250
+Abaqus 2023
+Abaqus License Manager checked out the following licenses:
+Abaqus/Standard checked out 5 tokens from Flexnet server license4.imfd.tu-freiberg.de.
+<238 out of 300 licenses remain available>.
+Begin Compiling Abaqus/Standard User Subroutines
+Sat 04 Jul 2026 01:59:03 AM CEST
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+ifort: command line warning #10434: option '-extend_source' use with underscore is deprecated; use '-extend-source' instead
+ Intel(R) Fortran 2021.13.0-1693
+stage16n_r3_jump_umat.for(23): remark #15009: umat_ has been targeted for automatic cpu dispatch
+stage16n_r3_jump_umat.for(248): remark #15009: stage16n_r3j_jump_overwrite_ has been targeted for automatic cpu dispatch
+End Compiling Abaqus/Standard User Subroutines
+Begin Linking Abaqus/Standard User Subroutines
+Intel(R) Fortran Intel(R) 64 Compiler Classic for applications running on Intel(R) 64, Version 2021.13.0 Build 20240602_000000
+Copyright (C) 1985-2024 Intel Corporation.  All rights reserved.
+
+ifort: remark #10448: Intel(R) Fortran Compiler Classic (ifort) is now deprecated and will be discontinued late 2024. Intel recommends that customers transition now to using the LLVM-based Intel(R) Fortran Compiler (ifx) for continued Windows* and Linux* support, new language support, new language features, and optimizations. Use '-diag-disable=10448' to disable this message.
+GNU ld version 2.30-128.el8_10
+End Linking Abaqus/Standard User Subroutines
+Sat 04 Jul 2026 01:59:14 AM CEST
+Begin Analysis Input File Processor
+Sat 04 Jul 2026 01:59:14 AM CEST
+Run pre
+Sat 04 Jul 2026 01:59:27 AM CEST
+End Analysis Input File Processor
+Begin Abaqus/Standard Analysis
+Sat 04 Jul 2026 01:59:27 AM CEST
+Run standard
+Sat 04 Jul 2026 01:30:18 PM CEST
+End Abaqus/Standard Analysis
+Begin SIM Wrap-up
+Sat 04 Jul 2026 01:30:18 PM CEST
+Run SMASimUtility
+Sat 04 Jul 2026 01:30:19 PM CEST
+End SIM Wrap-up
+Abaqus JOB stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250 COMPLETED
+	Command being timed: "abaqus job=stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250 input=stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250.inp oldjob=stage16n_r4q3_block03_750_to_771_solve_772_to_1000 user=stage16n_r3_jump_umat.for interactive ask_delete=OFF scratch=/scratch/pr21vyci/stage16n_r4q4f_continue_from_cycle1000_1cpu/1363629.mmaster02/tmp cpus=1 mp_mode=threads"
+	User time (seconds): 35227.40
+	System time (seconds): 3227.72
+	Percent of CPU this job got: 92%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 11:31:17
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1360444
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 288
+	Minor (reclaiming a frame) page faults: 645403824
+	Voluntary context switches: 3646215
+	Involuntary context switches: 151717
+	Swaps: 0
+	File system inputs: 49032
+	File system outputs: 1174871968
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: R4Q4F_continue_from_cycle1000_1cpu solve
+TIME: Sa 4. Jul 13:30:19 CEST 2026
+EXIT: 0
+============================================================
+
+============================================================
+PHASE START: R4Q4F_continue_from_cycle1000_1cpu ODB extraction
+TIME: Sa 4. Jul 13:30:20 CEST 2026
+============================================================
+Wrote: stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_cycle_metrics.csv
+Wrote: stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_selected_cycle_loops.csv
+Wrote: stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_selected_cycle_local_states.csv
+	Command being timed: "abaqus python stage16n_extract_hysteresis_and_local_states.py --job stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250"
+	User time (seconds): 13.64
+	System time (seconds): 1.51
+	Percent of CPU this job got: 87%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:17.24
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 907016
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 139
+	Minor (reclaiming a frame) page faults: 212882
+	Voluntary context switches: 3779
+	Involuntary context switches: 28
+	Swaps: 0
+	File system inputs: 21224
+	File system outputs: 64
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: R4Q4F_continue_from_cycle1000_1cpu ODB extraction
+TIME: Sa 4. Jul 13:30:37 CEST 2026
+EXIT: 0
+============================================================
+
+============================================================
+PHASE START: extract source state cycle 1250 from stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250
+TIME: Sa 4. Jul 13:30:37 CEST 2026
+============================================================
+Wrote _source_state/stage16n_exact_state_cycle1250.csv
+Wrote _source_state/stage16n_exact_state_cycle1250_summary.md
+	Command being timed: "abaqus python stage16n_extract_exact_state_for_reinjection.py --odb stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250.odb --cycles 1250 --outdir _source_state"
+	User time (seconds): 8.03
+	System time (seconds): 0.42
+	Percent of CPU this job got: 94%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:08.97
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 357572
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 3
+	Minor (reclaiming a frame) page faults: 79052
+	Voluntary context switches: 2173
+	Involuntary context switches: 21
+	Swaps: 0
+	File system inputs: 272
+	File system outputs: 39512
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+============================================================
+PHASE END: extract source state cycle 1250 from stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250
+TIME: Sa 4. Jul 13:30:46 CEST 2026
+EXIT: 0
+============================================================
+Dateisystem             Größe Benutzt Verf. Verw% Eingehängt auf
+panfs://mpanfs/scratch9   33T    9,1T   24T   28% /scratch9
+panfs://mpanfs/scratch   101T     85T   16T   85% /scratch
+mnfs:/home                17T     14T  3,1T   82% /home
+4,7T	/scratch9/pr21vyci
+sending incremental file list
+./
+R4Q4F_continue_from_cycle1000_1cpu.pbs.out
+R4Q4F_continue_from_cycle1000_1cpu_BLOCK_SUMMARY.csv
+R4Q4F_continue_from_cycle1000_1cpu_CONTROLLER.log
+R4Q4F_continue_from_cycle1000_1cpu_STATUS.txt
+stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_cycle_metrics.csv
+stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_dat_tail.txt
+stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_datacheck_dat_tail.txt
+stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_datacheck_msg_tail.txt
+stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_msg_tail.txt
+stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_selected_cycle_local_states.csv
+stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_selected_cycle_loops.csv
+stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_sta_tail.txt
+_logs/
+_logs/R4Q4F_continue_from_cycle1000_1cpu_storage_df_after.txt
+_logs/R4Q4F_continue_from_cycle1000_1cpu_storage_scratch9_user_after.txt
+_logs/stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250.log
+_logs/stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_datacheck.log
+_logs/stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_extract.log
+_logs/stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_extract_state_1250.log
+_logs/stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_overwrite_trace.txt
+_logs/stage16n_r4q4f_block04_1000_to_1021_solve_1022_to_1250_parallelism_check.log
+_source_state/
+_source_state/stage16n_exact_state_cycle1250_summary.md
+tmp/
+
+sent 103,446 bytes  received 438 bytes  69,256.00 bytes/sec
+total size is 204,993  speedup is 1.97
+[Stage16N-R4Q4F_continue_from_cycle1000_1cpu] end: 2026-07-04 13:30:53
+sending incremental file list
+R4Q4F_continue_from_cycle1000_1cpu.pbs.out
+R4Q4F_continue_from_cycle1000_1cpu_CONTROLLER.log
+
+sent 22,356 bytes  received 57 bytes  44,826.00 bytes/sec
+total size is 206,668  speedup is 9.22

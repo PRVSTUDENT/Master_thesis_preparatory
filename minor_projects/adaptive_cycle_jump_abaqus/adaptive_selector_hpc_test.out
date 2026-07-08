@@ -1,0 +1,28 @@
+Job started on: Mi 1. Jul 11:28:14 CEST 2026
+Running on node: mnode105.cluster
+PBS job ID: 1362109.mmaster02
+PBS workdir: /scratch/pr21vyci/git_work/Master_thesis_preparatory/minor_projects/adaptive_cycle_jump_abaqus
+Current directory: /scratch/pr21vyci/git_work/Master_thesis_preparatory/minor_projects/adaptive_cycle_jump_abaqus
+Python executable:
+/bin/python3
+Python 3.6.8
+Running adaptive selector...
+Adaptive cycle-jump decision
+==================================
+Accepted boundary: target271
+First rejected extrapolated target: target272
+Exact/native restart at target272: pass
+
+Target evidence:
+  target270: true-jump [R4P_B1:pass], controls [none]
+  target271: true-jump [R4P_A1:pass, R4P_B2:pass, R4P_B3:pass], controls [none]
+  target272: true-jump [R4P_A2:fail, R4P_A4:fail, R4P_B4:fail], controls [R4P_A3:pass]
+
+Conclusion:
+  target271 is the accepted true-jump boundary. target272 is rejected for extrapolated state prediction, not for Abaqus native restart continuity.
+
+Recommended next action:
+  Stop widening jumps. The native restart control passes, so the rejected target is limited by extrapolated state prediction. Redesign or diagnose the predictor before any higher target.
+Checking expected adaptive decision...
+Adaptive selector HPC smoke test PASSED.
+Job finished on: Mi 1. Jul 11:28:14 CEST 2026

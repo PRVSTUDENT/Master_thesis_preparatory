@@ -1,0 +1,19 @@
+status=previous_not_completed
+phase=self_gate
+detail=previous status=finished_or_safe_stopped block_status=1000
+controller=R4Q6_continue_from_cycle1500_1cpu
+pbs_job_id=1362639.mmaster02
+previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q5_continue_from_cycle1250_1cpu/1362638.mmaster02
+oldjob=stage16n_r4q5_block05_1250_to_1271_solve_1272_to_1500
+job=stage16n_r4q6_block06_1500_to_1521_solve_1522_to_1750
+source_cycle=1500
+jump_target=1521
+solved_start=1522
+block_end=1750
+restart_step=
+restart_inc=
+allow_previous_feasibility=1
+abaqus_cpus=1
+scratch_case_dir=/scratch/pr21vyci/stage16n_r4q6_continue_from_cycle1500_1cpu/1362639.mmaster02
+elapsed_seconds=2
+updated_at=2026-07-03 18:10:08

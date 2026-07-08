@@ -1,0 +1,9 @@
+case_name=B1_mean70_amp200
+cycle=936000
+target_cycle=1500000
+elapsed_seconds=452.672
+cycles_per_hour=7443793.150929
+estimated_final_cycle_at_stop_guard=1090265
+current_memory=665820kb
+status=chunk_completed
+last_checkpoint_cycle=936000

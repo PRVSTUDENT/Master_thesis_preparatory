@@ -1,0 +1,2 @@
+block_index,source_cycle,jump_target,solved_start,block_end,status,classification_scope,reference_available,comparison_status,job,oldjob,elapsed_seconds,detail
+8,2000,2021,2022,2250,completed,feasibility_only_after_cycle1000_accuracy_fail,no,not_available,stage16n_r4q8f_block08_2000_to_2021_solve_2022_to_2250,stage16n_r4q7f_block07_1750_to_1771_solve_1772_to_2000,36553,"extraction=ok; cycle2250_state=ok"

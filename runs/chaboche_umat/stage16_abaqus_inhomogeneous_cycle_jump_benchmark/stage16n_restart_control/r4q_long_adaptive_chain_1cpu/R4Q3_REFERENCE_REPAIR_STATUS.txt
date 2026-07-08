@@ -1,0 +1,12 @@
+﻿status=accuracy_validation_fail
+phase=reference_repair_compare_complete
+detail=valid parallel-max 1000-cycle reference used; comparison ran; strict primary-local gate exceeded by HOLE_RING_SDV1_MAX=6.2795526 percent
+controller=R4Q3_reference1000_repair_and_compare
+abaqus_solve_submitted=no
+repaired_reference_source=runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_parallel_max_reference
+comparison_summary=R4Q3_REFERENCE_REPAIR_cycle1000_comparison_summary.csv
+comparison_details=R4Q3_REFERENCE_REPAIR_cycle1000_comparison_details.csv
+max_global_error_pct=2.330504e-05
+max_primary_local_error_pct=6.2795526
+diagnostic_s11_error_pct=0.00031922278
+updated_at=2026-07-04

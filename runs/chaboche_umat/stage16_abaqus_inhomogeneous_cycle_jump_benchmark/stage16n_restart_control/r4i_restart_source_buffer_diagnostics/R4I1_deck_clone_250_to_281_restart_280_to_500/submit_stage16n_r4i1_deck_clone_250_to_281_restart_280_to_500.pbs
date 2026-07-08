@@ -1,0 +1,34 @@
+#!/bin/bash
+#PBS -N stage16n_r4i1_deck_clone_250_to_281_restart_280_to_500
+#PBS -q teachingq
+#PBS -l select=1:ncpus=16:mpiprocs=1:ompthreads=16:mem=90gb
+#PBS -l walltime=24:00:00
+#PBS -j oe
+#PBS -o /scratch/pr21vyci/stage16n_r4i_pbs/stage16n_r4i1_deck_clone_250_to_281_restart_280_to_500.pbs.out
+#PBS -m abe
+#PBS -M pr21vyci@mailserver.tu-freiberg.de
+
+set -euo pipefail
+
+export REPO_ROOT="$HOME/master_thesis/Abaqus_trial"
+export HOME_CASE_DIR="$REPO_ROOT/runs/chaboche_umat/stage16_abaqus_inhomogeneous_cycle_jump_benchmark/stage16n_restart_control/r4i_restart_source_buffer_diagnostics/R4I1_deck_clone_250_to_281_restart_280_to_500"
+export SCRATCH_CASE_DIR="/scratch/$USER/stage16n_r4i/R4I1_deck_clone_250_to_281_restart_280_to_500/${PBS_JOBID:-manual}"
+export TMPDIR="$SCRATCH_CASE_DIR/tmp"
+export ABAQUS_CPUS=16
+export ABAQUS_MP_MODE=threads
+
+mkdir -p "$SCRATCH_CASE_DIR" "$TMPDIR" /scratch/pr21vyci/stage16n_r4i_pbs
+rsync -a --delete \
+  --exclude='*.odb' --exclude='*.stt' --exclude='*.res' --exclude='*.sim' \
+  --exclude='*.mdl' --exclude='*.prt' --exclude='*.dat' --exclude='*.msg' \
+  --exclude='*.023' --exclude='*.cax' --exclude='*.abq' --exclude='*.pac' \
+  --exclude='*.sel' --exclude='*.lck' --exclude='state.bin' --exclude='state.csv' \
+  "$HOME_CASE_DIR/" "$SCRATCH_CASE_DIR/"
+
+cd "$SCRATCH_CASE_DIR"
+bash run_stage16n_r4i_restart_source_buffer_hpc.sh
+
+rsync -a \
+  --include='*/' --include='*.md' --include='*.csv' --include='*.txt' --include='*.log' \
+  --include='*.sta' --include='*.pbs.out' --exclude='*' \
+  "$SCRATCH_CASE_DIR/" "$HOME_CASE_DIR/"

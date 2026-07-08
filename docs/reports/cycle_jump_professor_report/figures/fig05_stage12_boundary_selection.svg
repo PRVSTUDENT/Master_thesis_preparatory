@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="750.0" y="58" text-anchor="middle" font-family="Arial" font-size="34" font-weight="700" fill="#111827">Stage 12 Boundary Selection</text>
+<text x="750.0" y="96" text-anchor="middle" font-family="Arial" font-size="20" fill="#4b5563">Final cycle-1000 error after predicting a target state, injecting it, then continuing in Abaqus</text>
+<rect x="135" y="120" width="1275" height="640" fill="#ffffff" stroke="#9ca3af"/>
+<line x1="135" y1="732.17" x2="1410" y2="732.17" stroke="#e5e7eb" stroke-width="1"/>
+<text x="117" y="738.17" text-anchor="end" font-family="Arial" font-size="17" fill="#374151">0.8</text>
+<line x1="135" y1="620.87" x2="1410" y2="620.87" stroke="#dc2626" stroke-width="3" stroke-dasharray="12 10"/>
+<text x="117" y="626.87" text-anchor="end" font-family="Arial" font-size="17" fill="#374151">1.0</text>
+<line x1="135" y1="509.57" x2="1410" y2="509.57" stroke="#e5e7eb" stroke-width="1"/>
+<text x="117" y="515.57" text-anchor="end" font-family="Arial" font-size="17" fill="#374151">1.2</text>
+<line x1="135" y1="398.26" x2="1410" y2="398.26" stroke="#e5e7eb" stroke-width="1"/>
+<text x="117" y="404.26" text-anchor="end" font-family="Arial" font-size="17" fill="#374151">1.4</text>
+<line x1="135" y1="286.96" x2="1410" y2="286.96" stroke="#e5e7eb" stroke-width="1"/>
+<text x="117" y="292.96" text-anchor="end" font-family="Arial" font-size="17" fill="#374151">1.6</text>
+<line x1="135" y1="175.65" x2="1410" y2="175.65" stroke="#e5e7eb" stroke-width="1"/>
+<text x="117" y="181.65" text-anchor="end" font-family="Arial" font-size="17" fill="#374151">1.8</text>
+<line x1="212.27" y1="120" x2="212.27" y2="760" stroke="#f3f4f6"/>
+<text x="212.27" y="794" text-anchor="middle" font-family="Arial" font-size="15" fill="#374151">350</text>
+<line x1="366.82" y1="120" x2="366.82" y2="760" stroke="#f3f4f6"/>
+<text x="366.82" y="794" text-anchor="middle" font-family="Arial" font-size="15" fill="#374151">370</text>
+<line x1="390.00" y1="120" x2="390.00" y2="760" stroke="#f3f4f6"/>
+<text x="390.00" y="794" text-anchor="middle" font-family="Arial" font-size="15" fill="#374151">373</text>
+<line x1="397.73" y1="120" x2="397.73" y2="760" stroke="#f3f4f6"/>
+<text x="397.73" y="794" text-anchor="middle" font-family="Arial" font-size="15" fill="#374151">374</text>
+<line x1="444.09" y1="120" x2="444.09" y2="760" stroke="#f3f4f6"/>
+<text x="444.09" y="794" text-anchor="middle" font-family="Arial" font-size="15" fill="#374151">380</text>
+<line x1="598.64" y1="120" x2="598.64" y2="760" stroke="#f3f4f6"/>
+<text x="598.64" y="794" text-anchor="middle" font-family="Arial" font-size="15" fill="#374151">400</text>
+<line x1="1371.36" y1="120" x2="1371.36" y2="760" stroke="#f3f4f6"/>
+<text x="1371.36" y="794" text-anchor="middle" font-family="Arial" font-size="15" fill="#374151">500</text>
+<path d="M 212.27 688.89 L 366.82 630.49 L 390.00 621.44 L 397.73 618.42 L 444.09 600.06 L 598.64 536.77 L 1371.36 171.88" fill="none" stroke="#374151" stroke-width="3"/>
+<circle cx="212.27" cy="688.89" r="8" fill="#2563eb" stroke="#ffffff" stroke-width="3"/>
+<text x="212.27" y="670.89" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#2563eb">0.878%</text>
+<circle cx="366.82" cy="630.49" r="8" fill="#2563eb" stroke="#ffffff" stroke-width="3"/>
+<circle cx="390.00" cy="621.44" r="11" fill="#16a34a" stroke="#ffffff" stroke-width="3"/>
+<circle cx="397.73" cy="618.42" r="8" fill="#dc2626" stroke="#ffffff" stroke-width="3"/>
+<circle cx="444.09" cy="600.06" r="8" fill="#dc2626" stroke="#ffffff" stroke-width="3"/>
+<circle cx="598.64" cy="536.77" r="8" fill="#dc2626" stroke="#ffffff" stroke-width="3"/>
+<text x="598.64" y="518.77" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#dc2626">1.151%</text>
+<circle cx="1371.36" cy="171.88" r="8" fill="#dc2626" stroke="#ffffff" stroke-width="3"/>
+<text x="1371.36" y="153.88" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#dc2626">1.807%</text>
+<text x="1398" y="610.87" text-anchor="end" font-family="Arial" font-size="15" font-weight="700" fill="#b91c1c">1% limit</text>
+<text x="772.5" y="842" text-anchor="middle" font-family="Arial" font-size="21" font-weight="700" fill="#111827">Target cycle after predicted jump from cycle 10</text>
+<text transform="translate(42 440.0) rotate(-90)" text-anchor="middle" font-family="Arial" font-size="21" font-weight="700" fill="#111827">Final STATEV1 error at cycle 1000 (%)</text>
+<rect x="1110" y="575" width="275" height="88" rx="8" fill="#f9fafb" stroke="#d1d5db"/>
+<circle cx="1132" cy="600" r="7" fill="#2563eb"/>
+<text x="1150" y="605" font-family="Arial" font-size="15" fill="#374151">accepted</text>
+<circle cx="1132" cy="624" r="7" fill="#16a34a"/>
+<text x="1150" y="629" font-family="Arial" font-size="15" fill="#374151">selected</text>
+<circle cx="1132" cy="648" r="7" fill="#dc2626"/>
+<text x="1150" y="653" font-family="Arial" font-size="15" fill="#374151">rejected</text>
+<rect x="760" y="145" width="420" height="250" fill="#ffffff" stroke="#111827" stroke-width="1.5"/>
+<text x="970.0" y="133" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#111827">Boundary zoom</text>
+<line x1="760" y1="361.22" x2="1180" y2="361.22" stroke="#e5e7eb" stroke-width="1"/>
+<text x="752" y="366.22" text-anchor="end" font-family="Arial" font-size="12" fill="#374151">0.98</text>
+<line x1="760" y1="293.65" x2="1180" y2="293.65" stroke="#e5e7eb" stroke-width="1"/>
+<text x="752" y="298.65" text-anchor="end" font-family="Arial" font-size="12" fill="#374151">0.99</text>
+<line x1="760" y1="226.08" x2="1180" y2="226.08" stroke="#dc2626" stroke-width="2"/>
+<text x="752" y="231.08" text-anchor="end" font-family="Arial" font-size="12" fill="#374151">1.00</text>
+<line x1="760" y1="158.51" x2="1180" y2="158.51" stroke="#e5e7eb" stroke-width="1"/>
+<text x="752" y="163.51" text-anchor="end" font-family="Arial" font-size="12" fill="#374151">1.01</text>
+<text x="830.00" y="413" text-anchor="middle" font-family="Arial" font-size="12" fill="#374151">370</text>
+<text x="1040.00" y="413" text-anchor="middle" font-family="Arial" font-size="12" fill="#374151">373</text>
+<text x="1110.00" y="413" text-anchor="middle" font-family="Arial" font-size="12" fill="#374151">374</text>
+<path d="M 830.00 342.86 L 1040.00 233.05 L 1110.00 196.28" fill="none" stroke="#374151" stroke-width="2"/>
+<circle cx="830.00" cy="342.86" r="7" fill="#2563eb" stroke="#ffffff" stroke-width="2"/>
+<text x="820.00" y="327.86" text-anchor="end" font-family="Arial" font-size="12" font-weight="700" fill="#2563eb">0.983%</text>
+<circle cx="1040.00" cy="233.05" r="7" fill="#16a34a" stroke="#ffffff" stroke-width="2"/>
+<text x="1030.00" y="215.05" text-anchor="end" font-family="Arial" font-size="12" font-weight="700" fill="#16a34a">373: 0.999%</text>
+<circle cx="1110.00" cy="196.28" r="7" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+<text x="1120.00" y="218.28" text-anchor="start" font-family="Arial" font-size="12" font-weight="700" fill="#dc2626">374: 1.004%</text>
+</svg>
