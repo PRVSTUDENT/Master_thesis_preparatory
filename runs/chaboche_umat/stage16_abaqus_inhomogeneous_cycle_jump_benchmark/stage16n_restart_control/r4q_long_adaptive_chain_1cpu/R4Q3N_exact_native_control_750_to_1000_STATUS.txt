@@ -1,8 +1,8 @@
-status=previous_status_missing
-phase=self_gate
-detail=R4Q2 status file missing
+status=completed
+phase=controller_end
+detail=block_end=1000 comparison=pass cycle1000_state=ok no_extrapolated_overwrite=confirmed
 controller=R4Q3N_exact_native_control_750_to_1000
-pbs_job_id=1365006.mmaster02
+pbs_job_id=1365007.mmaster02
 classification_scope=exact_native_diagnostic_control
 parent_chain_classification_scope=feasibility_only_after_cycle1000_accuracy_fail
 previous_scratch_dir=/scratch/pr21vyci/stage16n_r4q2_continue_from_cycle500_1cpu/1362597.mmaster02
@@ -11,9 +11,9 @@ job=stage16n_r4q3n_exact_native_750_to_1000
 source_cycle=750
 solved_start=751
 block_end=1000
-restart_step=
-restart_inc=
+restart_step=708
+restart_inc=62
 abaqus_cpus=1
-scratch_case_dir=/scratch/pr21vyci/stage16n_r4q3n_exact_native_control_750_to_1000_1cpu/1365006.mmaster02
-elapsed_seconds=3
-updated_at=2026-07-06 08:00:11
+scratch_case_dir=/scratch/pr21vyci/stage16n_r4q3n_exact_native_control_750_to_1000_1cpu/1365007.mmaster02
+elapsed_seconds=36235
+updated_at=2026-07-06 18:07:20
